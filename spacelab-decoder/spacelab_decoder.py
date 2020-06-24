@@ -1,32 +1,32 @@
 # -*- coding: utf-8 -*-
 
 #
-#  fsat_decoder.py
+#  spacelab_decoder.py
 #  
-#  Copyright (C) 2019, Universidade Federal de Santa Catarina
+#  Copyright (C) 2020, Universidade Federal de Santa Catarina
 #  
-#  This file is part of FloripaSat-Decoder.
+#  This file is part of SpaceLab-Decoder.
 #
-#  FloripaSat-Decoder is free software; you can redistribute it
+#  SpaceLab-Decoder is free software; you can redistribute it
 #  and/or modify it under the terms of the GNU General Public License as
 #  published by the Free Software Foundation, either version 3 of the
 #  License, or (at your option) any later version.
 #  
-#  FloripaSat-Decoder is distributed in the hope that it will be useful,
+#  SpaceLab-Decoder is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 #  
 #  You should have received a copy of the GNU General Public
-#  License along with FloripaSat-Decoder; if not, see <http://www.gnu.org/licenses/>.
+#  License along with SpaceLab-Decoder; if not, see <http://www.gnu.org/licenses/>.
 #  
 #
 
 __author__      = "Gabriel Mariano Marcelino - PU5GMA"
-__copyright__   = "Copyright (C) 2019, Universidade Federal de Santa Catarina"
+__copyright__   = "Copyright (C) 2020, Universidade Federal de Santa Catarina"
 __credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
 __license__     = "GPL3"
-__version__     = "0.1.12"
+__version__     = "0.2.0"
 __maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
 __email__       = "gabriel.mm8@gmail.com"
 __status__      = "Development"
@@ -42,14 +42,14 @@ from datetime import datetime
 
 import _version
 
-_UI_FILE_LOCAL              = 'gui/fsat_decoder.glade'
-_UI_FILE_LINUX_SYSTEM       = '/usr/share/fsat-decoder/gui/fsat_decoder.glade'
+_UI_FILE_LOCAL              = 'gui/spacelab_decoder.glade'
+_UI_FILE_LINUX_SYSTEM       = '/usr/share/spacelab-decoder/gui/spacelab_decoder.glade'
 
-_ICON_FILE_LOCAL            = 'icon/fsat_decoder_256x256.png'
-_ICON_FILE_LINUX_SYSTEM     = '/usr/share/icons/fsat_decoder_256x256.png'
+_ICON_FILE_LOCAL            = 'icon/spacelab_decoder_256x256.png'
+_ICON_FILE_LINUX_SYSTEM     = '/usr/share/icons/spacelab_decoder_256x256.png'
 
-_DIR_CONFIG_LINUX           = '.fsat-decoder'
-_DIR_CONFIG_WINDOWS         = 'fsat-decoder'
+_DIR_CONFIG_LINUX           = '.spacelab-decoder'
+_DIR_CONFIG_WINDOWS         = 'spacelab-decoder'
 
 _DEFAULT_CALLSIGN           = 'PP5UF'
 _DEFAULT_LOCATION           = 'Florianópolis'
@@ -59,7 +59,7 @@ _DEFAULT_DOWNLINK_BAUDRATE  = 2400
 _DEFAULT_BEACON_SYNC_WORD   = '0x7E2AE65D'
 _DEFAULT_DOWNLINK_SYNC_WORD = '0x7E2AE65D'
 
-class FSatDecoder:
+class SpaceLabDecoder:
 
     def __init__(self):
         self.builder = Gtk.Builder()
@@ -111,7 +111,7 @@ class FSatDecoder:
         self.entry_preferences_downlink_s3 = self.builder.get_object("entry_preferences_downlink_s3")
 
         # About dialog
-        self.aboutdialog = self.builder.get_object("aboutdialog_fsat_decoder")
+        self.aboutdialog = self.builder.get_object("aboutdialog_spacelab_decoder")
         self.aboutdialog.set_version(_version.__version__)
 
         # Preferences button
