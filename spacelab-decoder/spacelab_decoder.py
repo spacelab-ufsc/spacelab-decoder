@@ -26,20 +26,26 @@ __author__      = "Gabriel Mariano Marcelino - PU5GMA"
 __copyright__   = "Copyright (C) 2020, Universidade Federal de Santa Catarina"
 __credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
 __license__     = "GPL3"
-__version__     = "0.2.0"
+__version__     = "0.2.1"
 __maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
 __email__       = "gabriel.mm8@gmail.com"
 __status__      = "Development"
 
 
+import os
+import threading
+import sys
+import signal
+from datetime import datetime
+
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
-import os
 from scipy.io import wavfile
-from datetime import datetime
+import zmq
 
+from mm_decoder import mm_decoder
 import _version
 
 _UI_FILE_LOCAL              = 'gui/spacelab_decoder.glade'
@@ -58,6 +64,7 @@ _DEFAULT_BEACON_BAUDRATE    = 1200
 _DEFAULT_DOWNLINK_BAUDRATE  = 2400
 _DEFAULT_BEACON_SYNC_WORD   = '0x7E2AE65D'
 _DEFAULT_DOWNLINK_SYNC_WORD = '0x7E2AE65D'
+
 
 class SpaceLabDecoder:
 
@@ -187,6 +194,11 @@ class SpaceLabDecoder:
             sample_rate, data = wavfile.read(self.filechooser_audio_file.get_filename())
             self.listmodel_events.append([str(datetime.now()), "Audio file opened with a sample rate of " + str(sample_rate) + " Hz"])
 
+            x = threading.Thread(target=self._decode_audio, args=(self.filechooser_audio_file.get_filename(),sample_rate,))
+            z = threading.Thread(target=self._zmq_receiver)
+            x.start()
+            z.start()
+
     def on_events_selection_changed(self, widget):
         (model, iter) = self.selection_events.get_selected()
         if iter is not None:
@@ -227,3 +239,25 @@ class SpaceLabDecoder:
         self.entry_preferences_downlink_s1.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[4:6])
         self.entry_preferences_downlink_s2.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[6:8])
         self.entry_preferences_downlink_s3.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[8:10])
+
+    def _decode_audio(self, audio_file, sample_rate):
+        tb = mm_decoder(baudrate=1200, samp_rate=sample_rate, input_file=audio_file, play_audio=True)
+
+        tb.start()
+        tb.wait()
+
+    def _zmq_receiver(self):
+        context = zmq.Context()
+        bits_receiver = context.socket(zmq.PULL)
+        bits_receiver.connect("tcp://127.0.0.1:8023")
+
+        poller = zmq.Poller()
+        poller.register(bits_receiver, zmq.POLLIN)
+
+        while True:
+            socks = dict(poller.poll(1000))
+            if socks:
+                if socks.get(bits_receiver) == zmq.POLLIN:
+                    bits = bits_receiver.recv(zmq.NOBLOCK)
+            else:
+                break
