@@ -26,7 +26,7 @@ __author__      = "Gabriel Mariano Marcelino - PU5GMA"
 __copyright__   = "Copyright (C) 2020, Universidade Federal de Santa Catarina"
 __credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
 __license__     = "GPL3"
-__version__     = "0.2.1"
+__version__     = "0.2.2"
 __maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
 __email__       = "gabriel.mm8@gmail.com"
 __status__      = "Development"
@@ -41,10 +41,14 @@ from gnuradio.eng_arg import eng_float, intx
 from gnuradio import eng_notation
 from gnuradio import zeromq
 
+_DEFAULT_INPUT_FILE         = "/tmp/audio.wav"
+_DEFAULT_SAMPLE_RATE_HZ     = 48000
+_DEFAULT_BAUDRATE_BPS       = 1200
+_DEFAULT_ZMQ_ADDRESS        = "tcp://127.0.0.1:8023"
 
 class mm_decoder(gr.top_block):
 
-    def __init__(self, baudrate=1200, input_file="/tmp/audio.wav", samp_rate=48000, play_audio=False):
+    def __init__(self, input_file=_DEFAULT_INPUT_FILE, samp_rate=_DEFAULT_SAMPLE_RATE_HZ, baudrate=_DEFAULT_BAUDRATE_BPS, zmq_adr=_DEFAULT_ZMQ_ADDRESS, play_audio=False):
         gr.top_block.__init__(self, "M&M Audio Decoder")
 
         # Parameters
@@ -53,7 +57,7 @@ class mm_decoder(gr.top_block):
         self.samp_rate = samp_rate
 
         # Blocks
-        self.zeromq_push_sink_0 = zeromq.push_sink(gr.sizeof_char, 1, "tcp://127.0.0.1:8023", 100, False, -1)
+        self.zeromq_push_sink_0 = zeromq.push_sink(gr.sizeof_char, 1, zmq_adr, 100, False, -1)
         self.digital_clock_recovery_mm_xx_0 = digital.clock_recovery_mm_ff(samp_rate/baudrate, 0.001, 0, 0.25, 0.001)
         self.digital_binary_slicer_fb_0 = digital.binary_slicer_fb()
         self.blocks_wavfile_source_0 = blocks.wavfile_source(input_file, False)

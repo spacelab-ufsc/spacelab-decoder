@@ -26,7 +26,7 @@ __author__      = "Gabriel Mariano Marcelino - PU5GMA"
 __copyright__   = "Copyright (C) 2020, Universidade Federal de Santa Catarina"
 __credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
 __license__     = "GPL3"
-__version__     = "0.2.1"
+__version__     = "0.2.2"
 __maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
 __email__       = "gabriel.mm8@gmail.com"
 __status__      = "Development"
@@ -65,6 +65,7 @@ _DEFAULT_DOWNLINK_BAUDRATE  = 2400
 _DEFAULT_BEACON_SYNC_WORD   = '0x7E2AE65D'
 _DEFAULT_DOWNLINK_SYNC_WORD = '0x7E2AE65D'
 
+_ZMQ_PUSH_PULL_ADDRESS      = "tcp://127.0.0.1:8023"
 
 class SpaceLabDecoder:
 
@@ -194,7 +195,7 @@ class SpaceLabDecoder:
             sample_rate, data = wavfile.read(self.filechooser_audio_file.get_filename())
             self.listmodel_events.append([str(datetime.now()), "Audio file opened with a sample rate of " + str(sample_rate) + " Hz"])
 
-            x = threading.Thread(target=self._decode_audio, args=(self.filechooser_audio_file.get_filename(),sample_rate,))
+            x = threading.Thread(target=self._decode_audio, args=(self.filechooser_audio_file.get_filename(), sample_rate, 1200, True))
             z = threading.Thread(target=self._zmq_receiver)
             x.start()
             z.start()
@@ -240,8 +241,8 @@ class SpaceLabDecoder:
         self.entry_preferences_downlink_s2.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[6:8])
         self.entry_preferences_downlink_s3.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[8:10])
 
-    def _decode_audio(self, audio_file, sample_rate):
-        tb = mm_decoder(baudrate=1200, samp_rate=sample_rate, input_file=audio_file, play_audio=True)
+    def _decode_audio(self, audio_file, sample_rate, baud, play):
+        tb = mm_decoder(input_file=audio_file, samp_rate=sample_rate, baudrate=baud, zmq_adr=_ZMQ_PUSH_PULL_ADDRESS, play_audio=play)
 
         tb.start()
         tb.wait()
@@ -249,7 +250,7 @@ class SpaceLabDecoder:
     def _zmq_receiver(self):
         context = zmq.Context()
         bits_receiver = context.socket(zmq.PULL)
-        bits_receiver.connect("tcp://127.0.0.1:8023")
+        bits_receiver.connect(_ZMQ_PUSH_PULL_ADDRESS)
 
         poller = zmq.Poller()
         poller.register(bits_receiver, zmq.POLLIN)
