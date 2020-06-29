@@ -26,7 +26,7 @@ __author__      = "Gabriel Mariano Marcelino - PU5GMA"
 __copyright__   = "Copyright (C) 2020, Universidade Federal de Santa Catarina"
 __credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
 __license__     = "GPL3"
-__version__     = "0.2.2"
+__version__     = "0.2.3"
 __maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
 __email__       = "gabriel.mm8@gmail.com"
 __status__      = "Development"
@@ -125,6 +125,15 @@ class SpaceLabDecoder:
         # Preferences button
         self.button_preferences = self.builder.get_object("button_preferences")
         self.button_preferences.connect("clicked", self.on_button_preferences_clicked)
+
+        # Satellite combobox
+        self.liststore_satellite = self.builder.get_object("liststore_satellite")
+        self.liststore_satellite.append(["FloripaSat-I"])
+        self.liststore_satellite.append(["GOLDS-UFSC"])
+        self.combobox_satellite = self.builder.get_object("combobox_satellite")
+        cell = Gtk.CellRendererText()
+        self.combobox_satellite.pack_start(cell, True)
+        self.combobox_satellite.add_attribute(cell, "text", 0)
 
         # Packet type combobox
         self.combobox_packet_type = self.builder.get_object("combobox_packet_type")
