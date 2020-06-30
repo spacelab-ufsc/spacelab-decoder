@@ -207,33 +207,17 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkCheckButton" id="checkbutton_play_audio">
+                        <property name="label" translatable="yes">Play Audio</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="halign">start</property>
-                        <property name="label" translatable="yes">Sample rate [Hz]:</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="draw_indicator">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
                         <property name="position">6</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkEntry" id="entry_sample_rate">
-                        <property name="name">entry_sample_rate</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="tooltip_text" translatable="yes">Sample rate in Hertz</property>
-                        <property name="hexpand">True</property>
-                        <property name="width_chars">7</property>
-                        <property name="text" translatable="yes">48000</property>
-                        <property name="input_purpose">digits</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">7</property>
                       </packing>
                     </child>
                     <child>
@@ -247,7 +231,7 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">8</property>
+                        <property name="position">7</property>
                       </packing>
                     </child>
                     <child>
@@ -260,7 +244,7 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">9</property>
+                        <property name="position">8</property>
                       </packing>
                     </child>
                   </object>

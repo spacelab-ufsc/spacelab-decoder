@@ -26,7 +26,7 @@ __author__      = "Gabriel Mariano Marcelino - PU5GMA"
 __copyright__   = "Copyright (C) 2020, Universidade Federal de Santa Catarina"
 __credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
 __license__     = "GPL3"
-__version__     = "0.2.3"
+__version__     = "0.2.4"
 __maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
 __email__       = "gabriel.mm8@gmail.com"
 __status__      = "Development"
@@ -141,8 +141,8 @@ class SpaceLabDecoder:
         # Audio file Filechooser
         self.filechooser_audio_file = self.builder.get_object("filechooser_audio_file")
 
-        # Sample rate entry
-        self.entry_sample_rate = self.builder.get_object("entry_sample_rate")
+        # Play audio checkbutton
+        self.checkbutton_play_audio = self.builder.get_object("checkbutton_play_audio")
 
         # Decode button
         self.button_decode = self.builder.get_object("button_decode")
@@ -204,7 +204,7 @@ class SpaceLabDecoder:
             sample_rate, data = wavfile.read(self.filechooser_audio_file.get_filename())
             self.listmodel_events.append([str(datetime.now()), "Audio file opened with a sample rate of " + str(sample_rate) + " Hz"])
 
-            x = threading.Thread(target=self._decode_audio, args=(self.filechooser_audio_file.get_filename(), sample_rate, 1200, True))
+            x = threading.Thread(target=self._decode_audio, args=(self.filechooser_audio_file.get_filename(), sample_rate, 1200, self.checkbutton_play_audio.get_active()))
             z = threading.Thread(target=self._zmq_receiver)
             x.start()
             z.start()
