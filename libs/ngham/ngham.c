@@ -18,6 +18,8 @@
 #include "ngham_paths.h"
 #include PATH_NGHAM_PLATFORM
 
+#define NGHAM_FOUR_LEVEL_MODULATION 0
+
 // There are seven different sizes.
 // Each size has a correlation tag for size, a total size, a maximum payload size and a parity data size.
 #define NGH_SIZES	7
@@ -152,7 +154,7 @@ void ngham_encode(tx_pkt_t* p){
 	ngham_action_send_data(d, d_len, p->priority);
 }
 
-void ngham_decode(uint8_t d){
+int ngham_decode(uint8_t d, uint8_t *msg){
 	static uint8_t size_nr;
 	static uint32_t size_tag;
 	static unsigned int length;
@@ -223,10 +225,25 @@ void ngham_decode(uint8_t d){
 					rx_pkt.noise = ngham_action_get_noise_floor();
 					rx_pkt.rssi = ngham_action_get_rssi();
 					ngham_action_handle_packet(PKT_CONDITION_OK, &rx_pkt);
+
+                    unsigned int i = 0;
+                    for(i=0; i<rx_pkt.pl_len; i++)
+                    {
+                        msg[i] = rx_pkt.pl[i];
+                    }
+
+                    return (int)rx_pkt.pl_len;
 				}
 				// If packet decoding not was successful, count this as an error
-				else ngham_action_handle_packet(PKT_CONDITION_FAIL, NULL);
+				else
+                {
+                    ngham_action_handle_packet(PKT_CONDITION_FAIL, NULL);
+
+                    return -1;
+                }
 			}
 			break;
 	}
+
+    return 0;
 }

@@ -28,6 +28,6 @@ void ngham_init_arrays(void);
 void ngham_deinit_arrays(void);
 void ngham_init(void);
 void ngham_encode(tx_pkt_t* p);
-void ngham_decode(uint8_t d);
+int ngham_decode(uint8_t d, uint8_t *msg);
 
 #endif

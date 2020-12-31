@@ -11,7 +11,7 @@
 #include <stdint.h>
 
 // Temporary buffer for the decoder, rx packet variable and state variable.
-uint8_t rx_buf[];	// Should hold the largest packet - ie. 255 B
+uint8_t rx_buf[300];	// Should hold the largest packet - ie. 255 B
 uint16_t rx_buf_len;
 rx_pkt_t rx_pkt;
 uint8_t decoder_state;
