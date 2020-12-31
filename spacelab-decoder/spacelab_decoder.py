@@ -26,7 +26,7 @@ __author__      = "Gabriel Mariano Marcelino - PU5GMA"
 __copyright__   = "Copyright (C) 2020, Universidade Federal de Santa Catarina"
 __credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
 __license__     = "GPL3"
-__version__     = "0.2.5"
+__version__     = "0.2.6"
 __maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
 __email__       = "gabriel.mm8@gmail.com"
 __status__      = "Development"
@@ -50,6 +50,7 @@ import _version
 
 from bit_buffer import BitBuffer, _BIT_BUFFER_LSB
 from sync_word import SyncWord, _SYNC_WORD_LSB
+from byte_buffer import ByteBuffer
 
 _UI_FILE_LOCAL              = 'gui/spacelab_decoder.glade'
 _UI_FILE_LINUX_SYSTEM       = '/usr/share/spacelab-decoder/gui/spacelab_decoder.glade'
@@ -67,6 +68,7 @@ _DEFAULT_BEACON_BAUDRATE    = 1200
 _DEFAULT_DOWNLINK_BAUDRATE  = 2400
 _DEFAULT_BEACON_SYNC_WORD   = '0x7E2AE65D'
 _DEFAULT_DOWNLINK_SYNC_WORD = '0x7E2AE65D'
+_DEFAULT_MAX_PKT_LEN_BYTES  = 300
 
 _ZMQ_PUSH_PULL_ADDRESS      = "tcp://127.0.0.1:8023"
 
@@ -286,6 +288,11 @@ class SpaceLabDecoder:
 
         sync_word = SyncWord(sync_word_str, _SYNC_WORD_LSB)
 
+        byte_buf = ByteBuffer()
+
+        packet_detected = False
+        packet_buf = list()
+
         while True:
             socks = dict(poller.poll(1000))
             if socks:
@@ -293,8 +300,16 @@ class SpaceLabDecoder:
                     bits = bits_receiver.recv(zmq.NOBLOCK)
 
                     for bit in bits:
+                        if packet_detected:
+                            byte_buf.push(bool(bit))
+                            if byte_buf.is_full():
+                                if len(packet_buf) < _DEFAULT_MAX_PKT_LEN_BYTES:
+                                    packet_buf.append(byte_buf.to_byte())
+                                    byte_buf.clear()
                         sync_word_buf.push(bool(bit))
                         if (sync_word_buf == sync_word):
+                            packet_buf = []
+                            packet_detected = True
                             if self.combobox_packet_type.get_active() == 0:
                                 self.listmodel_events.append([str(datetime.now()), "Beacon packet detected!"])
                             elif self.combobox_packet_type.get_active() == 1:
