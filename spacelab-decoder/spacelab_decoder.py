@@ -26,7 +26,7 @@ __author__      = "Gabriel Mariano Marcelino - PU5GMA"
 __copyright__   = "Copyright (C) 2020, Universidade Federal de Santa Catarina"
 __credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
 __license__     = "GPL3"
-__version__     = "0.2.4"
+__version__     = "0.2.5"
 __maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
 __email__       = "gabriel.mm8@gmail.com"
 __status__      = "Development"
@@ -47,6 +47,9 @@ import zmq
 
 from mm_decoder import mm_decoder
 import _version
+
+from bit_buffer import BitBuffer, _BIT_BUFFER_LSB
+from sync_word import SyncWord, _SYNC_WORD_LSB
 
 _UI_FILE_LOCAL              = 'gui/spacelab_decoder.glade'
 _UI_FILE_LINUX_SYSTEM       = '/usr/share/spacelab-decoder/gui/spacelab_decoder.glade'
@@ -264,10 +267,40 @@ class SpaceLabDecoder:
         poller = zmq.Poller()
         poller.register(bits_receiver, zmq.POLLIN)
 
+        sync_word_buf = BitBuffer(32, _BIT_BUFFER_LSB)
+
+        sync_word_str = list()
+
+        if self.combobox_packet_type.get_active() == 0:
+            sync_word_str = [int(self.entry_preferences_beacon_s0.get_text(), 0),
+                             int(self.entry_preferences_beacon_s1.get_text(), 0),
+                             int(self.entry_preferences_beacon_s2.get_text(), 0),
+                             int(self.entry_preferences_beacon_s3.get_text(), 0)]
+        elif self.combobox_packet_type.get_active() == 1:
+            sync_word_str = [int(self.entry_preferences_downlink_s0.get_text(), 0),
+                             int(self.entry_preferences_downlink_s1.get_text(), 0),
+                             int(self.entry_preferences_downlink_s2.get_text(), 0),
+                             int(self.entry_preferences_downlink_s3.get_text(), 0)]
+        else:
+            sync_word_str = [0, 1, 2, 3]
+
+        sync_word = SyncWord(sync_word_str, _SYNC_WORD_LSB)
+
         while True:
             socks = dict(poller.poll(1000))
             if socks:
                 if socks.get(bits_receiver) == zmq.POLLIN:
                     bits = bits_receiver.recv(zmq.NOBLOCK)
+
+                    for bit in bits:
+                        sync_word_buf.push(bool(bit))
+                        if (sync_word_buf == sync_word):
+                            if self.combobox_packet_type.get_active() == 0:
+                                self.listmodel_events.append([str(datetime.now()), "Beacon packet detected!"])
+                            elif self.combobox_packet_type.get_active() == 1:
+                                self.listmodel_events.append([str(datetime.now()), "Downlink packet detected!"])
+                            else:
+                                self.listmodel_events.append([str(datetime.now()), "Packet detected!"])
+
             else:
                 break

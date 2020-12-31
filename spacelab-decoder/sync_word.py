@@ -1,5 +1,5 @@
 #
-#  _version.py
+#  sync_word.py
 #  
 #  Copyright (C) 2020, Universidade Federal de Santa Catarina
 #  
@@ -29,3 +29,26 @@ __maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
 __email__       = "gabriel.mm8@gmail.com"
 __status__      = "Development"
 
+
+_SYNC_WORD_MSB = "msb"
+_SYNC_WORD_LSB = "lsb"
+
+class SyncWord(list):
+
+    def __init__(self, val, endi=_SYNC_WORD_MSB):
+        self.endianess = endi
+        if type(val) is list:
+            for sync_byte in val:
+                buf = self.byte_to_bitfield(sync_byte)
+                for i in range(len(buf)):
+                    self.append(buf[i])
+        else:
+            raise RuntimeError("SyncWord: the given sync word isn't a list!")
+
+    def byte_to_bitfield(self, val):
+        buf = [True if digit == '1' else False for digit in bin(val)[2:].zfill(8)]  # [2:] to chop off the "0b" part
+
+        if self.endianess == _SYNC_WORD_LSB:
+            buf.reverse()
+
+        return buf
