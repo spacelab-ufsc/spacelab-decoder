@@ -24,15 +24,19 @@ __author__      = "Gabriel Mariano Marcelino - PU5GMA"
 __copyright__   = "Copyright (C) 2020, Universidade Federal de Santa Catarina"
 __credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
 __license__     = "GPL3"
-__version__     = "0.2.0"
+__version__     = "0.2.7"
 __maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
 __email__       = "gabriel.mm8@gmail.com"
 __status__      = "Development"
 
 
+_BYTE_BUFFER_MSB = "msb"
+_BYTE_BUFFER_LSB = "lsb"
+
 class ByteBuffer:
 
-    def __init__(self):
+    def __init__(self, endi=_BYTE_BUFFER_MSB):
+        self.endianess = endi
         self.clear()
 
     def is_full(self):
@@ -56,6 +60,8 @@ class ByteBuffer:
         self.pos = 7
 
     def to_byte(self):
+        if self.endianess == _BYTE_BUFFER_LSB:
+            self.buffer.reverse()
         byte = 0
         for bit in self.buffer: 
             byte = (byte << 1) | int(bit)
