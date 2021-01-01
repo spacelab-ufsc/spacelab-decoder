@@ -1,5 +1,5 @@
 #
-#  binary_slicer.py
+#  sync_word.py
 #  
 #  Copyright (C) 2020, Universidade Federal de Santa Catarina
 #  
@@ -24,19 +24,31 @@ __author__      = "Gabriel Mariano Marcelino - PU5GMA"
 __copyright__   = "Copyright (C) 2020, Universidade Federal de Santa Catarina"
 __credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
 __license__     = "GPL3"
-__version__     = "0.2.0"
+__version__     = "0.2.5"
 __maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
 __email__       = "gabriel.mm8@gmail.com"
 __status__      = "Development"
 
 
-class BinarySlicer:
+_SYNC_WORD_MSB = "msb"
+_SYNC_WORD_LSB = "lsb"
 
-    def __init__(self):
-        pass
+class SyncWord(list):
 
-    def compute(self, data):
-        if data >= 0:
-            return True
+    def __init__(self, val, endi=_SYNC_WORD_MSB):
+        self.endianess = endi
+        if type(val) is list:
+            for sync_byte in val:
+                buf = self.byte_to_bitfield(sync_byte)
+                for i in range(len(buf)):
+                    self.append(buf[i])
         else:
-            return False
+            raise RuntimeError("SyncWord: the given sync word isn't a list!")
+
+    def byte_to_bitfield(self, val):
+        buf = [True if digit == '1' else False for digit in bin(val)[2:].zfill(8)]  # [2:] to chop off the "0b" part
+
+        if self.endianess == _SYNC_WORD_LSB:
+            buf.reverse()
+
+        return buf

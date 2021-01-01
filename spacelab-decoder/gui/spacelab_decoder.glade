@@ -1,7 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.36.0 -->
+<!-- Generated with glade 3.36.0 
+
+Copyright (C) 2020, Universidade Federal de Santa Catarina
+
+This file is part of SpaceLab-Decoder.
+
+SpaceLab-Decoder is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+SpaceLab-Decoder is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with SpaceLab-Decoder.  If not, see <http://www.gnu.org/licenses/>.
+
+Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
+
+-->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <!-- interface-license-type gplv3 -->
+  <!-- interface-name SpaceLab-Decoder -->
+  <!-- interface-description SpaceLab satellites packet decoder -->
+  <!-- interface-copyright 2020, Universidade Federal de Santa Catarina -->
+  <!-- interface-authors Gabriel Mariano Marcelino <gabriel.mm8@gmail.com> -->
   <object class="GtkFileFilter" id="filefilter_audio">
     <mime-types>
       <mime-type>audio/wav</mime-type>
@@ -35,6 +61,12 @@
         <col id="0">Downlink</col>
       </row>
     </data>
+  </object>
+  <object class="GtkListStore" id="liststore_satellite">
+    <columns>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+    </columns>
   </object>
   <object class="GtkWindow" id="window_main">
     <property name="can_focus">False</property>
@@ -87,6 +119,43 @@
                     <property name="can_focus">False</property>
                     <property name="spacing">8</property>
                     <child>
+                      <object class="GtkLabel" id="label_satellite">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Satellite:</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBox" id="combobox_satellite">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="model">liststore_satellite</property>
+                        <property name="active">0</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label_link">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Link:</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
                       <object class="GtkComboBox" id="combobox_packet_type">
                         <property name="width_request">120</property>
                         <property name="visible">True</property>
@@ -105,7 +174,7 @@
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">0</property>
+                        <property name="position">3</property>
                       </packing>
                     </child>
                     <child>
@@ -118,7 +187,7 @@
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">1</property>
+                        <property name="position">4</property>
                       </packing>
                     </child>
                     <child>
@@ -134,37 +203,21 @@
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">2</property>
+                        <property name="position">5</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="halign">start</property>
-                        <property name="label" translatable="yes">Sample rate [Hz]:</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkEntry" id="entry_sample_rate">
-                        <property name="name">entry_sample_rate</property>
+                      <object class="GtkCheckButton" id="checkbutton_play_audio">
+                        <property name="label" translatable="yes">Play Audio</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="tooltip_text" translatable="yes">Sample rate in Hertz</property>
-                        <property name="hexpand">True</property>
-                        <property name="width_chars">7</property>
-                        <property name="text" translatable="yes">48000</property>
-                        <property name="input_purpose">digits</property>
+                        <property name="receives_default">False</property>
+                        <property name="draw_indicator">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">4</property>
+                        <property name="position">6</property>
                       </packing>
                     </child>
                     <child>
@@ -178,7 +231,7 @@
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">5</property>
+                        <property name="position">7</property>
                       </packing>
                     </child>
                     <child>
@@ -191,7 +244,7 @@
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">6</property>
+                        <property name="position">8</property>
                       </packing>
                     </child>
                   </object>
