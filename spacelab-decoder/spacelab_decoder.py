@@ -26,7 +26,7 @@ __author__      = "Gabriel Mariano Marcelino - PU5GMA"
 __copyright__   = "Copyright (C) 2020, Universidade Federal de Santa Catarina"
 __credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
 __license__     = "GPL3"
-__version__     = "0.2.6"
+__version__     = "0.2.8"
 __maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
 __email__       = "gabriel.mm8@gmail.com"
 __status__      = "Development"
@@ -37,6 +37,8 @@ import threading
 import sys
 import signal
 from datetime import datetime
+import ctypes
+import pathlib
 
 import gi
 gi.require_version('Gtk', '3.0')
@@ -50,13 +52,16 @@ import _version
 
 from bit_buffer import BitBuffer, _BIT_BUFFER_LSB
 from sync_word import SyncWord, _SYNC_WORD_LSB
-from byte_buffer import ByteBuffer
+from byte_buffer import ByteBuffer, _BYTE_BUFFER_LSB
 
 _UI_FILE_LOCAL              = 'gui/spacelab_decoder.glade'
 _UI_FILE_LINUX_SYSTEM       = '/usr/share/spacelab-decoder/gui/spacelab_decoder.glade'
 
 _ICON_FILE_LOCAL            = 'icon/spacelab_decoder_256x256.png'
 _ICON_FILE_LINUX_SYSTEM     = '/usr/share/icons/spacelab_decoder_256x256.png'
+
+_NGHAM_LIB_LOCAL            = pathlib.Path().absolute()/"libngham.so"
+_NGHAM_LIB_LINUX_SYSTEM     = '/usr/lib/libngham.so'
 
 _DIR_CONFIG_LINUX           = '.spacelab-decoder'
 _DIR_CONFIG_WINDOWS         = 'spacelab-decoder'
@@ -88,6 +93,15 @@ class SpaceLabDecoder:
         self._build_widgets()
 
         self._load_preferences()
+
+        if os.path.isfile(_NGHAM_LIB_LOCAL):
+            self.ngham = ctypes.CDLL(_NGHAM_LIB_LOCAL)
+        else:
+            self.ngham = ctypes.CDLL(_NGHAM_LIB_LINUX_SYSTEM)
+
+        self.ngham.ngham_init_arrays()
+
+        self.ngham.ngham_init()
 
     def _build_widgets(self):
         # Main window
@@ -288,10 +302,14 @@ class SpaceLabDecoder:
 
         sync_word = SyncWord(sync_word_str, _SYNC_WORD_LSB)
 
-        byte_buf = ByteBuffer()
+        byte_buf = ByteBuffer(_BYTE_BUFFER_LSB)
 
         packet_detected = False
         packet_buf = list()
+
+        ngham_decode_func = self.ngham.ngham_decode
+        ngham_decode_func.argtypes = [ctypes.c_ubyte, ctypes.POINTER(ctypes.c_ubyte)]
+        ngham_decode_func.restype = ctypes.c_int
 
         while True:
             socks = dict(poller.poll(1000))
@@ -304,18 +322,40 @@ class SpaceLabDecoder:
                             byte_buf.push(bool(bit))
                             if byte_buf.is_full():
                                 if len(packet_buf) < _DEFAULT_MAX_PKT_LEN_BYTES:
-                                    packet_buf.append(byte_buf.to_byte())
+                                    pkt_byte = byte_buf.to_byte()
+                                    packet_buf.append(pkt_byte)
+
+                                    ArrayType = ctypes.c_ubyte * _DEFAULT_MAX_PKT_LEN_BYTES # Dynamically declare the array type
+                                    array = ArrayType()                                     # The array type instance
+
+                                    res = ngham_decode_func(pkt_byte, ctypes.cast(array, ctypes.POINTER(ctypes.c_ubyte)))
+                                    if res == -1:
+                                        packet_detected = False
+                                        if self.combobox_packet_type.get_active() == 0:
+                                            self.listmodel_events.append([str(datetime.now()), "Error decoding a Beacon packet!"])
+                                        elif self.combobox_packet_type.get_active() == 1:
+                                            self.listmodel_events.append([str(datetime.now()), "Error decoding a Downlink packet!"])
+                                        else:
+                                            self.listmodel_events.append([str(datetime.now()), "Error decoding a Packet!"])
+                                    elif res > 0:
+                                        packet_detected = False
+                                        pkt_pl = "Decoded "
+                                        if self.combobox_packet_type.get_active() == 0:
+                                            pkt_pl = " Beacon packet: "
+                                        elif self.combobox_packet_type.get_active() == 1:
+                                            pkt_pl = " Downlink packet: "
+                                        else:
+                                            pkt_pl = " packet: "
+                                        for i in range(res):
+                                            pkt_pl = pkt_pl + str(array[i])
+                                        self.listmodel_events.append([str(datetime.now()), pkt_pl])
                                     byte_buf.clear()
                         sync_word_buf.push(bool(bit))
                         if (sync_word_buf == sync_word):
+                            self.ngham.ngham_init()
                             packet_buf = []
                             packet_detected = True
-                            if self.combobox_packet_type.get_active() == 0:
-                                self.listmodel_events.append([str(datetime.now()), "Beacon packet detected!"])
-                            elif self.combobox_packet_type.get_active() == 1:
-                                self.listmodel_events.append([str(datetime.now()), "Downlink packet detected!"])
-                            else:
-                                self.listmodel_events.append([str(datetime.now()), "Packet detected!"])
+                            byte_buf.clear()
 
             else:
                 break
