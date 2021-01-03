@@ -26,7 +26,7 @@ __author__      = "Gabriel Mariano Marcelino - PU5GMA"
 __copyright__   = "Copyright (C) 2020, Universidade Federal de Santa Catarina"
 __credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
 __license__     = "GPL3"
-__version__     = "0.2.9"
+__version__     = "0.2.10"
 __maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
 __email__       = "gabriel.mm8@gmail.com"
 __status__      = "Development"
@@ -53,6 +53,7 @@ import _version
 from bit_buffer import BitBuffer, _BIT_BUFFER_LSB
 from sync_word import SyncWord, _SYNC_WORD_LSB
 from byte_buffer import ByteBuffer, _BYTE_BUFFER_LSB
+from callsign import decode_callsign
 
 _UI_FILE_LOCAL                  = 'gui/spacelab_decoder.glade'
 _UI_FILE_LINUX_SYSTEM           = '/usr/share/spacelab-decoder/gui/spacelab_decoder.glade'
@@ -185,6 +186,11 @@ class SpaceLabDecoder:
         # About toolbutton
         self.toolbutton_about = self.builder.get_object("toolbutton_about")
         self.toolbutton_about.connect("clicked", self.on_toolbutton_about_clicked)
+
+        # Packet data textview
+        self.textbuffer_pkt_data = Gtk.TextBuffer()
+        self.textview_pkt_data = self.builder.get_object("textview_pkt_data")
+        self.textview_pkt_data.set_buffer(self.textbuffer_pkt_data)
 
         # Events treeview
         self.treeview_events = self.builder.get_object("treeview_events")
@@ -366,16 +372,17 @@ class SpaceLabDecoder:
                                             self.listmodel_events.append([str(datetime.now()), "Error decoding a Packet!"])
                                     elif res > 0:
                                         packet_detected = False
-                                        pkt_pl = "Decoded "
                                         if self.combobox_packet_type.get_active() == 0:
-                                            pkt_pl = pkt_pl + " Beacon packet: "
+                                            self.listmodel_events.append([str(datetime.now()), "Beacon packet decoded!"])
                                         elif self.combobox_packet_type.get_active() == 1:
-                                            pkt_pl = pkt_pl + " Downlink packet: "
+                                            self.listmodel_events.append([str(datetime.now()), "Downlink packet decoded!"])
                                         else:
-                                            pkt_pl = pkt_pl + " packet: "
+                                            self.listmodel_events.append([str(datetime.now()), "Packet decoded!"])
+
+                                        pkt_list = list()
                                         for i in range(res):
-                                            pkt_pl = pkt_pl + str(array[i])
-                                        self.listmodel_events.append([str(datetime.now()), pkt_pl])
+                                            pkt_list.append(int(array[i]))
+                                        self._decode_floripasat_packet(pkt_list)
                                     byte_buf.clear()
                         sync_word_buf.push(bool(bit))
                         if (sync_word_buf == sync_word):
@@ -385,3 +392,48 @@ class SpaceLabDecoder:
 
             else:
                 break
+
+    def _decode_floripasat_packet(self, pkt):
+        pkt_txt = "Decoded packet from \"" + self.filechooser_audio_file.get_filename() + "\":\n"
+        pkt_txt = pkt_txt + "\t" + "Satellite: " + self.combobox_satellite.get_model()[self.combobox_satellite.get_active()][0] + "\n"
+        pkt_txt = pkt_txt + "\t" + "Link: " + self.combobox_packet_type.get_model()[self.combobox_packet_type.get_active()][0] + "\n"
+        if pkt[0] == 0:
+            pkt_txt = pkt_txt + "\t" + "Data source: OBDH" + "\n"
+            pkt_txt = pkt_txt + "\t" + "Source address: " +  decode_callsign(pkt[1:8]) + "\n"
+            pkt_txt = pkt_txt + "\t" + "Data:" + "\n"
+            pkt_txt = pkt_txt + "\t" + "\t" + "Battery Cell 1 Voltage: " + str((((pkt[8] << 8) | pkt[9])/32.0)*4.883e-3) + " V" + "\n"
+            pkt_txt = pkt_txt + "\t" + "\t" + "Battery Cell 2 Voltage: " + str((((pkt[10] << 8) | pkt[11])/32.0)*4.883e-3) + " V" + "\n"
+        elif pkt[0] == 1:
+            pkt_txt = pkt_txt + "\t" + "Data source: EPS" + "\n"
+            pkt_txt = pkt_txt + "\t" + "Source address: " +  decode_callsign(pkt[1:8]) + "\n"
+            pkt_txt = pkt_txt + "\t" + "Data:" + "\n"
+            pkt_txt = pkt_txt + "\t" + "\t" + "Battery Cell 1 Voltage: " + str((((pkt[8] << 8) | pkt[9])/32.0)*4.883e-3) + " V" + "\n"
+            pkt_txt = pkt_txt + "\t" + "\t" + "Battery Cell 2 Voltage: " + str((((pkt[10] << 8) | pkt[11])/32.0)*4.883e-3) + " V" + "\n"
+            pkt_txt = pkt_txt + "\t" + "\t" + "Battery Monitor Temperature: " + str(((pkt[12] << 8) | pkt[13]) * 0.125 / 32.0) + " oC" + "\n"
+            pkt_txt = pkt_txt + "\t" + "\t" + "Battery Current: " + str(int((pkt[14] << 8) | pkt[15]) * (1.5625e-6 / 0.01)) + " A" + "\n"
+            pkt_txt = pkt_txt + "\t" + "\t" + "EPS Temperature: " + str((((pkt[16] << 8) | pkt[17]) * (2.5 / 4095.0)  - 0.680) * 70.0 / 0.170) + " oC" + "\n"
+            pkt_txt = pkt_txt + "\t" + "\t" + "Battery Charge: " + str(((pkt[18] << 8) | pkt[19])*(6.25*1e-4)) + " Ah" + "\n"
+            pkt_txt = pkt_txt + "\t" + "\t" + "Solar Panel 1 Current: " + str(((pkt[20] << 8) | pkt[21])*(2.5/4095)*(1/(0.05*0.025*3300))) + " A" + "\n"
+            pkt_txt = pkt_txt + "\t" + "\t" + "Solar Panel 2 Current: " + str(((pkt[22] << 8) | pkt[23])*(2.5/4095)*(1/(0.05*0.025*3300))) + " A" + "\n"
+            pkt_txt = pkt_txt + "\t" + "\t" + "Solar Panel 3 Current: " + str(((pkt[24] << 8) | pkt[25])*(2.5/4095)*(1/(0.05*0.025*3300))) + " A" + "\n"
+            pkt_txt = pkt_txt + "\t" + "\t" + "Solar Panel 4 Current: " + str(((pkt[26] << 8) | pkt[27])*(2.5/4095)*(1/(0.05*0.025*3300))) + " A" + "\n"
+            pkt_txt = pkt_txt + "\t" + "\t" + "Solar Panel 5 Current: " + str(((pkt[28] << 8) | pkt[29])*(2.5/4095)*(1/(0.05*0.025*3300))) + " A" + "\n"
+            pkt_txt = pkt_txt + "\t" + "\t" + "Solar Panel 6 Current: " + str(((pkt[30] << 8) | pkt[31])*(2.5/4095)*(1/(0.05*0.025*3300))) + " A" + "\n"
+            pkt_txt = pkt_txt + "\t" + "\t" + "Solar Panel Array 1 Voltage: " + str(((pkt[32] << 8) | pkt[33])*(2.5/4095)*(100e3 + 93.1e3)/100e3) + " V" + "\n"
+            pkt_txt = pkt_txt + "\t" + "\t" + "Solar Panel Array 2 Voltage: " + str(((pkt[34] << 8) | pkt[35])*(2.5/4095)*(100e3 + 93.1e3)/100e3) + " V" + "\n"
+            pkt_txt = pkt_txt + "\t" + "\t" + "Solar Panel Array 3 Voltage: " + str(((pkt[36] << 8) | pkt[37])*(2.5/4095)*(100e3 + 93.1e3)/100e3) + " V" + "\n"
+        elif pkt[0] == 2:
+            pkt_txt = pkt_txt + "\t" + "Data source: TTC" + "\n"
+            pkt_txt = pkt_txt + "\t" + "Source address: " +  decode_callsign(pkt[1:8]) + "\n"
+            pkt_txt = pkt_txt + "\t" + "Data:" + "\n"
+            pkt_txt = pkt_txt + "\t" + "\t" + "None" + "\n"
+        elif pkt[0] == 3:
+            pkt_txt = pkt_txt + "\t" + "Data source: OBDH" + "\n"
+        elif pkt[0] == 4:
+            pkt_txt = pkt_txt + "\t" + "Data source: EPS" + "\n"
+        elif pkt[0] == 5:
+            pkt_txt = pkt_txt + "\t" + "Data source: TTC" + "\n"
+        else:
+            pkt_txt = pkt_txt + "UNKNOWN\n"
+        pkt_txt = pkt_txt + "========================================================\n"
+        self.textbuffer_pkt_data.insert(self.textbuffer_pkt_data.get_end_iter(), pkt_txt)

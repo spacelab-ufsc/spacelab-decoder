@@ -1,5 +1,5 @@
 #
-#  _version.py
+#  callsign.py
 #  
 #  Copyright (C) 2020, Universidade Federal de Santa Catarina
 #  
@@ -29,3 +29,16 @@ __maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
 __email__       = "gabriel.mm8@gmail.com"
 __status__      = "Development"
 
+
+def decode_callsign(raw_callsign):
+    found = False
+    buf = str()
+    for i in raw_callsign:
+        if found:
+            buf = buf + chr(i)
+        else:
+            if i != ord('0'):
+                buf = buf + chr(i)
+                found = True
+
+    return buf
