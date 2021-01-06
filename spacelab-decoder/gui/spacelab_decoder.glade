@@ -350,7 +350,7 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
     <property name="website">https://github.com/spacelab-ufsc/spacelab-decoder</property>
     <property name="website-label" translatable="yes">https://github.com/spacelab-ufsc/spacelab-decoder</property>
     <property name="authors">Gabriel Mariano Marcelino - PU5GMA &lt;gabriel.mm8@gmail.com&gt;</property>
-    <property name="logo">../icon/spacelab_decoder_256x256.png</property>
+    <property name="logo">../img/spacelab-logo-full-400x200.png</property>
     <property name="license-type">gpl-3-0</property>
     <child internal-child="vbox">
       <object class="GtkBox">
