@@ -26,7 +26,7 @@ __author__      = "Gabriel Mariano Marcelino - PU5GMA"
 __copyright__   = "Copyright (C) 2020, Universidade Federal de Santa Catarina"
 __credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
 __license__     = "GPL3"
-__version__     = "0.2.12"
+__version__     = "0.2.14"
 __maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
 __email__       = "gabriel.mm8@gmail.com"
 __status__      = "Development"
@@ -63,9 +63,11 @@ _ICON_FILE_LINUX_SYSTEM         = '/usr/share/icons/spacelab_decoder_256x256.png
 
 _NGHAM_LIB_LOCAL                = pathlib.Path().absolute()/"libngham.so"
 _NGHAM_LIB_LINUX_SYSTEM         = '/usr/lib/libngham.so'
+_NGHAM_LIB_LINUX_64_SYSTEM      = '/usr/lib64/libngham.so'
 
 _NGHAM_FSAT_LIB_LOCAL           = pathlib.Path().absolute()/"libngham_fsat.so"
 _NGHAM_FSAT_LIB_LINUX_SYSTEM    = '/usr/lib/libngham_fsat.so'
+_NGHAM_FSAT_LIB_LINUX_64_SYSTEM = '/usr/lib64/libngham_fsat.so'
 
 _DIR_CONFIG_LINUX               = '.spacelab-decoder'
 _DIR_CONFIG_WINDOWS             = 'spacelab-decoder'
@@ -105,6 +107,8 @@ class SpaceLabDecoder:
 
         if os.path.isfile(_NGHAM_LIB_LOCAL):
             self.ngham = ctypes.CDLL(_NGHAM_LIB_LOCAL)
+        elif os.path.isfile(_NGHAM_LIB_LINUX_64_SYSTEM):
+            self.ngham = ctypes.CDLL(_NGHAM_LIB_LINUX_64_SYSTEM)
         else:
             self.ngham = ctypes.CDLL(_NGHAM_LIB_LINUX_SYSTEM)
 
@@ -114,6 +118,8 @@ class SpaceLabDecoder:
 
         if os.path.isfile(_NGHAM_FSAT_LIB_LOCAL):
             self.ngham_fsat = ctypes.CDLL(_NGHAM_FSAT_LIB_LOCAL)
+        elif os.path.isfile(_NGHAM_FSAT_LIB_LINUX_64_SYSTEM):
+            self.ngham_fsat = ctypes.CDLL(_NGHAM_FSAT_LIB_LINUX_64_SYSTEM)
         else:
             self.ngham_fsat = ctypes.CDLL(_NGHAM_FSAT_LIB_LINUX_SYSTEM)
 
