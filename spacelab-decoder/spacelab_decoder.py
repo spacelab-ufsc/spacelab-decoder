@@ -26,7 +26,7 @@ __author__      = "Gabriel Mariano Marcelino - PU5GMA"
 __copyright__   = "Copyright (C) 2020, Universidade Federal de Santa Catarina"
 __credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
 __license__     = "GPL3"
-__version__     = "0.2.15"
+__version__     = "0.2.16"
 __maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
 __email__       = "gabriel.mm8@gmail.com"
 __status__      = "Development"
@@ -193,6 +193,7 @@ class SpaceLabDecoder:
 
         # Clears button
         self.button_clear = self.builder.get_object("button_clean")
+        self.button_clear.connect("clicked", self.on_button_clear_clicked)
 
         # About toolbutton
         self.toolbutton_about = self.builder.get_object("toolbutton_about")
@@ -269,6 +270,9 @@ class SpaceLabDecoder:
             print(model[iter][0])
 
         return True
+
+    def on_button_clear_clicked(self, button):
+        self.textbuffer_pkt_data.set_text("")
 
     def on_toolbutton_about_clicked(self, toolbutton):
         response = self.aboutdialog.run()
