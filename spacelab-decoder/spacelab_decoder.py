@@ -26,7 +26,7 @@ __author__      = "Gabriel Mariano Marcelino - PU5GMA"
 __copyright__   = "Copyright (C) 2020, Universidade Federal de Santa Catarina"
 __credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
 __license__     = "GPL3"
-__version__     = "0.2.14"
+__version__     = "0.2.15"
 __maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
 __email__       = "gabriel.mm8@gmail.com"
 __status__      = "Development"
@@ -407,7 +407,6 @@ class SpaceLabDecoder:
     def _decode_packet(self, pkt):
         pkt_txt = "Decoded packet from \"" + self.filechooser_audio_file.get_filename() + "\":\n"
         sat_json = str()
-        print(sat_json)
         if self.combobox_satellite.get_active() == 0:
             if os.path.isfile(_SAT_JSON_FLORIPASAT_I_LOCAL):
                 sat_json = _SAT_JSON_FLORIPASAT_I_LOCAL
