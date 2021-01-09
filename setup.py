@@ -3,7 +3,7 @@
 #
 #  setup.py
 #  
-#  Copyright (C) 2020, Universidade Federal de Santa Catarina
+#  Copyright (C) 2021, Universidade Federal de Santa Catarina
 #  
 #  This file is part of SpaceLab-Decoder.
 #
@@ -23,10 +23,10 @@
 #
 
 __author__      = "Gabriel Mariano Marcelino - PU5GMA"
-__copyright__   = "Copyright (C) 2020, Universidade Federal de Santa Catarina"
+__copyright__   = "Copyright (C) 2021, Universidade Federal de Santa Catarina"
 __credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
 __license__     = "GPL3"
-__version__     = "0.2.0"
+__version__     = "0.2.17"
 __maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
 __email__       = "gabriel.mm8@gmail.com"
 __status__      = "Development"
@@ -39,7 +39,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name                            = "spacelab-decoder",
-    version                         = "0.2.0",
+    version                         = "0.2.17",
     author                          = "Gabriel Mariano Marcelino",
     author_email                    = "gabriel.mm8@gmail.com",
     description                     = "SpaceLab packet decoder",
@@ -48,7 +48,7 @@ setuptools.setup(
     license                         = "GPLv3",
     url                             = "https://github.com/spacelab-ufsc/spacelab-decoder",
     packages                        = setuptools.find_packages(),
-    install_requires                = ['gi','scipy'],
+    install_requires                = ['gi','scipy','pyzmq'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",

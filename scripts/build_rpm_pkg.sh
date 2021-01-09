@@ -15,7 +15,7 @@ OLDPWD=$(pwd)
 mkdir /tmp/${SW_NAME}-${SW_VERSION}
 mkdir /tmp/${SW_NAME}-${SW_VERSION}/${SW_NAME}
 cp ${SW_BIN} /tmp/${SW_NAME}-${SW_VERSION}/${SW_NAME}-exec
-cp ../*.so /tmp/${SW_NAME}-${SW_VERSION}/
+cp ../build/*.so /tmp/${SW_NAME}-${SW_VERSION}/
 cp ${SW_ICON} /tmp/${SW_NAME}-${SW_VERSION}/spacelab_decoder_256x256.png
 cp -r ${SW_SRC} /tmp/${SW_NAME}-${SW_VERSION}/
 cd /tmp/

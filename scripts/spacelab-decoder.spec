@@ -23,8 +23,8 @@ SpaceLab Packet Decoder is a software to decode audio records from the satellite
 mkdir -p %{buildroot}/%{_bindir}
 install -m 0755 %{name}-exec %{buildroot}/%{_bindir}/%{name}
 mkdir -p %{buildroot}/%{_libdir}
-install -m 0755 libngham.so %{buildroot}/%{_libdir}/libngham.so
-install -m 0755 libngham_fsat.so %{buildroot}/%{_libdir}/libngham_fsat.so
+cp libngham.so %{buildroot}/%{_libdir}/libngham.so
+cp libngham_fsat.so %{buildroot}/%{_libdir}/libngham_fsat.so
 mkdir -p %{buildroot}/%{_datadir}/%{name}
 cp -r %{name}/ %{buildroot}/%{_datadir}/
 mkdir -p %{buildroot}/%{_datadir}/icons
