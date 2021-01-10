@@ -1,7 +1,7 @@
 #
-#  __init__.py
+#  _version.py
 #  
-#  Copyright (C) 2020, Universidade Federal de Santa Catarina
+#  Copyright (C) 2021, Universidade Federal de Santa Catarina
 #  
 #  This file is part of SpaceLab-Decoder.
 #
@@ -21,13 +21,11 @@
 #
 
 __author__      = "Gabriel Mariano Marcelino - PU5GMA"
-__copyright__   = "Copyright (C) 2020, Universidade Federal de Santa Catarina"
+__copyright__   = "Copyright (C) 2021, Universidade Federal de Santa Catarina"
 __credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
-__license__     = "GPL3"
-__version__     = "0.2.0"
+__license__     = "GPLv3"
+__version__     = "0.2.18"
 __maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
 __email__       = "gabriel.mm8@gmail.com"
 __status__      = "Development"
 
-
-from main import main

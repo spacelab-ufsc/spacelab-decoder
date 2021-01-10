@@ -23,10 +23,10 @@
 #
 
 __author__      = "Gabriel Mariano Marcelino - PU5GMA"
-__copyright__   = "Copyright (C) 2020, Universidade Federal de Santa Catarina"
+__copyright__   = "Copyright (C) 2021, Universidade Federal de Santa Catarina"
 __credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
-__license__     = "GPL3"
-__version__     = "0.2.17"
+__license__     = "GPLv3"
+__version__     = "0.2.18"
 __maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
 __email__       = "gabriel.mm8@gmail.com"
 __status__      = "Development"
@@ -43,39 +43,43 @@ import pathlib
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+from gi.repository import GdkPixbuf
 
 from scipy.io import wavfile
 import zmq
 
-from mm_decoder import mm_decoder
-import _version
+from spacelab_decoder.mm_decoder import mm_decoder
+import spacelab_decoder._version
 
-from bit_buffer import BitBuffer, _BIT_BUFFER_LSB
-from sync_word import SyncWord, _SYNC_WORD_LSB
-from byte_buffer import ByteBuffer, _BYTE_BUFFER_LSB
-from packet import Packet
+from spacelab_decoder.bit_buffer import BitBuffer, _BIT_BUFFER_LSB
+from spacelab_decoder.sync_word import SyncWord, _SYNC_WORD_LSB
+from spacelab_decoder.byte_buffer import ByteBuffer, _BYTE_BUFFER_LSB
+from spacelab_decoder.packet import Packet
 
-_UI_FILE_LOCAL                  = 'gui/spacelab_decoder.glade'
-_UI_FILE_LINUX_SYSTEM           = '/usr/share/spacelab-decoder/gui/spacelab_decoder.glade'
+_UI_FILE_LOCAL                  = os.path.abspath(os.path.dirname(__file__)) + '/data/ui/spacelab_decoder.glade'
+_UI_FILE_LINUX_SYSTEM           = '/usr/share/spacelab_decoder/spacelab_decoder.glade'
 
-_ICON_FILE_LOCAL                = 'icon/spacelab_decoder_256x256.png'
+_ICON_FILE_LOCAL                = os.path.abspath(os.path.dirname(__file__)) + '/data/img/spacelab_decoder_256x256.png'
 _ICON_FILE_LINUX_SYSTEM         = '/usr/share/icons/spacelab_decoder_256x256.png'
 
-_NGHAM_LIB_LOCAL                = pathlib.Path().absolute()/"libngham.so"
+_LOGO_FILE_LOCAL                = os.path.abspath(os.path.dirname(__file__)) + '/data/img/spacelab-logo-full-400x200.png'
+_LOGO_FILE_LINUX_SYSTEM         = '/usr/share/spacelab_decoder/spacelab-logo-full-400x200.png'
+
+_NGHAM_LIB_LOCAL                = os.path.abspath(os.path.dirname(__file__)) + '/libngham.so'
 _NGHAM_LIB_LINUX_SYSTEM         = '/usr/lib/libngham.so'
 _NGHAM_LIB_LINUX_64_SYSTEM      = '/usr/lib64/libngham.so'
 
-_NGHAM_FSAT_LIB_LOCAL           = pathlib.Path().absolute()/"libngham_fsat.so"
+_NGHAM_FSAT_LIB_LOCAL           = os.path.abspath(os.path.dirname(__file__)) + '/libngham_fsat.so'
 _NGHAM_FSAT_LIB_LINUX_SYSTEM    = '/usr/lib/libngham_fsat.so'
 _NGHAM_FSAT_LIB_LINUX_64_SYSTEM = '/usr/lib64/libngham_fsat.so'
 
-_DIR_CONFIG_LINUX               = '.spacelab-decoder'
-_DIR_CONFIG_WINDOWS             = 'spacelab-decoder'
+_DIR_CONFIG_LINUX               = '.spacelab_decoder'
+_DIR_CONFIG_WINDOWS             = 'spacelab_decoder'
 
-_SAT_JSON_FLORIPASAT_I_LOCAL    = 'satellites/floripasat-i.json'
-_SAT_JSON_FLORIPASAT_I_SYSTEM   = '/usr/share/spacelab-decoder/satellites/floripasat-i.json'
-_SAT_JSON_GOLDS_UFSC_LOCAL      = 'satellites/golds-ufsc.json'
-_SAT_JSON_GOLDS_UFSC_SYSTEM     = '/usr/share/spacelab-decoder/satellites/golds-ufsc.json'
+_SAT_JSON_FLORIPASAT_I_LOCAL    = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/floripasat-i.json'
+_SAT_JSON_FLORIPASAT_I_SYSTEM   = '/usr/share/spacelab_decoder/floripasat-i.json'
+_SAT_JSON_GOLDS_UFSC_LOCAL      = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/golds-ufsc.json'
+_SAT_JSON_GOLDS_UFSC_SYSTEM     = '/usr/share/spacelab_decoder/golds-ufsc.json'
 
 _DEFAULT_CALLSIGN               = 'PP5UF'
 _DEFAULT_LOCATION               = 'Florianópolis'
@@ -164,7 +168,11 @@ class SpaceLabDecoder:
 
         # About dialog
         self.aboutdialog = self.builder.get_object("aboutdialog_spacelab_decoder")
-        self.aboutdialog.set_version(_version.__version__)
+        self.aboutdialog.set_version(spacelab_decoder._version.__version__)
+        if os.path.isfile(_LOGO_FILE_LOCAL):
+            self.aboutdialog.set_logo(GdkPixbuf.Pixbuf.new_from_file(_LOGO_FILE_LOCAL))
+        else:
+            self.aboutdialog.set_logo(GdkPixbuf.Pixbuf.new_from_file(_LOGO_FILE_LINUX_SYSTEM))
 
         # Preferences button
         self.button_preferences = self.builder.get_object("button_preferences")
