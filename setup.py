@@ -22,15 +22,6 @@
 #  
 #
 
-__author__      = "Gabriel Mariano Marcelino - PU5GMA"
-__copyright__   = "Copyright (C) 2021, Universidade Federal de Santa Catarina"
-__credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
-__license__     = "GPLv3"
-__version__     = "0.2.19"
-__maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
-__email__       = "gabriel.mm8@gmail.com"
-__status__      = "Development"
-
 
 import setuptools
 import os
@@ -38,6 +29,8 @@ import os
 # Make sure we are running on posix (Linux, Unix, MAC OSX)
 if os.name != 'posix':
     sys.exit("Sorry, Windows is not supported yet!")
+
+exec(open('spacelab_decoder/version.py').read())
 
 with open("README.md", "r") as fh:
     long_description = fh.read()

@@ -20,15 +20,6 @@
 #  
 #
 
-__author__      = "Gabriel Mariano Marcelino - PU5GMA"
-__copyright__   = "Copyright (C) 2021, Universidade Federal de Santa Catarina"
-__credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
-__license__     = "GPLv3"
-__version__     = "0.2.18"
-__maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
-__email__       = "gabriel.mm8@gmail.com"
-__status__      = "Development"
-
 
 _SYNC_WORD_MSB = "msb"
 _SYNC_WORD_LSB = "lsb"

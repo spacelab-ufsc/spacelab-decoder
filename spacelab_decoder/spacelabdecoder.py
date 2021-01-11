@@ -22,15 +22,6 @@
 #  
 #
 
-__author__      = "Gabriel Mariano Marcelino - PU5GMA"
-__copyright__   = "Copyright (C) 2021, Universidade Federal de Santa Catarina"
-__credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
-__license__     = "GPLv3"
-__version__     = "0.2.18"
-__maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
-__email__       = "gabriel.mm8@gmail.com"
-__status__      = "Development"
-
 
 import os
 import threading
@@ -49,7 +40,7 @@ from scipy.io import wavfile
 import zmq
 
 from spacelab_decoder.mm_decoder import mm_decoder
-import spacelab_decoder._version
+import spacelab_decoder.version
 
 from spacelab_decoder.bit_buffer import BitBuffer, _BIT_BUFFER_LSB
 from spacelab_decoder.sync_word import SyncWord, _SYNC_WORD_LSB
@@ -168,7 +159,7 @@ class SpaceLabDecoder:
 
         # About dialog
         self.aboutdialog = self.builder.get_object("aboutdialog_spacelab_decoder")
-        self.aboutdialog.set_version(spacelab_decoder._version.__version__)
+        self.aboutdialog.set_version(spacelab_decoder.version.__version__)
         if os.path.isfile(_LOGO_FILE_LOCAL):
             self.aboutdialog.set_logo(GdkPixbuf.Pixbuf.new_from_file(_LOGO_FILE_LOCAL))
         else:
