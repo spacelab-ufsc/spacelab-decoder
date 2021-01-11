@@ -40,6 +40,14 @@ SpaceLab Packet Decoder is a software to decode audio records from the satellite
 * python3-zmq
 * gnuradio
 
+## Building and Installing
+
+Before installing the main Python application, the NGHam library must be compiled and installed in the system:
+
+* ```make```
+* ```make install```
+* ```python setup.py install```
+
 ## License
 
 This project is licensed under GPLv3 license.
