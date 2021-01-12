@@ -57,6 +57,16 @@ Before installing the main Python application, the NGHam library must be compile
 * ```make install```
 * ```python setup.py install```
 
+## Documentation
+
+### Dependencies
+
+* sphinx-rtd-theme
+
+### Building the Documentation
+
+* ```python setup.py build_sphinx```
+
 ## License
 
 This project is licensed under GPLv3 license.

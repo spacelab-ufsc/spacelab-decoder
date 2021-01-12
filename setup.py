@@ -26,6 +26,8 @@
 import setuptools
 import os
 
+from sphinx.setup_command import BuildDoc
+
 # Make sure we are running on posix (Linux, Unix, MAC OSX)
 if os.name != 'posix':
     sys.exit("Sorry, Windows is not supported yet!")
@@ -80,4 +82,5 @@ setuptools.setup(
         ('lib/', ['spacelab_decoder/libngham.so']),
         ('lib/', ['spacelab_decoder/libngham_fsat.so']),
         ],
+    cmdclass                        = {'build_sphinx': BuildDoc},
 )
