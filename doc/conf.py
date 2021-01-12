@@ -9,20 +9,24 @@
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
 
+import os
+import sys
+
+import sphinx_rtd_theme
+
+from spacelab_decoder.version import __version__
+
+sys.path.insert(0, os.path.abspath('../spacelab_decoder'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'spacelab_decoder'
-copyright = '2021, Gabriel Mariano Marcelino'
+project = 'spacelab-decoder'
+copyright = '2021, Universidade Federal de Santa Catarina'
 author = 'Gabriel Mariano Marcelino'
 
 # The full version, including alpha/beta/rc tags
-release = '0.2.21'
+release = __version__
 
 
 # -- General configuration ---------------------------------------------------
@@ -31,6 +35,7 @@ release = '0.2.21'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx_rtd_theme',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -47,7 +52,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

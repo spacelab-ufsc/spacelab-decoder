@@ -1,3 +1,4 @@
 gi
 scipy
 pyzmq
+sphinx-rtd-theme
