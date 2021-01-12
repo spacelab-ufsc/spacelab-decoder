@@ -3,7 +3,7 @@
 #
 #  setup.py
 #  
-#  Copyright (C) 2020, Universidade Federal de Santa Catarina
+#  Copyright (C) 2021, Universidade Federal de Santa Catarina
 #  
 #  This file is part of SpaceLab-Decoder.
 #
@@ -22,36 +22,65 @@
 #  
 #
 
-__author__      = "Gabriel Mariano Marcelino - PU5GMA"
-__copyright__   = "Copyright (C) 2020, Universidade Federal de Santa Catarina"
-__credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
-__license__     = "GPL3"
-__version__     = "0.2.0"
-__maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
-__email__       = "gabriel.mm8@gmail.com"
-__status__      = "Development"
-
 
 import setuptools
+import os
+
+from sphinx.setup_command import BuildDoc
+
+# Make sure we are running on posix (Linux, Unix, MAC OSX)
+if os.name != 'posix':
+    sys.exit("Sorry, Windows is not supported yet!")
+
+exec(open('spacelab_decoder/version.py').read())
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name                            = "spacelab-decoder",
-    version                         = "0.2.0",
+    name                            = "spacelab_decoder",
+    version                         = __version__,
     author                          = "Gabriel Mariano Marcelino",
     author_email                    = "gabriel.mm8@gmail.com",
+    maintainer                      = "Gabriel Mariano Marcelino",
+    maintainer_email                = "gabriel.mm8@gmail.com",
+    url                             = "https://github.com/spacelab-ufsc/spacelab-decoder",
+    license                         = "GPLv3",
     description                     = "SpaceLab packet decoder",
     long_description                = long_description,
     long_description_content_type   = "text/markdown",
-    license                         = "GPLv3",
-    url                             = "https://github.com/spacelab-ufsc/spacelab-decoder",
-    packages                        = setuptools.find_packages(),
-    install_requires                = ['gi','scipy'],
-    classifiers=[
-        "Programming Language :: Python :: 3",
+    platforms                       = ["Linux"],
+    classifiers                     = [
+        "Development Status :: 4 - Beta",
+        "Environment :: X11 Applications :: GTK",
+        "Intended Audience :: Education",
+        "Intended Audience :: End Users/Desktop",
+        "Intended Audience :: Science/Research"
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
-        "Operating System :: OS Independent",
-    ],
+        "Natural Language :: English",
+        "Operating System :: POSIX :: Linux",
+        "Programming Language :: Python :: 3",
+        "Topic :: Communications :: Ham Radio",
+        "Topic :: Education",
+        "Topic :: Scientific/Engineering",
+        ],
+    download_url                    = "https://github.com/spacelab-ufsc/spacelab-decoder/releases",
+    packages                        = setuptools.find_packages(),
+    install_requires                = ['gi','scipy','pyzmq'],
+    entry_points                    = {
+        'gui_scripts': [
+            'spacelab-decoder = spacelab_decoder.__main__:main'
+            ]
+        },
+    data_files                      = [
+        ('share/icons/', ['spacelab_decoder/data/img/spacelab_decoder_256x256.png']),
+        ('share/applications/', ['spacelab_decoder.desktop']),
+        ('share/spacelab_decoder/', ['spacelab_decoder/data/ui/spacelab_decoder.glade']),
+        ('share/spacelab_decoder/', ['spacelab_decoder/data/img/spacelab-logo-full-400x200.png']),
+        ('share/spacelab_decoder/', ['spacelab_decoder/data/satellites/floripasat-i.json']),
+        ('share/spacelab_decoder/', ['spacelab_decoder/data/satellites/golds-ufsc.json']),
+        ('lib/', ['spacelab_decoder/libngham.so']),
+        ('lib/', ['spacelab_decoder/libngham_fsat.so']),
+        ],
+    cmdclass                        = {'build_sphinx': BuildDoc},
 )

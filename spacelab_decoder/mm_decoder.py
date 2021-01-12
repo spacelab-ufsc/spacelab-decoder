@@ -3,7 +3,7 @@
 #
 #  mm_decoder.py
 #  
-#  Copyright (C) 2020, Universidade Federal de Santa Catarina
+#  Copyright (C) 2021, Universidade Federal de Santa Catarina
 #  
 #  This file is part of SpaceLab-Decoder.
 #
@@ -21,15 +21,6 @@
 #  License along with SpaceLab-Decoder; if not, see <http://www.gnu.org/licenses/>.
 #  
 #
-
-__author__      = "Gabriel Mariano Marcelino - PU5GMA"
-__copyright__   = "Copyright (C) 2020, Universidade Federal de Santa Catarina"
-__credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
-__license__     = "GPL3"
-__version__     = "0.2.2"
-__maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
-__email__       = "gabriel.mm8@gmail.com"
-__status__      = "Development"
 
 
 from gnuradio import audio

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.36.0 
+<!-- Generated with glade 3.38.2 
 
 Copyright (C) 2020, Universidade Federal de Santa Catarina
 
@@ -38,14 +38,14 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
   </object>
   <object class="GtkImage" id="image_clear">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="tooltip_text" translatable="yes">Clears results</property>
+    <property name="can-focus">False</property>
+    <property name="tooltip-text" translatable="yes">Clears results</property>
     <property name="stock">gtk-clear</property>
   </object>
   <object class="GtkImage" id="image_play">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="tooltip_text" translatable="yes">Run decoder</property>
+    <property name="can-focus">False</property>
+    <property name="tooltip-text" translatable="yes">Run decoder</property>
     <property name="stock">gtk-media-play</property>
   </object>
   <object class="GtkListStore" id="liststore_packet_type">
@@ -69,30 +69,30 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
     </columns>
   </object>
   <object class="GtkWindow" id="window_main">
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="title" translatable="yes">SpaceLab Decoder</property>
-    <property name="window_position">center</property>
+    <property name="window-position">center</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="margin_left">10</property>
-        <property name="margin_right">10</property>
-        <property name="margin_top">5</property>
-        <property name="margin_bottom">5</property>
+        <property name="can-focus">False</property>
+        <property name="margin-left">10</property>
+        <property name="margin-right">10</property>
+        <property name="margin-top">5</property>
+        <property name="margin-bottom">5</property>
         <property name="orientation">vertical</property>
         <property name="spacing">5</property>
         <child>
           <object class="GtkToolbar">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <child>
               <object class="GtkToolButton" id="button_preferences">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Preferences</property>
-                <property name="use_underline">True</property>
-                <property name="stock_id">gtk-preferences</property>
+                <property name="can-focus">False</property>
+                <property name="tooltip-text" translatable="yes">Preferences</property>
+                <property name="use-underline">True</property>
+                <property name="stock-id">gtk-preferences</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -102,7 +102,7 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
             <child>
               <object class="GtkSeparatorToolItem">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -112,16 +112,16 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
             <child>
               <object class="GtkToolItem">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="spacing">8</property>
                     <child>
                       <object class="GtkLabel" id="label_satellite">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Satellite:</property>
                       </object>
                       <packing>
@@ -133,7 +133,7 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                     <child>
                       <object class="GtkComboBox" id="combobox_satellite">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="model">liststore_satellite</property>
                         <property name="active">0</property>
                       </object>
@@ -146,7 +146,7 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                     <child>
                       <object class="GtkLabel" id="label_link">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Link:</property>
                       </object>
                       <packing>
@@ -157,10 +157,10 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                     </child>
                     <child>
                       <object class="GtkComboBox" id="combobox_packet_type">
-                        <property name="width_request">120</property>
+                        <property name="width-request">120</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">Packet type</property>
+                        <property name="can-focus">False</property>
+                        <property name="tooltip-text" translatable="yes">Packet type</property>
                         <property name="hexpand">True</property>
                         <property name="model">liststore_packet_type</property>
                         <property name="active">0</property>
@@ -180,7 +180,7 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                     <child>
                       <object class="GtkLabel">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">Audio file:</property>
                       </object>
@@ -192,10 +192,10 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                     </child>
                     <child>
                       <object class="GtkFileChooserButton" id="filechooser_audio_file">
-                        <property name="width_request">200</property>
+                        <property name="width-request">200</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">Audio file</property>
+                        <property name="can-focus">False</property>
+                        <property name="tooltip-text" translatable="yes">Audio file</property>
                         <property name="hexpand">True</property>
                         <property name="filter">filefilter_audio</property>
                         <property name="title" translatable="yes"/>
@@ -210,9 +210,9 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                       <object class="GtkCheckButton" id="checkbutton_play_audio">
                         <property name="label" translatable="yes">Play Audio</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="draw_indicator">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">False</property>
+                        <property name="draw-indicator">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -223,10 +223,10 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                     <child>
                       <object class="GtkButton" id="button_decode">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
                         <property name="image">image_play</property>
-                        <property name="always_show_image">True</property>
+                        <property name="always-show-image">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -237,8 +237,8 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                     <child>
                       <object class="GtkButton" id="button_clean">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
                         <property name="image">image_clear</property>
                       </object>
                       <packing>
@@ -258,7 +258,7 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
             <child>
               <object class="GtkSeparatorToolItem">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -268,10 +268,10 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
             <child>
               <object class="GtkToolButton" id="toolbutton_about">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes" comments="Information about the software">About</property>
-                <property name="use_underline">True</property>
-                <property name="stock_id">gtk-about</property>
+                <property name="can-focus">False</property>
+                <property name="tooltip-text" translatable="yes" comments="Information about the software">About</property>
+                <property name="use-underline">True</property>
+                <property name="stock-id">gtk-about</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -287,16 +287,18 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
         </child>
         <child>
           <object class="GtkScrolledWindow">
-            <property name="height_request">300</property>
+            <property name="height-request">300</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="hscrollbar_policy">never</property>
-            <property name="shadow_type">in</property>
+            <property name="can-focus">True</property>
+            <property name="hscrollbar-policy">never</property>
+            <property name="shadow-type">in</property>
             <child>
-              <object class="GtkTextView">
+              <object class="GtkTextView" id="textview_pkt_data">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can-focus">True</property>
+                <property name="tooltip-text" translatable="yes">Decoded packets</property>
                 <property name="vexpand">True</property>
+                <property name="cursor-visible">False</property>
               </object>
             </child>
           </object>
@@ -308,16 +310,16 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
         </child>
         <child>
           <object class="GtkScrolledWindow">
-            <property name="height_request">180</property>
+            <property name="height-request">180</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="hscrollbar_policy">never</property>
-            <property name="shadow_type">in</property>
+            <property name="can-focus">True</property>
+            <property name="hscrollbar-policy">never</property>
+            <property name="shadow-type">in</property>
             <child>
               <object class="GtkTreeView" id="treeview_events">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="enable_grid_lines">vertical</property>
+                <property name="can-focus">True</property>
+                <property name="enable-grid-lines">vertical</property>
                 <child internal-child="selection">
                   <object class="GtkTreeSelection"/>
                 </child>
@@ -332,36 +334,33 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
         </child>
       </object>
     </child>
-    <child type="titlebar">
-      <placeholder/>
-    </child>
   </object>
   <object class="GtkAboutDialog" id="aboutdialog_spacelab_decoder">
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="title" translatable="yes">About SpaceLab Decoder</property>
     <property name="resizable">False</property>
-    <property name="window_position">center</property>
-    <property name="destroy_with_parent">True</property>
-    <property name="icon_name">../icon/spacelab_decoder_400x400.png</property>
-    <property name="type_hint">dialog</property>
-    <property name="transient_for">window_main</property>
-    <property name="program_name">SpaceLab Decoder</property>
+    <property name="window-position">center</property>
+    <property name="destroy-with-parent">True</property>
+    <property name="icon-name">../icon/spacelab_decoder_400x400.png</property>
+    <property name="type-hint">dialog</property>
+    <property name="transient-for">window_main</property>
+    <property name="program-name">SpaceLab Decoder</property>
     <property name="version">0.1.0</property>
     <property name="copyright" translatable="yes">Universidade Federal de Santa Catarina</property>
     <property name="website">https://github.com/spacelab-ufsc/spacelab-decoder</property>
-    <property name="website_label" translatable="yes">https://github.com/spacelab-ufsc/spacelab-decoder</property>
+    <property name="website-label" translatable="yes">https://github.com/spacelab-ufsc/spacelab-decoder</property>
     <property name="authors">Gabriel Mariano Marcelino - PU5GMA &lt;gabriel.mm8@gmail.com&gt;</property>
-    <property name="logo">../icon/spacelab_decoder_256x256.png</property>
-    <property name="license_type">gpl-3-0</property>
+    <property name="logo-icon-name">image-missing</property>
+    <property name="license-type">gpl-3-0</property>
     <child internal-child="vbox">
       <object class="GtkBox">
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child internal-child="action_area">
           <object class="GtkButtonBox">
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
+            <property name="can-focus">False</property>
+            <property name="layout-style">end</property>
             <child>
               <placeholder/>
             </child>
@@ -380,37 +379,34 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
         </child>
       </object>
     </child>
-    <child type="titlebar">
-      <placeholder/>
-    </child>
   </object>
   <object class="GtkDialog" id="dialog_preferences">
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="title" translatable="yes">Preferences</property>
     <property name="resizable">False</property>
-    <property name="window_position">center</property>
-    <property name="destroy_with_parent">True</property>
-    <property name="type_hint">dialog</property>
-    <property name="transient_for">window_main</property>
+    <property name="window-position">center</property>
+    <property name="destroy-with-parent">True</property>
+    <property name="type-hint">dialog</property>
+    <property name="transient-for">window_main</property>
     <child internal-child="vbox">
       <object class="GtkBox">
-        <property name="can_focus">False</property>
-        <property name="margin_left">10</property>
-        <property name="margin_right">10</property>
-        <property name="margin_top">5</property>
-        <property name="margin_bottom">5</property>
+        <property name="can-focus">False</property>
+        <property name="margin-left">10</property>
+        <property name="margin-right">10</property>
+        <property name="margin-top">5</property>
+        <property name="margin-bottom">5</property>
         <property name="orientation">vertical</property>
         <property name="spacing">5</property>
         <child internal-child="action_area">
           <object class="GtkButtonBox">
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
+            <property name="can-focus">False</property>
+            <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="button_preferences_ok">
                 <property name="label" translatable="yes">Ok</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -422,8 +418,8 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
               <object class="GtkButton" id="button_preferences_default">
                 <property name="label" translatable="yes">Default</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -435,8 +431,8 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
               <object class="GtkButton" id="button_preferences_cancel">
                 <property name="label" translatable="yes">Cancel</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -454,100 +450,101 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
         <child>
           <object class="GtkNotebook">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="tab_pos">left</property>
+            <property name="can-focus">True</property>
+            <property name="tab-pos">left</property>
             <child>
+              <!-- n-columns=3 n-rows=4 -->
               <object class="GtkGrid">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_left">10</property>
-                <property name="margin_right">10</property>
-                <property name="margin_top">5</property>
-                <property name="margin_bottom">5</property>
-                <property name="row_spacing">8</property>
-                <property name="column_spacing">5</property>
+                <property name="can-focus">False</property>
+                <property name="margin-left">10</property>
+                <property name="margin-right">10</property>
+                <property name="margin-top">5</property>
+                <property name="margin-bottom">5</property>
+                <property name="row-spacing">8</property>
+                <property name="column-spacing">5</property>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
                     <property name="label" translatable="yes">Callsign:</property>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">1</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">1</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkEntry" id="entry_preferences_general_country">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can-focus">True</property>
                     <property name="halign">end</property>
                     <property name="hexpand">True</property>
-                    <property name="max_length">20</property>
+                    <property name="max-length">20</property>
                     <property name="text" translatable="yes">Brazil</property>
                   </object>
                   <packing>
-                    <property name="left_attach">2</property>
-                    <property name="top_attach">3</property>
+                    <property name="left-attach">2</property>
+                    <property name="top-attach">3</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkEntry" id="entry_preferences_general_location">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can-focus">True</property>
                     <property name="halign">end</property>
                     <property name="hexpand">True</property>
-                    <property name="max_length">20</property>
+                    <property name="max-length">20</property>
                     <property name="text" translatable="yes">Florianópolis</property>
                   </object>
                   <packing>
-                    <property name="left_attach">2</property>
-                    <property name="top_attach">2</property>
+                    <property name="left-attach">2</property>
+                    <property name="top-attach">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkEntry" id="entry_preferences_general_callsign">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can-focus">True</property>
                     <property name="halign">end</property>
                     <property name="hexpand">True</property>
-                    <property name="max_length">7</property>
+                    <property name="max-length">7</property>
                     <property name="text" translatable="yes">PP5UF</property>
                   </object>
                   <packing>
-                    <property name="left_attach">2</property>
-                    <property name="top_attach">1</property>
+                    <property name="left-attach">2</property>
+                    <property name="top-attach">1</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
                     <property name="label" translatable="yes">Location:</property>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">2</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
                     <property name="label" translatable="yes">Country:</property>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">3</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">3</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
                     <property name="label" translatable="yes">Ground Station</property>
                     <attributes>
@@ -555,8 +552,8 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                     </attributes>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">0</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
                     <property name="width">3</property>
                   </packing>
                 </child>
@@ -574,27 +571,28 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
             <child type="tab">
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="label" translatable="yes">General</property>
               </object>
               <packing>
-                <property name="tab_fill">False</property>
+                <property name="tab-fill">False</property>
               </packing>
             </child>
             <child>
+              <!-- n-columns=5 n-rows=4 -->
               <object class="GtkGrid">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_left">10</property>
-                <property name="margin_right">10</property>
-                <property name="margin_top">5</property>
-                <property name="margin_bottom">5</property>
-                <property name="row_spacing">8</property>
-                <property name="column_spacing">5</property>
+                <property name="can-focus">False</property>
+                <property name="margin-left">10</property>
+                <property name="margin-right">10</property>
+                <property name="margin-top">5</property>
+                <property name="margin-bottom">5</property>
+                <property name="row-spacing">8</property>
+                <property name="column-spacing">5</property>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
                     <property name="label" translatable="yes">Sync Word</property>
                     <attributes>
@@ -602,120 +600,120 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                     </attributes>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">1</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">1</property>
                     <property name="width">5</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
                     <property name="label" translatable="yes">S0:</property>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">2</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
                     <property name="label" translatable="yes">S2:</property>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">3</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">3</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
                     <property name="label" translatable="yes">S1:</property>
                   </object>
                   <packing>
-                    <property name="left_attach">3</property>
-                    <property name="top_attach">2</property>
+                    <property name="left-attach">3</property>
+                    <property name="top-attach">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
                     <property name="label" translatable="yes">S3:</property>
                   </object>
                   <packing>
-                    <property name="left_attach">3</property>
-                    <property name="top_attach">3</property>
+                    <property name="left-attach">3</property>
+                    <property name="top-attach">3</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkEntry" id="entry_preferences_beacon_s0">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="max_length">4</property>
-                    <property name="width_chars">5</property>
+                    <property name="can-focus">True</property>
+                    <property name="max-length">4</property>
+                    <property name="width-chars">5</property>
                     <property name="text" translatable="yes">0x7E</property>
                   </object>
                   <packing>
-                    <property name="left_attach">2</property>
-                    <property name="top_attach">2</property>
+                    <property name="left-attach">2</property>
+                    <property name="top-attach">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkEntry" id="entry_preferences_beacon_s1">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="max_length">4</property>
-                    <property name="width_chars">5</property>
+                    <property name="can-focus">True</property>
+                    <property name="max-length">4</property>
+                    <property name="width-chars">5</property>
                     <property name="text" translatable="yes">0x2A</property>
                   </object>
                   <packing>
-                    <property name="left_attach">4</property>
-                    <property name="top_attach">2</property>
+                    <property name="left-attach">4</property>
+                    <property name="top-attach">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkEntry" id="entry_preferences_beacon_s2">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="max_length">4</property>
-                    <property name="width_chars">5</property>
+                    <property name="can-focus">True</property>
+                    <property name="max-length">4</property>
+                    <property name="width-chars">5</property>
                     <property name="text" translatable="yes">0xE6</property>
                   </object>
                   <packing>
-                    <property name="left_attach">2</property>
-                    <property name="top_attach">3</property>
+                    <property name="left-attach">2</property>
+                    <property name="top-attach">3</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkEntry" id="entry_preferences_beacon_s3">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="max_length">4</property>
-                    <property name="width_chars">5</property>
+                    <property name="can-focus">True</property>
+                    <property name="max-length">4</property>
+                    <property name="width-chars">5</property>
                     <property name="text" translatable="yes">0x5D</property>
                   </object>
                   <packing>
-                    <property name="left_attach">4</property>
-                    <property name="top_attach">3</property>
+                    <property name="left-attach">4</property>
+                    <property name="top-attach">3</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="spacing">5</property>
                     <child>
                       <object class="GtkLabel">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">Baudrate [bps]:</property>
                       </object>
@@ -728,10 +726,10 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                     <child>
                       <object class="GtkEntry" id="entry_preferences_beacon_baudrate">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="max_length">6</property>
+                        <property name="can-focus">True</property>
+                        <property name="max-length">6</property>
                         <property name="text" translatable="yes">1200</property>
-                        <property name="input_purpose">number</property>
+                        <property name="input-purpose">number</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -741,8 +739,8 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                     </child>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">0</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">0</property>
                     <property name="width">4</property>
                   </packing>
                 </child>
@@ -763,28 +761,29 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
             <child type="tab">
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="label" translatable="yes">Beacon</property>
               </object>
               <packing>
                 <property name="position">1</property>
-                <property name="tab_fill">False</property>
+                <property name="tab-fill">False</property>
               </packing>
             </child>
             <child>
+              <!-- n-columns=5 n-rows=4 -->
               <object class="GtkGrid">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_left">10</property>
-                <property name="margin_right">10</property>
-                <property name="margin_top">5</property>
-                <property name="margin_bottom">5</property>
-                <property name="row_spacing">8</property>
-                <property name="column_spacing">5</property>
+                <property name="can-focus">False</property>
+                <property name="margin-left">10</property>
+                <property name="margin-right">10</property>
+                <property name="margin-top">5</property>
+                <property name="margin-bottom">5</property>
+                <property name="row-spacing">8</property>
+                <property name="column-spacing">5</property>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
                     <property name="label" translatable="yes">Sync Word</property>
                     <attributes>
@@ -792,120 +791,120 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                     </attributes>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">1</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">1</property>
                     <property name="width">5</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
                     <property name="label" translatable="yes">S0:</property>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">2</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
                     <property name="label" translatable="yes">S1:</property>
                   </object>
                   <packing>
-                    <property name="left_attach">3</property>
-                    <property name="top_attach">2</property>
+                    <property name="left-attach">3</property>
+                    <property name="top-attach">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
                     <property name="label" translatable="yes">S2:</property>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">3</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">3</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
                     <property name="label" translatable="yes">S3:</property>
                   </object>
                   <packing>
-                    <property name="left_attach">3</property>
-                    <property name="top_attach">3</property>
+                    <property name="left-attach">3</property>
+                    <property name="top-attach">3</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkEntry" id="entry_preferences_downlink_s0">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="max_length">4</property>
-                    <property name="width_chars">5</property>
+                    <property name="can-focus">True</property>
+                    <property name="max-length">4</property>
+                    <property name="width-chars">5</property>
                     <property name="text" translatable="yes">0x7E</property>
                   </object>
                   <packing>
-                    <property name="left_attach">2</property>
-                    <property name="top_attach">2</property>
+                    <property name="left-attach">2</property>
+                    <property name="top-attach">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkEntry" id="entry_preferences_downlink_s1">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="max_length">4</property>
-                    <property name="width_chars">5</property>
+                    <property name="can-focus">True</property>
+                    <property name="max-length">4</property>
+                    <property name="width-chars">5</property>
                     <property name="text" translatable="yes">0x2A</property>
                   </object>
                   <packing>
-                    <property name="left_attach">4</property>
-                    <property name="top_attach">2</property>
+                    <property name="left-attach">4</property>
+                    <property name="top-attach">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkEntry" id="entry_preferences_downlink_s2">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="max_length">4</property>
-                    <property name="width_chars">5</property>
+                    <property name="can-focus">True</property>
+                    <property name="max-length">4</property>
+                    <property name="width-chars">5</property>
                     <property name="text" translatable="yes">0xE6</property>
                   </object>
                   <packing>
-                    <property name="left_attach">2</property>
-                    <property name="top_attach">3</property>
+                    <property name="left-attach">2</property>
+                    <property name="top-attach">3</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkEntry" id="entry_preferences_downlink_s3">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="max_length">4</property>
-                    <property name="width_chars">5</property>
+                    <property name="can-focus">True</property>
+                    <property name="max-length">4</property>
+                    <property name="width-chars">5</property>
                     <property name="text" translatable="yes">0x5D</property>
                   </object>
                   <packing>
-                    <property name="left_attach">4</property>
-                    <property name="top_attach">3</property>
+                    <property name="left-attach">4</property>
+                    <property name="top-attach">3</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="spacing">5</property>
                     <child>
                       <object class="GtkLabel">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">Baudrate [bps]:</property>
                       </object>
@@ -918,8 +917,8 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                     <child>
                       <object class="GtkEntry" id="entry_preferences_downlink_baudrate">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="max_length">6</property>
+                        <property name="can-focus">True</property>
+                        <property name="max-length">6</property>
                         <property name="text" translatable="yes">2400</property>
                       </object>
                       <packing>
@@ -930,8 +929,8 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                     </child>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">0</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">0</property>
                     <property name="width">4</property>
                   </packing>
                 </child>
@@ -952,12 +951,12 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
             <child type="tab">
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="label" translatable="yes">Downlink</property>
               </object>
               <packing>
                 <property name="position">2</property>
-                <property name="tab_fill">False</property>
+                <property name="tab-fill">False</property>
               </packing>
             </child>
           </object>
@@ -968,9 +967,6 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
           </packing>
         </child>
       </object>
-    </child>
-    <child type="titlebar">
-      <placeholder/>
     </child>
   </object>
 </interface>

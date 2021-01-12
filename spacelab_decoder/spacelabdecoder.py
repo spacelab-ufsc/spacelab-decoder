@@ -3,7 +3,7 @@
 #
 #  spacelab_decoder.py
 #  
-#  Copyright (C) 2020, Universidade Federal de Santa Catarina
+#  Copyright (C) 2021, Universidade Federal de Santa Catarina
 #  
 #  This file is part of SpaceLab-Decoder.
 #
@@ -22,15 +22,6 @@
 #  
 #
 
-__author__      = "Gabriel Mariano Marcelino - PU5GMA"
-__copyright__   = "Copyright (C) 2020, Universidade Federal de Santa Catarina"
-__credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
-__license__     = "GPL3"
-__version__     = "0.2.8"
-__maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
-__email__       = "gabriel.mm8@gmail.com"
-__status__      = "Development"
-
 
 import os
 import threading
@@ -43,39 +34,54 @@ import pathlib
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+from gi.repository import GdkPixbuf
 
 from scipy.io import wavfile
 import zmq
 
-from mm_decoder import mm_decoder
-import _version
+from spacelab_decoder.mm_decoder import mm_decoder
+import spacelab_decoder.version
 
-from bit_buffer import BitBuffer, _BIT_BUFFER_LSB
-from sync_word import SyncWord, _SYNC_WORD_LSB
-from byte_buffer import ByteBuffer, _BYTE_BUFFER_LSB
+from spacelab_decoder.bit_buffer import BitBuffer, _BIT_BUFFER_LSB
+from spacelab_decoder.sync_word import SyncWord, _SYNC_WORD_LSB
+from spacelab_decoder.byte_buffer import ByteBuffer, _BYTE_BUFFER_LSB
+from spacelab_decoder.packet import Packet
 
-_UI_FILE_LOCAL              = 'gui/spacelab_decoder.glade'
-_UI_FILE_LINUX_SYSTEM       = '/usr/share/spacelab-decoder/gui/spacelab_decoder.glade'
+_UI_FILE_LOCAL                  = os.path.abspath(os.path.dirname(__file__)) + '/data/ui/spacelab_decoder.glade'
+_UI_FILE_LINUX_SYSTEM           = '/usr/share/spacelab_decoder/spacelab_decoder.glade'
 
-_ICON_FILE_LOCAL            = 'icon/spacelab_decoder_256x256.png'
-_ICON_FILE_LINUX_SYSTEM     = '/usr/share/icons/spacelab_decoder_256x256.png'
+_ICON_FILE_LOCAL                = os.path.abspath(os.path.dirname(__file__)) + '/data/img/spacelab_decoder_256x256.png'
+_ICON_FILE_LINUX_SYSTEM         = '/usr/share/icons/spacelab_decoder_256x256.png'
 
-_NGHAM_LIB_LOCAL            = pathlib.Path().absolute()/"libngham.so"
-_NGHAM_LIB_LINUX_SYSTEM     = '/usr/lib/libngham.so'
+_LOGO_FILE_LOCAL                = os.path.abspath(os.path.dirname(__file__)) + '/data/img/spacelab-logo-full-400x200.png'
+_LOGO_FILE_LINUX_SYSTEM         = '/usr/share/spacelab_decoder/spacelab-logo-full-400x200.png'
 
-_DIR_CONFIG_LINUX           = '.spacelab-decoder'
-_DIR_CONFIG_WINDOWS         = 'spacelab-decoder'
+_NGHAM_LIB_LOCAL                = os.path.abspath(os.path.dirname(__file__)) + '/libngham.so'
+_NGHAM_LIB_LINUX_SYSTEM         = '/usr/lib/libngham.so'
+_NGHAM_LIB_LINUX_64_SYSTEM      = '/usr/lib64/libngham.so'
 
-_DEFAULT_CALLSIGN           = 'PP5UF'
-_DEFAULT_LOCATION           = 'Florianópolis'
-_DEFAULT_COUNTRY            = 'Brazil'
-_DEFAULT_BEACON_BAUDRATE    = 1200
-_DEFAULT_DOWNLINK_BAUDRATE  = 2400
-_DEFAULT_BEACON_SYNC_WORD   = '0x7E2AE65D'
-_DEFAULT_DOWNLINK_SYNC_WORD = '0x7E2AE65D'
-_DEFAULT_MAX_PKT_LEN_BYTES  = 300
+_NGHAM_FSAT_LIB_LOCAL           = os.path.abspath(os.path.dirname(__file__)) + '/libngham_fsat.so'
+_NGHAM_FSAT_LIB_LINUX_SYSTEM    = '/usr/lib/libngham_fsat.so'
+_NGHAM_FSAT_LIB_LINUX_64_SYSTEM = '/usr/lib64/libngham_fsat.so'
 
-_ZMQ_PUSH_PULL_ADDRESS      = "tcp://127.0.0.1:8023"
+_DIR_CONFIG_LINUX               = '.spacelab_decoder'
+_DIR_CONFIG_WINDOWS             = 'spacelab_decoder'
+
+_SAT_JSON_FLORIPASAT_I_LOCAL    = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/floripasat-i.json'
+_SAT_JSON_FLORIPASAT_I_SYSTEM   = '/usr/share/spacelab_decoder/floripasat-i.json'
+_SAT_JSON_GOLDS_UFSC_LOCAL      = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/golds-ufsc.json'
+_SAT_JSON_GOLDS_UFSC_SYSTEM     = '/usr/share/spacelab_decoder/golds-ufsc.json'
+
+_DEFAULT_CALLSIGN               = 'PP5UF'
+_DEFAULT_LOCATION               = 'Florianópolis'
+_DEFAULT_COUNTRY                = 'Brazil'
+_DEFAULT_BEACON_BAUDRATE        = 1200
+_DEFAULT_DOWNLINK_BAUDRATE      = 2400
+_DEFAULT_BEACON_SYNC_WORD       = '0x7E2AE65D'
+_DEFAULT_DOWNLINK_SYNC_WORD     = '0x7E2AE65D'
+_DEFAULT_MAX_PKT_LEN_BYTES      = 300
+
+_ZMQ_PUSH_PULL_ADDRESS          = "tcp://127.0.0.1:8023"
 
 class SpaceLabDecoder:
 
@@ -96,12 +102,25 @@ class SpaceLabDecoder:
 
         if os.path.isfile(_NGHAM_LIB_LOCAL):
             self.ngham = ctypes.CDLL(_NGHAM_LIB_LOCAL)
+        elif os.path.isfile(_NGHAM_LIB_LINUX_64_SYSTEM):
+            self.ngham = ctypes.CDLL(_NGHAM_LIB_LINUX_64_SYSTEM)
         else:
             self.ngham = ctypes.CDLL(_NGHAM_LIB_LINUX_SYSTEM)
 
         self.ngham.ngham_init_arrays()
 
         self.ngham.ngham_init()
+
+        if os.path.isfile(_NGHAM_FSAT_LIB_LOCAL):
+            self.ngham_fsat = ctypes.CDLL(_NGHAM_FSAT_LIB_LOCAL)
+        elif os.path.isfile(_NGHAM_FSAT_LIB_LINUX_64_SYSTEM):
+            self.ngham_fsat = ctypes.CDLL(_NGHAM_FSAT_LIB_LINUX_64_SYSTEM)
+        else:
+            self.ngham_fsat = ctypes.CDLL(_NGHAM_FSAT_LIB_LINUX_SYSTEM)
+
+        self.ngham_fsat.ngham_init_arrays()
+
+        self.ngham_fsat.ngham_init()
 
     def _build_widgets(self):
         # Main window
@@ -110,6 +129,7 @@ class SpaceLabDecoder:
             self.window.set_icon_from_file(_ICON_FILE_LOCAL)
         else:
             self.window.set_icon_from_file(_ICON_FILE_LINUX_SYSTEM)
+        self.window.set_wmclass(self.window.get_title(), self.window.get_title())
         self.window.connect("destroy", Gtk.main_quit)
 
         # Preferences dialog
@@ -139,7 +159,11 @@ class SpaceLabDecoder:
 
         # About dialog
         self.aboutdialog = self.builder.get_object("aboutdialog_spacelab_decoder")
-        self.aboutdialog.set_version(_version.__version__)
+        self.aboutdialog.set_version(spacelab_decoder.version.__version__)
+        if os.path.isfile(_LOGO_FILE_LOCAL):
+            self.aboutdialog.set_logo(GdkPixbuf.Pixbuf.new_from_file(_LOGO_FILE_LOCAL))
+        else:
+            self.aboutdialog.set_logo(GdkPixbuf.Pixbuf.new_from_file(_LOGO_FILE_LINUX_SYSTEM))
 
         # Preferences button
         self.button_preferences = self.builder.get_object("button_preferences")
@@ -169,10 +193,16 @@ class SpaceLabDecoder:
 
         # Clears button
         self.button_clear = self.builder.get_object("button_clean")
+        self.button_clear.connect("clicked", self.on_button_clear_clicked)
 
         # About toolbutton
         self.toolbutton_about = self.builder.get_object("toolbutton_about")
         self.toolbutton_about.connect("clicked", self.on_toolbutton_about_clicked)
+
+        # Packet data textview
+        self.textbuffer_pkt_data = Gtk.TextBuffer()
+        self.textview_pkt_data = self.builder.get_object("textview_pkt_data")
+        self.textview_pkt_data.set_buffer(self.textbuffer_pkt_data)
 
         # Events treeview
         self.treeview_events = self.builder.get_object("treeview_events")
@@ -220,13 +250,19 @@ class SpaceLabDecoder:
             error_dialog.run()
             error_dialog.destroy()
         else:
-            sample_rate, data = wavfile.read(self.filechooser_audio_file.get_filename())
-            self.listmodel_events.append([str(datetime.now()), "Audio file opened with a sample rate of " + str(sample_rate) + " Hz"])
+            if self.combobox_satellite.get_active() == -1:
+                error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error decoding the audio file!")
+                error_dialog.format_secondary_text("No satellite selected!")
+                error_dialog.run()
+                error_dialog.destroy()
+            else:
+                sample_rate, data = wavfile.read(self.filechooser_audio_file.get_filename())
+                self.listmodel_events.append([str(datetime.now()), "Audio file opened with a sample rate of " + str(sample_rate) + " Hz"])
 
-            x = threading.Thread(target=self._decode_audio, args=(self.filechooser_audio_file.get_filename(), sample_rate, 1200, self.checkbutton_play_audio.get_active()))
-            z = threading.Thread(target=self._zmq_receiver)
-            x.start()
-            z.start()
+                x = threading.Thread(target=self._decode_audio, args=(self.filechooser_audio_file.get_filename(), sample_rate, 1200, self.checkbutton_play_audio.get_active()))
+                z = threading.Thread(target=self._zmq_receiver)
+                x.start()
+                z.start()
 
     def on_events_selection_changed(self, widget):
         (model, iter) = self.selection_events.get_selected()
@@ -234,6 +270,9 @@ class SpaceLabDecoder:
             print(model[iter][0])
 
         return True
+
+    def on_button_clear_clicked(self, button):
+        self.textbuffer_pkt_data.set_text("")
 
     def on_toolbutton_about_clicked(self, toolbutton):
         response = self.aboutdialog.run()
@@ -311,6 +350,15 @@ class SpaceLabDecoder:
         ngham_decode_func.argtypes = [ctypes.c_ubyte, ctypes.POINTER(ctypes.c_ubyte)]
         ngham_decode_func.restype = ctypes.c_int
 
+        if self.combobox_satellite.get_active() == 0:
+            ngham_decode_func = self.ngham_fsat.ngham_decode
+            ngham_decode_func.argtypes = [ctypes.c_ubyte, ctypes.POINTER(ctypes.c_ubyte)]
+            ngham_decode_func.restype = ctypes.c_int
+        elif self.combobox_satellite.get_active() == 1:
+            ngham_decode_func = self.ngham.ngham_decode
+            ngham_decode_func.argtypes = [ctypes.c_ubyte, ctypes.POINTER(ctypes.c_ubyte)]
+            ngham_decode_func.restype = ctypes.c_int
+
         while True:
             socks = dict(poller.poll(1000))
             if socks:
@@ -339,23 +387,41 @@ class SpaceLabDecoder:
                                             self.listmodel_events.append([str(datetime.now()), "Error decoding a Packet!"])
                                     elif res > 0:
                                         packet_detected = False
-                                        pkt_pl = "Decoded "
                                         if self.combobox_packet_type.get_active() == 0:
-                                            pkt_pl = " Beacon packet: "
+                                            self.listmodel_events.append([str(datetime.now()), "Beacon packet decoded!"])
                                         elif self.combobox_packet_type.get_active() == 1:
-                                            pkt_pl = " Downlink packet: "
+                                            self.listmodel_events.append([str(datetime.now()), "Downlink packet decoded!"])
                                         else:
-                                            pkt_pl = " packet: "
+                                            self.listmodel_events.append([str(datetime.now()), "Packet decoded!"])
+
+                                        pkt_list = list()
                                         for i in range(res):
-                                            pkt_pl = pkt_pl + str(array[i])
-                                        self.listmodel_events.append([str(datetime.now()), pkt_pl])
+                                            pkt_list.append(int(array[i]))
+                                        self._decode_packet(pkt_list)
                                     byte_buf.clear()
                         sync_word_buf.push(bool(bit))
                         if (sync_word_buf == sync_word):
-                            self.ngham.ngham_init()
                             packet_buf = []
                             packet_detected = True
                             byte_buf.clear()
 
             else:
                 break
+
+    def _decode_packet(self, pkt):
+        pkt_txt = "Decoded packet from \"" + self.filechooser_audio_file.get_filename() + "\":\n"
+        sat_json = str()
+        if self.combobox_satellite.get_active() == 0:
+            if os.path.isfile(_SAT_JSON_FLORIPASAT_I_LOCAL):
+                sat_json = _SAT_JSON_FLORIPASAT_I_LOCAL
+            else:
+                sat_json = _SAT_JSON_FLORIPASAT_I_SYSTEM
+        elif self.combobox_satellite.get_active() == 1:
+            if os.path.isfile(_SAT_JSON_GOLDS_UFSC_LOCAL):
+                sat_json = _SAT_JSON_GOLDS_UFSC_LOCAL
+            else:
+                sat_json = _SAT_JSON_GOLDS_UFSC_SYSTEM
+        p = Packet(sat_json, pkt)
+        pkt_txt = pkt_txt + str(p)
+        pkt_txt = pkt_txt + "========================================================\n"
+        self.textbuffer_pkt_data.insert(self.textbuffer_pkt_data.get_end_iter(), pkt_txt)

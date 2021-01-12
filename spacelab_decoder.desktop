@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=SpaceLab Decoder
+Comment=SpaceLab packet decoder
+Icon=/usr/share/icons/spacelab_decoder_256x256.png
+Exec=/usr/bin/spacelab-decoder
+Terminal=false
+Categories=HamRadio

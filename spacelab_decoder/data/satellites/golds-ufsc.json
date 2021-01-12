@@ -1,0 +1,33 @@
+{
+    "name": "GOLDS-UFSC",
+    "links": [
+        {
+            "name": "Beacon",
+            "types": [
+                {
+                    "id": 0,
+                },
+                {
+                    "id": 1,
+                },
+                {
+                    "id": 2,
+                }
+            ]
+        },
+        {
+            "name": "Downlink",
+            "types": [
+                {
+                    "id": 3,
+                },
+                {
+                    "id": 4,
+                },
+                {
+                    "id": 5,
+                }
+            ]
+        }
+    ]
+}

@@ -1,7 +1,9 @@
+#!/usr/bin/env python
+
 #
-#  __init__.py
+#  __main__.py
 #  
-#  Copyright (C) 2020, Universidade Federal de Santa Catarina
+#  Copyright (C) 2021, Universidade Federal de Santa Catarina
 #  
 #  This file is part of SpaceLab-Decoder.
 #
@@ -20,14 +22,30 @@
 #  
 #
 
-__author__      = "Gabriel Mariano Marcelino - PU5GMA"
-__copyright__   = "Copyright (C) 2020, Universidade Federal de Santa Catarina"
-__credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
-__license__     = "GPL3"
-__version__     = "0.2.0"
-__maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
-__email__       = "gabriel.mm8@gmail.com"
-__status__      = "Development"
+
+import os
+import sys
+import pathlib
+
+sys.path.append(str(pathlib.Path(os.path.realpath(__file__)).parents[1]))
+
+from spacelab_decoder.spacelabdecoder import SpaceLabDecoder
+
+#def main(args):
+def main():
+    """Main function.
+
+    Args:
+
+    Returns:
+        The code uppon termination.
+    """
+    app = SpaceLabDecoder()
+
+    return app.run()
 
 
-from main import main
+if __name__ == '__main__':
+    import sys
+#    sys.exit(main(sys.argv))
+    sys.exit(main())
