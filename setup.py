@@ -77,5 +77,7 @@ setuptools.setup(
         ('share/spacelab_decoder/', ['spacelab_decoder/data/img/spacelab-logo-full-400x200.png']),
         ('share/spacelab_decoder/', ['spacelab_decoder/data/satellites/floripasat-i.json']),
         ('share/spacelab_decoder/', ['spacelab_decoder/data/satellites/golds-ufsc.json']),
+        ('lib/', ['spacelab_decoder/libngham.so']),
+        ('lib/', ['spacelab_decoder/libngham_fsat.so']),
         ],
 )
