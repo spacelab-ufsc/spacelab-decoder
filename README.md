@@ -10,7 +10,7 @@
         <img src="https://img.shields.io/badge/status-development-green?style=for-the-badge">
     </a>
     <a href="https://github.com/spacelab-ufsc/spacelab-decoder/releases">
-        <img src="https://img.shields.io/badge/version-0.2-blue?style=for-the-badge">
+        <img alt="GitHub commits since latest release (by date)" src="https://img.shields.io/github/commits-since/spacelab-ufsc/spacelab-decoder/latest?style=for-the-badge">
     </a>
     <a href="https://github.com/spacelab-ufsc/spacelab-decoder/blob/master/LICENSE">
         <img src="https://img.shields.io/badge/license-GPL3-yellow?style=for-the-badge">
@@ -35,10 +35,19 @@ SpaceLab Packet Decoder is a software to decode audio records from the satellite
 
 ## Dependencies
 
+* python (>= 3)
 * gi
 * scipy
-* python3-zmq
+* pyzmq
 * gnuradio
+
+### Installation on Ubuntu
+
+```sudo apt install python3 python3-gi python3-scipy python3-zmq gnuradio```
+
+### Installation on Fedora
+
+```sudo dnf install python3 python3-gobject python3-scipy python3-zmq gnuradio```
 
 ## Building and Installing
 
