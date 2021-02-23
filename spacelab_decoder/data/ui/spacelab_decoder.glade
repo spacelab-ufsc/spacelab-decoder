@@ -48,6 +48,11 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
     <property name="tooltip-text" translatable="yes">Run decoder</property>
     <property name="stock">gtk-media-play</property>
   </object>
+  <object class="GtkImage" id="image_plot">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="stock">gtk-info</property>
+  </object>
   <object class="GtkListStore" id="liststore_packet_type">
     <columns>
       <!-- column-name gchararray1 -->
@@ -235,16 +240,31 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="button_clean">
+                      <object class="GtkButton" id="button_plot_spectrum">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="image">image_clear</property>
+                        <property name="image">image_plot</property>
+                        <property name="always-show-image">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
                         <property name="position">8</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="button_clean">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="image">image_clear</property>
+                        <property name="always-show-image">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">9</property>
                       </packing>
                     </child>
                   </object>

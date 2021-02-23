@@ -36,6 +36,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from gi.repository import GdkPixbuf
 
+import matplotlib.pyplot as plt
 from scipy.io import wavfile
 import zmq
 
@@ -191,6 +192,10 @@ class SpaceLabDecoder:
         self.button_decode = self.builder.get_object("button_decode")
         self.button_decode.connect("clicked", self.on_button_decode_clicked)
 
+        # Plot spectrum button
+        self.button_plot_spectrum = self.builder.get_object("button_plot_spectrum")
+        self.button_plot_spectrum.connect("clicked", self.on_button_plot_clicked)
+
         # Clears button
         self.button_clear = self.builder.get_object("button_clean")
         self.button_clear.connect("clicked", self.on_button_clear_clicked)
@@ -263,6 +268,33 @@ class SpaceLabDecoder:
                 z = threading.Thread(target=self._zmq_receiver)
                 x.start()
                 z.start()
+
+    def on_button_plot_clicked(self, button):
+        if self.filechooser_audio_file.get_filename() is None:
+            error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error loading the audio file!")
+            error_dialog.format_secondary_text("No file selected!")
+            error_dialog.run()
+            error_dialog.destroy()
+        else:
+            # Read the wav file (mono)
+            sampling_frequency, signal_data = wavfile.read(self.filechooser_audio_file.get_filename())
+
+            # Plot the signal read from wav file
+            plt.figure(num='Spectrogram');
+            plt.subplot(211)
+            plt.title(self.filechooser_audio_file.get_filename())
+
+            plt.plot(signal_data, linewidth=0.75)
+            plt.xlabel('Sample')
+            plt.ylabel('Amplitude')
+
+            plt.subplot(212)
+            plt.specgram(signal_data, Fs=sampling_frequency)
+            plt.xlabel('Time [sec]')
+            plt.ylabel('Frequency [Hz]')
+
+            plt.tight_layout()
+            plt.show()
 
     def on_events_selection_changed(self, widget):
         (model, iter) = self.selection_events.get_selected()
