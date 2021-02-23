@@ -39,15 +39,16 @@ SpaceLab Packet Decoder is a software to decode audio records from the satellite
 * gi
 * scipy
 * pyzmq
+* matplotlib
 * gnuradio
 
 ### Installation on Ubuntu
 
-```sudo apt install python3 python3-gi python3-scipy python3-zmq gnuradio```
+```sudo apt install python3 python3-gi python3-scipy python3-zmq python3-matplotlib gnuradio```
 
 ### Installation on Fedora
 
-```sudo dnf install python3 python3-gobject python3-scipy python3-zmq gnuradio```
+```sudo dnf install python3 python3-gobject python3-scipy python3-zmq python3-matplotlib gnuradio```
 
 ## Building and Installing
 
