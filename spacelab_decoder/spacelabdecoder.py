@@ -123,6 +123,8 @@ class SpaceLabDecoder:
 
         self.ngham_fsat.ngham_init()
 
+        self.decoded_packets_index = list()
+
     def _build_widgets(self):
         # Main window
         self.window = self.builder.get_object("window_main")
@@ -306,12 +308,15 @@ class SpaceLabDecoder:
     def on_events_selection_changed(self, widget):
         (model, iter) = self.selection_events.get_selected()
         if iter is not None:
-            print(model[iter][0])
+            for pkt in self.decoded_packets_index:
+                if pkt.get_name() == model[iter][0]:
+                    self.textview_pkt_data.scroll_to_mark(pkt, 0, True, 0, 0)
 
         return True
 
     def on_button_clear_clicked(self, button):
         self.textbuffer_pkt_data.set_text("")
+        self.decoded_packets_index = []
 
     def on_button_gen_wav_file_clicked(self, button):
         response = self.dialog_gen_wav_file.run()
@@ -432,12 +437,14 @@ class SpaceLabDecoder:
                                             self.listmodel_events.append([str(datetime.now()), "Error decoding a Packet!"])
                                     elif res > 0:
                                         packet_detected = False
+                                        tm_now = datetime.now()
+                                        self.decoded_packets_index.append(self.textbuffer_pkt_data.create_mark(str(tm_now), self.textbuffer_pkt_data.get_end_iter(), True))
                                         if self.combobox_packet_type.get_active() == 0:
-                                            self.listmodel_events.append([str(datetime.now()), "Beacon packet decoded!"])
+                                            self.listmodel_events.append([str(tm_now), "Beacon packet decoded!"])
                                         elif self.combobox_packet_type.get_active() == 1:
-                                            self.listmodel_events.append([str(datetime.now()), "Downlink packet decoded!"])
+                                            self.listmodel_events.append([str(tm_now), "Downlink packet decoded!"])
                                         else:
-                                            self.listmodel_events.append([str(datetime.now()), "Packet decoded!"])
+                                            self.listmodel_events.append([str(tm_now), "Packet decoded!"])
 
                                         pkt_list = list()
                                         for i in range(res):
