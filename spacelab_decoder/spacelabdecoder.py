@@ -158,6 +158,9 @@ class SpaceLabDecoder:
         self.entry_preferences_downlink_s2 = self.builder.get_object("entry_preferences_downlink_s2")
         self.entry_preferences_downlink_s3 = self.builder.get_object("entry_preferences_downlink_s3")
 
+        # Generate wav file dialog
+        self.dialog_gen_wav_file = self.builder.get_object("dialog_gen_wav_file")
+
         # About dialog
         self.aboutdialog = self.builder.get_object("aboutdialog_spacelab_decoder")
         self.aboutdialog.set_version(spacelab_decoder.version.__version__)
@@ -199,6 +202,10 @@ class SpaceLabDecoder:
         # Clears button
         self.button_clear = self.builder.get_object("button_clean")
         self.button_clear.connect("clicked", self.on_button_clear_clicked)
+
+        # Generate wav file button
+        self.button_gen_wav_file = self.builder.get_object("button_gen_wav_file")
+        self.button_gen_wav_file.connect("clicked", self.on_button_gen_wav_file_clicked)
 
         # About toolbutton
         self.toolbutton_about = self.builder.get_object("toolbutton_about")
@@ -305,6 +312,12 @@ class SpaceLabDecoder:
 
     def on_button_clear_clicked(self, button):
         self.textbuffer_pkt_data.set_text("")
+
+    def on_button_gen_wav_file_clicked(self, button):
+        response = self.dialog_gen_wav_file.run()
+
+        if response == Gtk.ResponseType.DELETE_EVENT:
+            self.dialog_gen_wav_file.hide()
 
     def on_toolbutton_about_clicked(self, toolbutton):
         response = self.aboutdialog.run()
