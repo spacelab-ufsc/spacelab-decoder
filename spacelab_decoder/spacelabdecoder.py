@@ -47,6 +47,7 @@ from spacelab_decoder.bit_buffer import BitBuffer, _BIT_BUFFER_LSB
 from spacelab_decoder.sync_word import SyncWord, _SYNC_WORD_LSB
 from spacelab_decoder.byte_buffer import ByteBuffer, _BYTE_BUFFER_LSB
 from spacelab_decoder.packet import Packet
+from spacelab_decoder.wav_gen import WavGen
 
 _UI_FILE_LOCAL                  = os.path.abspath(os.path.dirname(__file__)) + '/data/ui/spacelab_decoder.glade'
 _UI_FILE_LINUX_SYSTEM           = '/usr/share/spacelab_decoder/spacelab_decoder.glade'
@@ -162,6 +163,16 @@ class SpaceLabDecoder:
 
         # Generate wav file dialog
         self.dialog_gen_wav_file = self.builder.get_object("dialog_gen_wav_file")
+        self.button_export_wav_file = self.builder.get_object("button_export_wav_file")
+        self.button_export_wav_file.connect("clicked", self.on_button_export_wav_file_clicked)
+        self.button_cancel_wav_file = self.builder.get_object("button_cancel_wav_file")
+        self.button_cancel_wav_file.connect("clicked", self.on_button_cancel_wav_file_clicked)
+        self.entry_gen_wav_baudrate = self.builder.get_object("entry_gen_wav_baudrate")
+        self.entry_gen_wav_sample_rate = self.builder.get_object("entry_gen_wav_sample_rate")
+        self.entry_gen_wav_amplitude = self.builder.get_object("entry_gen_wav_amplitude")
+        self.entry_gen_wav_packet_id = self.builder.get_object("entry_gen_wav_packet_id")
+        self.entry_gen_wav_callsign = self.builder.get_object("entry_gen_wav_callsign")
+        self.entry_gen_wav_payload = self.builder.get_object("entry_gen_wav_payload")
 
         # About dialog
         self.aboutdialog = self.builder.get_object("aboutdialog_spacelab_decoder")
@@ -323,6 +334,48 @@ class SpaceLabDecoder:
 
         if response == Gtk.ResponseType.DELETE_EVENT:
             self.dialog_gen_wav_file.hide()
+
+    def on_button_export_wav_file_clicked(self, button):
+        if len(self.entry_gen_wav_sample_rate.get_text()) == 0:
+            error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error generating an wav file!")
+            error_dialog.format_secondary_text("No sample rate provided!")
+            error_dialog.run()
+            error_dialog.destroy()
+        elif len(self.entry_gen_wav_baudrate.get_text()) == 0:
+            error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error generating an wav file!")
+            error_dialog.format_secondary_text("No baudrate provided!")
+            error_dialog.run()
+            error_dialog.destroy()
+        elif len(self.entry_gen_wav_amplitude.get_text()) == 0:
+            error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error generating an wav file!")
+            error_dialog.format_secondary_text("No amplitude provided!")
+            error_dialog.run()
+            error_dialog.destroy()
+        else:
+            save_dialog = Gtk.FileChooserDialog("Save Wav file", self.window,
+                                                Gtk.FileChooserAction.SAVE,
+                                                (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+                                                 Gtk.STOCK_SAVE, Gtk.ResponseType.ACCEPT))
+            save_dialog.set_do_overwrite_confirmation(True)
+            save_dialog.set_modal(True)
+            save_dialog.connect("response", self.save_response_cb)
+            save_dialog.show()
+
+    def save_response_cb(self, dialog, response_id):
+        save_dialog = dialog
+        if response_id == Gtk.ResponseType.ACCEPT:
+            wav_gen = WavGen([1, 2, 3, 4],
+                              int(self.entry_gen_wav_sample_rate.get_text()),
+                              int(self.entry_gen_wav_baudrate.get_text()),
+                              float(self.entry_gen_wav_amplitude.get_text()),
+                              save_dialog.get_file().get_path())
+            dialog.destroy()
+            self.dialog_gen_wav_file.hide()
+        else:
+            dialog.destroy()
+
+    def on_button_cancel_wav_file_clicked(self, button):
+        self.dialog_gen_wav_file.hide()
 
     def on_toolbutton_about_clicked(self, toolbutton):
         response = self.aboutdialog.run()

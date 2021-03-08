@@ -412,6 +412,9 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                         <property name="hexpand">True</property>
                         <property name="vexpand">False</property>
                         <property name="enable-grid-lines">vertical</property>
+                        <child internal-child="selection">
+                          <object class="GtkTreeSelection"/>
+                        </child>
                       </object>
                     </child>
                   </object>
@@ -556,7 +559,7 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
               </packing>
             </child>
             <child>
-              <object class="GtkEntry">
+              <object class="GtkEntry" id="entry_gen_wav_baudrate">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="tooltip-text" translatable="yes">Baudrate in bps</property>
@@ -580,7 +583,7 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
               </packing>
             </child>
             <child>
-              <object class="GtkEntry">
+              <object class="GtkEntry" id="entry_gen_wav_sample_rate">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="tooltip-text" translatable="yes">Sample rate in Hertz</property>
@@ -604,7 +607,7 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
               </packing>
             </child>
             <child>
-              <object class="GtkTextView">
+              <object class="GtkTextView" id="entry_gen_wav_payload">
                 <property name="width-request">300</property>
                 <property name="height-request">100</property>
                 <property name="visible">True</property>
@@ -612,6 +615,8 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                 <property name="tooltip-text" translatable="yes">ASCII message: "message"
 Byte payload: [0, 1, 2] or [0x0, 0x1, 0x2]
 </property>
+                <property name="wrap-mode">char</property>
+                <property name="accepts-tab">False</property>
               </object>
               <packing>
                 <property name="left-attach">1</property>
@@ -631,7 +636,7 @@ Byte payload: [0, 1, 2] or [0x0, 0x1, 0x2]
               </packing>
             </child>
             <child>
-              <object class="GtkEntry">
+              <object class="GtkEntry" id="entry_gen_wav_callsign">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="tooltip-text" translatable="yes">Callsign</property>
@@ -654,7 +659,7 @@ Byte payload: [0, 1, 2] or [0x0, 0x1, 0x2]
               </packing>
             </child>
             <child>
-              <object class="GtkEntry">
+              <object class="GtkEntry" id="entry_gen_wav_packet_id">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="tooltip-text" translatable="yes">Decimal or hexadecimal</property>
@@ -688,7 +693,7 @@ Byte payload: [0, 1, 2] or [0x0, 0x1, 0x2]
               </packing>
             </child>
             <child>
-              <object class="GtkEntry">
+              <object class="GtkEntry" id="entry_gen_wav_amplitude">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="text" translatable="yes">1.0</property>
