@@ -30,6 +30,7 @@ import signal
 from datetime import datetime
 import ctypes
 import pathlib
+import json
 
 import gi
 gi.require_version('Gtk', '3.0')
@@ -173,6 +174,7 @@ class SpaceLabDecoder:
         self.entry_gen_wav_packet_id = self.builder.get_object("entry_gen_wav_packet_id")
         self.entry_gen_wav_callsign = self.builder.get_object("entry_gen_wav_callsign")
         self.entry_gen_wav_payload = self.builder.get_object("entry_gen_wav_payload")
+        self.textbuffer_wav_gen_payload = self.builder.get_object("textbuffer_wav_gen_payload")
 
         # About dialog
         self.aboutdialog = self.builder.get_object("aboutdialog_spacelab_decoder")
@@ -351,24 +353,53 @@ class SpaceLabDecoder:
             error_dialog.format_secondary_text("No amplitude provided!")
             error_dialog.run()
             error_dialog.destroy()
+        elif len(self.entry_gen_wav_packet_id.get_text()) == 0:
+            error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error generating an wav file!")
+            error_dialog.format_secondary_text("No packet ID provided!")
+            error_dialog.run()
+            error_dialog.destroy()
         else:
-            save_dialog = Gtk.FileChooserDialog("Save Wav file", self.window,
-                                                Gtk.FileChooserAction.SAVE,
-                                                (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-                                                 Gtk.STOCK_SAVE, Gtk.ResponseType.ACCEPT))
-            save_dialog.set_do_overwrite_confirmation(True)
-            save_dialog.set_modal(True)
-            save_dialog.connect("response", self.save_response_cb)
-            save_dialog.show()
+            pkt_id = int(self.entry_gen_wav_packet_id.get_text())
+            if (pkt_id < 0) or (pkt_id > 255):
+                error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error generating an wav file!")
+                error_dialog.format_secondary_text("Invalid packet ID! (must be between 0 and 255)")
+                error_dialog.run()
+                error_dialog.destroy()
+            else:
+                save_dialog = Gtk.FileChooserDialog("Save Wav file", self.window,
+                                                    Gtk.FileChooserAction.SAVE,
+                                                    (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+                                                     Gtk.STOCK_SAVE, Gtk.ResponseType.ACCEPT))
+                save_dialog.set_do_overwrite_confirmation(True)
+                save_dialog.set_modal(True)
+                save_dialog.connect("response", self.save_response_cb)
+                save_dialog.show()
 
     def save_response_cb(self, dialog, response_id):
         save_dialog = dialog
         if response_id == Gtk.ResponseType.ACCEPT:
-            wav_gen = WavGen([1, 2, 3, 4],
-                              int(self.entry_gen_wav_sample_rate.get_text()),
-                              int(self.entry_gen_wav_baudrate.get_text()),
-                              float(self.entry_gen_wav_amplitude.get_text()),
-                              save_dialog.get_file().get_path())
+            pkt_id = int(self.entry_gen_wav_packet_id.get_text())
+            pkt_pl = [pkt_id]
+            pkt_callsign = [ord(char) for char in self.entry_gen_wav_callsign.get_text().upper()]
+            while(len(pkt_callsign) < 7):
+                pkt_callsign = [ord('0')] + pkt_callsign
+            pkt_pl.extend(pkt_callsign)
+            pkt_pl.extend(json.loads(self.textbuffer_wav_gen_payload.get_text(self.textbuffer_wav_gen_payload.get_start_iter(),
+                                                                              self.textbuffer_wav_gen_payload.get_end_iter(),
+                                                                              False)))
+            print(pkt_pl)
+
+#            ngham_encode_func = self.ngham.ngham_encode
+#            ngham_encode_func.argtypes = [ctypes.c_ubyte, ctypes.POINTER(ctypes.c_ubyte)]
+#            ngham_encode_func.restype = ctypes.c_int
+#
+#            res = ngham_decode_func(pkt_byte, ctypes.cast(array, ctypes.POINTER(ctypes.c_ubyte)))
+
+            wav_gen = WavGen(pkt_pl,
+                             int(self.entry_gen_wav_sample_rate.get_text()),
+                             int(self.entry_gen_wav_baudrate.get_text()),
+                             float(self.entry_gen_wav_amplitude.get_text()),
+                             save_dialog.get_file().get_path())
             dialog.destroy()
             self.dialog_gen_wav_file.hide()
         else:
