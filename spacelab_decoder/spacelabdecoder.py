@@ -39,9 +39,8 @@ from gi.repository import GdkPixbuf
 
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
-from scipy import signal
-import numpy as np
 import zmq
+import sox
 
 from spacelab_decoder.mm_decoder import mm_decoder
 import spacelab_decoder.version
@@ -209,13 +208,13 @@ class SpaceLabDecoder:
         self.filechooser_audio_file = self.builder.get_object("filechooser_audio_file")
 
         # Tools
-#        self.combobox_tools_freq = self.builder.get_object("combobox_tools_freq")
-#        self.entry_tools_frequency = self.builder.get_object("entry_tools_frequency")
-#        self.checkbutton_tools_normalize = self.builder.get_object("checkbutton_tools_normalize")
-#        self.liststore_filters = self.builder.get_object("liststore_filters")
-#
-#        for filt in _TOOLS_FILTERS:
-#            self.liststore_filters.append([filt])
+        self.combobox_tools_freq = self.builder.get_object("combobox_tools_freq")
+        self.entry_tools_frequency = self.builder.get_object("entry_tools_frequency")
+        self.checkbutton_tools_normalize = self.builder.get_object("checkbutton_tools_normalize")
+        self.liststore_filters = self.builder.get_object("liststore_filters")
+
+        for filt in _TOOLS_FILTERS:
+            self.liststore_filters.append([filt])
 
         # Play audio checkbutton
         self.checkbutton_play_audio = self.builder.get_object("checkbutton_play_audio")
@@ -299,16 +298,20 @@ class SpaceLabDecoder:
             else:
                 sample_rate, data = wavfile.read(self.filechooser_audio_file.get_filename())
                 wav_filename = self.filechooser_audio_file.get_filename()
-#                if self.combobox_tools_freq.get_active() == 1:
-#                    sos = signal.butter(2, int(self.entry_tools_frequency.get_text()), 'lowpass', fs=sample_rate, output='sos')
-#                    scaled = np.int16(data/np.max(np.abs(signal.sosfilt(sos, data))) * np.max(data))
-#                    wavfile.write(_WAVFILE_BUFFER_FILE, sample_rate, scaled)
-#                    wav_filename = _WAVFILE_BUFFER_FILE
-#                elif self.combobox_tools_freq.get_active() == 2:
-#                    sos = signal.butter(2, int(self.entry_tools_frequency.get_text()), 'highpass', fs=sample_rate, output='sos')
-#                    scaled = np.int16(data/np.max(np.abs(signal.sosfilt(sos, data))) * np.max(data))
-#                    wavfile.write(_WAVFILE_BUFFER_FILE, sample_rate, scaled)
-#                    wav_filename = _WAVFILE_BUFFER_FILE
+                if self.combobox_tools_freq.get_active() == 1:
+                    lp_filter = sox.Transformer()
+                    lp_filter.lowpass(int(self.entry_tools_frequency.get_text()))
+                    if self.checkbutton_tools_normalize.get_active():
+                        lp_filter.norm()
+                    lp_filter.build(wav_filename, _WAVFILE_BUFFER_FILE);
+                    wav_filename = _WAVFILE_BUFFER_FILE
+                elif self.combobox_tools_freq.get_active() == 2:
+                    lp_filter = sox.Transformer()
+                    lp_filter.highpass(int(self.entry_tools_frequency.get_text()))
+                    if self.checkbutton_tools_normalize.get_active():
+                        lp_filter.norm()
+                    lp_filter.build(wav_filename, _WAVFILE_BUFFER_FILE);
+                    wav_filename = _WAVFILE_BUFFER_FILE
                 self.listmodel_events.append([str(datetime.now()), "Audio file opened with a sample rate of " + str(sample_rate) + " Hz"])
 
                 x = threading.Thread(target=self._decode_audio, args=(wav_filename, sample_rate, 1200, self.checkbutton_play_audio.get_active()))
