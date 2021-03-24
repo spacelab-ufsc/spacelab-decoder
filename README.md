@@ -32,8 +32,8 @@ SpaceLab Packet Decoder is a software to decode audio records from the satellite
 
 Until now, this program supports the satellites below:
 
-* FloripaSat-I (launched in December 2019)
-* GOLDS-UFSC (to be launched on 2021)
+* FloripaSat-1 (launched in December 2019)
+* FloripaSat-2 (to be launched on 2022)
 
 ## Dependencies
 

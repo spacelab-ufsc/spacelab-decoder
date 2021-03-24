@@ -39,6 +39,8 @@ from gi.repository import GdkPixbuf
 
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
+from scipy import signal
+import numpy as np
 import zmq
 
 from spacelab_decoder.mm_decoder import mm_decoder
@@ -70,10 +72,10 @@ _NGHAM_FSAT_LIB_LINUX_64_SYSTEM = '/usr/lib64/libngham_fsat.so'
 _DIR_CONFIG_LINUX               = '.spacelab_decoder'
 _DIR_CONFIG_WINDOWS             = 'spacelab_decoder'
 
-_SAT_JSON_FLORIPASAT_I_LOCAL    = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/floripasat-i.json'
-_SAT_JSON_FLORIPASAT_I_SYSTEM   = '/usr/share/spacelab_decoder/floripasat-i.json'
-_SAT_JSON_GOLDS_UFSC_LOCAL      = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/golds-ufsc.json'
-_SAT_JSON_GOLDS_UFSC_SYSTEM     = '/usr/share/spacelab_decoder/golds-ufsc.json'
+_SAT_JSON_FLORIPASAT_1_LOCAL    = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/floripasat-1.json'
+_SAT_JSON_FLORIPASAT_1_SYSTEM   = '/usr/share/spacelab_decoder/floripasat-1.json'
+_SAT_JSON_FLORIPASAT_2_LOCAL    = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/floripasat-2.json'
+_SAT_JSON_FLORIPASAT_2_SYSTEM   = '/usr/share/spacelab_decoder/floripasat-2.json'
 
 _DEFAULT_CALLSIGN               = 'PP5UF'
 _DEFAULT_LOCATION               = 'Florianópolis'
@@ -85,6 +87,9 @@ _DEFAULT_DOWNLINK_SYNC_WORD     = '0x7E2AE65D'
 _DEFAULT_MAX_PKT_LEN_BYTES      = 300
 
 _ZMQ_PUSH_PULL_ADDRESS          = "tcp://127.0.0.1:8023"
+
+_TOOLS_FILTERS                  = ["None", "Low pass", "High pass"]
+_WAVFILE_BUFFER_FILE            = "/tmp/spacelab_decoder_buffer.wav"
 
 class SpaceLabDecoder:
 
@@ -190,8 +195,8 @@ class SpaceLabDecoder:
 
         # Satellite combobox
         self.liststore_satellite = self.builder.get_object("liststore_satellite")
-        self.liststore_satellite.append(["FloripaSat-I"])
-        self.liststore_satellite.append(["GOLDS-UFSC"])
+        self.liststore_satellite.append(["FloripaSat-1"])
+        self.liststore_satellite.append(["FloripaSat-2"])
         self.combobox_satellite = self.builder.get_object("combobox_satellite")
         cell = Gtk.CellRendererText()
         self.combobox_satellite.pack_start(cell, True)
@@ -202,6 +207,15 @@ class SpaceLabDecoder:
 
         # Audio file Filechooser
         self.filechooser_audio_file = self.builder.get_object("filechooser_audio_file")
+
+        # Tools
+#        self.combobox_tools_freq = self.builder.get_object("combobox_tools_freq")
+#        self.entry_tools_frequency = self.builder.get_object("entry_tools_frequency")
+#        self.checkbutton_tools_normalize = self.builder.get_object("checkbutton_tools_normalize")
+#        self.liststore_filters = self.builder.get_object("liststore_filters")
+#
+#        for filt in _TOOLS_FILTERS:
+#            self.liststore_filters.append([filt])
 
         # Play audio checkbutton
         self.checkbutton_play_audio = self.builder.get_object("checkbutton_play_audio")
@@ -284,9 +298,20 @@ class SpaceLabDecoder:
                 error_dialog.destroy()
             else:
                 sample_rate, data = wavfile.read(self.filechooser_audio_file.get_filename())
+                wav_filename = self.filechooser_audio_file.get_filename()
+#                if self.combobox_tools_freq.get_active() == 1:
+#                    sos = signal.butter(2, int(self.entry_tools_frequency.get_text()), 'lowpass', fs=sample_rate, output='sos')
+#                    scaled = np.int16(data/np.max(np.abs(signal.sosfilt(sos, data))) * np.max(data))
+#                    wavfile.write(_WAVFILE_BUFFER_FILE, sample_rate, scaled)
+#                    wav_filename = _WAVFILE_BUFFER_FILE
+#                elif self.combobox_tools_freq.get_active() == 2:
+#                    sos = signal.butter(2, int(self.entry_tools_frequency.get_text()), 'highpass', fs=sample_rate, output='sos')
+#                    scaled = np.int16(data/np.max(np.abs(signal.sosfilt(sos, data))) * np.max(data))
+#                    wavfile.write(_WAVFILE_BUFFER_FILE, sample_rate, scaled)
+#                    wav_filename = _WAVFILE_BUFFER_FILE
                 self.listmodel_events.append([str(datetime.now()), "Audio file opened with a sample rate of " + str(sample_rate) + " Hz"])
 
-                x = threading.Thread(target=self._decode_audio, args=(self.filechooser_audio_file.get_filename(), sample_rate, 1200, self.checkbutton_play_audio.get_active()))
+                x = threading.Thread(target=self._decode_audio, args=(wav_filename, sample_rate, 1200, self.checkbutton_play_audio.get_active()))
                 z = threading.Thread(target=self._zmq_receiver)
                 x.start()
                 z.start()
@@ -548,15 +573,15 @@ class SpaceLabDecoder:
         pkt_txt = "Decoded packet from \"" + self.filechooser_audio_file.get_filename() + "\":\n"
         sat_json = str()
         if self.combobox_satellite.get_active() == 0:
-            if os.path.isfile(_SAT_JSON_FLORIPASAT_I_LOCAL):
-                sat_json = _SAT_JSON_FLORIPASAT_I_LOCAL
+            if os.path.isfile(_SAT_JSON_FLORIPASAT_1_LOCAL):
+                sat_json = _SAT_JSON_FLORIPASAT_1_LOCAL
             else:
-                sat_json = _SAT_JSON_FLORIPASAT_I_SYSTEM
+                sat_json = _SAT_JSON_FLORIPASAT_1_SYSTEM
         elif self.combobox_satellite.get_active() == 1:
-            if os.path.isfile(_SAT_JSON_GOLDS_UFSC_LOCAL):
-                sat_json = _SAT_JSON_GOLDS_UFSC_LOCAL
+            if os.path.isfile(_SAT_JSON_FLORIPASAT_2_LOCAL):
+                sat_json = _SAT_JSON_FLORIPASAT_2_LOCAL
             else:
-                sat_json = _SAT_JSON_GOLDS_UFSC_SYSTEM
+                sat_json = _SAT_JSON_FLORIPASAT_2_SYSTEM
         p = Packet(sat_json, pkt)
         pkt_txt = pkt_txt + str(p)
         pkt_txt = pkt_txt + "========================================================\n"
