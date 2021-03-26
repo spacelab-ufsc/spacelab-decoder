@@ -27,7 +27,7 @@ extern const uint8_t NGH_SYNC[];
 void ngham_init_arrays(void);
 void ngham_deinit_arrays(void);
 void ngham_init(void);
-void ngham_encode(tx_pkt_t* p);
+void ngham_encode(uint8_t *pl, uint16_t pl_len, uint8_t *pkt, uint16_t *pkt_len);
 int ngham_decode(uint8_t d, uint8_t *msg);
 
 #endif

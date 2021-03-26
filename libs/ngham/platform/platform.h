@@ -18,7 +18,7 @@ extern uint16_t rx_buf_len;
 extern rx_pkt_t rx_pkt;
 extern uint8_t decoder_state;
 
-void ngham_action_send_data(uint8_t *d, uint16_t d_len, uint8_t priority);
+void ngham_action_send_data(uint8_t *d, uint16_t d_len, uint8_t priority, uint8_t *pkt, uint16_t *pkt_len);
 void ngham_action_set_packet_size(uint8_t size);
 uint8_t ngham_action_get_rssi(void);
 uint8_t ngham_action_get_noise_floor(void);

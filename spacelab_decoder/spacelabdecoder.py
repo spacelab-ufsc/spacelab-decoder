@@ -415,15 +415,27 @@ class SpaceLabDecoder:
             pkt_pl.extend(json.loads(self.textbuffer_wav_gen_payload.get_text(self.textbuffer_wav_gen_payload.get_start_iter(),
                                                                               self.textbuffer_wav_gen_payload.get_end_iter(),
                                                                               False)))
-            print(pkt_pl)
+            ngham_encode_func = self.ngham.ngham_encode
+            ngham_encode_func.argtypes = [ctypes.POINTER(ctypes.c_ubyte), ctypes.c_uint, ctypes.POINTER(ctypes.c_ubyte), ctypes.POINTER(ctypes.c_uint)]
 
-#            ngham_encode_func = self.ngham.ngham_encode
-#            ngham_encode_func.argtypes = [ctypes.c_ubyte, ctypes.POINTER(ctypes.c_ubyte)]
-#            ngham_encode_func.restype = ctypes.c_int
-#
-#            res = ngham_decode_func(pkt_byte, ctypes.cast(array, ctypes.POINTER(ctypes.c_ubyte)))
+            pkt_pl_arr = (ctypes.c_ubyte * len(pkt_pl))(*pkt_pl)
 
-            wav_gen = WavGen(pkt_pl,
+            ArrayTypeByte = ctypes.c_ubyte * _DEFAULT_MAX_PKT_LEN_BYTES # Dynamically declare the array type
+            pkt_encoded = ArrayTypeByte()
+
+            ArrayTypeUInt = ctypes.c_uint * 1 # Dynamically declare the array type
+            pkt_encoded_len = ArrayTypeUInt()
+
+            ngham_encode_func(pkt_pl_arr,
+                              ctypes.c_uint(len(pkt_pl)),
+                              ctypes.cast(pkt_encoded, ctypes.POINTER(ctypes.c_ubyte)),
+                              ctypes.cast(pkt_encoded_len, ctypes.POINTER(ctypes.c_uint)))
+
+            pkt_encoded_list = list()
+            for i in range(int(pkt_encoded_len[0])):
+                pkt_encoded_list.append(int(pkt_encoded[i]))
+
+            wav_gen = WavGen(pkt_encoded_list,
                              int(self.entry_gen_wav_sample_rate.get_text()),
                              int(self.entry_gen_wav_baudrate.get_text()),
                              float(self.entry_gen_wav_amplitude.get_text()),
