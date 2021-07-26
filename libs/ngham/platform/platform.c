@@ -31,10 +31,15 @@ void ngham_action_set_packet_size(uint8_t size){
 }
 
 // Data to be transmitted (to modulator). Priority can be ignored if NGHam is not used for timing purposes.
-void ngham_action_send_data(uint8_t *d, uint16_t d_len, uint8_t priority){
+void ngham_action_send_data(uint8_t *d, uint16_t d_len, uint8_t priority, uint8_t *pkt, uint16_t *pkt_len){
+    uint16_t i = 0;
 	switch (priority){
 		case PKT_PRIORITY_NORMAL:
-			// Send d[]
+            for(i=0;i<d_len;i++)
+            {
+                pkt[i] = d[i];
+            }
+            *pkt_len = d_len;
 			break;
 		case PKT_PRIORITY_FIRST_IN_SLOT:
 			// Send d[]

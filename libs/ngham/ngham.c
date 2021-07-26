@@ -107,7 +107,7 @@ uint8_t ngham_tag_check(uint32_t x, uint32_t y){
 }
 
 // Packets to be transmitted are passed to this function - max. length 220 B
-void ngham_encode(tx_pkt_t* p){
+void ngham_encode(uint8_t *pl, uint16_t pl_len, uint8_t *pkt, uint16_t *pkt_len){
 	uint16_t j;
 	uint16_t crc;
 	uint8_t size_nr = 0;
@@ -116,8 +116,8 @@ void ngham_encode(tx_pkt_t* p){
 	uint8_t codeword_start;
 	
 	// Check size and find control block for smallest possible RS codeword
-	if ((p->pl_len == 0) || (p->pl_len > NGH_PL_SIZE[NGH_SIZES-1])) return;
-	while (p->pl_len > NGH_PL_SIZE[size_nr]) size_nr++;
+	if ((pl_len == 0) || (pl_len > NGH_PL_SIZE[NGH_SIZES-1])) return;
+	while (pl_len > NGH_PL_SIZE[size_nr]) size_nr++;
 
 	// Insert preamble, sync and size-tag
 	if (NGHAM_FOUR_LEVEL_MODULATION){
@@ -135,14 +135,14 @@ void ngham_encode(tx_pkt_t* p){
 	d[d_len++] = NGH_SIZE_TAG[size_nr] & 0xff;
 
 	// Prepare content of codeword
-	d[d_len] = (NGH_PL_SIZE[size_nr] - p->pl_len) & 0x1f;	// Insert padding size
-	d[d_len] |= (p->ngham_flags << 5) & 0xe0;				// Insert flags
+	d[d_len] = (NGH_PL_SIZE[size_nr] - pl_len) & 0x1f;	// Insert padding size
+	d[d_len] |= (0 << 5) & 0xe0;				// Insert flags
 	d_len++;
-	for (j=0; j<p->pl_len; j++) d[d_len++] = p->pl[j];		// Insert data
-	crc = crc_ccitt(&d[codeword_start], p->pl_len+1);	// Insert CRC
+	for (j=0; j<pl_len; j++) d[d_len++] = pl[j];		// Insert data
+	crc = crc_ccitt(&d[codeword_start], pl_len+1);	// Insert CRC
 	d[d_len++] = (crc >> 8) & 0xff;
 	d[d_len++] = crc & 0xff;
-	for (j=p->pl_len+3; j<NGH_PL_SIZE_FULL[size_nr]; j++) d[d_len++] = 0;	// Insert padding
+	for (j=pl_len+3; j<NGH_PL_SIZE_FULL[size_nr]; j++) d[d_len++] = 0;	// Insert padding
 	
 	// Generate parity data
 	encode_rs_char(&rs_cb[size_nr], &d[codeword_start], &d[d_len]);
@@ -151,7 +151,7 @@ void ngham_encode(tx_pkt_t* p){
 	// Scramble
 	for (j=0; j<NGH_PL_PAR_SIZE[size_nr]; j++) d[codeword_start+j] ^= ccsds_poly[j];
 
-	ngham_action_send_data(d, d_len, p->priority);
+	ngham_action_send_data(d, d_len, PKT_PRIORITY_NORMAL, pkt, pkt_len);
 }
 
 int ngham_decode(uint8_t d, uint8_t *msg){

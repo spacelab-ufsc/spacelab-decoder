@@ -1,4 +1,5 @@
 gi
 scipy
 pyzmq
+matplotlib
 sphinx-rtd-theme
