@@ -2,5 +2,4 @@ gi
 scipy
 pyzmq
 matplotlib
-pysox
 sphinx-rtd-theme

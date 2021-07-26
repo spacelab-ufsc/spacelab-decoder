@@ -66,7 +66,7 @@ setuptools.setup(
         ],
     download_url                    = "https://github.com/spacelab-ufsc/spacelab-decoder/releases",
     packages                        = setuptools.find_packages(),
-    install_requires                = ['gi','scipy','pyzmq','matplotlib','pysox'],
+    install_requires                = ['gi','scipy','pyzmq','matplotlib'],
     entry_points                    = {
         'gui_scripts': [
             'spacelab-decoder = spacelab_decoder.__main__:main'

@@ -42,7 +42,6 @@ Until now, this program supports the satellites below:
 * scipy
 * pyzmq
 * matplotlib
-* pysox
 * gnuradio
 
 ### Installation on Ubuntu
