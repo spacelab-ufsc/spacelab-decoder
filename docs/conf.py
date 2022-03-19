@@ -15,10 +15,6 @@ import sys
 
 import sphinx_rtd_theme
 
-from spacelab_decoder.version import __version__
-
-sys.path.insert(0, os.path.abspath('../spacelab_decoder'))
-
 # -- Project information -----------------------------------------------------
 
 project = 'spacelab-decoder'
@@ -26,7 +22,7 @@ copyright = '2021, Universidade Federal de Santa Catarina'
 author = 'Gabriel Mariano Marcelino'
 
 # The full version, including alpha/beta/rc tags
-release = __version__
+release = "0.3"
 
 
 # -- General configuration ---------------------------------------------------
