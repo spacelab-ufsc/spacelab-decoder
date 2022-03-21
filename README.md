@@ -43,6 +43,7 @@ Until now, this program supports the satellites below:
 * pyzmq
 * matplotlib
 * gnuradio
+* pyngham
 
 ### Installation on Ubuntu
 
@@ -57,6 +58,8 @@ Until now, this program supports the satellites below:
 * ```python setup.py install```
 
 ## Documentation
+
+The documentation page is available [here](https://spacelab-ufsc.github.io/spacelab-decoder/). Instructions to build the documentation page are described below.
 
 ### Dependencies
 

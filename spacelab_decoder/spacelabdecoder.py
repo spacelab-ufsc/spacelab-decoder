@@ -3,7 +3,7 @@
 #
 #  spacelab_decoder.py
 #  
-#  Copyright (C) 2021, Universidade Federal de Santa Catarina
+#  Copyright The SpaceLab-Decoder Contributors.
 #  
 #  This file is part of SpaceLab-Decoder.
 #
@@ -28,7 +28,6 @@ import threading
 import sys
 import signal
 from datetime import datetime
-import ctypes
 import pathlib
 import json
 
@@ -40,6 +39,8 @@ from gi.repository import GdkPixbuf
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 import zmq
+
+import pyngham
 
 from spacelab_decoder.mm_decoder import mm_decoder
 import spacelab_decoder.version
@@ -58,14 +59,6 @@ _ICON_FILE_LINUX_SYSTEM         = '/usr/share/icons/spacelab_decoder_256x256.png
 
 _LOGO_FILE_LOCAL                = os.path.abspath(os.path.dirname(__file__)) + '/data/img/spacelab-logo-full-400x200.png'
 _LOGO_FILE_LINUX_SYSTEM         = '/usr/share/spacelab_decoder/spacelab-logo-full-400x200.png'
-
-_NGHAM_LIB_LOCAL                = os.path.abspath(os.path.dirname(__file__)) + '/libngham.so'
-_NGHAM_LIB_LINUX_SYSTEM         = '/usr/lib/libngham.so'
-_NGHAM_LIB_LINUX_64_SYSTEM      = '/usr/lib64/libngham.so'
-
-_NGHAM_FSAT_LIB_LOCAL           = os.path.abspath(os.path.dirname(__file__)) + '/libngham_fsat.so'
-_NGHAM_FSAT_LIB_LINUX_SYSTEM    = '/usr/lib/libngham_fsat.so'
-_NGHAM_FSAT_LIB_LINUX_64_SYSTEM = '/usr/lib64/libngham_fsat.so'
 
 _DIR_CONFIG_LINUX               = '.spacelab_decoder'
 _DIR_CONFIG_WINDOWS             = 'spacelab_decoder'
@@ -106,27 +99,7 @@ class SpaceLabDecoder:
 
         self._load_preferences()
 
-        if os.path.isfile(_NGHAM_LIB_LOCAL):
-            self.ngham = ctypes.CDLL(_NGHAM_LIB_LOCAL)
-        elif os.path.isfile(_NGHAM_LIB_LINUX_64_SYSTEM):
-            self.ngham = ctypes.CDLL(_NGHAM_LIB_LINUX_64_SYSTEM)
-        else:
-            self.ngham = ctypes.CDLL(_NGHAM_LIB_LINUX_SYSTEM)
-
-        self.ngham.ngham_init_arrays()
-
-        self.ngham.ngham_init()
-
-        if os.path.isfile(_NGHAM_FSAT_LIB_LOCAL):
-            self.ngham_fsat = ctypes.CDLL(_NGHAM_FSAT_LIB_LOCAL)
-        elif os.path.isfile(_NGHAM_FSAT_LIB_LINUX_64_SYSTEM):
-            self.ngham_fsat = ctypes.CDLL(_NGHAM_FSAT_LIB_LINUX_64_SYSTEM)
-        else:
-            self.ngham_fsat = ctypes.CDLL(_NGHAM_FSAT_LIB_LINUX_SYSTEM)
-
-        self.ngham_fsat.ngham_init_arrays()
-
-        self.ngham_fsat.ngham_init()
+        self.ngham = pyngham.PyNGHam()
 
         self.decoded_packets_index = list()
 
@@ -391,27 +364,8 @@ class SpaceLabDecoder:
             pkt_pl.extend(json.loads(self.textbuffer_wav_gen_payload.get_text(self.textbuffer_wav_gen_payload.get_start_iter(),
                                                                               self.textbuffer_wav_gen_payload.get_end_iter(),
                                                                               False)))
-            ngham_encode_func = self.ngham.ngham_encode
-            ngham_encode_func.argtypes = [ctypes.POINTER(ctypes.c_ubyte), ctypes.c_uint, ctypes.POINTER(ctypes.c_ubyte), ctypes.POINTER(ctypes.c_uint)]
 
-            pkt_pl_arr = (ctypes.c_ubyte * len(pkt_pl))(*pkt_pl)
-
-            ArrayTypeByte = ctypes.c_ubyte * _DEFAULT_MAX_PKT_LEN_BYTES # Dynamically declare the array type
-            pkt_encoded = ArrayTypeByte()
-
-            ArrayTypeUInt = ctypes.c_uint * 1 # Dynamically declare the array type
-            pkt_encoded_len = ArrayTypeUInt()
-
-            ngham_encode_func(pkt_pl_arr,
-                              ctypes.c_uint(len(pkt_pl)),
-                              ctypes.cast(pkt_encoded, ctypes.POINTER(ctypes.c_ubyte)),
-                              ctypes.cast(pkt_encoded_len, ctypes.POINTER(ctypes.c_uint)))
-
-            pkt_encoded_list = list()
-            for i in range(int(pkt_encoded_len[0])):
-                pkt_encoded_list.append(int(pkt_encoded[i]))
-
-            wav_gen = WavGen(pkt_encoded_list,
+            wav_gen = WavGen(self.ngham.encode(pkt_pl),
                              int(self.entry_gen_wav_sample_rate.get_text()),
                              int(self.entry_gen_wav_baudrate.get_text()),
                              float(self.entry_gen_wav_amplitude.get_text()),
@@ -496,19 +450,6 @@ class SpaceLabDecoder:
         packet_detected = False
         packet_buf = list()
 
-        ngham_decode_func = self.ngham.ngham_decode
-        ngham_decode_func.argtypes = [ctypes.c_ubyte, ctypes.POINTER(ctypes.c_ubyte)]
-        ngham_decode_func.restype = ctypes.c_int
-
-        if self.combobox_satellite.get_active() == 0:
-            ngham_decode_func = self.ngham_fsat.ngham_decode
-            ngham_decode_func.argtypes = [ctypes.c_ubyte, ctypes.POINTER(ctypes.c_ubyte)]
-            ngham_decode_func.restype = ctypes.c_int
-        elif self.combobox_satellite.get_active() == 1:
-            ngham_decode_func = self.ngham.ngham_decode
-            ngham_decode_func.argtypes = [ctypes.c_ubyte, ctypes.POINTER(ctypes.c_ubyte)]
-            ngham_decode_func.restype = ctypes.c_int
-
         while True:
             socks = dict(poller.poll(1000))
             if socks:
@@ -523,19 +464,17 @@ class SpaceLabDecoder:
                                     pkt_byte = byte_buf.to_byte()
                                     packet_buf.append(pkt_byte)
 
-                                    ArrayType = ctypes.c_ubyte * _DEFAULT_MAX_PKT_LEN_BYTES # Dynamically declare the array type
-                                    array = ArrayType()                                     # The array type instance
-
-                                    res = ngham_decode_func(pkt_byte, ctypes.cast(array, ctypes.POINTER(ctypes.c_ubyte)))
-                                    if res == -1:
-                                        packet_detected = False
-                                        if self.combobox_packet_type.get_active() == 0:
-                                            self.listmodel_events.append([str(datetime.now()), "Error decoding a Beacon packet!"])
-                                        elif self.combobox_packet_type.get_active() == 1:
-                                            self.listmodel_events.append([str(datetime.now()), "Error decoding a Downlink packet!"])
-                                        else:
-                                            self.listmodel_events.append([str(datetime.now()), "Error decoding a Packet!"])
-                                    elif res > 0:
+                                    pl, err, err_loc = self.ngham.decode_byte(pkt_byte)
+                                    if len(pl) == 0:
+                                        if err == -1:
+                                            packet_detected = False
+                                            if self.combobox_packet_type.get_active() == 0:
+                                                self.listmodel_events.append([str(datetime.now()), "Error decoding a Beacon packet!"])
+                                            elif self.combobox_packet_type.get_active() == 1:
+                                                self.listmodel_events.append([str(datetime.now()), "Error decoding a Downlink packet!"])
+                                            else:
+                                                self.listmodel_events.append([str(datetime.now()), "Error decoding a Packet!"])
+                                    else:
                                         packet_detected = False
                                         tm_now = datetime.now()
                                         self.decoded_packets_index.append(self.textbuffer_pkt_data.create_mark(str(tm_now), self.textbuffer_pkt_data.get_end_iter(), True))
@@ -545,11 +484,7 @@ class SpaceLabDecoder:
                                             self.listmodel_events.append([str(tm_now), "Downlink packet decoded!"])
                                         else:
                                             self.listmodel_events.append([str(tm_now), "Packet decoded!"])
-
-                                        pkt_list = list()
-                                        for i in range(res):
-                                            pkt_list.append(int(array[i]))
-                                        self._decode_packet(pkt_list)
+                                        self._decode_packet(pl)
                                     byte_buf.clear()
                         sync_word_buf.push(bool(bit))
                         if (sync_word_buf == sync_word):
