@@ -79,8 +79,6 @@ setuptools.setup(
         ('share/spacelab_decoder/', ['spacelab_decoder/data/img/spacelab-logo-full-400x200.png']),
         ('share/spacelab_decoder/', ['spacelab_decoder/data/satellites/floripasat-1.json']),
         ('share/spacelab_decoder/', ['spacelab_decoder/data/satellites/floripasat-2.json']),
-        ('lib/', ['spacelab_decoder/libngham.so']),
-        ('lib/', ['spacelab_decoder/libngham_fsat.so']),
         ],
     cmdclass                        = {'build_sphinx': BuildDoc},
 )

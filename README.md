@@ -54,10 +54,6 @@ Until now, this program supports the satellites below:
 
 ## Building and Installing
 
-Before installing the main Python application, the NGHam library must be compiled and installed in the system:
-
-* ```make```
-* ```make install```
 * ```python setup.py install```
 
 ## Documentation
