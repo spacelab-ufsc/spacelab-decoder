@@ -3,7 +3,7 @@
 #
 #  __main__.py
 #  
-#  Copyright (C) 2021, Universidade Federal de Santa Catarina
+#  Copyright The SpaceLab-Decoder Contributors.
 #  
 #  This file is part of SpaceLab-Decoder.
 #
@@ -31,8 +31,7 @@ sys.path.append(str(pathlib.Path(os.path.realpath(__file__)).parents[1]))
 
 from spacelab_decoder.spacelabdecoder import SpaceLabDecoder
 
-#def main(args):
-def main():
+def main(args):
     """Main function.
 
     Args:
@@ -46,6 +45,4 @@ def main():
 
 
 if __name__ == '__main__':
-    import sys
-#    sys.exit(main(sys.argv))
-    sys.exit(main())
+    sys.exit(main(sys.argv))
