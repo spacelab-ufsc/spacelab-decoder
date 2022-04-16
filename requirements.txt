@@ -1,4 +1,4 @@
-gi
+PyGObject
 scipy
 pyzmq
 matplotlib
