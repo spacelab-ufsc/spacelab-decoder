@@ -1,0 +1,58 @@
+#
+#  test.yml
+#  
+#  Copyright The SpaceLab-Decoder Contributors.
+#  
+#  This file is part of SpaceLab-Decoder.
+#
+#  SpaceLab-Decoder is free software; you can redistribute it
+#  and/or modify it under the terms of the GNU General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+#  
+#  SpaceLab-Decoder is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public
+#  License along with SpaceLab-Decoder; if not, see <http://www.gnu.org/licenses/>.
+#  
+#
+
+
+name: Unit tests
+
+on:
+  push:
+    branches: [dev]
+  pull_request:
+    branches: [master, dev]
+
+  # 'workflow_dispatch' allows manual execution of this workflow under the repository's 'Actions' tab
+  workflow_dispatch:
+
+jobs:
+
+  unit-tests:
+    name: Unit tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v3
+
+      - name: Install dependencies
+        run: sudo apt install -y python3 python3-dev python3-gi python3-gi-cairo libcairo2-dev libgirepository1.0-dev gir1.2-gtk-3.0 libgtk-3-dev sphinx-common sphinx-rtd-theme-common xvfb python3-pytest python3-pytest-xvfb
+
+      - name: Install Python dependencies
+        run: python -m pip install --upgrade pip PyGObject pytest-xvfb
+
+      - name: Execute the tests
+        run: |
+         Xvfb :1 &
+         export DISPLAY=:1
+         pytest-3 tests/
