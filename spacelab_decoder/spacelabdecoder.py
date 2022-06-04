@@ -77,7 +77,7 @@ _DEFAULT_BEACON_SYNC_WORD       = '0x7E2AE65D'
 _DEFAULT_DOWNLINK_SYNC_WORD     = '0x7E2AE65D'
 _DEFAULT_MAX_PKT_LEN_BYTES      = 300
 
-_ZMQ_PUSH_PULL_ADDRESS          = "tcp://127.0.0.1:8023"
+_ZMQ_PUSH_PULL_ADDRESS          = "tcp://127.0.0.1:2112"
 
 _TOOLS_FILTERS                  = ["None", "Low pass", "High pass"]
 _WAVFILE_BUFFER_FILE            = "/tmp/spacelab_decoder_buffer.wav"

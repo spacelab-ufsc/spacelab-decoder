@@ -35,7 +35,7 @@ from gnuradio import zeromq
 _DEFAULT_INPUT_FILE         = "/tmp/audio.wav"
 _DEFAULT_SAMPLE_RATE_HZ     = 48000
 _DEFAULT_BAUDRATE_BPS       = 1200
-_DEFAULT_ZMQ_ADDRESS        = "tcp://127.0.0.1:8023"
+_DEFAULT_ZMQ_ADDRESS        = "tcp://127.0.0.1:2112"
 
 class mm_decoder(gr.top_block):
 
