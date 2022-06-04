@@ -28,6 +28,8 @@
 
 SpaceLab Packet Decoder is a software to decode audio records from the satellites of SpaceLab.
 
+<img src="docs/img/main-window.png" width=""/>
+
 ## Satellites
 
 Until now, this program supports the satellites below:
