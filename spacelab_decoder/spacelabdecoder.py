@@ -67,6 +67,8 @@ _SAT_JSON_FLORIPASAT_1_LOCAL    = os.path.abspath(os.path.dirname(__file__)) + '
 _SAT_JSON_FLORIPASAT_1_SYSTEM   = '/usr/share/spacelab_decoder/floripasat-1.json'
 _SAT_JSON_FLORIPASAT_2_LOCAL    = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/floripasat-2.json'
 _SAT_JSON_FLORIPASAT_2_SYSTEM   = '/usr/share/spacelab_decoder/floripasat-2.json'
+_SAT_JSON_ALDEBARAN_1_LOCAL     = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/aldebaran-1.json'
+_SAT_JSON_ALDEBARAN_1_SYSTEM    = '/usr/share/spacelab_decoder/aldebaran-1.json'
 
 _DEFAULT_CALLSIGN               = 'PP5UF'
 _DEFAULT_LOCATION               = 'Florianópolis'
@@ -168,6 +170,7 @@ class SpaceLabDecoder:
         self.liststore_satellite = self.builder.get_object("liststore_satellite")
         self.liststore_satellite.append(["FloripaSat-1"])
         self.liststore_satellite.append(["FloripaSat-2"])
+        self.liststore_satellite.append(["Aldebaran-1"])
         self.combobox_satellite = self.builder.get_object("combobox_satellite")
         cell = Gtk.CellRendererText()
         self.combobox_satellite.pack_start(cell, True)
@@ -508,6 +511,11 @@ class SpaceLabDecoder:
                 sat_json = _SAT_JSON_FLORIPASAT_2_LOCAL
             else:
                 sat_json = _SAT_JSON_FLORIPASAT_2_SYSTEM
+        elif self.combobox_satellite.get_active() == 2:
+            if os.path.isfile(_SAT_JSON_ALDEBARAN_1_LOCAL):
+                sat_json = _SAT_JSON_ALDEBARAN_1_LOCAL
+            else:
+                sat_json = _SAT_JSON_ALDEBARAN_1_SYSTEM
         p = Packet(sat_json, pkt)
         pkt_txt = pkt_txt + str(p)
         pkt_txt = pkt_txt + "========================================================\n"

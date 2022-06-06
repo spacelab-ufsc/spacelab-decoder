@@ -1,0 +1,417 @@
+{
+    "name": "Aldebaran-1",
+    "links": [
+        {
+            "name": "Beacon",
+            "types": [
+                {
+                    "name": "OBDH",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Battery Cell 1 Voltage",
+                            "initial_pos": 8,
+                            "final_pos": 9,
+                            "value": 0,
+                            "conversion": "(((pkt[8] << 8) | pkt[9])/32.0)*4.883e-3",
+                            "unit": "V"
+                        },
+                        {
+                            "name": "Battery Cell 2 Voltage",
+                            "initial_pos": 10,
+                            "final_pos": 11,
+                            "value": 0,
+                            "conversion": "(((pkt[10] << 8) | pkt[11])/32.0)*4.883e-3",
+                            "unit": "V"
+                        },
+                        {
+                            "name": "Battery Cell 1 Temperature",
+                            "initial_pos": 12,
+                            "final_pos": 14,
+                            "value": 0,
+                            "conversion": "((pkt[12] << 16) | (pkt[13] << 8) | pkt[14])*0.125/32.0",
+                            "unit": "oC"
+                        },
+                        {
+                            "name": "Battery Cell 2 Temperature",
+                            "initial_pos": 15,
+                            "final_pos": 17,
+                            "value": 0,
+                            "conversion": "((pkt[15] << 16) | (pkt[16] << 8) | pkt[17])*0.125/32.0",
+                            "unit": "oC"
+                        },
+                        {
+                            "name": "Battery Charge",
+                            "initial_pos": 18,
+                            "final_pos": 19,
+                            "value": 0,
+                            "conversion": "((pkt[18] << 8) | pkt[19])*(6.25*1e-4)",
+                            "unit": "Ah"
+                        },
+                        {
+                            "name": "Solar Panel 1 Current",
+                            "initial_pos": 20,
+                            "final_pos": 21,
+                            "value": 0,
+                            "conversion": "((pkt[20] << 8) | pkt[21])*(2.5/4095)*(1/(0.05*0.025*3300))",
+                            "unit": "A"
+                        },
+                        {
+                            "name": "Solar Panel 2 Current",
+                            "initial_pos": 22,
+                            "final_pos": 23,
+                            "value": 0,
+                            "conversion": "((pkt[22] << 8) | pkt[23])*(2.5/4095)*(1/(0.05*0.025*3300))",
+                            "unit": "A"
+                        },
+                        {
+                            "name": "Solar Panel 3 Current",
+                            "initial_pos": 24,
+                            "final_pos": 25,
+                            "value": 0,
+                            "conversion": "((pkt[24] << 8) | pkt[25])*(2.5/4095)*(1/(0.05*0.025*3300))",
+                            "unit": "A"
+                        },
+                        {
+                            "name": "Solar Panel 4 Current",
+                            "initial_pos": 26,
+                            "final_pos": 27,
+                            "value": 0,
+                            "conversion": "((pkt[26] << 8) | pkt[27])*(2.5/4095)*(1/(0.05*0.025*3300))",
+                            "unit": "A"
+                        },
+                        {
+                            "name": "Solar Panel 5 Current",
+                            "initial_pos": 28,
+                            "final_pos": 29,
+                            "value": 0,
+                            "conversion": "((pkt[28] << 8) | pkt[29])*(2.5/4095)*(1/(0.05*0.025*3300))",
+                            "unit": "A"
+                        },
+                        {
+                            "name": "Solar Panel 6 Current",
+                            "initial_pos": 30,
+                            "final_pos": 31,
+                            "value": 0,
+                            "conversion": "((pkt[30] << 8) | pkt[31])*(2.5/4095)*(1/(0.05*0.025*3300))",
+                            "unit": "A"
+                        },
+                        {
+                            "name": "Solar Panel Array 1 Voltage",
+                            "initial_pos": 32,
+                            "final_pos": 33,
+                            "value": 0,
+                            "conversion": "((pkt[32] << 8) | pkt[33])*(2.5/4095)*(100e3 + 93.1e3)/100e3",
+                            "unit": "V"
+                        },
+                        {
+                            "name": "Solar Panel Array 2 Voltage",
+                            "initial_pos": 34,
+                            "final_pos": 35,
+                            "value": 0,
+                            "conversion": "((pkt[34] << 8) | pkt[35])*(2.5/4095)*(100e3 + 93.1e3)/100e3",
+                            "unit": "V"
+                        },
+                        {
+                            "name": "Solar Panel Array 3 Voltage",
+                            "initial_pos": 36,
+                            "final_pos": 37,
+                            "value": 0,
+                            "conversion": "((pkt[36] << 8) | pkt[37])*(2.5/4095)*(100e3 + 93.1e3)/100e3",
+                            "unit": "V"
+                        },
+                        {
+                            "name": "Energy Level",
+                            "initial_pos": 38,
+                            "final_pos": 38,
+                            "value": 0,
+                            "conversion": "int(pkt[38])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "IMU Status",
+                            "initial_pos": 39,
+                            "final_pos": 39,
+                            "value": 0,
+                            "conversion": "bool((pkt[39] >> 4) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "uSD Status",
+                            "initial_pos": 39,
+                            "final_pos": 39,
+                            "value": 0,
+                            "conversion": "bool((pkt[39] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "RUSH Status",
+                            "initial_pos": 39,
+                            "final_pos": 39,
+                            "value": 0,
+                            "conversion": "bool((pkt[39] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "EPS Status",
+                            "initial_pos": 39,
+                            "final_pos": 39,
+                            "value": 0,
+                            "conversion": "bool((pkt[39] >> 0) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Antenna Status",
+                            "initial_pos": 39,
+                            "final_pos": 39,
+                            "value": 0,
+                            "conversion": "bool((pkt[39] >> 5) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "IMU Accelerometer X",
+                            "initial_pos": 40,
+                            "final_pos": 41,
+                            "value": 0,
+                            "conversion": "int((pkt[40] << 8) | pkt[41])*16.0/32768.0",
+                            "unit": ""
+                        },
+                        {
+                            "name": "IMU Accelerometer Y",
+                            "initial_pos": 42,
+                            "final_pos": 43,
+                            "value": 0,
+                            "conversion": "int((pkt[42] << 8) | pkt[43])*16.0/32768.0",
+                            "unit": ""
+                        },
+                        {
+                            "name": "IMU Accelerometer Z",
+                            "initial_pos": 44,
+                            "final_pos": 45,
+                            "value": 0,
+                            "conversion": "int((pkt[44] << 8) | pkt[45])*16.0/32768.0",
+                            "unit": ""
+                        },
+                        {
+                            "name": "IMU Gyroscope X",
+                            "initial_pos": 46,
+                            "final_pos": 47,
+                            "value": 0,
+                            "conversion": "int((pkt[46] << 8) | pkt[47])*250.0/32768.0",
+                            "unit": ""
+                        },
+                        {
+                            "name": "IMU Gyroscope Y",
+                            "initial_pos": 48,
+                            "final_pos": 49,
+                            "value": 0,
+                            "conversion": "int((pkt[48] << 8) | pkt[49])*250.0/32768.0",
+                            "unit": ""
+                        },
+                        {
+                            "name": "IMU Gyroscope Z",
+                            "initial_pos": 50,
+                            "final_pos": 51,
+                            "value": 0,
+                            "conversion": "int((pkt[50] << 8) | pkt[51])*250.0/32768.0",
+                            "unit": ""
+                        },
+                        {
+                            "name": "System Time",
+                            "initial_pos": 52,
+                            "final_pos": 55,
+                            "value": 0,
+                            "conversion": "str(int(((pkt[53] << 16) | (pkt[54] << 8) | pkt[55])/60)) + \":\" + str(((pkt[53] << 16) | (pkt[54] << 8) | pkt[55])%60) + \":\" + str(pkt[52])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "OBDH Resets",
+                            "initial_pos": 56,
+                            "final_pos": 57,
+                            "value": 0,
+                            "conversion": "pkt[57] + pkt[56]*256",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "EPS",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 1,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Battery Cell 1 Voltage",
+                            "initial_pos": 8,
+                            "final_pos": 9,
+                            "value": 0,
+                            "conversion": "(((pkt[8] << 8) | pkt[9])/32.0)*4.883e-3",
+                            "unit": "V"
+                        },
+                        {
+                            "name": "Battery Cell 2 Voltage",
+                            "initial_pos": 10,
+                            "final_pos": 11,
+                            "value": 0,
+                            "conversion": "(((pkt[10] << 8) | pkt[11])/32.0)*4.883e-3",
+                            "unit": "V"
+                        },
+                        {
+                            "name": "Battery Monitor Temperature",
+                            "initial_pos": 12,
+                            "final_pos": 13,
+                            "value": 0,
+                            "conversion": "((pkt[12] << 8) | pkt[13]) * 0.125 / 32.0",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Battery Current",
+                            "initial_pos": 14,
+                            "final_pos": 15,
+                            "value": 0,
+                            "conversion": "int((pkt[14] << 8) | pkt[15]) * (1.5625e-6 / 0.01)",
+                            "unit": "A"
+                        },
+                        {
+                            "name": "EPS Temperature",
+                            "initial_pos": 16,
+                            "final_pos": 17,
+                            "value": 0,
+                            "conversion": "(((pkt[16] << 8) | pkt[17]) * (2.5 / 4095.0)  - 0.680) * 70.0 / 0.170",
+                            "unit": "oC"
+                        },
+                        {
+                            "name": "Battery Charge",
+                            "initial_pos": 18,
+                            "final_pos": 19,
+                            "value": 0,
+                            "conversion": "((pkt[18] << 8) | pkt[19])*(6.25*1e-4)",
+                            "unit": "Ah"
+                        },
+                        {
+                            "name": "Solar Panel 1 Current",
+                            "initial_pos": 20,
+                            "final_pos": 21,
+                            "value": 0,
+                            "conversion": "((pkt[20] << 8) | pkt[21])*(2.5/4095)*(1/(0.05*0.025*3300))",
+                            "unit": "A"
+                        },
+                        {
+                            "name": "Solar Panel 2 Current",
+                            "initial_pos": 22,
+                            "final_pos": 23,
+                            "value": 0,
+                            "conversion": "((pkt[22] << 8) | pkt[23])*(2.5/4095)*(1/(0.05*0.025*3300))",
+                            "unit": "A"
+                        },
+                        {
+                            "name": "Solar Panel 3 Current",
+                            "initial_pos": 24,
+                            "final_pos": 25,
+                            "value": 0,
+                            "conversion": "((pkt[24] << 8) | pkt[25])*(2.5/4095)*(1/(0.05*0.025*3300))",
+                            "unit": "A"
+                        },
+                        {
+                            "name": "Solar Panel 4 Current",
+                            "initial_pos": 26,
+                            "final_pos": 27,
+                            "value": 0,
+                            "conversion": "((pkt[26] << 8) | pkt[27])*(2.5/4095)*(1/(0.05*0.025*3300))",
+                            "unit": "A"
+                        },
+                        {
+                            "name": "Solar Panel 5 Current",
+                            "initial_pos": 28,
+                            "final_pos": 29,
+                            "value": 0,
+                            "conversion": "((pkt[28] << 8) | pkt[29])*(2.5/4095)*(1/(0.05*0.025*3300))",
+                            "unit": "A"
+                        },
+                        {
+                            "name": "Solar Panel 6 Current",
+                            "initial_pos": 30,
+                            "final_pos": 31,
+                            "value": 0,
+                            "conversion": "((pkt[30] << 8) | pkt[31])*(2.5/4095)*(1/(0.05*0.025*3300))",
+                            "unit": "A"
+                        },
+                        {
+                            "name": "Solar Panel Array 1 Voltage",
+                            "initial_pos": 32,
+                            "final_pos": 33,
+                            "value": 0,
+                            "conversion": "((pkt[32] << 8) | pkt[33])*(2.5/4095)*(100e3 + 93.1e3)/100e3",
+                            "unit": "V"
+                        },
+                        {
+                            "name": "Solar Panel Array 2 Voltage",
+                            "initial_pos": 34,
+                            "final_pos": 35,
+                            "value": 0,
+                            "conversion": "((pkt[34] << 8) | pkt[35])*(2.5/4095)*(100e3 + 93.1e3)/100e3",
+                            "unit": "V"
+                        },
+                        {
+                            "name": "Solar Panel Array 3 Voltage",
+                            "initial_pos": 36,
+                            "final_pos": 37,
+                            "value": 0,
+                            "conversion": "((pkt[36] << 8) | pkt[37])*(2.5/4095)*(100e3 + 93.1e3)/100e3",
+                            "unit": "V"
+                        }
+                    ]
+                },
+                {
+                    "name": "TTC",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

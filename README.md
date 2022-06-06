@@ -36,6 +36,7 @@ Until now, this program supports the satellites below:
 
 * FloripaSat-1 (launched in December 2019)
 * FloripaSat-2 (to be launched on 2022)
+* Aldebaran-1 (to be launched on TBC)
 
 ## Dependencies
 
