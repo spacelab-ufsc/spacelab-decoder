@@ -30,6 +30,7 @@ import signal
 from datetime import datetime
 import pathlib
 import json
+import csv
 
 import gi
 gi.require_version('Gtk', '3.0')
@@ -83,6 +84,11 @@ _ZMQ_PUSH_PULL_ADDRESS          = "tcp://127.0.0.1:2112"
 
 _TOOLS_FILTERS                  = ["None", "Low pass", "High pass"]
 _WAVFILE_BUFFER_FILE            = "/tmp/spacelab_decoder_buffer.wav"
+
+#Defining logfile default local
+_DIR_CONFIG_LOGFILE_LINUX       = 'spacelab_decoder'
+_DEFAULT_LOGFILE_PATH           = os.path.join(os.path.expanduser('~'), _DIR_CONFIG_LOGFILE_LINUX)
+_DEFAULT_LOGFILE                = 'logfile.csv'
 
 class SpaceLabDecoder:
 
@@ -162,6 +168,10 @@ class SpaceLabDecoder:
         else:
             self.aboutdialog.set_logo(GdkPixbuf.Pixbuf.new_from_file(_LOGO_FILE_LINUX_SYSTEM))
 
+        # Logfile chooser button
+        self.logfile_chooser_button = self.builder.get_object("logfile_chooser_button")
+        self.logfile_chooser_button.set_filename(_DEFAULT_LOGFILE_PATH)
+
         # Preferences button
         self.button_preferences = self.builder.get_object("button_preferences")
         self.button_preferences.connect("clicked", self.on_button_preferences_clicked)
@@ -223,6 +233,18 @@ class SpaceLabDecoder:
         self.selection_events = self.treeview_events.get_selection()
         self.selection_events.connect("changed", self.on_events_selection_changed)
 
+    def write_log(self, msg):
+        event = [str(datetime.now()), msg]
+
+        self.listmodel_events.append(event)
+
+        if not os.path.exists(_DEFAULT_LOGFILE_PATH):
+            os.mkdir(_DEFAULT_LOGFILE_PATH)
+
+        with open(self.logfile_chooser_button.get_filename() + '/' + _DEFAULT_LOGFILE, 'a') as logfile:
+            writer = csv.writer(logfile, delimiter='\t')
+            writer.writerow(event)
+
     def run(self):
         self.window.show_all()
 
@@ -264,7 +286,7 @@ class SpaceLabDecoder:
             else:
                 sample_rate, data = wavfile.read(self.filechooser_audio_file.get_filename())
                 wav_filename = self.filechooser_audio_file.get_filename()
-                self.listmodel_events.append([str(datetime.now()), "Audio file opened with a sample rate of " + str(sample_rate) + " Hz"])
+                self.write_log("Audio file opened with a sample rate of " + str(sample_rate) + " Hz")
 
                 x = threading.Thread(target=self._decode_audio, args=(wav_filename, sample_rate, 1200, self.checkbutton_play_audio.get_active()))
                 z = threading.Thread(target=self._zmq_receiver)
@@ -472,21 +494,21 @@ class SpaceLabDecoder:
                                         if err == -1:
                                             packet_detected = False
                                             if self.combobox_packet_type.get_active() == 0:
-                                                self.listmodel_events.append([str(datetime.now()), "Error decoding a Beacon packet!"])
+                                                self.write_log("Error decoding a Beacon packet!")
                                             elif self.combobox_packet_type.get_active() == 1:
-                                                self.listmodel_events.append([str(datetime.now()), "Error decoding a Downlink packet!"])
+                                                self.write_log("Error decoding a Downlink packet!")
                                             else:
-                                                self.listmodel_events.append([str(datetime.now()), "Error decoding a Packet!"])
+                                                self.write_log("Error decoding a Packet!")
                                     else:
                                         packet_detected = False
                                         tm_now = datetime.now()
                                         self.decoded_packets_index.append(self.textbuffer_pkt_data.create_mark(str(tm_now), self.textbuffer_pkt_data.get_end_iter(), True))
                                         if self.combobox_packet_type.get_active() == 0:
-                                            self.listmodel_events.append([str(tm_now), "Beacon packet decoded!"])
+                                            self.write_log("Beacon packet decoded!")
                                         elif self.combobox_packet_type.get_active() == 1:
-                                            self.listmodel_events.append([str(tm_now), "Downlink packet decoded!"])
+                                            self.write_log("Downlink packet decoded!")
                                         else:
-                                            self.listmodel_events.append([str(tm_now), "Packet decoded!"])
+                                            self.write_log("Packet decoded!")
                                         self._decode_packet(pl)
                                     byte_buf.clear()
                         sync_word_buf.push(bool(bit))
