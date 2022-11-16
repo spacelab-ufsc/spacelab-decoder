@@ -13,4 +13,9 @@ Overview
 .. toctree::
    :maxdepth: 3
 
+   overview
+   installation
+   telecommands_decoding
+   logfile
    packaging
+   implementation
