@@ -1,0 +1,860 @@
+{
+    "name": "GOLDS-UFSC",
+    "links": [
+        {
+            "name": "Beacon",
+            "types": [
+                {
+                    "name": "EPS data",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Timestamp",
+                            "initial_pos": 8,
+                            "final_pos": 11,
+                            "value": 0,
+                            "conversion": "int((pkt[8] << 24) | (pkt[9] << 16) | (pkt[10] << 8) | pkt[11])",
+                            "unit": "ms"
+                        },
+                        {
+                            "name": "Battery cell 1 voltage",
+                            "initial_pos": 12,
+                            "final_pos": 13,
+                            "value": 0,
+                            "conversion": "int((pkt[12] << 8) << pkt[13])",
+                            "unit": "mV"
+                        },
+                        {
+                            "name": "Battery cell 2 voltage",
+                            "initial_pos": 14,
+                            "final_pos": 15,
+                            "value": 0,
+                            "conversion": "int((pkt[14] << 8) << pkt[15])",
+                            "unit": "mV"
+                        },
+                        {
+                            "name": "Battery current",
+                            "initial_pos": 16,
+                            "final_pos": 17,
+                            "value": 0,
+                            "conversion": "int((pkt[16] << 8) | pkt[17])",
+                            "unit": "mA"
+                        },
+                        {
+                            "name": "Battery charge",
+                            "initial_pos": 18,
+                            "final_pos": 19,
+                            "value": 0,
+                            "conversion": "int((pkt[18] << 8) | pkt[19])",
+                            "unit": "mAh"
+                        },
+                        {
+                            "name": "Battery cell 1 temperature",
+                            "initial_pos": 20,
+                            "final_pos": 21,
+                            "value": 0,
+                            "conversion": "int((pkt[20] << 8) | pkt[21])",
+                            "unit": "K"
+                        },
+                        {
+                            "name": "Battery cell 2 temperature",
+                            "initial_pos": 22,
+                            "final_pos": 23,
+                            "value": 0,
+                            "conversion": "int((pkt[22] << 8) | pkt[23])",
+                            "unit": "K"
+                        },
+                        {
+                            "name": "Battery monitor temperature",
+                            "initial_pos": 24,
+                            "final_pos": 25,
+                            "value": 0,
+                            "conversion": "int((pkt[24] << 8) | pkt[25])",
+                            "unit": "K"
+                        },
+                        {
+                            "name": "Solar panel voltage (-Y and +X)",
+                            "initial_pos": 26,
+                            "final_pos": 27,
+                            "value": 0,
+                            "conversion": "int((pkt[26] << 8) | pkt[27])",
+                            "unit": "mV"
+                        },
+                        {
+                            "name": "Solar panel voltage (-X and +Z)",
+                            "initial_pos": 28,
+                            "final_pos": 29,
+                            "value": 0,
+                            "conversion": "int((pkt[28] << 8) | pkt[29])",
+                            "unit": "mV"
+                        },
+                        {
+                            "name": "Solar panel voltage (-Z and +Y)",
+                            "initial_pos": 30,
+                            "final_pos": 31,
+                            "value": 0,
+                            "conversion": "int((pkt[30] << 8) | pkt[31])",
+                            "unit": "mV"
+                        },
+                        {
+                            "name": "Solar panel current (-Y)",
+                            "initial_pos": 32,
+                            "final_pos": 33,
+                            "value": 0,
+                            "conversion": "int((pkt[32] << 8) | pkt[33])",
+                            "unit": "mA"
+                        },
+                        {
+                            "name": "Solar panel current (+Y)",
+                            "initial_pos": 34,
+                            "final_pos": 35,
+                            "value": 0,
+                            "conversion": "int((pkt[34] << 8) | pkt[35])",
+                            "unit": "mA"
+                        },
+                        {
+                            "name": "Solar panel current (-X)",
+                            "initial_pos": 36,
+                            "final_pos": 37,
+                            "value": 0,
+                            "conversion": "int((pkt[36] << 8) | pkt[37])",
+                            "unit": "mA"
+                        },
+                        {
+                            "name": "Solar panel current (+X)",
+                            "initial_pos": 38,
+                            "final_pos": 39,
+                            "value": 0,
+                            "conversion": "int((pkt[38] << 8) | pkt[39])",
+                            "unit": "mA"
+                        },
+                        {
+                            "name": "Solar panel current (-Z)",
+                            "initial_pos": 40,
+                            "final_pos": 41,
+                            "value": 0,
+                            "conversion": "int((pkt[40] << 8) | pkt[41])",
+                            "unit": "mA"
+                        },
+                        {
+                            "name": "Solar panel current (+Z)",
+                            "initial_pos": 42,
+                            "final_pos": 43,
+                            "value": 0,
+                            "conversion": "int((pkt[42] << 8) | pkt[43])",
+                            "unit": "mA"
+                        },
+                        {
+                            "name": "EPS uC temperature",
+                            "initial_pos": 44,
+                            "final_pos": 45,
+                            "value": 0,
+                            "conversion": "int((pkt[44] << 8) | pkt[45])",
+                            "unit": "K"
+                        }
+                    ]
+                },
+                {
+                    "name": "TTC data",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 64,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Downlink",
+            "types": [
+                {
+                    "name": "General telemetry",
+                    "fields": [
+                        {
+                            "name": "",
+                            "initial_pos": "",
+                            "final_pos": "",
+                            "value": "",
+                            "conversion": "",
+                            "unit": ""
+                        },
+                        {
+                            "name": "",
+                            "initial_pos": "",
+                            "final_pos": "",
+                            "value": "",
+                            "conversion": "",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Ping answer",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 0,
+                            "conversion": "",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Requester callsign",
+                            "initial_pos": 8,
+                            "final_pos": 14,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Data answer",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 0,
+                            "conversion": "",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Data type ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Start Timestamp",
+                            "initial_pos": 9,
+                            "final_pos": 12,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "End Timestamp",
+                            "initial_pos": 13,
+                            "final_pos": 16,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 17,
+                            "final_pos": 37,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Requester callsign",
+                            "initial_pos": 38,
+                            "final_pos": 44,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Broadcast answer",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 0,
+                            "conversion": "",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination callsign",
+                            "initial_pos": 8,
+                            "final_pos": 14,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Message",
+                            "initial_pos": 15,
+                            "final_pos": 53,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Requester callsign",
+                            "initial_pos": 54,
+                            "final_pos": 60,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Enter hibernation answer",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 0,
+                            "conversion": "",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Hibernation in hours",
+                            "initial_pos": 8,
+                            "final_pos": 9,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 10,
+                            "final_pos": 30,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Requester callsign",
+                            "initial_pos": 31,
+                            "final_pos": 37,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Leave hibernation answer",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 0,
+                            "conversion": "",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 8,
+                            "final_pos": 28,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Requester callsign",
+                            "initial_pos": 29,
+                            "final_pos": 35,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Activate module answer",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 0,
+                            "conversion": "",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Module ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 9,
+                            "final_pos": 29,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Requester callsign",
+                            "initial_pos": 30,
+                            "final_pos": 36,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Deactivate module answer",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 0,
+                            "conversion": "",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Module ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 9,
+                            "final_pos": 29,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Requester callsign",
+                            "initial_pos": 30,
+                            "final_pos": 36,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Activate payload answer",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 0,
+                            "conversion": "",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Payload ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 9,
+                            "final_pos": 29,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Requester callsign",
+                            "initial_pos": 30,
+                            "final_pos": 36,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Deactivate payload answer",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 0,
+                            "conversion": "",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Payload ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 9,
+                            "final_pos": 29,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Requester callsign",
+                            "initial_pos": 30,
+                            "final_pos": 36,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Erase memory answer",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 0,
+                            "conversion": "",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 8,
+                            "final_pos": 28,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Requester callsign",
+                            "initial_pos": 29,
+                            "final_pos": 35,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Force reset answer",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 0,
+                            "conversion": "",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 8,
+                            "final_pos": 28,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Requester callsign",
+                            "initial_pos": 29,
+                            "final_pos": 35,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get payload data answer",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 0,
+                            "conversion": "",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Payload ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Payload Arguments",
+                            "initial_pos": 9,
+                            "final_pos": 20,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 20,
+                            "final_pos": 40,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Requester callsign",
+                            "initial_pos": 41,
+                            "final_pos": 46,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Set parameter answer",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 0,
+                            "conversion": "",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Subsystem ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Parameter ID",
+                            "initial_pos": 9,
+                            "final_pos": 9,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Parameter Value",
+                            "initial_pos": 10,
+                            "final_pos": 13,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 14,
+                            "final_pos": 34,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Requester callsign",
+                            "initial_pos": 35,
+                            "final_pos": 41,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get parameter answer",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 0,
+                            "conversion": "",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Subsystem ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Parameter ID",
+                            "initial_pos": 9,
+                            "final_pos": 9,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 14,
+                            "final_pos": 34,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Requester callsign",
+                            "initial_pos": 35,
+                            "final_pos": 41,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
