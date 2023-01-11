@@ -66,8 +66,8 @@ _DIR_CONFIG_WINDOWS             = 'spacelab_decoder'
 
 _SAT_JSON_FLORIPASAT_1_LOCAL    = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/floripasat-1.json'
 _SAT_JSON_FLORIPASAT_1_SYSTEM   = '/usr/share/spacelab_decoder/floripasat-1.json'
-_SAT_JSON_FLORIPASAT_2_LOCAL    = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/floripasat-2.json'
-_SAT_JSON_FLORIPASAT_2_SYSTEM   = '/usr/share/spacelab_decoder/floripasat-2.json'
+_SAT_JSON_GOLDS_LOCAL    = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/golds-ufsc.json'
+_SAT_JSON_GOLDS_SYSTEM   = '/usr/share/spacelab_decoder/golds-ufsc.json'
 _SAT_JSON_ALDEBARAN_1_LOCAL     = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/aldebaran-1.json'
 _SAT_JSON_ALDEBARAN_1_SYSTEM    = '/usr/share/spacelab_decoder/aldebaran-1.json'
 
@@ -179,7 +179,7 @@ class SpaceLabDecoder:
         # Satellite combobox
         self.liststore_satellite = self.builder.get_object("liststore_satellite")
         self.liststore_satellite.append(["FloripaSat-1"])
-        self.liststore_satellite.append(["FloripaSat-2"])
+        self.liststore_satellite.append(["GOLDS-UFSC"])
         self.liststore_satellite.append(["Aldebaran-1"])
         self.combobox_satellite = self.builder.get_object("combobox_satellite")
         cell = Gtk.CellRendererText()
@@ -529,10 +529,10 @@ class SpaceLabDecoder:
             else:
                 sat_json = _SAT_JSON_FLORIPASAT_1_SYSTEM
         elif self.combobox_satellite.get_active() == 1:
-            if os.path.isfile(_SAT_JSON_FLORIPASAT_2_LOCAL):
-                sat_json = _SAT_JSON_FLORIPASAT_2_LOCAL
+            if os.path.isfile(_SAT_JSON_GOLDS_LOCAL):
+                sat_json = _SAT_JSON_GOLDS_LOCAL
             else:
-                sat_json = _SAT_JSON_FLORIPASAT_2_SYSTEM
+                sat_json = _SAT_JSON_GOLDS_SYSTEM
         elif self.combobox_satellite.get_active() == 2:
             if os.path.isfile(_SAT_JSON_ALDEBARAN_1_LOCAL):
                 sat_json = _SAT_JSON_ALDEBARAN_1_LOCAL
