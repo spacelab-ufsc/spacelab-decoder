@@ -1,0 +1,541 @@
+{
+    "name": "SpaceLab Transmitter",
+    "links": [
+        {
+            "name": "Beacon",
+            "types": [
+            ]
+        },
+        {
+            "name": "Downlink",
+            "types": [
+                {
+                    "name": "Ping request",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 64,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Ground station callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Data request",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 41,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Ground station callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Data type ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Start Timestamp",
+                            "initial_pos": 9,
+                            "final_pos": 12,
+                            "value": 0,
+                            "conversion": "int((pkt[9] << 24) | (pkt[10] << 16) | (pkt[11] << 8) | pkt[12])",
+                            "unit": "sec"
+                        },
+                        {
+                            "name": "End Timestamp",
+                            "initial_pos": 13,
+                            "final_pos": 16,
+                            "value": 0,
+                            "conversion": "int((pkt[13] << 24) | (pkt[14] << 16) | (pkt[15] << 8) | pkt[16])",
+                            "unit": "sec"
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 17,
+                            "final_pos": 36,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Broadcast message",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 66,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Ground station callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination callsign",
+                            "initial_pos": 8,
+                            "final_pos": 14,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Message",
+                            "initial_pos": 15,
+                            "final_pos": 52,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Enter hibernation",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 67,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Ground station callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Hibernation in hours",
+                            "initial_pos": 8,
+                            "final_pos": 9,
+                            "value": 0,
+                            "conversion": "int((pkt[8] << 8) | pkt[9])",
+                            "unit": "h"
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 10,
+                            "final_pos": 29,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Leave hibernation",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 68,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Ground station callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 8,
+                            "final_pos": 27,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Activate module",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 69,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Ground station callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Module ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 9,
+                            "final_pos": 28,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Deactivate module",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 70,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Ground station callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Module ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 9,
+                            "final_pos": 28,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Activate payload",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 71,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Ground station callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Payload ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 9,
+                            "final_pos": 28,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Deactivate payload",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 72,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Ground station callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Payload ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 9,
+                            "final_pos": 28,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Erase memory",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 73,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Ground station callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 8,
+                            "final_pos": 27,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Force reset",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 74,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Ground station callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 8,
+                            "final_pos": 27,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get payload data",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 75,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Ground station callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Payload ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Payload arguments",
+                            "initial_pos": 9,
+                            "final_pos": 20,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 21,
+                            "final_pos": 40,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Set parameter",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 76,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Ground station callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Subsystem ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Parameter ID",
+                            "initial_pos": 9,
+                            "final_pos": 9,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Parameter Value",
+                            "initial_pos": 10,
+                            "final_pos": 13,
+                            "value": 0,
+                            "conversion": "int((pkt[10] << 24) | (pkt[11] << 16) | (pkt[12] << 8) | pkt[13])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 14,
+                            "final_pos": 33,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get parameter",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 77,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Ground station callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Subsystem ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Parameter ID",
+                            "initial_pos": 9,
+                            "final_pos": 9,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 10,
+                            "final_pos": 19,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
