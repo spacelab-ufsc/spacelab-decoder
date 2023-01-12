@@ -66,8 +66,8 @@ _DIR_CONFIG_WINDOWS             = 'spacelab_decoder'
 
 _SAT_JSON_FLORIPASAT_1_LOCAL    = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/floripasat-1.json'
 _SAT_JSON_FLORIPASAT_1_SYSTEM   = '/usr/share/spacelab_decoder/floripasat-1.json'
-_SAT_JSON_GOLDS_LOCAL    = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/golds-ufsc.json'
-_SAT_JSON_GOLDS_SYSTEM   = '/usr/share/spacelab_decoder/golds-ufsc.json'
+_SAT_JSON_GOLDS_UFSC_LOCAL      = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/golds-ufsc.json'
+_SAT_JSON_GOLDS_UFSC_SYSTEM     = '/usr/share/spacelab_decoder/golds-ufsc.json'
 _SAT_JSON_ALDEBARAN_1_LOCAL     = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/aldebaran-1.json'
 _SAT_JSON_ALDEBARAN_1_SYSTEM    = '/usr/share/spacelab_decoder/aldebaran-1.json'
 
@@ -529,10 +529,10 @@ class SpaceLabDecoder:
             else:
                 sat_json = _SAT_JSON_FLORIPASAT_1_SYSTEM
         elif self.combobox_satellite.get_active() == 1:
-            if os.path.isfile(_SAT_JSON_GOLDS_LOCAL):
-                sat_json = _SAT_JSON_GOLDS_LOCAL
+            if os.path.isfile(_SAT_JSON_GOLDS_UFSC_LOCAL):
+                sat_json = _SAT_JSON_GOLDS_UFSC_LOCAL
             else:
-                sat_json = _SAT_JSON_GOLDS_SYSTEM
+                sat_json = _SAT_JSON_GOLDS_UFSC_SYSTEM
         elif self.combobox_satellite.get_active() == 2:
             if os.path.isfile(_SAT_JSON_ALDEBARAN_1_LOCAL):
                 sat_json = _SAT_JSON_ALDEBARAN_1_LOCAL
