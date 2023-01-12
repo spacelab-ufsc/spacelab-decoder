@@ -78,8 +78,8 @@ _DEFAULT_LOCATION               = 'Florianópolis'
 _DEFAULT_COUNTRY                = 'Brazil'
 _DEFAULT_BEACON_BAUDRATE        = 1200
 _DEFAULT_DOWNLINK_BAUDRATE      = 2400
-_DEFAULT_BEACON_SYNC_WORD       = '0x7E2AE65D'
-_DEFAULT_DOWNLINK_SYNC_WORD     = '0x7E2AE65D'
+_DEFAULT_BEACON_SYNC_WORD       = '0x5DE62A7E'
+_DEFAULT_DOWNLINK_SYNC_WORD     = '0x5DE62A7E'
 _DEFAULT_MAX_PKT_LEN_BYTES      = 300
 
 _ZMQ_PUSH_PULL_ADDRESS          = "tcp://127.0.0.1:2112"
@@ -429,16 +429,16 @@ class SpaceLabDecoder:
         self.entry_preferences_general_country.set_text(_DEFAULT_COUNTRY)
 
         self.entry_preferences_beacon_baudrate.set_text(str(_DEFAULT_BEACON_BAUDRATE))
-        self.entry_preferences_beacon_s0.set_text('0x' + _DEFAULT_BEACON_SYNC_WORD[2:4])
-        self.entry_preferences_beacon_s1.set_text('0x' + _DEFAULT_BEACON_SYNC_WORD[4:6])
-        self.entry_preferences_beacon_s2.set_text('0x' + _DEFAULT_BEACON_SYNC_WORD[6:8])
-        self.entry_preferences_beacon_s3.set_text('0x' + _DEFAULT_BEACON_SYNC_WORD[8:10])
+        self.entry_preferences_beacon_s3.set_text('0x' + _DEFAULT_BEACON_SYNC_WORD[2:4])
+        self.entry_preferences_beacon_s2.set_text('0x' + _DEFAULT_BEACON_SYNC_WORD[4:6])
+        self.entry_preferences_beacon_s1.set_text('0x' + _DEFAULT_BEACON_SYNC_WORD[6:8])
+        self.entry_preferences_beacon_s0.set_text('0x' + _DEFAULT_BEACON_SYNC_WORD[8:10])
 
         self.entry_preferences_downlink_baudrate.set_text(str(_DEFAULT_DOWNLINK_BAUDRATE))
-        self.entry_preferences_downlink_s0.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[2:4])
-        self.entry_preferences_downlink_s1.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[4:6])
-        self.entry_preferences_downlink_s2.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[6:8])
-        self.entry_preferences_downlink_s3.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[8:10])
+        self.entry_preferences_downlink_s3.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[2:4])
+        self.entry_preferences_downlink_s2.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[4:6])
+        self.entry_preferences_downlink_s1.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[6:8])
+        self.entry_preferences_downlink_s0.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[8:10])
 
     def _decode_audio(self, audio_file, sample_rate, baud, play):
         tb = mm_decoder(input_file=audio_file, samp_rate=sample_rate, baudrate=baud, zmq_adr=_ZMQ_PUSH_PULL_ADDRESS, play_audio=play)
