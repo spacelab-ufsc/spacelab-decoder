@@ -9,6 +9,11 @@
         {
             "name": "Downlink",
             "types": [
+            ]
+        },
+        {
+            "name": "Uplink",
+            "types": [
                 {
                     "name": "Ping request",
                     "fields": [
@@ -21,11 +26,11 @@
                             "unit": ""
                         },
                         {
-                            "name": "Ground station callsign",
+                            "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
                             "unit": ""
                         }
                     ]
@@ -37,16 +42,16 @@
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 41,
+                            "value": 65,
                             "conversion": "None",
                             "unit": ""
                         },
                         {
-                            "name": "Ground station callsign",
+                            "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
                             "unit": ""
                         },
                         {
@@ -54,7 +59,7 @@
                             "initial_pos": 8,
                             "final_pos": 8,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[8])",
                             "unit": ""
                         },
                         {
@@ -78,7 +83,7 @@
                             "initial_pos": 17,
                             "final_pos": 36,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "str(pkt[17:37])",
                             "unit": ""
                         }
                     ]
@@ -99,7 +104,7 @@
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
                             "unit": ""
                         },
                         {
@@ -107,7 +112,7 @@
                             "initial_pos": 8,
                             "final_pos": 14,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[8:15]])",
                             "unit": ""
                         },
                         {
@@ -115,7 +120,7 @@
                             "initial_pos": 15,
                             "final_pos": 52,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[15:53]])",
                             "unit": ""
                         }
                     ]
@@ -136,11 +141,11 @@
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
                             "unit": ""
                         },
                         {
-                            "name": "Hibernation in hours",
+                            "name": "Hibernation duration",
                             "initial_pos": 8,
                             "final_pos": 9,
                             "value": 0,
@@ -152,7 +157,7 @@
                             "initial_pos": 10,
                             "final_pos": 29,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "str(pkt[10:30])",
                             "unit": ""
                         }
                     ]
@@ -169,11 +174,11 @@
                             "unit": ""
                         },
                         {
-                            "name": "Ground station callsign",
+                            "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
                             "unit": ""
                         },
                         {
@@ -181,7 +186,7 @@
                             "initial_pos": 8,
                             "final_pos": 27,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "str(pkt[8:28])",
                             "unit": ""
                         }
                     ]
@@ -198,11 +203,11 @@
                             "unit": ""
                         },
                         {
-                            "name": "Ground station callsign",
+                            "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
                             "unit": ""
                         },
                         {
@@ -210,7 +215,7 @@
                             "initial_pos": 8,
                             "final_pos": 8,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[8])",
                             "unit": ""
                         },
                         {
@@ -218,7 +223,7 @@
                             "initial_pos": 9,
                             "final_pos": 28,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "str(pkt[9:29])",
                             "unit": ""
                         }
                     ]
@@ -235,11 +240,11 @@
                             "unit": ""
                         },
                         {
-                            "name": "Ground station callsign",
+                            "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
                             "unit": ""
                         },
                         {
@@ -247,7 +252,7 @@
                             "initial_pos": 8,
                             "final_pos": 8,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[8])",
                             "unit": ""
                         },
                         {
@@ -255,7 +260,7 @@
                             "initial_pos": 9,
                             "final_pos": 28,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "str(pkt[9:29])",
                             "unit": ""
                         }
                     ]
@@ -272,11 +277,11 @@
                             "unit": ""
                         },
                         {
-                            "name": "Ground station callsign",
+                            "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
                             "unit": ""
                         },
                         {
@@ -284,7 +289,7 @@
                             "initial_pos": 8,
                             "final_pos": 8,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[8])",
                             "unit": ""
                         },
                         {
@@ -292,7 +297,7 @@
                             "initial_pos": 9,
                             "final_pos": 28,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "str(pkt[9:29])",
                             "unit": ""
                         }
                     ]
@@ -309,11 +314,11 @@
                             "unit": ""
                         },
                         {
-                            "name": "Ground station callsign",
+                            "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
                             "unit": ""
                         },
                         {
@@ -321,7 +326,7 @@
                             "initial_pos": 8,
                             "final_pos": 8,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[8])",
                             "unit": ""
                         },
                         {
@@ -329,7 +334,7 @@
                             "initial_pos": 9,
                             "final_pos": 28,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "str(pkt[9:29])",
                             "unit": ""
                         }
                     ]
@@ -346,11 +351,11 @@
                             "unit": ""
                         },
                         {
-                            "name": "Ground station callsign",
+                            "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
                             "unit": ""
                         },
                         {
@@ -358,7 +363,7 @@
                             "initial_pos": 8,
                             "final_pos": 27,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "str(pkt[8:28])",
                             "unit": ""
                         }
                     ]
@@ -375,11 +380,11 @@
                             "unit": ""
                         },
                         {
-                            "name": "Ground station callsign",
+                            "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
                             "unit": ""
                         },
                         {
@@ -387,7 +392,7 @@
                             "initial_pos": 8,
                             "final_pos": 27,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "str(pkt[8:28])",
                             "unit": ""
                         }
                     ]
@@ -404,11 +409,11 @@
                             "unit": ""
                         },
                         {
-                            "name": "Ground station callsign",
+                            "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
                             "unit": ""
                         },
                         {
@@ -416,7 +421,7 @@
                             "initial_pos": 8,
                             "final_pos": 8,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[8])",
                             "unit": ""
                         },
                         {
@@ -424,7 +429,7 @@
                             "initial_pos": 9,
                             "final_pos": 20,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "str(pkt[9:21])",
                             "unit": ""
                         },
                         {
@@ -432,7 +437,7 @@
                             "initial_pos": 21,
                             "final_pos": 40,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "str(pkt[21:41])",
                             "unit": ""
                         }
                     ]
@@ -449,11 +454,11 @@
                             "unit": ""
                         },
                         {
-                            "name": "Ground station callsign",
+                            "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
                             "unit": ""
                         },
                         {
@@ -461,7 +466,7 @@
                             "initial_pos": 8,
                             "final_pos": 8,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[8])",
                             "unit": ""
                         },
                         {
@@ -469,7 +474,7 @@
                             "initial_pos": 9,
                             "final_pos": 9,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[9])",
                             "unit": ""
                         },
                         {
@@ -485,7 +490,7 @@
                             "initial_pos": 14,
                             "final_pos": 33,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "str(pkt[14:34])",
                             "unit": ""
                         }
                     ]
@@ -502,11 +507,11 @@
                             "unit": ""
                         },
                         {
-                            "name": "Ground station callsign",
+                            "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
                             "unit": ""
                         },
                         {
@@ -514,7 +519,7 @@
                             "initial_pos": 8,
                             "final_pos": 8,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[8])",
                             "unit": ""
                         },
                         {
@@ -522,7 +527,7 @@
                             "initial_pos": 9,
                             "final_pos": 9,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[9])",
                             "unit": ""
                         },
                         {
@@ -530,7 +535,7 @@
                             "initial_pos": 10,
                             "final_pos": 19,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "str(pkt[10:20])",
                             "unit": ""
                         }
                     ]
