@@ -270,6 +270,310 @@
                             "conversion": "int((pkt[12] << 8) | pkt[13])",
                             "unit": "K"
                         },
+                        {
+                            "name": "OBDH input current",
+                            "initial_pos": 14,
+                            "final_pos": 15,
+                            "value": 0,
+                            "conversion": "int((pkt[14] << 8) | pkt[15])",
+                            "unit": "mA"
+                        },
+                        {
+                            "name": "OBDH input voltage",
+                            "initial_pos": 16,
+                            "final_pos": 17,
+                            "value": 0,
+                            "conversion": "int((pkt[16] << 8) | pkt[17])",
+                            "unit": "mV"
+                        },
+                        {
+                            "name": "OBDH last reset cause",
+                            "initial_pos": 18,
+                            "final_pos": 18,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "OBDH reset counter",
+                            "initial_pos": 19,
+                            "final_pos": 20,
+                            "value": 0,
+                            "conversion": "int((pkt[19] << 8) | pkt[20])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Last valid telecommand",
+                            "initial_pos": 21,
+                            "final_pos": 21,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Radio temperature",
+                            "initial_pos": 22,
+                            "final_pos": 23,
+                            "value": 0,
+                            "conversion": "int((pkt[22] << 8) | pkt[23])",
+                            "unit": "K"
+                        },
+                        {
+                            "name": "Last valid TC RSSI",
+                            "initial_pos": 24,
+                            "final_pos": 25,
+                            "value": 0,
+                            "conversion": "int((pkt[24] << 8) | pkt[25])",
+                            "unit": "dB"
+                        },
+                        {
+                            "name": "Antenna temperature",
+                            "initial_pos": 26,
+                            "final_pos": 27,
+                            "value": 0,
+                            "conversion": "int((pkt[26] << 8) | pkt[27])",
+                            "unit": "K"
+                        },
+                        {
+                            "name": "Antenna status",
+                            "initial_pos": 28,
+                            "final_pos": 29,
+                            "value": 0,
+                            "conversion": "int((pkt[28] << 8) | pkt[29])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Payloads status",
+                            "initial_pos": 30,
+                            "final_pos": 30,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "EPS uC temperature",
+                            "initial_pos": 31,
+                            "final_pos": 32,
+                            "value": 0,
+                            "conversion": "int((pkt[31] << 8) | pkt[32])",
+                            "unit": "K"
+                        },
+                        {
+                            "name": "EPS current",
+                            "initial_pos": 33,
+                            "final_pos": 34,
+                            "value": 0,
+                            "conversion": "int((pkt[33] << 8) | pkt[34])",
+                            "unit": "mA"
+                        },
+                        {
+                            "name": "EPS last reset cause",
+                            "initial_pos": 35,
+                            "final_pos": 35,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "EPS reset counter",
+                            "initial_pos": 36,
+                            "final_pos": 37,
+                            "value": 0,
+                            "conversion": "int((pkt[36] << 8) | pkt[37])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Solar panel voltage (-Y and +X)",
+                            "initial_pos": 38,
+                            "final_pos": 39,
+                            "value": 0,
+                            "conversion": "int((pkt[38] << 8) | pkt[39])",
+                            "unit": "mV"
+                        },
+                        {
+                            "name": "Solar panel voltage (-X and +Z)",
+                            "initial_pos": 40,
+                            "final_pos": 41,
+                            "value": 0,
+                            "conversion": "int((pkt[40] << 8) | pkt[41])",
+                            "unit": "mV"
+                        },
+                        {
+                            "name": "Solar panel voltage (-Z and +Y)",
+                            "initial_pos": 42,
+                            "final_pos": 43,
+                            "value": 0,
+                            "conversion": "int((pkt[42] << 8) | pkt[43])",
+                            "unit": "mV"
+                        },
+                        {
+                            "name": "Solar panel current (-Y)",
+                            "initial_pos": 44,
+                            "final_pos": 45,
+                            "value": 0,
+                            "conversion": "int((pkt[44] << 8) | pkt[45])",
+                            "unit": "mA"
+                        },
+                        {
+                            "name": "Solar panel current (+Y)",
+                            "initial_pos": 46,
+                            "final_pos": 47,
+                            "value": 0,
+                            "conversion": "int((pkt[46] << 8) | pkt[47])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Solar panel current (-X)",
+                            "initial_pos": 48,
+                            "final_pos": 49,
+                            "value": 0,
+                            "conversion": "int((pkt[48] << 8) | pkt[49])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Solar panel current (+X)",
+                            "initial_pos": 50,
+                            "final_pos": 51,
+                            "value": 0,
+                            "conversion": "int((pkt[50] << 8) | pkt[51])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Solar panel current (-Z)",
+                            "initial_pos": 52,
+                            "final_pos": 53,
+                            "value": 0,
+                            "conversion": "int((pkt[52] << 8) | pkt[53])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Solar panel current (+Z)",
+                            "initial_pos": 54,
+                            "final_pos": 55,
+                            "value": 0,
+                            "conversion": "int((pkt[54] << 8) | pkt[55])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "MPPT 1 duty cycle",
+                            "initial_pos": 55,
+                            "final_pos": 55,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": "%"
+                        },
+                        {
+                            "name": "MPPT 2 duty cycle",
+                            "initial_pos": 56,
+                            "final_pos": 56,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": "%"
+                        },
+                        {
+                            "name": "MPPT 3 duty cycle",
+                            "initial_pos": 57,
+                            "final_pos": 57,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": "%"
+                        },
+                        {
+                            "name": "Main power bus voltage",
+                            "initial_pos": 58,
+                            "final_pos": 59,
+                            "value": 0,
+                            "conversion": "int((pkt[58] << 8) | pkt[59])",
+                            "unit": "mV"
+                        },
+                        {
+                            "name": "Batteries voltage",
+                            "initial_pos": 60,
+                            "final_pos": 61,
+                            "value": 0,
+                            "conversion": "int((pkt[60] << 8) | pkt[61])",
+                            "unit": "mV"
+                        },
+                        {
+                            "name": "Batteries current",
+                            "initial_pos": 62,
+                            "final_pos": 63,
+                            "value": 0,
+                            "conversion": "int((pkt[62] << 8) | pkt[63])",
+                            "unit": "mA"
+                        },
+                        {
+                            "name": "Batteries average current",
+                            "initial_pos": 64,
+                            "final_pos": 65,
+                            "value": 0,
+                            "conversion": "int((pkt[64] << 8) | pkt[65])",
+                            "unit": "mA"
+                        },
+                        {
+                            "name": "Batteries accumulated current",
+                            "initial_pos": 66,
+                            "final_pos": 67,
+                            "value": 0,
+                            "conversion": "int((pkt[66] << 8) | pkt[67])",
+                            "unit": "mA"
+                        },
+                        {
+                            "name": "Batteries charge",
+                            "initial_pos": 68,
+                            "final_pos": 69,
+                            "value": 0,
+                            "conversion": "int((pkt[68] << 8) | pkt[69])",
+                            "unit": "mAh"
+                        },
+                        {
+                            "name": "Battery monitor IC temperature",
+                            "initial_pos": 70,
+                            "final_pos": 71,
+                            "value": 0,
+                            "conversion": "int((pkt[70] << 8) | pkt[71])",
+                            "unit": "K"
+                        },
+                        {
+                            "name": "Battery heater 1 duty cycle",
+                            "initial_pos": 72,
+                            "final_pos": 72,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": "%"
+                        },
+                        {
+                            "name": "Battery heater 2 duty cycle",
+                            "initial_pos": 73,
+                            "final_pos": 73,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": "%"
+                        },
+                        {
+                            "name": "Payload EDC status",
+                            "initial_pos": 74,
+                            "final_pos": 74,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Radiation instrument status",
+                            "initial_pos": 75,
+                            "final_pos": 75,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Radiation monitor status",
+                            "initial_pos": 76,
+                            "final_pos": 76,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
                     ]
                 },
                 {
@@ -400,6 +704,320 @@
                     ]
                 },
                 {
+                    "name": "Payload data (EDC info)",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 36,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Payload ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "PTT signal receiving time",
+                            "initial_pos": 9,
+                            "final_pos": 12,
+                            "value": 0,
+                            "conversion": "int((pkt[9] << 24) | (pkt[10] << 16) | (pkt[11] << 8) | pkt[12])",
+                            "unit": "sec"
+                        },
+                        {
+                            "name": "Error code",
+                            "initial_pos": 13,
+                            "final_pos": 13,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Carrier frequency",
+                            "initial_pos": 14,
+                            "final_pos": 15,
+                            "value": 0,
+                            "conversion": "int((pkt[14] << 8) | pkt[15])",
+                            "unit": "MHz"
+                        },
+                        {
+                            "name": "Carrier amplitude at ADC interface",
+                            "initial_pos": 16,
+                            "final_pos": 17,
+                            "value": 0,
+                            "conversion": "int((pkt[16] << 8) | pkt[17])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "User message length",
+                            "initial_pos": 18,
+                            "final_pos": 18,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": "bytes"
+                        },
+                        {
+                            "name": "User message",
+                            "initial_pos": 19,
+                            "final_pos": 53,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Current time (J2000 epoch)",
+                            "initial_pos": 54,
+                            "final_pos": 57,
+                            "value": 0,
+                            "conversion": "int((pkt[54] << 24) | (pkt[55] << 16) | (pkt[56] << 8) | pkt[57])",
+                            "unit": "sec"
+                        },
+                        {
+                            "name": "Elapsed time since last reset",
+                            "initial_pos": 58,
+                            "final_pos": 61,
+                            "value": 0,
+                            "conversion": "int((pkt[58] << 24) | (pkt[59] << 16) | (pkt[60] << 8) | pkt[61])",
+                            "unit": "sec"
+                        },
+                        {
+                            "name": "System current supply",
+                            "initial_pos": 62,
+                            "final_pos": 63,
+                            "value": 0,
+                            "conversion": "int((pkt[62] << 8) | pkt[63])",
+                            "unit": "mA"
+                        },
+                        {
+                            "name": "System voltage supply",
+                            "initial_pos": 64,
+                            "final_pos": 65,
+                            "value": 0,
+                            "conversion": "int((pkt[64] << 8) | pkt[65])",
+                            "unit": "mV"
+                        },
+                        {
+                            "name": "EDC board temperature",
+                            "initial_pos": 66,
+                            "final_pos": 66,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": "oC"
+                        },
+                        {
+                            "name": "RF front end LO",
+                            "initial_pos": 67,
+                            "final_pos": 67,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "RMS level at front-end output",
+                            "initial_pos": 68,
+                            "final_pos": 69,
+                            "value": 0,
+                            "conversion": "int((pkt[69] << 8) | pkt[69])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Generated PTT packages since last initialization",
+                            "initial_pos": 70,
+                            "final_pos": 70,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Max",
+                            "initial_pos": 71,
+                            "final_pos": 71,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Memory error count",
+                            "initial_pos": 72,
+                            "final_pos": 72,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Current time",
+                            "initial_pos": 73,
+                            "final_pos": 76,
+                            "value": 0,
+                            "conversion": "int((pkt[73] << 24) | (pkt[74] << 16) | (pkt[75] << 8) | pkt[76])",
+                            "unit": "sec"
+                        },
+                        {
+                            "name": "Number of PTT packets available for reading",
+                            "initial_pos": 77,
+                            "final_pos": 77,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "PTT decoder task status",
+                            "initial_pos": 78,
+                            "final_pos": 78,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "ADC sampler state",
+                            "initial_pos": 79,
+                            "final_pos": 79,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Payload data (EDC samples)",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 39,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Payload ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Elapsed time (J2000 epoch)",
+                            "initial_pos": 9,
+                            "final_pos": 12,
+                            "value": 0,
+                            "conversion": "int((pkt[9] << 24) | (pkt[10] << 16) | (pkt[11] << 8) | pkt[12])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "ADC sample packet number",
+                            "initial_pos": 13,
+                            "final_pos": 13,
+                            "value": 0,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "ADC I-sample 0",
+                            "initial_pos": 14,
+                            "final_pos": 15,
+                            "value": 0,
+                            "conversion": "int((pkt[14] << 8) | pkt[15])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "ADC Q-sample 0",
+                            "initial_pos": 16,
+                            "final_pos": 17,
+                            "value": 0,
+                            "conversion": "int((pkt[16] << 8) | pkt[17])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "ADC I-sample 1",
+                            "initial_pos": 18,
+                            "final_pos": 19,
+                            "value": 0,
+                            "conversion": "int((pkt[18] << 8) | pkt[19])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "ADC Q-sample 1",
+                            "initial_pos": 20,
+                            "final_pos": 21,
+                            "value": 0,
+                            "conversion": "int((pkt[20] << 8) | pkt[21])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "ADC I-sample 2",
+                            "initial_pos": 22,
+                            "final_pos": 23,
+                            "value": 0,
+                            "conversion": "int((pkt[22] << 8) | pkt[23])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "ADC Q-sample 2",
+                            "initial_pos": 24,
+                            "final_pos": 25,
+                            "value": 0,
+                            "conversion": "int((pkt[24] << 8) | pkt[25])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "ADC I-sample 3",
+                            "initial_pos": 26,
+                            "final_pos": 27,
+                            "value": 0,
+                            "conversion": "int((pkt[26] << 8) | pkt[27])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "ADC Q-sample 3",
+                            "initial_pos": 28,
+                            "final_pos": 29,
+                            "value": 0,
+                            "conversion": "int((pkt[28] << 8) | pkt[29])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "ADC I-sample 4",
+                            "initial_pos": 30,
+                            "final_pos": 31,
+                            "value": 0,
+                            "conversion": "int((pkt[30] << 8) | pkt[31])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "ADC Q-sample 4",
+                            "initial_pos": 32,
+                            "final_pos": 33,
+                            "value": 0,
+                            "conversion": "int((pkt[32] << 8) | pkt[33])",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
                     "name": "TC feedback",
                     "fields": [
                         {
@@ -494,7 +1112,7 @@
                             "value": 0,
                             "conversion": "int((pkt[17] << 24) | (pkt[18] << 16) | (pkt[19] << 8) | pkt[20])",
                             "unit": ""
-                        },
+                        }
                     ]
                 }
             ]
