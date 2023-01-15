@@ -12,7 +12,7 @@
                             "initial_pos": 0,
                             "final_pos": 0,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[0])",
                             "unit": ""
                         },
                         {
@@ -20,7 +20,7 @@
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
                             "unit": ""
                         },
                         {
@@ -177,7 +177,7 @@
                             "initial_pos": 0,
                             "final_pos": 0,
                             "value": 1,
-                            "conversion": "None",
+                            "conversion": "int(pkt[0])",
                             "unit": ""
                         },
                         {
@@ -185,7 +185,7 @@
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
                             "unit": ""
                         },
                         {
@@ -217,7 +217,7 @@
                             "initial_pos": 16,
                             "final_pos": 16,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[16])",
                             "unit": ""
                         },
                         {
@@ -243,7 +243,7 @@
                             "initial_pos": 0,
                             "final_pos": 0,
                             "value": 32,
-                            "conversion": "None",
+                            "conversion": "int(pkt[0])",
                             "unit": ""
                         },
                         {
@@ -251,7 +251,7 @@
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
                             "unit": ""
                         },
                         {
@@ -291,7 +291,7 @@
                             "initial_pos": 18,
                             "final_pos": 18,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[18])",
                             "unit": ""
                         },
                         {
@@ -307,7 +307,7 @@
                             "initial_pos": 21,
                             "final_pos": 21,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[21])",
                             "unit": ""
                         },
                         {
@@ -347,7 +347,7 @@
                             "initial_pos": 30,
                             "final_pos": 30,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[30])",
                             "unit": ""
                         },
                         {
@@ -371,7 +371,7 @@
                             "initial_pos": 35,
                             "final_pos": 35,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[35])",
                             "unit": ""
                         },
                         {
@@ -459,7 +459,7 @@
                             "initial_pos": 55,
                             "final_pos": 55,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[55])",
                             "unit": "%"
                         },
                         {
@@ -467,7 +467,7 @@
                             "initial_pos": 56,
                             "final_pos": 56,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[56])",
                             "unit": "%"
                         },
                         {
@@ -475,7 +475,7 @@
                             "initial_pos": 57,
                             "final_pos": 57,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[57])",
                             "unit": "%"
                         },
                         {
@@ -539,7 +539,7 @@
                             "initial_pos": 72,
                             "final_pos": 72,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[72])",
                             "unit": "%"
                         },
                         {
@@ -547,7 +547,7 @@
                             "initial_pos": 73,
                             "final_pos": 73,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[73])",
                             "unit": "%"
                         },
                         {
@@ -555,7 +555,7 @@
                             "initial_pos": 74,
                             "final_pos": 74,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[74])",
                             "unit": ""
                         },
                         {
@@ -563,7 +563,7 @@
                             "initial_pos": 75,
                             "final_pos": 75,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[75])",
                             "unit": ""
                         },
                         {
@@ -571,7 +571,7 @@
                             "initial_pos": 76,
                             "final_pos": 76,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[76])",
                             "unit": ""
                         }
                     ]
@@ -584,7 +584,7 @@
                             "initial_pos": 0,
                             "final_pos": 0,
                             "value": 33,
-                            "conversion": "None",
+                            "conversion": "int(pkt[0])",
                             "unit": ""
                         },
                         {
@@ -592,7 +592,7 @@
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
                             "unit": ""
                         },
                         {
@@ -600,7 +600,7 @@
                             "initial_pos": 8,
                             "final_pos": 14,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[8:15]])",
                             "unit": ""
                         }
                     ]
@@ -613,7 +613,7 @@
                             "initial_pos": 0,
                             "final_pos": 0,
                             "value": 34,
-                            "conversion": "None",
+                            "conversion": "int(pkt[0])",
                             "unit": ""
                         },
                         {
@@ -621,7 +621,7 @@
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
                             "unit": ""
                         },
                         {
@@ -629,7 +629,7 @@
                             "initial_pos": 8,
                             "final_pos": 14,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[8:15]])",
                             "unit": ""
                         },
                         {
@@ -637,7 +637,7 @@
                             "initial_pos": 15,
                             "final_pos": 15,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[15])",
                             "unit": ""
                         },
                         {
@@ -651,9 +651,9 @@
                         {
                             "name": "Data",
                             "initial_pos": 20,
-                            "final_pos": 20,
+                            "final_pos": 39,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "str(pkt[20:40])",
                             "unit": ""
                         }
                     ]
@@ -674,7 +674,7 @@
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
                             "unit": ""
                         },
                         {
@@ -682,7 +682,7 @@
                             "initial_pos": 8,
                             "final_pos": 14,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[8:15]])",
                             "unit": ""
                         },
                         {
@@ -690,7 +690,7 @@
                             "initial_pos": 15,
                             "final_pos": 21,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[15:22]])",
                             "unit": ""
                         },
                         {
@@ -698,7 +698,7 @@
                             "initial_pos": 22,
                             "final_pos": 59,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[22:60]])",
                             "unit": ""
                         }
                     ]
@@ -711,7 +711,7 @@
                             "initial_pos": 0,
                             "final_pos": 0,
                             "value": 36,
-                            "conversion": "None",
+                            "conversion": "int(pkt[0])",
                             "unit": ""
                         },
                         {
@@ -719,7 +719,7 @@
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
                             "unit": ""
                         },
                         {
@@ -727,7 +727,7 @@
                             "initial_pos": 8,
                             "final_pos": 8,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[8])",
                             "unit": ""
                         },
                         {
@@ -743,7 +743,7 @@
                             "initial_pos": 13,
                             "final_pos": 13,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[13])",
                             "unit": ""
                         },
                         {
@@ -767,7 +767,7 @@
                             "initial_pos": 18,
                             "final_pos": 18,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[18])",
                             "unit": "bytes"
                         },
                         {
@@ -775,7 +775,7 @@
                             "initial_pos": 19,
                             "final_pos": 53,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "str(pkt[19:54])",
                             "unit": ""
                         },
                         {
@@ -815,7 +815,7 @@
                             "initial_pos": 66,
                             "final_pos": 66,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[66])",
                             "unit": "oC"
                         },
                         {
@@ -823,7 +823,7 @@
                             "initial_pos": 67,
                             "final_pos": 67,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[67])",
                             "unit": ""
                         },
                         {
@@ -839,7 +839,7 @@
                             "initial_pos": 70,
                             "final_pos": 70,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[70])",
                             "unit": ""
                         },
                         {
@@ -847,7 +847,7 @@
                             "initial_pos": 71,
                             "final_pos": 71,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[71])",
                             "unit": ""
                         },
                         {
@@ -855,7 +855,7 @@
                             "initial_pos": 72,
                             "final_pos": 72,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[72])",
                             "unit": ""
                         },
                         {
@@ -871,7 +871,7 @@
                             "initial_pos": 77,
                             "final_pos": 77,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[77])",
                             "unit": ""
                         },
                         {
@@ -879,7 +879,7 @@
                             "initial_pos": 78,
                             "final_pos": 78,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[78])",
                             "unit": ""
                         },
                         {
@@ -887,7 +887,7 @@
                             "initial_pos": 79,
                             "final_pos": 79,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[79])",
                             "unit": ""
                         }
                     ]
@@ -900,7 +900,7 @@
                             "initial_pos": 0,
                             "final_pos": 0,
                             "value": 39,
-                            "conversion": "None",
+                            "conversion": "int(pkt[0])",
                             "unit": ""
                         },
                         {
@@ -908,7 +908,7 @@
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
                             "unit": ""
                         },
                         {
@@ -916,7 +916,7 @@
                             "initial_pos": 8,
                             "final_pos": 8,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[8])",
                             "unit": ""
                         },
                         {
@@ -932,7 +932,7 @@
                             "initial_pos": 13,
                             "final_pos": 13,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[13])",
                             "unit": ""
                         },
                         {
@@ -1025,7 +1025,7 @@
                             "initial_pos": 0,
                             "final_pos": 0,
                             "value": 37,
-                            "conversion": "None",
+                            "conversion": "int(pkt[0])",
                             "unit": ""
                         },
                         {
@@ -1033,7 +1033,7 @@
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
                             "unit": ""
                         },
                         {
@@ -1041,7 +1041,7 @@
                             "initial_pos": 8,
                             "final_pos": 14,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[8:15]])",
                             "unit": ""
                         },
                         {
@@ -1049,7 +1049,7 @@
                             "initial_pos": 15,
                             "final_pos": 15,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[15])",
                             "unit": ""
                         },
                         {
@@ -1070,7 +1070,7 @@
                             "initial_pos": 0,
                             "final_pos": 0,
                             "value": 38,
-                            "conversion": "None",
+                            "conversion": "int(pkt[0])",
                             "unit": ""
                         },
                         {
@@ -1078,7 +1078,7 @@
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
                             "unit": ""
                         },
                         {
@@ -1086,7 +1086,7 @@
                             "initial_pos": 8,
                             "final_pos": 14,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "\"\".join([chr(val) for val in pkt[8:15]])",
                             "unit": ""
                         },
                         {
@@ -1094,7 +1094,7 @@
                             "initial_pos": 15,
                             "final_pos": 15,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[15])",
                             "unit": ""
                         },
                         {
@@ -1102,7 +1102,7 @@
                             "initial_pos": 16,
                             "final_pos": 16,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[16])",
                             "unit": ""
                         },
                         {
