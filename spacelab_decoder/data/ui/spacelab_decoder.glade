@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.38.2 
+<!-- Generated with glade 3.40.0 
 
 Copyright (C) 2020, Universidade Federal de Santa Catarina
 
@@ -241,7 +241,7 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                         <property name="can-focus">False</property>
                         <property name="left-padding">12</property>
                         <child>
-                          <!-- n-columns=2 n-rows=3 -->
+                          <!-- n-columns=3 n-rows=3 -->
                           <object class="GtkGrid">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
@@ -335,6 +335,15 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                                 <property name="left-attach">1</property>
                                 <property name="top-attach">2</property>
                               </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
                             </child>
                           </object>
                         </child>
@@ -715,106 +724,6 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="halign">start</property>
-                    <property name="label" translatable="yes">S0:</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="halign">start</property>
-                    <property name="label" translatable="yes">S2:</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="halign">start</property>
-                    <property name="label" translatable="yes">S1:</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">3</property>
-                    <property name="top-attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="halign">start</property>
-                    <property name="label" translatable="yes">S3:</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">3</property>
-                    <property name="top-attach">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="entry_preferences_beacon_s0">
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="max-length">4</property>
-                    <property name="width-chars">5</property>
-                    <property name="text" translatable="yes">0x7E</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">2</property>
-                    <property name="top-attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="entry_preferences_beacon_s1">
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="max-length">4</property>
-                    <property name="width-chars">5</property>
-                    <property name="text" translatable="yes">0x2A</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">4</property>
-                    <property name="top-attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="entry_preferences_beacon_s2">
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="max-length">4</property>
-                    <property name="width-chars">5</property>
-                    <property name="text" translatable="yes">0xE6</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">2</property>
-                    <property name="top-attach">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="entry_preferences_beacon_s3">
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="max-length">4</property>
-                    <property name="width-chars">5</property>
-                    <property name="text" translatable="yes">0x5D</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">4</property>
-                    <property name="top-attach">3</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
@@ -836,6 +745,7 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                       <object class="GtkEntry" id="entry_preferences_beacon_baudrate">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
+                        <property name="hexpand">True</property>
                         <property name="max-length">6</property>
                         <property name="text" translatable="yes">1200</property>
                         <property name="input-purpose">number</property>
@@ -852,6 +762,70 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                     <property name="top-attach">0</property>
                     <property name="width">4</property>
                   </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="entry_preferences_beacon_s1">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="max-length">4</property>
+                    <property name="width-chars">5</property>
+                    <property name="text" translatable="yes">0x2A</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">3</property>
+                    <property name="top-attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="entry_preferences_beacon_s0">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="max-length">4</property>
+                    <property name="width-chars">5</property>
+                    <property name="text" translatable="yes">0x7E</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">4</property>
+                    <property name="top-attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="entry_preferences_beacon_s3">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="max-length">4</property>
+                    <property name="width-chars">5</property>
+                    <property name="text" translatable="yes">0x5D</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="entry_preferences_beacon_s2">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="max-length">4</property>
+                    <property name="width-chars">5</property>
+                    <property name="text" translatable="yes">0xE6</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">2</property>
+                    <property name="top-attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
                 </child>
                 <child>
                   <placeholder/>
@@ -879,7 +853,7 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
               </packing>
             </child>
             <child>
-              <!-- n-columns=5 n-rows=4 -->
+              <!-- n-columns=5 n-rows=3 -->
               <object class="GtkGrid">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
@@ -906,106 +880,6 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="halign">start</property>
-                    <property name="label" translatable="yes">S0:</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="halign">start</property>
-                    <property name="label" translatable="yes">S1:</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">3</property>
-                    <property name="top-attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="halign">start</property>
-                    <property name="label" translatable="yes">S2:</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="halign">start</property>
-                    <property name="label" translatable="yes">S3:</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">3</property>
-                    <property name="top-attach">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="entry_preferences_downlink_s0">
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="max-length">4</property>
-                    <property name="width-chars">5</property>
-                    <property name="text" translatable="yes">0x7E</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">2</property>
-                    <property name="top-attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="entry_preferences_downlink_s1">
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="max-length">4</property>
-                    <property name="width-chars">5</property>
-                    <property name="text" translatable="yes">0x2A</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">4</property>
-                    <property name="top-attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="entry_preferences_downlink_s2">
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="max-length">4</property>
-                    <property name="width-chars">5</property>
-                    <property name="text" translatable="yes">0xE6</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">2</property>
-                    <property name="top-attach">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="entry_preferences_downlink_s3">
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="max-length">4</property>
-                    <property name="width-chars">5</property>
-                    <property name="text" translatable="yes">0x5D</property>
-                  </object>
-                  <packing>
-                    <property name="left-attach">4</property>
-                    <property name="top-attach">3</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
@@ -1027,6 +901,7 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                       <object class="GtkEntry" id="entry_preferences_downlink_baudrate">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
+                        <property name="hexpand">True</property>
                         <property name="max-length">6</property>
                         <property name="text" translatable="yes">2400</property>
                       </object>
@@ -1044,7 +919,56 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                   </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkEntry" id="entry_preferences_downlink_s3">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="max-length">4</property>
+                    <property name="width-chars">5</property>
+                    <property name="text" translatable="yes">0x5D</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="entry_preferences_downlink_s2">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="max-length">4</property>
+                    <property name="width-chars">5</property>
+                    <property name="text" translatable="yes">0xE6</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">2</property>
+                    <property name="top-attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="entry_preferences_downlink_s1">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="max-length">4</property>
+                    <property name="width-chars">5</property>
+                    <property name="text" translatable="yes">0x2A</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">3</property>
+                    <property name="top-attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="entry_preferences_downlink_s0">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="max-length">4</property>
+                    <property name="width-chars">5</property>
+                    <property name="text" translatable="yes">0x7E</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">4</property>
+                    <property name="top-attach">2</property>
+                  </packing>
                 </child>
                 <child>
                   <placeholder/>
@@ -1065,6 +989,64 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
               </object>
               <packing>
                 <property name="position">2</property>
+                <property name="tab-fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <!-- n-columns=2 n-rows=1 -->
+              <object class="GtkGrid">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="margin-left">10</property>
+                <property name="margin-right">10</property>
+                <property name="margin-top">5</property>
+                <property name="margin-bottom">5</property>
+                <property name="row-spacing">8</property>
+                <property name="column-spacing">5</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="label" translatable="yes">Logfile Location:</property>
+                    <property name="xalign">0.6000000238418579</property>
+                    <property name="yalign">0.6000000238418579</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkFileChooserButton" id="logfile_chooser_button">
+                    <property name="name">Chooser</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="halign">baseline</property>
+                    <property name="margin-top">5</property>
+                    <property name="margin-bottom">5</property>
+                    <property name="hexpand">True</property>
+                    <property name="action">select-folder</property>
+                    <property name="title" translatable="yes"/>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child type="tab">
+              <object class="GtkLabel" id="Logfile">
+                <property name="name">Logfile</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Logfile</property>
+              </object>
+              <packing>
+                <property name="position">3</property>
                 <property name="tab-fill">False</property>
               </packing>
             </child>
@@ -1134,7 +1116,7 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
           </packing>
         </child>
         <child>
-          <!-- n-columns=2 n-rows=7 -->
+          <!-- n-columns=3 n-rows=7 -->
           <object class="GtkGrid">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
@@ -1310,6 +1292,27 @@ Byte payload: [0, 1, 2] or [0x0, 0x1, 0x2]
                 <property name="left-attach">1</property>
                 <property name="top-attach">2</property>
               </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
             </child>
           </object>
           <packing>

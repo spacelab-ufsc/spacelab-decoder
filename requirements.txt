@@ -1,5 +1,5 @@
-gi
+PyGObject
 scipy
 pyzmq
 matplotlib
-sphinx-rtd-theme
+pyngham

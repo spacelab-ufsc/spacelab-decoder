@@ -3,7 +3,7 @@
 #
 #  spacelab_decoder.py
 #  
-#  Copyright (C) 2021, Universidade Federal de Santa Catarina
+#  Copyright The SpaceLab-Decoder Contributors.
 #  
 #  This file is part of SpaceLab-Decoder.
 #
@@ -28,9 +28,9 @@ import threading
 import sys
 import signal
 from datetime import datetime
-import ctypes
 import pathlib
 import json
+import csv
 
 import gi
 gi.require_version('Gtk', '3.0')
@@ -40,6 +40,8 @@ from gi.repository import GdkPixbuf
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 import zmq
+
+import pyngham
 
 from spacelab_decoder.mm_decoder import mm_decoder
 import spacelab_decoder.version
@@ -59,35 +61,36 @@ _ICON_FILE_LINUX_SYSTEM         = '/usr/share/icons/spacelab_decoder_256x256.png
 _LOGO_FILE_LOCAL                = os.path.abspath(os.path.dirname(__file__)) + '/data/img/spacelab-logo-full-400x200.png'
 _LOGO_FILE_LINUX_SYSTEM         = '/usr/share/spacelab_decoder/spacelab-logo-full-400x200.png'
 
-_NGHAM_LIB_LOCAL                = os.path.abspath(os.path.dirname(__file__)) + '/libngham.so'
-_NGHAM_LIB_LINUX_SYSTEM         = '/usr/lib/libngham.so'
-_NGHAM_LIB_LINUX_64_SYSTEM      = '/usr/lib64/libngham.so'
-
-_NGHAM_FSAT_LIB_LOCAL           = os.path.abspath(os.path.dirname(__file__)) + '/libngham_fsat.so'
-_NGHAM_FSAT_LIB_LINUX_SYSTEM    = '/usr/lib/libngham_fsat.so'
-_NGHAM_FSAT_LIB_LINUX_64_SYSTEM = '/usr/lib64/libngham_fsat.so'
-
 _DIR_CONFIG_LINUX               = '.spacelab_decoder'
 _DIR_CONFIG_WINDOWS             = 'spacelab_decoder'
 
 _SAT_JSON_FLORIPASAT_1_LOCAL    = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/floripasat-1.json'
 _SAT_JSON_FLORIPASAT_1_SYSTEM   = '/usr/share/spacelab_decoder/floripasat-1.json'
-_SAT_JSON_FLORIPASAT_2_LOCAL    = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/floripasat-2.json'
-_SAT_JSON_FLORIPASAT_2_SYSTEM   = '/usr/share/spacelab_decoder/floripasat-2.json'
+_SAT_JSON_GOLDS_UFSC_LOCAL      = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/golds-ufsc.json'
+_SAT_JSON_GOLDS_UFSC_SYSTEM     = '/usr/share/spacelab_decoder/golds-ufsc.json'
+_SAT_JSON_ALDEBARAN_1_LOCAL     = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/aldebaran-1.json'
+_SAT_JSON_ALDEBARAN_1_SYSTEM    = '/usr/share/spacelab_decoder/aldebaran-1.json'
+_SAT_JSON_SPACELAB_TXER_LOCAL   = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/spacelab-transmitter.json'
+_SAT_JSON_SPACELAB_TXER_SYSTEM  = '/usr/share/spacelab_decoder/spacelab-transmitter.json'
 
 _DEFAULT_CALLSIGN               = 'PP5UF'
 _DEFAULT_LOCATION               = 'Florianópolis'
 _DEFAULT_COUNTRY                = 'Brazil'
 _DEFAULT_BEACON_BAUDRATE        = 1200
 _DEFAULT_DOWNLINK_BAUDRATE      = 2400
-_DEFAULT_BEACON_SYNC_WORD       = '0x7E2AE65D'
-_DEFAULT_DOWNLINK_SYNC_WORD     = '0x7E2AE65D'
+_DEFAULT_BEACON_SYNC_WORD       = '0x5DE62A7E'
+_DEFAULT_DOWNLINK_SYNC_WORD     = '0x5DE62A7E'
 _DEFAULT_MAX_PKT_LEN_BYTES      = 300
 
-_ZMQ_PUSH_PULL_ADDRESS          = "tcp://127.0.0.1:8023"
+_ZMQ_PUSH_PULL_ADDRESS          = "tcp://127.0.0.1:2112"
 
 _TOOLS_FILTERS                  = ["None", "Low pass", "High pass"]
 _WAVFILE_BUFFER_FILE            = "/tmp/spacelab_decoder_buffer.wav"
+
+#Defining logfile default local
+_DIR_CONFIG_LOGFILE_LINUX       = 'spacelab_decoder'
+_DEFAULT_LOGFILE_PATH           = os.path.join(os.path.expanduser('~'), _DIR_CONFIG_LOGFILE_LINUX)
+_DEFAULT_LOGFILE                = 'logfile.csv'
 
 class SpaceLabDecoder:
 
@@ -106,27 +109,7 @@ class SpaceLabDecoder:
 
         self._load_preferences()
 
-        if os.path.isfile(_NGHAM_LIB_LOCAL):
-            self.ngham = ctypes.CDLL(_NGHAM_LIB_LOCAL)
-        elif os.path.isfile(_NGHAM_LIB_LINUX_64_SYSTEM):
-            self.ngham = ctypes.CDLL(_NGHAM_LIB_LINUX_64_SYSTEM)
-        else:
-            self.ngham = ctypes.CDLL(_NGHAM_LIB_LINUX_SYSTEM)
-
-        self.ngham.ngham_init_arrays()
-
-        self.ngham.ngham_init()
-
-        if os.path.isfile(_NGHAM_FSAT_LIB_LOCAL):
-            self.ngham_fsat = ctypes.CDLL(_NGHAM_FSAT_LIB_LOCAL)
-        elif os.path.isfile(_NGHAM_FSAT_LIB_LINUX_64_SYSTEM):
-            self.ngham_fsat = ctypes.CDLL(_NGHAM_FSAT_LIB_LINUX_64_SYSTEM)
-        else:
-            self.ngham_fsat = ctypes.CDLL(_NGHAM_FSAT_LIB_LINUX_SYSTEM)
-
-        self.ngham_fsat.ngham_init_arrays()
-
-        self.ngham_fsat.ngham_init()
+        self.ngham = pyngham.PyNGHam()
 
         self.decoded_packets_index = list()
 
@@ -187,6 +170,10 @@ class SpaceLabDecoder:
         else:
             self.aboutdialog.set_logo(GdkPixbuf.Pixbuf.new_from_file(_LOGO_FILE_LINUX_SYSTEM))
 
+        # Logfile chooser button
+        self.logfile_chooser_button = self.builder.get_object("logfile_chooser_button")
+        self.logfile_chooser_button.set_filename(_DEFAULT_LOGFILE_PATH)
+
         # Preferences button
         self.button_preferences = self.builder.get_object("button_preferences")
         self.button_preferences.connect("clicked", self.on_button_preferences_clicked)
@@ -194,7 +181,9 @@ class SpaceLabDecoder:
         # Satellite combobox
         self.liststore_satellite = self.builder.get_object("liststore_satellite")
         self.liststore_satellite.append(["FloripaSat-1"])
-        self.liststore_satellite.append(["FloripaSat-2"])
+        self.liststore_satellite.append(["GOLDS-UFSC"])
+        self.liststore_satellite.append(["Aldebaran-1"])
+        self.liststore_satellite.append(["SpaceLab-Transmitter"])
         self.combobox_satellite = self.builder.get_object("combobox_satellite")
         cell = Gtk.CellRendererText()
         self.combobox_satellite.pack_start(cell, True)
@@ -247,6 +236,18 @@ class SpaceLabDecoder:
         self.selection_events = self.treeview_events.get_selection()
         self.selection_events.connect("changed", self.on_events_selection_changed)
 
+    def write_log(self, msg):
+        event = [str(datetime.now()), msg]
+
+        self.listmodel_events.append(event)
+
+        if not os.path.exists(_DEFAULT_LOGFILE_PATH):
+            os.mkdir(_DEFAULT_LOGFILE_PATH)
+
+        with open(self.logfile_chooser_button.get_filename() + '/' + _DEFAULT_LOGFILE, 'a') as logfile:
+            writer = csv.writer(logfile, delimiter='\t')
+            writer.writerow(event)
+
     def run(self):
         self.window.show_all()
 
@@ -288,7 +289,7 @@ class SpaceLabDecoder:
             else:
                 sample_rate, data = wavfile.read(self.filechooser_audio_file.get_filename())
                 wav_filename = self.filechooser_audio_file.get_filename()
-                self.listmodel_events.append([str(datetime.now()), "Audio file opened with a sample rate of " + str(sample_rate) + " Hz"])
+                self.write_log("Audio file opened with a sample rate of " + str(sample_rate) + " Hz")
 
                 x = threading.Thread(target=self._decode_audio, args=(wav_filename, sample_rate, 1200, self.checkbutton_play_audio.get_active()))
                 z = threading.Thread(target=self._zmq_receiver)
@@ -391,27 +392,8 @@ class SpaceLabDecoder:
             pkt_pl.extend(json.loads(self.textbuffer_wav_gen_payload.get_text(self.textbuffer_wav_gen_payload.get_start_iter(),
                                                                               self.textbuffer_wav_gen_payload.get_end_iter(),
                                                                               False)))
-            ngham_encode_func = self.ngham.ngham_encode
-            ngham_encode_func.argtypes = [ctypes.POINTER(ctypes.c_ubyte), ctypes.c_uint, ctypes.POINTER(ctypes.c_ubyte), ctypes.POINTER(ctypes.c_uint)]
 
-            pkt_pl_arr = (ctypes.c_ubyte * len(pkt_pl))(*pkt_pl)
-
-            ArrayTypeByte = ctypes.c_ubyte * _DEFAULT_MAX_PKT_LEN_BYTES # Dynamically declare the array type
-            pkt_encoded = ArrayTypeByte()
-
-            ArrayTypeUInt = ctypes.c_uint * 1 # Dynamically declare the array type
-            pkt_encoded_len = ArrayTypeUInt()
-
-            ngham_encode_func(pkt_pl_arr,
-                              ctypes.c_uint(len(pkt_pl)),
-                              ctypes.cast(pkt_encoded, ctypes.POINTER(ctypes.c_ubyte)),
-                              ctypes.cast(pkt_encoded_len, ctypes.POINTER(ctypes.c_uint)))
-
-            pkt_encoded_list = list()
-            for i in range(int(pkt_encoded_len[0])):
-                pkt_encoded_list.append(int(pkt_encoded[i]))
-
-            wav_gen = WavGen(pkt_encoded_list,
+            wav_gen = WavGen(self.ngham.encode(pkt_pl),
                              int(self.entry_gen_wav_sample_rate.get_text()),
                              int(self.entry_gen_wav_baudrate.get_text()),
                              float(self.entry_gen_wav_amplitude.get_text()),
@@ -447,16 +429,16 @@ class SpaceLabDecoder:
         self.entry_preferences_general_country.set_text(_DEFAULT_COUNTRY)
 
         self.entry_preferences_beacon_baudrate.set_text(str(_DEFAULT_BEACON_BAUDRATE))
-        self.entry_preferences_beacon_s0.set_text('0x' + _DEFAULT_BEACON_SYNC_WORD[2:4])
-        self.entry_preferences_beacon_s1.set_text('0x' + _DEFAULT_BEACON_SYNC_WORD[4:6])
-        self.entry_preferences_beacon_s2.set_text('0x' + _DEFAULT_BEACON_SYNC_WORD[6:8])
-        self.entry_preferences_beacon_s3.set_text('0x' + _DEFAULT_BEACON_SYNC_WORD[8:10])
+        self.entry_preferences_beacon_s3.set_text('0x' + _DEFAULT_BEACON_SYNC_WORD[2:4])
+        self.entry_preferences_beacon_s2.set_text('0x' + _DEFAULT_BEACON_SYNC_WORD[4:6])
+        self.entry_preferences_beacon_s1.set_text('0x' + _DEFAULT_BEACON_SYNC_WORD[6:8])
+        self.entry_preferences_beacon_s0.set_text('0x' + _DEFAULT_BEACON_SYNC_WORD[8:10])
 
         self.entry_preferences_downlink_baudrate.set_text(str(_DEFAULT_DOWNLINK_BAUDRATE))
-        self.entry_preferences_downlink_s0.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[2:4])
-        self.entry_preferences_downlink_s1.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[4:6])
-        self.entry_preferences_downlink_s2.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[6:8])
-        self.entry_preferences_downlink_s3.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[8:10])
+        self.entry_preferences_downlink_s3.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[2:4])
+        self.entry_preferences_downlink_s2.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[4:6])
+        self.entry_preferences_downlink_s1.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[6:8])
+        self.entry_preferences_downlink_s0.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[8:10])
 
     def _decode_audio(self, audio_file, sample_rate, baud, play):
         tb = mm_decoder(input_file=audio_file, samp_rate=sample_rate, baudrate=baud, zmq_adr=_ZMQ_PUSH_PULL_ADDRESS, play_audio=play)
@@ -496,19 +478,6 @@ class SpaceLabDecoder:
         packet_detected = False
         packet_buf = list()
 
-        ngham_decode_func = self.ngham.ngham_decode
-        ngham_decode_func.argtypes = [ctypes.c_ubyte, ctypes.POINTER(ctypes.c_ubyte)]
-        ngham_decode_func.restype = ctypes.c_int
-
-        if self.combobox_satellite.get_active() == 0:
-            ngham_decode_func = self.ngham_fsat.ngham_decode
-            ngham_decode_func.argtypes = [ctypes.c_ubyte, ctypes.POINTER(ctypes.c_ubyte)]
-            ngham_decode_func.restype = ctypes.c_int
-        elif self.combobox_satellite.get_active() == 1:
-            ngham_decode_func = self.ngham.ngham_decode
-            ngham_decode_func.argtypes = [ctypes.c_ubyte, ctypes.POINTER(ctypes.c_ubyte)]
-            ngham_decode_func.restype = ctypes.c_int
-
         while True:
             socks = dict(poller.poll(1000))
             if socks:
@@ -523,33 +492,27 @@ class SpaceLabDecoder:
                                     pkt_byte = byte_buf.to_byte()
                                     packet_buf.append(pkt_byte)
 
-                                    ArrayType = ctypes.c_ubyte * _DEFAULT_MAX_PKT_LEN_BYTES # Dynamically declare the array type
-                                    array = ArrayType()                                     # The array type instance
-
-                                    res = ngham_decode_func(pkt_byte, ctypes.cast(array, ctypes.POINTER(ctypes.c_ubyte)))
-                                    if res == -1:
-                                        packet_detected = False
-                                        if self.combobox_packet_type.get_active() == 0:
-                                            self.listmodel_events.append([str(datetime.now()), "Error decoding a Beacon packet!"])
-                                        elif self.combobox_packet_type.get_active() == 1:
-                                            self.listmodel_events.append([str(datetime.now()), "Error decoding a Downlink packet!"])
-                                        else:
-                                            self.listmodel_events.append([str(datetime.now()), "Error decoding a Packet!"])
-                                    elif res > 0:
+                                    pl, err, err_loc = self.ngham.decode_byte(pkt_byte)
+                                    if len(pl) == 0:
+                                        if err == -1:
+                                            packet_detected = False
+                                            if self.combobox_packet_type.get_active() == 0:
+                                                self.write_log("Error decoding a Beacon packet!")
+                                            elif self.combobox_packet_type.get_active() == 1:
+                                                self.write_log("Error decoding a Downlink packet!")
+                                            else:
+                                                self.write_log("Error decoding a Packet!")
+                                    else:
                                         packet_detected = False
                                         tm_now = datetime.now()
                                         self.decoded_packets_index.append(self.textbuffer_pkt_data.create_mark(str(tm_now), self.textbuffer_pkt_data.get_end_iter(), True))
                                         if self.combobox_packet_type.get_active() == 0:
-                                            self.listmodel_events.append([str(tm_now), "Beacon packet decoded!"])
+                                            self.write_log("Beacon packet decoded!")
                                         elif self.combobox_packet_type.get_active() == 1:
-                                            self.listmodel_events.append([str(tm_now), "Downlink packet decoded!"])
+                                            self.write_log("Downlink packet decoded!")
                                         else:
-                                            self.listmodel_events.append([str(tm_now), "Packet decoded!"])
-
-                                        pkt_list = list()
-                                        for i in range(res):
-                                            pkt_list.append(int(array[i]))
-                                        self._decode_packet(pkt_list)
+                                            self.write_log("Packet decoded!")
+                                        self._decode_packet(pl)
                                     byte_buf.clear()
                         sync_word_buf.push(bool(bit))
                         if (sync_word_buf == sync_word):
@@ -569,10 +532,20 @@ class SpaceLabDecoder:
             else:
                 sat_json = _SAT_JSON_FLORIPASAT_1_SYSTEM
         elif self.combobox_satellite.get_active() == 1:
-            if os.path.isfile(_SAT_JSON_FLORIPASAT_2_LOCAL):
-                sat_json = _SAT_JSON_FLORIPASAT_2_LOCAL
+            if os.path.isfile(_SAT_JSON_GOLDS_UFSC_LOCAL):
+                sat_json = _SAT_JSON_GOLDS_UFSC_LOCAL
             else:
-                sat_json = _SAT_JSON_FLORIPASAT_2_SYSTEM
+                sat_json = _SAT_JSON_GOLDS_UFSC_SYSTEM
+        elif self.combobox_satellite.get_active() == 2:
+            if os.path.isfile(_SAT_JSON_ALDEBARAN_1_LOCAL):
+                sat_json = _SAT_JSON_ALDEBARAN_1_LOCAL
+            else:
+                sat_json = _SAT_JSON_ALDEBARAN_1_SYSTEM
+        elif self.combobox_satellite.get_active() == 3:
+            if os.path.isfile(_SAT_JSON_SPACELAB_TXER_LOCAL):
+                sat_json = _SAT_JSON_SPACELAB_TXER_LOCAL
+            else:
+                sat_json = _SAT_JSON_SPACELAB_TXER_SYSTEM
         p = Packet(sat_json, pkt)
         pkt_txt = pkt_txt + str(p)
         pkt_txt = pkt_txt + "========================================================\n"

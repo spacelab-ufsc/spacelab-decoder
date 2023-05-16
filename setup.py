@@ -66,7 +66,7 @@ setuptools.setup(
         ],
     download_url                    = "https://github.com/spacelab-ufsc/spacelab-decoder/releases",
     packages                        = setuptools.find_packages(),
-    install_requires                = ['gi','scipy','pyzmq','matplotlib'],
+    install_requires                = ['gi','scipy','pyzmq','matplotlib','pyngham'],
     entry_points                    = {
         'gui_scripts': [
             'spacelab-decoder = spacelab_decoder.__main__:main'
@@ -79,8 +79,7 @@ setuptools.setup(
         ('share/spacelab_decoder/', ['spacelab_decoder/data/img/spacelab-logo-full-400x200.png']),
         ('share/spacelab_decoder/', ['spacelab_decoder/data/satellites/floripasat-1.json']),
         ('share/spacelab_decoder/', ['spacelab_decoder/data/satellites/floripasat-2.json']),
-        ('lib/', ['spacelab_decoder/libngham.so']),
-        ('lib/', ['spacelab_decoder/libngham_fsat.so']),
+        ('share/spacelab_decoder/', ['spacelab_decoder/data/satellites/aldebaran-1.json']),
         ],
     cmdclass                        = {'build_sphinx': BuildDoc},
 )

@@ -1,0 +1,546 @@
+{
+    "name": "SpaceLab-Transmitter",
+    "links": [
+        {
+            "name": "Beacon",
+            "types": [
+            ]
+        },
+        {
+            "name": "Downlink",
+            "types": [
+            ]
+        },
+        {
+            "name": "Uplink",
+            "types": [
+                {
+                    "name": "Ping request",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 64,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Data request",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 65,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Data type ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "int(pkt[8])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Start Timestamp",
+                            "initial_pos": 9,
+                            "final_pos": 12,
+                            "value": 0,
+                            "conversion": "int((pkt[9] << 24) | (pkt[10] << 16) | (pkt[11] << 8) | pkt[12])",
+                            "unit": "sec"
+                        },
+                        {
+                            "name": "End Timestamp",
+                            "initial_pos": 13,
+                            "final_pos": 16,
+                            "value": 0,
+                            "conversion": "int((pkt[13] << 24) | (pkt[14] << 16) | (pkt[15] << 8) | pkt[16])",
+                            "unit": "sec"
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 17,
+                            "final_pos": 36,
+                            "value": 0,
+                            "conversion": "str(pkt[17:37])",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Broadcast message",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 66,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Ground station callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination callsign",
+                            "initial_pos": 8,
+                            "final_pos": 14,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[8:15]])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Message",
+                            "initial_pos": 15,
+                            "final_pos": 52,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[15:53]])",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Enter hibernation",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 67,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Ground station callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Hibernation duration",
+                            "initial_pos": 8,
+                            "final_pos": 9,
+                            "value": 0,
+                            "conversion": "int((pkt[8] << 8) | pkt[9])",
+                            "unit": "h"
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 10,
+                            "final_pos": 29,
+                            "value": 0,
+                            "conversion": "str(pkt[10:30])",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Leave hibernation",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 68,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 8,
+                            "final_pos": 27,
+                            "value": 0,
+                            "conversion": "str(pkt[8:28])",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Activate module",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 69,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Module ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "int(pkt[8])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 9,
+                            "final_pos": 28,
+                            "value": 0,
+                            "conversion": "str(pkt[9:29])",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Deactivate module",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 70,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Module ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "int(pkt[8])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 9,
+                            "final_pos": 28,
+                            "value": 0,
+                            "conversion": "str(pkt[9:29])",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Activate payload",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 71,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Payload ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "int(pkt[8])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 9,
+                            "final_pos": 28,
+                            "value": 0,
+                            "conversion": "str(pkt[9:29])",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Deactivate payload",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 72,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Payload ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "int(pkt[8])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 9,
+                            "final_pos": 28,
+                            "value": 0,
+                            "conversion": "str(pkt[9:29])",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Erase memory",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 73,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 8,
+                            "final_pos": 27,
+                            "value": 0,
+                            "conversion": "str(pkt[8:28])",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Force reset",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 74,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 8,
+                            "final_pos": 27,
+                            "value": 0,
+                            "conversion": "str(pkt[8:28])",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get payload data",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 75,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Payload ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "int(pkt[8])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Payload arguments",
+                            "initial_pos": 9,
+                            "final_pos": 20,
+                            "value": 0,
+                            "conversion": "str(pkt[9:21])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 21,
+                            "final_pos": 40,
+                            "value": 0,
+                            "conversion": "str(pkt[21:41])",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Set parameter",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 76,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Subsystem ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "int(pkt[8])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Parameter ID",
+                            "initial_pos": 9,
+                            "final_pos": 9,
+                            "value": 0,
+                            "conversion": "int(pkt[9])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Parameter Value",
+                            "initial_pos": 10,
+                            "final_pos": 13,
+                            "value": 0,
+                            "conversion": "int((pkt[10] << 24) | (pkt[11] << 16) | (pkt[12] << 8) | pkt[13])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 14,
+                            "final_pos": 33,
+                            "value": 0,
+                            "conversion": "str(pkt[14:34])",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get parameter",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 77,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Subsystem ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "int(pkt[8])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Parameter ID",
+                            "initial_pos": 9,
+                            "final_pos": 9,
+                            "value": 0,
+                            "conversion": "int(pkt[9])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Hash",
+                            "initial_pos": 10,
+                            "final_pos": 19,
+                            "value": 0,
+                            "conversion": "str(pkt[10:20])",
+                            "unit": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
