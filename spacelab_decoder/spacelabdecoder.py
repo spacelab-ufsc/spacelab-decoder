@@ -70,6 +70,8 @@ _SAT_JSON_GOLDS_UFSC_LOCAL      = os.path.abspath(os.path.dirname(__file__)) + '
 _SAT_JSON_GOLDS_UFSC_SYSTEM     = '/usr/share/spacelab_decoder/golds-ufsc.json'
 _SAT_JSON_ALDEBARAN_1_LOCAL     = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/aldebaran-1.json'
 _SAT_JSON_ALDEBARAN_1_SYSTEM    = '/usr/share/spacelab_decoder/aldebaran-1.json'
+_SAT_JSON_CATARINA_A1_LOCAL     = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/catarina-a1.json'
+_SAT_JSON_CATARINA_A1_SYSTEM    = '/usr/share/spacelab_decoder/catarina-a1.json'
 _SAT_JSON_SPACELAB_TXER_LOCAL   = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/spacelab-transmitter.json'
 _SAT_JSON_SPACELAB_TXER_SYSTEM  = '/usr/share/spacelab_decoder/spacelab-transmitter.json'
 
@@ -183,6 +185,7 @@ class SpaceLabDecoder:
         self.liststore_satellite.append(["FloripaSat-1"])
         self.liststore_satellite.append(["GOLDS-UFSC"])
         self.liststore_satellite.append(["Aldebaran-1"])
+        self.liststore_satellite.append(["Catarina-A1"])
         self.liststore_satellite.append(["SpaceLab-Transmitter"])
         self.combobox_satellite = self.builder.get_object("combobox_satellite")
         cell = Gtk.CellRendererText()
@@ -542,6 +545,11 @@ class SpaceLabDecoder:
             else:
                 sat_json = _SAT_JSON_ALDEBARAN_1_SYSTEM
         elif self.combobox_satellite.get_active() == 3:
+            if os.path.isfile(_SAT_JSON_CATARINA_A1_LOCAL):
+                sat_json = _SAT_JSON_CATARINA_A1_LOCAL
+            else:
+                sat_json = _SAT_JSON_CATARINA_A1_SYSTEM
+        elif self.combobox_satellite.get_active() == 4:
             if os.path.isfile(_SAT_JSON_SPACELAB_TXER_LOCAL):
                 sat_json = _SAT_JSON_SPACELAB_TXER_LOCAL
             else:
