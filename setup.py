@@ -3,7 +3,7 @@
 #
 #  setup.py
 #  
-#  Copyright (C) 2021, Universidade Federal de Santa Catarina
+#  Copyright The SpaceLab-Decoder Contributors.
 #  
 #  This file is part of SpaceLab-Decoder.
 #
@@ -66,7 +66,7 @@ setuptools.setup(
         ],
     download_url                    = "https://github.com/spacelab-ufsc/spacelab-decoder/releases",
     packages                        = setuptools.find_packages(),
-    install_requires                = ['gi','scipy','pyzmq','matplotlib','pyngham'],
+    install_requires                = ['gi','scipy','matplotlib','pyngham'],
     entry_points                    = {
         'gui_scripts': [
             'spacelab-decoder = spacelab_decoder.__main__:main'

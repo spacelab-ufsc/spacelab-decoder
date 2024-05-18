@@ -44,18 +44,16 @@ Until now, this program supports the satellites below:
 * python (>= 3)
 * gi
 * scipy
-* pyzmq
 * matplotlib
-* gnuradio
 * pyngham
 
 ### Installation on Ubuntu
 
-```sudo apt install python3 python3-gi python3-scipy python3-zmq python3-matplotlib gnuradio```
+```sudo apt install python3 python3-gi python3-scipy python3-matplotlib```
 
 ### Installation on Fedora
 
-```sudo dnf install python3 python3-gobject python3-scipy python3-zmq python3-matplotlib gnuradio```
+```sudo dnf install python3 python3-gobject python3-scipy python3-matplotlib```
 
 ## Building and Installing
 
