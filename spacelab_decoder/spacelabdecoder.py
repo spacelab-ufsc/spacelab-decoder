@@ -24,11 +24,7 @@
 
 
 import os
-import threading
-import sys
-import signal
 from datetime import datetime
-import pathlib
 import json
 import csv
 
@@ -39,13 +35,12 @@ from gi.repository import GdkPixbuf
 
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
-import zmq
 
 import pyngham
 
-from spacelab_decoder.mm_decoder import mm_decoder
 import spacelab_decoder.version
 
+from spacelab_decoder.time_sync import TimeSync
 from spacelab_decoder.bit_buffer import BitBuffer, _BIT_BUFFER_LSB
 from spacelab_decoder.sync_word import SyncWord, _SYNC_WORD_LSB
 from spacelab_decoder.byte_buffer import ByteBuffer, _BYTE_BUFFER_LSB
@@ -84,12 +79,7 @@ _DEFAULT_BEACON_SYNC_WORD       = '0x5DE62A7E'
 _DEFAULT_DOWNLINK_SYNC_WORD     = '0x5DE62A7E'
 _DEFAULT_MAX_PKT_LEN_BYTES      = 300
 
-_ZMQ_PUSH_PULL_ADDRESS          = "tcp://127.0.0.1:2112"
-
-_TOOLS_FILTERS                  = ["None", "Low pass", "High pass"]
-_WAVFILE_BUFFER_FILE            = "/tmp/spacelab_decoder_buffer.wav"
-
-#Defining logfile default local
+# Defining logfile default local
 _DIR_CONFIG_LOGFILE_LINUX       = 'spacelab_decoder'
 _DEFAULT_LOGFILE_PATH           = os.path.join(os.path.expanduser('~'), _DIR_CONFIG_LOGFILE_LINUX)
 _DEFAULT_LOGFILE                = 'logfile.csv'
@@ -294,10 +284,7 @@ class SpaceLabDecoder:
                 wav_filename = self.filechooser_audio_file.get_filename()
                 self.write_log("Audio file opened with a sample rate of " + str(sample_rate) + " Hz")
 
-                x = threading.Thread(target=self._decode_audio, args=(wav_filename, sample_rate, 1200, self.checkbutton_play_audio.get_active()))
-                z = threading.Thread(target=self._zmq_receiver)
-                x.start()
-                z.start()
+                self._decode_audio(self.filechooser_audio_file.get_filename(), 1200)
 
     def on_button_plot_clicked(self, button):
         if self.filechooser_audio_file.get_filename() is None:
@@ -443,20 +430,19 @@ class SpaceLabDecoder:
         self.entry_preferences_downlink_s1.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[6:8])
         self.entry_preferences_downlink_s0.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[8:10])
 
-    def _decode_audio(self, audio_file, sample_rate, baud, play):
-        tb = mm_decoder(input_file=audio_file, samp_rate=sample_rate, baudrate=baud, zmq_adr=_ZMQ_PUSH_PULL_ADDRESS, play_audio=play)
+    def _decode_audio(self, audio_file, baud):
+        sample_rate, data = wavfile.read(audio_file)
 
-        tb.start()
-        tb.wait()
+        samples = list()
 
-    def _zmq_receiver(self):
-        context = zmq.Context()
-        bits_receiver = context.socket(zmq.PULL)
-        bits_receiver.connect(_ZMQ_PUSH_PULL_ADDRESS)
+        # Convert stereo to mono by reading only the first channel
+        for i in range(len(data)):
+            samples.append(data[i][0])
 
-        poller = zmq.Poller()
-        poller.register(bits_receiver, zmq.POLLIN)
+        mm = TimeSync()
+        self._find_ngham_pkts(mm.get_bitstream(samples, sample_rate, baud))
 
+    def _find_ngham_pkts(self, bitstream):
         sync_word_buf = BitBuffer(32, _BIT_BUFFER_LSB)
 
         sync_word_str = list()
@@ -481,50 +467,41 @@ class SpaceLabDecoder:
         packet_detected = False
         packet_buf = list()
 
-        while True:
-            socks = dict(poller.poll(1000))
-            if socks:
-                if socks.get(bits_receiver) == zmq.POLLIN:
-                    bits = bits_receiver.recv(zmq.NOBLOCK)
+        for bit in bitstream:
+            if packet_detected:
+                byte_buf.push(bool(bit))
+                if byte_buf.is_full():
+                    if len(packet_buf) < _DEFAULT_MAX_PKT_LEN_BYTES:
+                        pkt_byte = byte_buf.to_byte()
+                        packet_buf.append(pkt_byte)
 
-                    for bit in bits:
-                        if packet_detected:
-                            byte_buf.push(bool(bit))
-                            if byte_buf.is_full():
-                                if len(packet_buf) < _DEFAULT_MAX_PKT_LEN_BYTES:
-                                    pkt_byte = byte_buf.to_byte()
-                                    packet_buf.append(pkt_byte)
-
-                                    pl, err, err_loc = self.ngham.decode_byte(pkt_byte)
-                                    if len(pl) == 0:
-                                        if err == -1:
-                                            packet_detected = False
-                                            if self.combobox_packet_type.get_active() == 0:
-                                                self.write_log("Error decoding a Beacon packet!")
-                                            elif self.combobox_packet_type.get_active() == 1:
-                                                self.write_log("Error decoding a Downlink packet!")
-                                            else:
-                                                self.write_log("Error decoding a Packet!")
-                                    else:
-                                        packet_detected = False
-                                        tm_now = datetime.now()
-                                        self.decoded_packets_index.append(self.textbuffer_pkt_data.create_mark(str(tm_now), self.textbuffer_pkt_data.get_end_iter(), True))
-                                        if self.combobox_packet_type.get_active() == 0:
-                                            self.write_log("Beacon packet decoded!")
-                                        elif self.combobox_packet_type.get_active() == 1:
-                                            self.write_log("Downlink packet decoded!")
-                                        else:
-                                            self.write_log("Packet decoded!")
-                                        self._decode_packet(pl)
-                                    byte_buf.clear()
-                        sync_word_buf.push(bool(bit))
-                        if (sync_word_buf == sync_word):
-                            packet_buf = []
-                            packet_detected = True
-                            byte_buf.clear()
-
-            else:
-                break
+                        pl, err, err_loc = self.ngham.decode_byte(pkt_byte)
+                        if len(pl) == 0:
+                            if err == -1:
+                                packet_detected = False
+                                if self.combobox_packet_type.get_active() == 0:
+                                    self.write_log("Error decoding a Beacon packet!")
+                                elif self.combobox_packet_type.get_active() == 1:
+                                    self.write_log("Error decoding a Downlink packet!")
+                                else:
+                                    self.write_log("Error decoding a Packet!")
+                        else:
+                            packet_detected = False
+                            tm_now = datetime.now()
+                            self.decoded_packets_index.append(self.textbuffer_pkt_data.create_mark(str(tm_now), self.textbuffer_pkt_data.get_end_iter(), True))
+                            if self.combobox_packet_type.get_active() == 0:
+                                self.write_log("Beacon packet decoded!")
+                            elif self.combobox_packet_type.get_active() == 1:
+                                self.write_log("Downlink packet decoded!")
+                            else:
+                                self.write_log("Packet decoded!")
+                            self._decode_packet(pl)
+                        byte_buf.clear()
+            sync_word_buf.push(bool(bit))
+            if (sync_word_buf == sync_word):
+                packet_buf = []
+                packet_detected = True
+                byte_buf.clear()
 
     def _decode_packet(self, pkt):
         pkt_txt = "Decoded packet from \"" + self.filechooser_audio_file.get_filename() + "\":\n"
