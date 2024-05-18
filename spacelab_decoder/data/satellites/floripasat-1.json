@@ -3,6 +3,9 @@
     "links": [
         {
             "name": "Beacon",
+            "baudrate": 1200,
+            "sync_word": [93, 230, 42, 126],
+            "protocol": "NGHam",
             "types": [
                 {
                     "name": "OBDH",
