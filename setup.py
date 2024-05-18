@@ -78,8 +78,10 @@ setuptools.setup(
         ('share/spacelab_decoder/', ['spacelab_decoder/data/ui/spacelab_decoder.glade']),
         ('share/spacelab_decoder/', ['spacelab_decoder/data/img/spacelab-logo-full-400x200.png']),
         ('share/spacelab_decoder/', ['spacelab_decoder/data/satellites/floripasat-1.json']),
-        ('share/spacelab_decoder/', ['spacelab_decoder/data/satellites/floripasat-2.json']),
+        ('share/spacelab_decoder/', ['spacelab_decoder/data/satellites/golds-ufsc.json']),
         ('share/spacelab_decoder/', ['spacelab_decoder/data/satellites/aldebaran-1.json']),
+        ('share/spacelab_decoder/', ['spacelab_decoder/data/satellites/spacelab-transmitter.json']),
+        ('share/spacelab_decoder/', ['spacelab_decoder/data/satellites/catarina-a1.json']),
         ],
     cmdclass                        = {'build_sphinx': BuildDoc},
 )
