@@ -3,7 +3,7 @@
 #
 #  setup.py
 #  
-#  Copyright (C) 2021, Universidade Federal de Santa Catarina
+#  Copyright The SpaceLab-Decoder Contributors.
 #  
 #  This file is part of SpaceLab-Decoder.
 #
@@ -66,7 +66,7 @@ setuptools.setup(
         ],
     download_url                    = "https://github.com/spacelab-ufsc/spacelab-decoder/releases",
     packages                        = setuptools.find_packages(),
-    install_requires                = ['gi','scipy','pyzmq','matplotlib','pyngham'],
+    install_requires                = ['gi','scipy','matplotlib','pyngham'],
     entry_points                    = {
         'gui_scripts': [
             'spacelab-decoder = spacelab_decoder.__main__:main'
@@ -78,8 +78,10 @@ setuptools.setup(
         ('share/spacelab_decoder/', ['spacelab_decoder/data/ui/spacelab_decoder.glade']),
         ('share/spacelab_decoder/', ['spacelab_decoder/data/img/spacelab-logo-full-400x200.png']),
         ('share/spacelab_decoder/', ['spacelab_decoder/data/satellites/floripasat-1.json']),
-        ('share/spacelab_decoder/', ['spacelab_decoder/data/satellites/floripasat-2.json']),
+        ('share/spacelab_decoder/', ['spacelab_decoder/data/satellites/golds-ufsc.json']),
         ('share/spacelab_decoder/', ['spacelab_decoder/data/satellites/aldebaran-1.json']),
+        ('share/spacelab_decoder/', ['spacelab_decoder/data/satellites/spacelab-transmitter.json']),
+        ('share/spacelab_decoder/', ['spacelab_decoder/data/satellites/catarina-a1.json']),
         ],
     cmdclass                        = {'build_sphinx': BuildDoc},
 )

@@ -18,11 +18,11 @@ import sphinx_rtd_theme
 # -- Project information -----------------------------------------------------
 
 project = 'spacelab-decoder'
-copyright = '2021, Universidade Federal de Santa Catarina'
+copyright = 'The SpaceLab-Decoder Contributors'
 author = 'Gabriel Mariano Marcelino'
 
 # The full version, including alpha/beta/rc tags
-release = "0.3"
+release = "0.4"
 
 
 # -- General configuration ---------------------------------------------------

@@ -33,7 +33,6 @@ def test_ui():
     window                  = builder.get_object("window_main")
     button_preferences      = builder.get_object("button_preferences")
     button_decode           = builder.get_object("button_decode")
-    checkbutton_play_audio  = builder.get_object("checkbutton_play_audio")
     button_plot_spectrum    = builder.get_object("button_plot_spectrum")
     button_clean            = builder.get_object("button_clean")
     toolbutton_about        = builder.get_object("toolbutton_about")
@@ -49,7 +48,6 @@ def test_ui():
     assert window                   != None
     assert button_preferences       != None
     assert button_decode            != None
-    assert checkbutton_play_audio   != None
     assert button_plot_spectrum     != None
     assert button_clean             != None
     assert toolbutton_about         != None
@@ -78,8 +76,6 @@ def test_ui():
     entry_preferences_general_callsign  = builder.get_object("entry_preferences_general_callsign")
     entry_preferences_general_location  = builder.get_object("entry_preferences_general_location")
     entry_preferences_general_country   = builder.get_object("entry_preferences_general_country")
-    entry_preferences_beacon_baudrate   = builder.get_object("entry_preferences_beacon_baudrate")
-    entry_preferences_downlink_baudrate = builder.get_object("entry_preferences_downlink_baudrate")
     button_preferences_ok               = builder.get_object("button_preferences_ok")
     button_preferences_default          = builder.get_object("button_preferences_default")
     button_preferences_cancel           = builder.get_object("button_preferences_cancel")
@@ -88,8 +84,6 @@ def test_ui():
     assert entry_preferences_general_callsign   != None
     assert entry_preferences_general_location   != None
     assert entry_preferences_general_country    != None
-    assert entry_preferences_beacon_baudrate    != None
-    assert entry_preferences_downlink_baudrate  != None
     assert button_preferences_ok                != None
     assert button_preferences_default           != None
     assert button_preferences_cancel            != None

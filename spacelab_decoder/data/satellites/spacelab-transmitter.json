@@ -2,17 +2,10 @@
     "name": "SpaceLab-Transmitter",
     "links": [
         {
-            "name": "Beacon",
-            "types": [
-            ]
-        },
-        {
-            "name": "Downlink",
-            "types": [
-            ]
-        },
-        {
             "name": "Uplink",
+            "baudrate": 4800,
+            "sync_word": [93, 230, 42, 126],
+            "protocol": "NGHam",
             "types": [
                 {
                     "name": "Ping request",

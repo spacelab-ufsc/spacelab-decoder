@@ -35,26 +35,25 @@ SpaceLab Packet Decoder is a software to decode audio records from the satellite
 Until now, this program supports the satellites below:
 
 * FloripaSat-1 (launched in December 2019)
-* FloripaSat-2 (to be launched on 2022)
+* GOLDS-UFSC (to be launched on 2025)
 * Aldebaran-1 (to be launched on TBC)
+* Catarina-A1 (to be launched on 2025)
 
 ## Dependencies
 
 * python (>= 3)
 * gi
 * scipy
-* pyzmq
 * matplotlib
-* gnuradio
 * pyngham
 
 ### Installation on Ubuntu
 
-```sudo apt install python3 python3-gi python3-scipy python3-zmq python3-matplotlib gnuradio```
+```sudo apt install python3 python3-gi python3-scipy python3-matplotlib```
 
 ### Installation on Fedora
 
-```sudo dnf install python3 python3-gobject python3-scipy python3-zmq python3-matplotlib gnuradio```
+```sudo dnf install python3 python3-gobject python3-scipy python3-matplotlib```
 
 ## Building and Installing
 
