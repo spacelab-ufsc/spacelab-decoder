@@ -46,14 +46,6 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
       <!-- column-name gchararray1 -->
       <column type="gchararray"/>
     </columns>
-    <data>
-      <row>
-        <col id="0">Beacon</col>
-      </row>
-      <row>
-        <col id="0">Downlink</col>
-      </row>
-    </data>
   </object>
   <object class="GtkListStore" id="liststore_satellite">
     <columns>
@@ -298,12 +290,6 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                                 <property name="tooltip-text" translatable="yes">Packet type</property>
                                 <property name="model">liststore_packet_type</property>
                                 <property name="active">0</property>
-                                <child>
-                                  <object class="GtkCellRendererText" id="beacon_packet"/>
-                                  <attributes>
-                                    <attribute name="text">0</attribute>
-                                  </attributes>
-                                </child>
                               </object>
                               <packing>
                                 <property name="left-attach">1</property>

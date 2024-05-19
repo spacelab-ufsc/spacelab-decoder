@@ -84,6 +84,8 @@ _DIR_CONFIG_LOGFILE_LINUX       = 'spacelab_decoder'
 _DEFAULT_LOGFILE_PATH           = os.path.join(os.path.expanduser('~'), _DIR_CONFIG_LOGFILE_LINUX)
 _DEFAULT_LOGFILE                = 'logfile.csv'
 
+_SATELLITES                     = ["FloripaSat-1", "GOLDS-UFSC", "Aldebaran-1", "Catarina-A1", "SpaceLab-Transmitter"]
+
 class SpaceLabDecoder:
 
     def __init__(self):
@@ -172,18 +174,19 @@ class SpaceLabDecoder:
 
         # Satellite combobox
         self.liststore_satellite = self.builder.get_object("liststore_satellite")
-        self.liststore_satellite.append(["FloripaSat-1"])
-        self.liststore_satellite.append(["GOLDS-UFSC"])
-        self.liststore_satellite.append(["Aldebaran-1"])
-        self.liststore_satellite.append(["Catarina-A1"])
-        self.liststore_satellite.append(["SpaceLab-Transmitter"])
+        for sat in _SATELLITES:
+            self.liststore_satellite.append([sat])
         self.combobox_satellite = self.builder.get_object("combobox_satellite")
         cell = Gtk.CellRendererText()
         self.combobox_satellite.pack_start(cell, True)
         self.combobox_satellite.add_attribute(cell, "text", 0)
+        self.combobox_satellite.connect("changed", self.on_combobox_satellite_changed)
 
         # Packet type combobox
+        self.liststore_packet_type = self.builder.get_object("liststore_packet_type")
         self.combobox_packet_type = self.builder.get_object("combobox_packet_type")
+        self.combobox_packet_type.pack_start(cell, True)
+        self.combobox_packet_type.add_attribute(cell, "text", 0)
 
         # Audio file Filechooser
         self.filechooser_audio_file = self.builder.get_object("filechooser_audio_file")
@@ -370,6 +373,26 @@ class SpaceLabDecoder:
                 save_dialog.connect("response", self.save_response_cb)
                 save_dialog.show()
 
+    def on_combobox_satellite_changed(self, combobox):
+        # Clear the list of packet types
+        self.liststore_packet_type.clear()
+
+        sat_config_file = self._get_json_filename_of_active_sat()
+
+        links_names = list()
+
+        with open(sat_config_file) as f:
+            sat_info = json.load(f)
+            for i in range(len(sat_info['links'])):
+                links_names.append(sat_info['links'][i]['name'])
+
+        # Define the list of packet types from the JSON file of the given satellite
+        for n in links_names:
+            self.liststore_packet_type.append([n])
+
+        # Sets the first packet type as the active packet type
+        self.combobox_packet_type.set_active(0)
+
     def save_response_cb(self, dialog, response_id):
         save_dialog = dialog
         if response_id == Gtk.ResponseType.ACCEPT:
@@ -505,33 +528,40 @@ class SpaceLabDecoder:
 
     def _decode_packet(self, pkt):
         pkt_txt = "Decoded packet from \"" + self.filechooser_audio_file.get_filename() + "\":\n"
-        sat_json = str()
-        if self.combobox_satellite.get_active() == 0:
-            if os.path.isfile(_SAT_JSON_FLORIPASAT_1_LOCAL):
-                sat_json = _SAT_JSON_FLORIPASAT_1_LOCAL
-            else:
-                sat_json = _SAT_JSON_FLORIPASAT_1_SYSTEM
-        elif self.combobox_satellite.get_active() == 1:
-            if os.path.isfile(_SAT_JSON_GOLDS_UFSC_LOCAL):
-                sat_json = _SAT_JSON_GOLDS_UFSC_LOCAL
-            else:
-                sat_json = _SAT_JSON_GOLDS_UFSC_SYSTEM
-        elif self.combobox_satellite.get_active() == 2:
-            if os.path.isfile(_SAT_JSON_ALDEBARAN_1_LOCAL):
-                sat_json = _SAT_JSON_ALDEBARAN_1_LOCAL
-            else:
-                sat_json = _SAT_JSON_ALDEBARAN_1_SYSTEM
-        elif self.combobox_satellite.get_active() == 3:
-            if os.path.isfile(_SAT_JSON_CATARINA_A1_LOCAL):
-                sat_json = _SAT_JSON_CATARINA_A1_LOCAL
-            else:
-                sat_json = _SAT_JSON_CATARINA_A1_SYSTEM
-        elif self.combobox_satellite.get_active() == 4:
-            if os.path.isfile(_SAT_JSON_SPACELAB_TXER_LOCAL):
-                sat_json = _SAT_JSON_SPACELAB_TXER_LOCAL
-            else:
-                sat_json = _SAT_JSON_SPACELAB_TXER_SYSTEM
+        sat_json = self._get_json_filename_of_active_sat()
+
         p = Packet(sat_json, pkt)
         pkt_txt = pkt_txt + str(p)
         pkt_txt = pkt_txt + "========================================================\n"
         self.textbuffer_pkt_data.insert(self.textbuffer_pkt_data.get_end_iter(), pkt_txt)
+
+    def _get_json_filename_of_active_sat(self):
+        sat_config_file = str()
+
+        if self.combobox_satellite.get_active() == 0:
+            if os.path.isfile(_SAT_JSON_FLORIPASAT_1_LOCAL):
+                sat_config_file = _SAT_JSON_FLORIPASAT_1_LOCAL
+            else:
+                sat_config_file = _SAT_JSON_FLORIPASAT_1_SYSTEM
+        elif self.combobox_satellite.get_active() == 1:
+            if os.path.isfile(_SAT_JSON_GOLDS_UFSC_LOCAL):
+                sat_config_file = _SAT_JSON_GOLDS_UFSC_LOCAL
+            else:
+                sat_config_file = _SAT_JSON_GOLDS_UFSC_SYSTEM
+        elif self.combobox_satellite.get_active() == 2:
+            if os.path.isfile(_SAT_JSON_ALDEBARAN_1_LOCAL):
+                sat_config_file = _SAT_JSON_ALDEBARAN_1_LOCAL
+            else:
+                sat_config_file = _SAT_JSON_ALDEBARAN_1_SYSTEM
+        elif self.combobox_satellite.get_active() == 3:
+            if os.path.isfile(_SAT_JSON_CATARINA_A1_LOCAL):
+                sat_config_file = _SAT_JSON_CATARINA_A1_LOCAL
+            else:
+                sat_config_file = _SAT_JSON_CATARINA_A1_SYSTEM
+        elif self.combobox_satellite.get_active() == 4:
+            if os.path.isfile(_SAT_JSON_SPACELAB_TXER_LOCAL):
+                sat_config_file = _SAT_JSON_SPACELAB_TXER_LOCAL
+            else:
+                sat_config_file = _SAT_JSON_SPACELAB_TXER_SYSTEM
+
+        return sat_config_file
