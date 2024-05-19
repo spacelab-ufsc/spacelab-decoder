@@ -160,9 +160,6 @@ class SpaceLabDecoder:
         # Audio file Filechooser
         self.filechooser_audio_file = self.builder.get_object("filechooser_audio_file")
 
-        # Play audio checkbutton
-        self.checkbutton_play_audio = self.builder.get_object("checkbutton_play_audio")
-
         # Decode button
         self.button_decode = self.builder.get_object("button_decode")
         self.button_decode.connect("clicked", self.on_button_decode_clicked)
