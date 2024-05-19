@@ -389,12 +389,12 @@ class SpaceLabDecoder:
                         if len(pl) == 0:
                             if err == -1:
                                 packet_detected = False
-                                self.write_log("Error decoding a " + link_name + " packet!")
+                                self.write_log("Error decoding a " + link_name + " packet from " + _SATELLITES[self.combobox_satellite.get_active()] + "!")
                         else:
                             packet_detected = False
                             tm_now = datetime.now()
                             self.decoded_packets_index.append(self.textbuffer_pkt_data.create_mark(str(tm_now), self.textbuffer_pkt_data.get_end_iter(), True))
-                            self.write_log(link_name + " packet decoded!")
+                            self.write_log(link_name + " packet from " + _SATELLITES[self.combobox_satellite.get_active()] + " decoded!")
                             self._decode_packet(pl)
                         byte_buf.clear()
             sync_word_buf.push(bool(bit))
