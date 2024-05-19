@@ -45,7 +45,6 @@ from spacelab_decoder.bit_buffer import BitBuffer, _BIT_BUFFER_LSB
 from spacelab_decoder.sync_word import SyncWord, _SYNC_WORD_LSB
 from spacelab_decoder.byte_buffer import ByteBuffer, _BYTE_BUFFER_LSB
 from spacelab_decoder.packet import Packet
-from spacelab_decoder.wav_gen import WavGen
 
 _UI_FILE_LOCAL                  = os.path.abspath(os.path.dirname(__file__)) + '/data/ui/spacelab_decoder.glade'
 _UI_FILE_LINUX_SYSTEM           = '/usr/share/spacelab_decoder/spacelab_decoder.glade'
@@ -126,20 +125,6 @@ class SpaceLabDecoder:
         self.entry_preferences_general_location = self.builder.get_object("entry_preferences_general_location")
         self.entry_preferences_general_country = self.builder.get_object("entry_preferences_general_country")
 
-        # Generate wav file dialog
-        self.dialog_gen_wav_file = self.builder.get_object("dialog_gen_wav_file")
-        self.button_export_wav_file = self.builder.get_object("button_export_wav_file")
-        self.button_export_wav_file.connect("clicked", self.on_button_export_wav_file_clicked)
-        self.button_cancel_wav_file = self.builder.get_object("button_cancel_wav_file")
-        self.button_cancel_wav_file.connect("clicked", self.on_button_cancel_wav_file_clicked)
-        self.entry_gen_wav_baudrate = self.builder.get_object("entry_gen_wav_baudrate")
-        self.entry_gen_wav_sample_rate = self.builder.get_object("entry_gen_wav_sample_rate")
-        self.entry_gen_wav_amplitude = self.builder.get_object("entry_gen_wav_amplitude")
-        self.entry_gen_wav_packet_id = self.builder.get_object("entry_gen_wav_packet_id")
-        self.entry_gen_wav_callsign = self.builder.get_object("entry_gen_wav_callsign")
-        self.entry_gen_wav_payload = self.builder.get_object("entry_gen_wav_payload")
-        self.textbuffer_wav_gen_payload = self.builder.get_object("textbuffer_wav_gen_payload")
-
         # About dialog
         self.aboutdialog = self.builder.get_object("aboutdialog_spacelab_decoder")
         self.aboutdialog.set_version(spacelab_decoder.version.__version__)
@@ -189,10 +174,6 @@ class SpaceLabDecoder:
         # Clears button
         self.button_clear = self.builder.get_object("button_clean")
         self.button_clear.connect("clicked", self.on_button_clear_clicked)
-
-        # Generate wav file button
-        self.button_gen_wav_file = self.builder.get_object("button_gen_wav_file")
-        self.button_gen_wav_file.connect("clicked", self.on_button_gen_wav_file_clicked)
 
         # About toolbutton
         self.toolbutton_about = self.builder.get_object("toolbutton_about")
@@ -324,50 +305,6 @@ class SpaceLabDecoder:
         self.textbuffer_pkt_data.set_text("")
         self.decoded_packets_index = []
 
-    def on_button_gen_wav_file_clicked(self, button):
-        response = self.dialog_gen_wav_file.run()
-
-        if response == Gtk.ResponseType.DELETE_EVENT:
-            self.dialog_gen_wav_file.hide()
-
-    def on_button_export_wav_file_clicked(self, button):
-        if len(self.entry_gen_wav_sample_rate.get_text()) == 0:
-            error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error generating an wav file!")
-            error_dialog.format_secondary_text("No sample rate provided!")
-            error_dialog.run()
-            error_dialog.destroy()
-        elif len(self.entry_gen_wav_baudrate.get_text()) == 0:
-            error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error generating an wav file!")
-            error_dialog.format_secondary_text("No baudrate provided!")
-            error_dialog.run()
-            error_dialog.destroy()
-        elif len(self.entry_gen_wav_amplitude.get_text()) == 0:
-            error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error generating an wav file!")
-            error_dialog.format_secondary_text("No amplitude provided!")
-            error_dialog.run()
-            error_dialog.destroy()
-        elif len(self.entry_gen_wav_packet_id.get_text()) == 0:
-            error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error generating an wav file!")
-            error_dialog.format_secondary_text("No packet ID provided!")
-            error_dialog.run()
-            error_dialog.destroy()
-        else:
-            pkt_id = int(self.entry_gen_wav_packet_id.get_text())
-            if (pkt_id < 0) or (pkt_id > 255):
-                error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error generating an wav file!")
-                error_dialog.format_secondary_text("Invalid packet ID! (must be between 0 and 255)")
-                error_dialog.run()
-                error_dialog.destroy()
-            else:
-                save_dialog = Gtk.FileChooserDialog("Save Wav file", self.window,
-                                                    Gtk.FileChooserAction.SAVE,
-                                                    (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-                                                     Gtk.STOCK_SAVE, Gtk.ResponseType.ACCEPT))
-                save_dialog.set_do_overwrite_confirmation(True)
-                save_dialog.set_modal(True)
-                save_dialog.connect("response", self.save_response_cb)
-                save_dialog.show()
-
     def on_combobox_satellite_changed(self, combobox):
         # Clear the list of packet types
         self.liststore_packet_type.clear()
@@ -387,32 +324,6 @@ class SpaceLabDecoder:
         self.combobox_packet_type.set_active(0)
 
         self._get_link_info()
-
-    def save_response_cb(self, dialog, response_id):
-        save_dialog = dialog
-        if response_id == Gtk.ResponseType.ACCEPT:
-            pkt_id = int(self.entry_gen_wav_packet_id.get_text())
-            pkt_pl = [pkt_id]
-            pkt_callsign = [ord(char) for char in self.entry_gen_wav_callsign.get_text().upper()]
-            while(len(pkt_callsign) < 7):
-                pkt_callsign = [ord('0')] + pkt_callsign
-            pkt_pl.extend(pkt_callsign)
-            pkt_pl.extend(json.loads(self.textbuffer_wav_gen_payload.get_text(self.textbuffer_wav_gen_payload.get_start_iter(),
-                                                                              self.textbuffer_wav_gen_payload.get_end_iter(),
-                                                                              False)))
-
-            wav_gen = WavGen(self.ngham.encode(pkt_pl),
-                             int(self.entry_gen_wav_sample_rate.get_text()),
-                             int(self.entry_gen_wav_baudrate.get_text()),
-                             float(self.entry_gen_wav_amplitude.get_text()),
-                             save_dialog.get_file().get_path())
-            dialog.destroy()
-            self.dialog_gen_wav_file.hide()
-        else:
-            dialog.destroy()
-
-    def on_button_cancel_wav_file_clicked(self, button):
-        self.dialog_gen_wav_file.hide()
 
     def on_toolbutton_about_clicked(self, toolbutton):
         response = self.aboutdialog.run()
