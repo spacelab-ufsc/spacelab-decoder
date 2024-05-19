@@ -73,10 +73,6 @@ _SAT_JSON_SPACELAB_TXER_SYSTEM  = '/usr/share/spacelab_decoder/spacelab-transmit
 _DEFAULT_CALLSIGN               = 'PP5UF'
 _DEFAULT_LOCATION               = 'Florianópolis'
 _DEFAULT_COUNTRY                = 'Brazil'
-_DEFAULT_BEACON_BAUDRATE        = 1200
-_DEFAULT_DOWNLINK_BAUDRATE      = 2400
-_DEFAULT_BEACON_SYNC_WORD       = '0x5DE62A7E'
-_DEFAULT_DOWNLINK_SYNC_WORD     = '0x5DE62A7E'
 _DEFAULT_MAX_PKT_LEN_BYTES      = 300
 
 # Defining logfile default local
@@ -129,18 +125,6 @@ class SpaceLabDecoder:
         self.entry_preferences_general_callsign = self.builder.get_object("entry_preferences_general_callsign")
         self.entry_preferences_general_location = self.builder.get_object("entry_preferences_general_location")
         self.entry_preferences_general_country = self.builder.get_object("entry_preferences_general_country")
-
-        self.entry_preferences_beacon_baudrate = self.builder.get_object("entry_preferences_beacon_baudrate")
-        self.entry_preferences_beacon_s0 = self.builder.get_object("entry_preferences_beacon_s0")
-        self.entry_preferences_beacon_s1 = self.builder.get_object("entry_preferences_beacon_s1")
-        self.entry_preferences_beacon_s2 = self.builder.get_object("entry_preferences_beacon_s2")
-        self.entry_preferences_beacon_s3 = self.builder.get_object("entry_preferences_beacon_s3")
-
-        self.entry_preferences_downlink_baudrate = self.builder.get_object("entry_preferences_downlink_baudrate")
-        self.entry_preferences_downlink_s0 = self.builder.get_object("entry_preferences_downlink_s0")
-        self.entry_preferences_downlink_s1 = self.builder.get_object("entry_preferences_downlink_s1")
-        self.entry_preferences_downlink_s2 = self.builder.get_object("entry_preferences_downlink_s2")
-        self.entry_preferences_downlink_s3 = self.builder.get_object("entry_preferences_downlink_s3")
 
         # Generate wav file dialog
         self.dialog_gen_wav_file = self.builder.get_object("dialog_gen_wav_file")
@@ -287,7 +271,9 @@ class SpaceLabDecoder:
                 wav_filename = self.filechooser_audio_file.get_filename()
                 self.write_log("Audio file opened with a sample rate of " + str(sample_rate) + " Hz")
 
-                self._decode_audio(self.filechooser_audio_file.get_filename(), 1200)
+                baudrate, sync_word, protocol = self._get_link_info()
+
+                self._decode_audio(self.filechooser_audio_file.get_filename(), baudrate, sync_word, protocol)
 
     def on_button_plot_clicked(self, button):
         if self.filechooser_audio_file.get_filename() is None:
@@ -377,11 +363,9 @@ class SpaceLabDecoder:
         # Clear the list of packet types
         self.liststore_packet_type.clear()
 
-        sat_config_file = self._get_json_filename_of_active_sat()
-
         links_names = list()
 
-        with open(sat_config_file) as f:
+        with open(self._get_json_filename_of_active_sat()) as f:
             sat_info = json.load(f)
             for i in range(len(sat_info['links'])):
                 links_names.append(sat_info['links'][i]['name'])
@@ -392,6 +376,8 @@ class SpaceLabDecoder:
 
         # Sets the first packet type as the active packet type
         self.combobox_packet_type.set_active(0)
+
+        self._get_link_info()
 
     def save_response_cb(self, dialog, response_id):
         save_dialog = dialog
@@ -441,49 +427,33 @@ class SpaceLabDecoder:
         self.entry_preferences_general_location.set_text(_DEFAULT_LOCATION)
         self.entry_preferences_general_country.set_text(_DEFAULT_COUNTRY)
 
-        self.entry_preferences_beacon_baudrate.set_text(str(_DEFAULT_BEACON_BAUDRATE))
-        self.entry_preferences_beacon_s3.set_text('0x' + _DEFAULT_BEACON_SYNC_WORD[2:4])
-        self.entry_preferences_beacon_s2.set_text('0x' + _DEFAULT_BEACON_SYNC_WORD[4:6])
-        self.entry_preferences_beacon_s1.set_text('0x' + _DEFAULT_BEACON_SYNC_WORD[6:8])
-        self.entry_preferences_beacon_s0.set_text('0x' + _DEFAULT_BEACON_SYNC_WORD[8:10])
-
-        self.entry_preferences_downlink_baudrate.set_text(str(_DEFAULT_DOWNLINK_BAUDRATE))
-        self.entry_preferences_downlink_s3.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[2:4])
-        self.entry_preferences_downlink_s2.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[4:6])
-        self.entry_preferences_downlink_s1.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[6:8])
-        self.entry_preferences_downlink_s0.set_text('0x' + _DEFAULT_DOWNLINK_SYNC_WORD[8:10])
-
-    def _decode_audio(self, audio_file, baud):
+    def _decode_audio(self, audio_file, baud, sync_word, protocol):
         sample_rate, data = wavfile.read(audio_file)
 
         samples = list()
 
         # Convert stereo to mono by reading only the first channel
-        for i in range(len(data)):
-            samples.append(data[i][0])
+        if data.ndim > 1:
+            for i in range(len(data)):
+                samples.append(data[i][0])
+        else:
+            samples = data
 
         mm = TimeSync()
-        self._find_ngham_pkts(mm.get_bitstream(samples, sample_rate, baud))
 
-    def _find_ngham_pkts(self, bitstream):
+        if protocol == "NGHam":
+            self._find_ngham_pkts(mm.get_bitstream(samples, sample_rate, baud), sync_word)
+        else:
+            error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error decoding the audio file!")
+            error_dialog.format_secondary_text("The protocol \"" + protocol + "\" is not supported!")
+            error_dialog.run()
+            error_dialog.destroy()
+
+    def _find_ngham_pkts(self, bitstream, s_word):
         sync_word_buf = BitBuffer(32, _BIT_BUFFER_LSB)
 
-        sync_word_str = list()
-
-        if self.combobox_packet_type.get_active() == 0:
-            sync_word_str = [int(self.entry_preferences_beacon_s0.get_text(), 0),
-                             int(self.entry_preferences_beacon_s1.get_text(), 0),
-                             int(self.entry_preferences_beacon_s2.get_text(), 0),
-                             int(self.entry_preferences_beacon_s3.get_text(), 0)]
-        elif self.combobox_packet_type.get_active() == 1:
-            sync_word_str = [int(self.entry_preferences_downlink_s0.get_text(), 0),
-                             int(self.entry_preferences_downlink_s1.get_text(), 0),
-                             int(self.entry_preferences_downlink_s2.get_text(), 0),
-                             int(self.entry_preferences_downlink_s3.get_text(), 0)]
-        else:
-            sync_word_str = [0, 1, 2, 3]
-
-        sync_word = SyncWord(sync_word_str, _SYNC_WORD_LSB)
+        s_word.reverse()
+        sync_word = SyncWord(s_word, _SYNC_WORD_LSB)
 
         byte_buf = ByteBuffer(_BYTE_BUFFER_LSB)
 
@@ -528,9 +498,8 @@ class SpaceLabDecoder:
 
     def _decode_packet(self, pkt):
         pkt_txt = "Decoded packet from \"" + self.filechooser_audio_file.get_filename() + "\":\n"
-        sat_json = self._get_json_filename_of_active_sat()
 
-        p = Packet(sat_json, pkt)
+        p = Packet(self._get_json_filename_of_active_sat(), pkt)
         pkt_txt = pkt_txt + str(p)
         pkt_txt = pkt_txt + "========================================================\n"
         self.textbuffer_pkt_data.insert(self.textbuffer_pkt_data.get_end_iter(), pkt_txt)
@@ -565,3 +534,12 @@ class SpaceLabDecoder:
                 sat_config_file = _SAT_JSON_SPACELAB_TXER_SYSTEM
 
         return sat_config_file
+
+    def _get_link_info(self):
+        with open(self._get_json_filename_of_active_sat()) as f:
+            sat_info = json.load(f)
+            baudrate    = sat_info['links'][self.combobox_packet_type.get_active()]['baudrate']
+            sync_word   = sat_info['links'][self.combobox_packet_type.get_active()]['sync_word']
+            protocol    = sat_info['links'][self.combobox_packet_type.get_active()]['protocol']
+
+            return baudrate, sync_word, protocol
