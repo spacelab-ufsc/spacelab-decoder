@@ -33,7 +33,6 @@ def test_ui():
     window                  = builder.get_object("window_main")
     button_preferences      = builder.get_object("button_preferences")
     button_decode           = builder.get_object("button_decode")
-    checkbutton_play_audio  = builder.get_object("checkbutton_play_audio")
     button_plot_spectrum    = builder.get_object("button_plot_spectrum")
     button_clean            = builder.get_object("button_clean")
     toolbutton_about        = builder.get_object("toolbutton_about")
@@ -49,7 +48,6 @@ def test_ui():
     assert window                   != None
     assert button_preferences       != None
     assert button_decode            != None
-    assert checkbutton_play_audio   != None
     assert button_plot_spectrum     != None
     assert button_clean             != None
     assert toolbutton_about         != None
