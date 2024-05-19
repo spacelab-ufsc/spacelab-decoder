@@ -249,9 +249,9 @@ class SpaceLabDecoder:
                 wav_filename = self.filechooser_audio_file.get_filename()
                 self.write_log("Audio file opened with a sample rate of " + str(sample_rate) + " Hz")
 
-                baudrate, sync_word, protocol = self._get_link_info()
+                baudrate, sync_word, protocol, link_name = self._get_link_info()
 
-                self._decode_audio(self.filechooser_audio_file.get_filename(), baudrate, sync_word, protocol)
+                self._decode_audio(self.filechooser_audio_file.get_filename(), baudrate, sync_word, protocol, link_name)
 
     def on_button_plot_clicked(self, button):
         if self.filechooser_audio_file.get_filename() is None:
@@ -344,7 +344,7 @@ class SpaceLabDecoder:
         self.entry_preferences_general_location.set_text(_DEFAULT_LOCATION)
         self.entry_preferences_general_country.set_text(_DEFAULT_COUNTRY)
 
-    def _decode_audio(self, audio_file, baud, sync_word, protocol):
+    def _decode_audio(self, audio_file, baud, sync_word, protocol, link_name):
         sample_rate, data = wavfile.read(audio_file)
 
         samples = list()
@@ -359,14 +359,14 @@ class SpaceLabDecoder:
         mm = TimeSync()
 
         if protocol == "NGHam":
-            self._find_ngham_pkts(mm.get_bitstream(samples, sample_rate, baud), sync_word)
+            self._find_ngham_pkts(mm.get_bitstream(samples, sample_rate, baud), sync_word, link_name)
         else:
             error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error decoding the audio file!")
             error_dialog.format_secondary_text("The protocol \"" + protocol + "\" is not supported!")
             error_dialog.run()
             error_dialog.destroy()
 
-    def _find_ngham_pkts(self, bitstream, s_word):
+    def _find_ngham_pkts(self, bitstream, s_word, link_name):
         sync_word_buf = BitBuffer(32, _BIT_BUFFER_LSB)
 
         s_word.reverse()
@@ -389,22 +389,12 @@ class SpaceLabDecoder:
                         if len(pl) == 0:
                             if err == -1:
                                 packet_detected = False
-                                if self.combobox_packet_type.get_active() == 0:
-                                    self.write_log("Error decoding a Beacon packet!")
-                                elif self.combobox_packet_type.get_active() == 1:
-                                    self.write_log("Error decoding a Downlink packet!")
-                                else:
-                                    self.write_log("Error decoding a Packet!")
+                                self.write_log("Error decoding a " + link_name + " packet!")
                         else:
                             packet_detected = False
                             tm_now = datetime.now()
                             self.decoded_packets_index.append(self.textbuffer_pkt_data.create_mark(str(tm_now), self.textbuffer_pkt_data.get_end_iter(), True))
-                            if self.combobox_packet_type.get_active() == 0:
-                                self.write_log("Beacon packet decoded!")
-                            elif self.combobox_packet_type.get_active() == 1:
-                                self.write_log("Downlink packet decoded!")
-                            else:
-                                self.write_log("Packet decoded!")
+                            self.write_log(link_name + " packet decoded!")
                             self._decode_packet(pl)
                         byte_buf.clear()
             sync_word_buf.push(bool(bit))
@@ -455,8 +445,9 @@ class SpaceLabDecoder:
     def _get_link_info(self):
         with open(self._get_json_filename_of_active_sat()) as f:
             sat_info = json.load(f)
+            link_name   = sat_info['links'][self.combobox_packet_type.get_active()]['name']
             baudrate    = sat_info['links'][self.combobox_packet_type.get_active()]['baudrate']
             sync_word   = sat_info['links'][self.combobox_packet_type.get_active()]['sync_word']
             protocol    = sat_info['links'][self.combobox_packet_type.get_active()]['protocol']
 
-            return baudrate, sync_word, protocol
+            return baudrate, sync_word, protocol, link_name
