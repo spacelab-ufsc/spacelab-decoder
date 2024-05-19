@@ -283,19 +283,28 @@ class SpaceLabDecoder:
             error_dialog.destroy()
         else:
             # Read the wav file (mono)
-            sampling_frequency, signal_data = wavfile.read(self.filechooser_audio_file.get_filename())
+            sampling_frequency, data = wavfile.read(self.filechooser_audio_file.get_filename())
+
+            samples = list()
+
+            # Convert stereo to mono by reading only the first channel
+            if data.ndim > 1:
+                for i in range(len(data)):
+                    samples.append(data[i][0])
+            else:
+                samples = data
 
             # Plot the signal read from wav file
             plt.figure(num='Spectrogram');
             plt.subplot(211)
             plt.title(self.filechooser_audio_file.get_filename())
 
-            plt.plot(signal_data, linewidth=0.75)
+            plt.plot(samples, linewidth=0.75)
             plt.xlabel('Sample')
             plt.ylabel('Amplitude')
 
             plt.subplot(212)
-            plt.specgram(signal_data, Fs=sampling_frequency)
+            plt.specgram(samples, Fs=sampling_frequency)
             plt.xlabel('Time [sec]')
             plt.ylabel('Frequency [Hz]')
 
