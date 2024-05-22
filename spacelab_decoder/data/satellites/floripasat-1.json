@@ -15,7 +15,7 @@
                             "initial_pos": 0,
                             "final_pos": 0,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "int(pkt[0])",
                             "unit": ""
                         },
                         {
@@ -23,7 +23,7 @@
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "self._decode_callsign(pkt[1:8])",
                             "unit": ""
                         },
                         {
@@ -260,7 +260,7 @@
                             "initial_pos": 0,
                             "final_pos": 0,
                             "value": 1,
-                            "conversion": "None",
+                            "conversion": "int(pkt[0])",
                             "unit": ""
                         },
                         {
@@ -268,7 +268,7 @@
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "self._decode_callsign(pkt[1:8])",
                             "unit": ""
                         },
                         {
@@ -401,7 +401,7 @@
                             "initial_pos": 0,
                             "final_pos": 0,
                             "value": 2,
-                            "conversion": "None",
+                            "conversion": "int(pkt[0])",
                             "unit": ""
                         },
                         {
@@ -409,7 +409,7 @@
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "None",
+                            "conversion": "self._decode_callsign(pkt[1:8])",
                             "unit": ""
                         }
                     ]
