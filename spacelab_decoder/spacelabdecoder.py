@@ -77,6 +77,7 @@ _SATELLITES                     = [["FloripaSat-1", "floripasat-1.json"],
                                    ["GOLDS-UFSC", "golds-ufsc.json"],
                                    ["Aldebaran-1", "aldebaran-1.json"],
                                    ["Catarina-A1", "catarina-a1.json"],
+                                   ["Catarina-A2", "catarina-a2.json"],
                                    ["SpaceLab-Transmitter", "spacelab-transmitter.json"]]
 
 _PROTOCOL_NGHAM                 = "NGHam"
