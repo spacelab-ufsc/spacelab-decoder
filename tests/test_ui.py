@@ -33,6 +33,7 @@ def test_ui():
     window                  = builder.get_object("window_main")
     button_preferences      = builder.get_object("button_preferences")
     button_decode           = builder.get_object("button_decode")
+    button_stop             = builder.get_object("button_stop")
     button_plot_spectrum    = builder.get_object("button_plot_spectrum")
     button_clean            = builder.get_object("button_clean")
     toolbutton_about        = builder.get_object("toolbutton_about")
@@ -83,8 +84,8 @@ def test_ui():
     button_preferences_ok               = builder.get_object("button_preferences_ok")
     button_preferences_default          = builder.get_object("button_preferences_default")
     button_preferences_cancel           = builder.get_object("button_preferences_cancel")
-    entry_preferences_udp_host_address  = builder.get_object("entry_gqrx_address")
-    entry_preferences_udp_host_port     = builder.get_object("entry_gqrx_port")
+    entry_preferences_udp_address       = builder.get_object("entry_preferences_udp_address")
+    entry_preferences_udp_port          = builder.get_object("entry_preferences_udp_port")
 
     assert dialog_preferences                   != None
     assert entry_preferences_general_callsign   != None
@@ -93,7 +94,7 @@ def test_ui():
     assert button_preferences_ok                != None
     assert button_preferences_default           != None
     assert button_preferences_cancel            != None
-    assert entry_preferences_udp_host_address   != None
-    assert entry_preferences_udp_host_port      != None
+    assert entry_preferences_udp_address        != None
+    assert entry_preferences_udp_port           != None
 
     assert dialog_preferences.get_title()       == "Preferences"
