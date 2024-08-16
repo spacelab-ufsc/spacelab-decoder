@@ -27,6 +27,8 @@ import os
 from datetime import datetime
 import json
 import csv
+import threading
+import socket
 
 import gi
 gi.require_version('Gtk', '3.0')
@@ -104,6 +106,8 @@ class SpaceLabDecoder:
 
         self.decoded_packets_index = list()
 
+        self._run_udp_decode = False
+
     def _build_widgets(self):
         # Main window
         self.window = self.builder.get_object("window_main")
@@ -126,6 +130,9 @@ class SpaceLabDecoder:
         self.entry_preferences_general_callsign = self.builder.get_object("entry_preferences_general_callsign")
         self.entry_preferences_general_location = self.builder.get_object("entry_preferences_general_location")
         self.entry_preferences_general_country = self.builder.get_object("entry_preferences_general_country")
+
+        self.entry_preferences_udp_address = self.builder.get_object("entry_preferences_udp_address")
+        self.entry_preferences_udp_port = self.builder.get_object("entry_preferences_udp_port")
 
         # About dialog
         self.aboutdialog = self.builder.get_object("aboutdialog_spacelab_decoder")
@@ -159,12 +166,18 @@ class SpaceLabDecoder:
         self.combobox_packet_type.pack_start(cell, True)
         self.combobox_packet_type.add_attribute(cell, "text", 0)
 
-        # Audio file Filechooser
+        # Signal source
+        self.radiobutton_audio_file = self.builder.get_object("radiobutton_audio_file")
+        self.radiobutton_udp        = self.builder.get_object("radiobutton_udp")
         self.filechooser_audio_file = self.builder.get_object("filechooser_audio_file")
 
         # Decode button
         self.button_decode = self.builder.get_object("button_decode")
         self.button_decode.connect("clicked", self.on_button_decode_clicked)
+
+        # Stop button
+        self.button_stop = self.builder.get_object("button_stop")
+        self.button_stop.connect("clicked", self.on_button_stop_clicked)
 
         # Plot spectrum button
         self.button_plot_spectrum = self.builder.get_object("button_plot_spectrum")
@@ -235,25 +248,51 @@ class SpaceLabDecoder:
         self.dialog_preferences.hide()
 
     def on_button_decode_clicked(self, button):
-        if self.filechooser_audio_file.get_filename() is None:
-            error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error loading the audio file!")
-            error_dialog.format_secondary_text("No file selected!")
+        if self.combobox_satellite.get_active() == -1:
+            error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error decoding the audio file!")
+            error_dialog.format_secondary_text("No satellite selected!")
             error_dialog.run()
             error_dialog.destroy()
         else:
-            if self.combobox_satellite.get_active() == -1:
-                error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error decoding the audio file!")
-                error_dialog.format_secondary_text("No satellite selected!")
-                error_dialog.run()
-                error_dialog.destroy()
-            else:
-                sample_rate, data = wavfile.read(self.filechooser_audio_file.get_filename())
-                wav_filename = self.filechooser_audio_file.get_filename()
-                self.write_log("Audio file opened with a sample rate of " + str(sample_rate) + " Hz")
+            if self.radiobutton_audio_file.get_active():
+                if self.filechooser_audio_file.get_filename() is None:
+                    error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error loading the audio file!")
+                    error_dialog.format_secondary_text("No file selected!")
+                    error_dialog.run()
+                    error_dialog.destroy()
+                else:
+                    sample_rate, data = wavfile.read(self.filechooser_audio_file.get_filename())
+                    wav_filename = self.filechooser_audio_file.get_filename()
+                    self.write_log("Audio file opened with a sample rate of " + str(sample_rate) + " Hz")
+
+                    baudrate, sync_word, protocol, link_name = self._get_link_info()
+
+                    self._decode_audio(self.filechooser_audio_file.get_filename(), baudrate, sync_word, protocol, link_name)
+            elif self.radiobutton_udp.get_active():
+                self._run_udp_decode = True
+                self.button_decode.set_sensitive(False)
+                self.button_stop.set_sensitive(True)
+
+                address = self.entry_preferences_udp_address.get_text()
+                port = self.entry_preferences_udp_port.get_text()
+
+                self.write_log("Listening port " + port + " from " + address)
 
                 baudrate, sync_word, protocol, link_name = self._get_link_info()
 
-                self._decode_audio(self.filechooser_audio_file.get_filename(), baudrate, sync_word, protocol, link_name)
+                thread_decode = threading.Thread(target=self._decode_stream, args=(address, int(port), baudrate, sync_word, protocol, link_name,))
+                thread_decode.start()
+#                self._decode_stream(address, int(port), baudrate, sync_word, protocol, link_name)
+            else:
+                error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error decoding the satellite data!")
+                error_dialog.format_secondary_text("No input selected!")
+                error_dialog.run()
+                error_dialog.destroy()
+
+    def on_button_stop_clicked(self, button):
+        self._run_udp_decode = False
+        self.button_stop.set_sensitive(False)
+        self.button_decode.set_sensitive(True)
 
     def on_button_plot_clicked(self, button):
         if self.filechooser_audio_file.get_filename() is None:
@@ -369,6 +408,25 @@ class SpaceLabDecoder:
             error_dialog.format_secondary_text("The protocol \"" + protocol + "\" is not supported!")
             error_dialog.run()
             error_dialog.destroy()
+
+    def _decode_stream(self, address, port, baud, sync_word, protocol, link_name):
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
+        sock.settimeout(1)
+        sock.bind((address, port))
+
+        mm = TimeSync()
+
+        while self._run_udp_decode:
+            try:
+                samples, addr = sock.recvfrom(1024) # Buffer size is 1024 bytes
+                if protocol == _PROTOCOL_NGHAM:
+                    self._find_ngham_pkts(mm.get_bitstream(samples, 48000.0, baud), sync_word, link_name)
+                elif protocol == _PROTOCOL_AX100MODE5:
+                    self._find_ax100mode5_pkts(mm.get_bitstream(samples, 48000.0, baud), sync_word, link_name)
+            except socket.timeout:
+                pass
+
+        sock.close()
 
     def _find_ngham_pkts(self, bitstream, s_word, link_name):
         sync_word_buf = BitBuffer(32, _BIT_BUFFER_LSB)

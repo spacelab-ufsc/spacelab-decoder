@@ -110,6 +110,21 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
               </packing>
             </child>
             <child>
+              <object class="GtkToolButton" id="button_stop">
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can-focus">False</property>
+                <property name="tooltip-text" translatable="yes">Stop decoder</property>
+                <property name="label" translatable="yes">__glade_unnamed_38</property>
+                <property name="use-underline">True</property>
+                <property name="stock-id">gtk-media-stop</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkToolButton" id="button_plot_spectrum">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
@@ -786,7 +801,7 @@ Vitória Beatriz Bianchin &lt;vitoriabbianchin@gmail.com &gt;</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="entry_gqrx_address">
+                  <object class="GtkEntry" id="entry_preferences_udp_address">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="hexpand">True</property>
@@ -799,7 +814,7 @@ Vitória Beatriz Bianchin &lt;vitoriabbianchin@gmail.com &gt;</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="entry_gqrx_port">
+                  <object class="GtkEntry" id="entry_preferences_udp_port">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="hexpand">True</property>
