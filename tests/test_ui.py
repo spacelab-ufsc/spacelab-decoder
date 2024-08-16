@@ -44,6 +44,8 @@ def test_ui():
     filefilter_audio        = builder.get_object("filefilter_audio")
     liststore_satellite     = builder.get_object("liststore_satellite")
     liststore_packet_type   = builder.get_object("liststore_packet_type")
+    radiobutton_audio_file  = builder.get_object("radiobutton_audio_file")
+    radiobutton_udp         = builder.get_object("radiobutton_udp")
 
     assert window                   != None
     assert button_preferences       != None
@@ -59,6 +61,8 @@ def test_ui():
     assert filefilter_audio         != None
     assert liststore_satellite      != None
     assert liststore_packet_type    != None
+    assert radiobutton_audio_file   != None
+    assert radiobutton_udp          != None
 
     assert window.get_title()       == "SpaceLab Decoder"
 
@@ -79,6 +83,8 @@ def test_ui():
     button_preferences_ok               = builder.get_object("button_preferences_ok")
     button_preferences_default          = builder.get_object("button_preferences_default")
     button_preferences_cancel           = builder.get_object("button_preferences_cancel")
+    entry_preferences_udp_host_address  = builder.get_object("entry_gqrx_address")
+    entry_preferences_udp_host_port     = builder.get_object("entry_gqrx_port")
 
     assert dialog_preferences                   != None
     assert entry_preferences_general_callsign   != None
@@ -87,5 +93,7 @@ def test_ui():
     assert button_preferences_ok                != None
     assert button_preferences_default           != None
     assert button_preferences_cancel            != None
+    assert entry_preferences_udp_host_address   != None
+    assert entry_preferences_udp_host_port      != None
 
     assert dialog_preferences.get_title()       == "Preferences"
