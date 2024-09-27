@@ -2,7 +2,7 @@
     "name": "GOLDS-UFSC",
     "links": [
         {
-            "name": "Beacon",
+            "name": "Downlink (VHF)",
             "baudrate": 1200,
             "sync_word": [93, 230, 42, 126],
             "protocol": "NGHam",
@@ -35,87 +35,87 @@
                             "unit": "sec"
                         },
                         {
-                            "name": "Battery cell 1 voltage",
+                            "name": "EPS uC temperature",
                             "initial_pos": 12,
                             "final_pos": 13,
                             "value": 0,
-                            "conversion": "int((pkt[12] << 8) << pkt[13])",
-                            "unit": "mV"
+                            "conversion": "int((pkt[12] << 8) | pkt[13])",
+                            "unit": "K"
                         },
                         {
-                            "name": "Battery cell 2 voltage",
+                            "name": "EPS current",
                             "initial_pos": 14,
                             "final_pos": 15,
                             "value": 0,
-                            "conversion": "int((pkt[14] << 8) << pkt[15])",
-                            "unit": "mV"
+                            "conversion": "int((pkt[14] << 8) | pkt[15])",
+                            "unit": "mA"
                         },
                         {
-                            "name": "Battery current",
+                            "name": "Reset counter",
                             "initial_pos": 16,
                             "final_pos": 17,
                             "value": 0,
                             "conversion": "int((pkt[16] << 8) | pkt[17])",
-                            "unit": "mA"
+                            "unit": ""
                         },
                         {
-                            "name": "Battery charge",
+                            "name": "Solar panel voltage (-Y and +X)",
                             "initial_pos": 18,
                             "final_pos": 19,
                             "value": 0,
                             "conversion": "int((pkt[18] << 8) | pkt[19])",
-                            "unit": "mAh"
-                        },
-                        {
-                            "name": "Battery cell 1 temperature",
-                            "initial_pos": 20,
-                            "final_pos": 21,
-                            "value": 0,
-                            "conversion": "int((pkt[20] << 8) | pkt[21])",
-                            "unit": "K"
-                        },
-                        {
-                            "name": "Battery cell 2 temperature",
-                            "initial_pos": 22,
-                            "final_pos": 23,
-                            "value": 0,
-                            "conversion": "int((pkt[22] << 8) | pkt[23])",
-                            "unit": "K"
-                        },
-                        {
-                            "name": "Battery monitor temperature",
-                            "initial_pos": 24,
-                            "final_pos": 25,
-                            "value": 0,
-                            "conversion": "int((pkt[24] << 8) | pkt[25])",
-                            "unit": "K"
-                        },
-                        {
-                            "name": "Solar panel voltage (-Y and +X)",
-                            "initial_pos": 26,
-                            "final_pos": 27,
-                            "value": 0,
-                            "conversion": "int((pkt[26] << 8) | pkt[27])",
                             "unit": "mV"
                         },
                         {
                             "name": "Solar panel voltage (-X and +Z)",
-                            "initial_pos": 28,
-                            "final_pos": 29,
+                            "initial_pos": 20,
+                            "final_pos": 21,
                             "value": 0,
-                            "conversion": "int((pkt[28] << 8) | pkt[29])",
+                            "conversion": "int((pkt[20] << 8) | pkt[21])",
                             "unit": "mV"
                         },
                         {
                             "name": "Solar panel voltage (-Z and +Y)",
-                            "initial_pos": 30,
-                            "final_pos": 31,
+                            "initial_pos": 22,
+                            "final_pos": 23,
                             "value": 0,
-                            "conversion": "int((pkt[30] << 8) | pkt[31])",
+                            "conversion": "int((pkt[22] << 8) | pkt[23])",
                             "unit": "mV"
                         },
                         {
                             "name": "Solar panel current (-Y)",
+                            "initial_pos": 24,
+                            "final_pos": 25,
+                            "value": 0,
+                            "conversion": "int((pkt[24] << 8) | pkt[25])",
+                            "unit": "mA"
+                        },
+                        {
+                            "name": "Solar panel current (+Y)",
+                            "initial_pos": 26,
+                            "final_pos": 27,
+                            "value": 0,
+                            "conversion": "int((pkt[26] << 8) | pkt[27])",
+                            "unit": "mA"
+                        },
+                        {
+                            "name": "Solar panel current (-X)",
+                            "initial_pos": 28,
+                            "final_pos": 29,
+                            "value": 0,
+                            "conversion": "int((pkt[28] << 8) | pkt[29])",
+                            "unit": "mA"
+                        },
+                        {
+                            "name": "Solar panel current (+X)",
+                            "initial_pos": 30,
+                            "final_pos": 31,
+                            "value": 0,
+                            "conversion": "int((pkt[30] << 8) | pkt[31])",
+                            "unit": "mA"
+                        },
+                        {
+                            "name": "Solar panel current (-Z)",
                             "initial_pos": 32,
                             "final_pos": 33,
                             "value": 0,
@@ -123,7 +123,7 @@
                             "unit": "mA"
                         },
                         {
-                            "name": "Solar panel current (+Y)",
+                            "name": "Solar panel current (+Z)",
                             "initial_pos": 34,
                             "final_pos": 35,
                             "value": 0,
@@ -131,56 +131,152 @@
                             "unit": "mA"
                         },
                         {
-                            "name": "Solar panel current (-X)",
+                            "name": "MPPT 1 duty cycle",
                             "initial_pos": 36,
+                            "final_pos": 36,
+                            "value": 0,
+                            "conversion": "int(pkt[36])",
+                            "unit": "%"
+                        },
+                        {
+                            "name": "MPPT 2 duty cycle",
+                            "initial_pos": 37,
                             "final_pos": 37,
                             "value": 0,
-                            "conversion": "int((pkt[36] << 8) | pkt[37])",
-                            "unit": "mA"
+                            "conversion": "int(pkt[37])",
+                            "unit": "%"
                         },
                         {
-                            "name": "Solar panel current (+X)",
+                            "name": "MPPT 3 duty cycle",
                             "initial_pos": 38,
-                            "final_pos": 39,
+                            "final_pos": 38,
                             "value": 0,
-                            "conversion": "int((pkt[38] << 8) | pkt[39])",
-                            "unit": "mA"
+                            "conversion": "int(pkt[38])",
+                            "unit": "%"
                         },
                         {
-                            "name": "Solar panel current (-Z)",
-                            "initial_pos": 40,
-                            "final_pos": 41,
+                            "name": "Solar panel voltage MPPT",
+                            "initial_pos": 39,
+                            "final_pos": 40,
                             "value": 0,
-                            "conversion": "int((pkt[40] << 8) | pkt[41])",
-                            "unit": "mA"
+                            "conversion": "int((pkt[38] << 8) << pkt[40])",
+                            "unit": "mV"
                         },
                         {
-                            "name": "Solar panel current (+Z)",
-                            "initial_pos": 42,
-                            "final_pos": 43,
+                            "name": "Main power bus voltage",
+                            "initial_pos": 41,
+                            "final_pos": 42,
                             "value": 0,
-                            "conversion": "int((pkt[42] << 8) | pkt[43])",
-                            "unit": "mA"
+                            "conversion": "int((pkt[41] << 8) << pkt[42])",
+                            "unit": "mV"
                         },
                         {
-                            "name": "EPS uC temperature",
-                            "initial_pos": 44,
-                            "final_pos": 45,
+                            "name": "RTD 0 temperature",
+                            "initial_pos": 43,
+                            "final_pos": 44,
                             "value": 0,
-                            "conversion": "int((pkt[44] << 8) | pkt[45])",
+                            "conversion": "int((pkt[43] << 8) << pkt[44])",
                             "unit": "K"
+                        },
+                        {
+                            "name": "Battery cell 1-2 temperature",
+                            "initial_pos": 45,
+                            "final_pos": 46,
+                            "value": 0,
+                            "conversion": "int((pkt[45] << 8) << pkt[46])",
+                            "unit": "K"
+                        },
+                        {
+                            "name": "Battery cell 3-4 temperature",
+                            "initial_pos": 47,
+                            "final_pos": 48,
+                            "value": 0,
+                            "conversion": "int((pkt[47] << 8) << pkt[48])",
+                            "unit": "K"
+                        },
+                        {
+                            "name": "RTD 3 temperature",
+                            "initial_pos": 49,
+                            "final_pos": 50,
+                            "value": 0,
+                            "conversion": "int((pkt[49] << 8) << pkt[50])",
+                            "unit": "K"
+                        },
+                        {
+                            "name": "Battery heater cell 3-4 temperature",
+                            "initial_pos": 51,
+                            "final_pos": 52,
+                            "value": 0,
+                            "conversion": "int((pkt[51] << 8) << pkt[52])",
+                            "unit": "K"
+                        },
+                        {
+                            "name": "Battery heater cell 1-2 temperature",
+                            "initial_pos": 53,
+                            "final_pos": 54,
+                            "value": 0,
+                            "conversion": "int((pkt[53] << 8) << pkt[54])",
+                            "unit": "K"
+                        },
+                        {
+                            "name": "RTD 6 temperature",
+                            "initial_pos": 55,
+                            "final_pos": 56,
+                            "value": 0,
+                            "conversion": "int((pkt[55] << 8) << pkt[56])",
+                            "unit": "K"
+                        },
+                        {
+                            "name": "Battery voltage",
+                            "initial_pos": 57,
+                            "final_pos": 58,
+                            "value": 0,
+                            "conversion": "int((pkt[57] << 8) << pkt[58])",
+                            "unit": "mV"
+                        },
+                        {
+                            "name": "Battery current",
+                            "initial_pos": 59,
+                            "final_pos": 60,
+                            "value": 0,
+                            "conversion": "int((pkt[59] << 8) | pkt[60])",
+                            "unit": "mA"
+                        },
+                        {
+                            "name": "Battery charge",
+                            "initial_pos": 61,
+                            "final_pos": 62,
+                            "value": 0,
+                            "conversion": "int((pkt[61] << 8) | pkt[62])",
+                            "unit": "mAh"
+                        },
+                        {
+                            "name": "Battery heater 1 duty cycle",
+                            "initial_pos": 63,
+                            "final_pos": 63,
+                            "value": 0,
+                            "conversion": "int(pkt[63])",
+                            "unit": "%"
+                        },
+                        {
+                            "name": "Battery heater 2 duty cycle",
+                            "initial_pos": 64,
+                            "final_pos": 64,
+                            "value": 0,
+                            "conversion": "int(pkt[64])",
+                            "unit": "%"
                         }
                     ]
                 },
                 {
-                    "name": "TTC data",
+                    "name": "Message broadcast",
                     "fields": [
                         {
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
                             "value": 1,
-                            "conversion": "int(pkt[0])",
+                            "conversion": "",
                             "unit": ""
                         },
                         {
@@ -192,51 +288,35 @@
                             "unit": ""
                         },
                         {
-                            "name": "Timestamp",
+                            "name": "Requester callsign",
                             "initial_pos": 8,
-                            "final_pos": 11,
+                            "final_pos": 14,
                             "value": 0,
-                            "conversion": "int((pkt[8] << 24) | (pkt[9] << 16) | (pkt[10] << 8) | pkt[11])",
-                            "unit": "sec"
-                        },
-                        {
-                            "name": "TTC uC temperature",
-                            "initial_pos": 12,
-                            "final_pos": 13,
-                            "value": 0,
-                            "conversion": "int((pkt[12] << 8) | pkt[13])",
-                            "unit": "K"
-                        },
-                        {
-                            "name": "Reset counter",
-                            "initial_pos": 14,
-                            "final_pos": 15,
-                            "value": 0,
-                            "conversion": "int((pkt[14] << 8) | pkt[15])",
+                            "conversion": "\"\".join([chr(val) for val in pkt[8:15]])",
                             "unit": ""
                         },
                         {
-                            "name": "Last reset cause",
-                            "initial_pos": 16,
-                            "final_pos": 16,
+                            "name": "Destination callsign",
+                            "initial_pos": 15,
+                            "final_pos": 21,
                             "value": 0,
-                            "conversion": "int(pkt[16])",
+                            "conversion": "\"\".join([chr(val) for val in pkt[15:22]])",
                             "unit": ""
                         },
                         {
-                            "name": "Beacon radio temperature",
-                            "initial_pos": 17,
-                            "final_pos": 18,
+                            "name": "Message",
+                            "initial_pos": 22,
+                            "final_pos": 59,
                             "value": 0,
-                            "conversion": "int((pkt[17] << 8) | pkt[18])",
-                            "unit": "K"
+                            "conversion": "\"\".join([chr(val) for val in pkt[22:60]])",
+                            "unit": ""
                         }
                     ]
                 }
             ]
         },
         {
-            "name": "Downlink",
+            "name": "Downlink (UHF)",
             "baudrate": 4800,
             "sync_word": [93, 230, 42, 126],
             "protocol": "NGHam",
@@ -248,7 +328,7 @@
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 32,
+                            "value": 16,
                             "conversion": "int(pkt[0])",
                             "unit": ""
                         },
@@ -581,7 +661,7 @@
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 33,
+                            "value": 17,
                             "conversion": "int(pkt[0])",
                             "unit": ""
                         },
@@ -610,7 +690,7 @@
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 34,
+                            "value": 18,
                             "conversion": "int(pkt[0])",
                             "unit": ""
                         },
@@ -657,58 +737,13 @@
                     ]
                 },
                 {
-                    "name": "Message broadcast",
+                    "name": "Payload data",
                     "fields": [
                         {
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 35,
-                            "conversion": "",
-                            "unit": ""
-                        },
-                        {
-                            "name": "Source callsign",
-                            "initial_pos": 1,
-                            "final_pos": 7,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
-                            "unit": ""
-                        },
-                        {
-                            "name": "Requester callsign",
-                            "initial_pos": 8,
-                            "final_pos": 14,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[8:15]])",
-                            "unit": ""
-                        },
-                        {
-                            "name": "Destination callsign",
-                            "initial_pos": 15,
-                            "final_pos": 21,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[15:22]])",
-                            "unit": ""
-                        },
-                        {
-                            "name": "Message",
-                            "initial_pos": 22,
-                            "final_pos": 59,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[22:60]])",
-                            "unit": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "Payload data (EDC info)",
-                    "fields": [
-                        {
-                            "name": "ID",
-                            "initial_pos": 0,
-                            "final_pos": 0,
-                            "value": 36,
+                            "value": 19,
                             "conversion": "int(pkt[0])",
                             "unit": ""
                         },
@@ -1022,7 +1057,7 @@
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 37,
+                            "value": 20,
                             "conversion": "int(pkt[0])",
                             "unit": ""
                         },
@@ -1067,7 +1102,7 @@
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 38,
+                            "value": 21,
                             "conversion": "int(pkt[0])",
                             "unit": ""
                         },
@@ -1109,6 +1144,35 @@
                             "final_pos": 20,
                             "value": 0,
                             "conversion": "int((pkt[17] << 24) | (pkt[18] << 16) | (pkt[19] << 8) | pkt[20])",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Packet broadcast",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 22,
+                            "conversion": "int(pkt[0])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Byte sequence",
+                            "initial_pos": 8,
+                            "final_pos": 59,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[8:60]])",
                             "unit": ""
                         }
                     ]
