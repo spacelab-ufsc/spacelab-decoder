@@ -276,7 +276,7 @@
                             "initial_pos": 0,
                             "final_pos": 0,
                             "value": 1,
-                            "conversion": "",
+                            "conversion": "int(pkt[0])",
                             "unit": ""
                         },
                         {
@@ -309,6 +309,35 @@
                             "final_pos": 59,
                             "value": 0,
                             "conversion": "\"\".join([chr(val) for val in pkt[22:60]])",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Ping answer",
+                    "fields": [
+                        {
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Requester callsign",
+                            "initial_pos": 8,
+                            "final_pos": 14,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[8:15]])",
                             "unit": ""
                         }
                     ]
@@ -655,42 +684,13 @@
                     ]
                 },
                 {
-                    "name": "Ping answer",
-                    "fields": [
-                        {
-                            "name": "ID",
-                            "initial_pos": 0,
-                            "final_pos": 0,
-                            "value": 17,
-                            "conversion": "int(pkt[0])",
-                            "unit": ""
-                        },
-                        {
-                            "name": "Source callsign",
-                            "initial_pos": 1,
-                            "final_pos": 7,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
-                            "unit": ""
-                        },
-                        {
-                            "name": "Requester callsign",
-                            "initial_pos": 8,
-                            "final_pos": 14,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[8:15]])",
-                            "unit": ""
-                        }
-                    ]
-                },
-                {
                     "name": "Data request answer",
                     "fields": [
                         {
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 18,
+                            "value": 17,
                             "conversion": "int(pkt[0])",
                             "unit": ""
                         },
@@ -743,7 +743,7 @@
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 19,
+                            "value": 18,
                             "conversion": "int(pkt[0])",
                             "unit": ""
                         },
@@ -926,138 +926,13 @@
                     ]
                 },
                 {
-                    "name": "Payload data (EDC samples)",
-                    "fields": [
-                        {
-                            "name": "ID",
-                            "initial_pos": 0,
-                            "final_pos": 0,
-                            "value": 39,
-                            "conversion": "int(pkt[0])",
-                            "unit": ""
-                        },
-                        {
-                            "name": "Source callsign",
-                            "initial_pos": 1,
-                            "final_pos": 7,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
-                            "unit": ""
-                        },
-                        {
-                            "name": "Payload ID",
-                            "initial_pos": 8,
-                            "final_pos": 8,
-                            "value": 0,
-                            "conversion": "int(pkt[8])",
-                            "unit": ""
-                        },
-                        {
-                            "name": "Elapsed time (J2000 epoch)",
-                            "initial_pos": 9,
-                            "final_pos": 12,
-                            "value": 0,
-                            "conversion": "int((pkt[9] << 24) | (pkt[10] << 16) | (pkt[11] << 8) | pkt[12])",
-                            "unit": ""
-                        },
-                        {
-                            "name": "ADC sample packet number",
-                            "initial_pos": 13,
-                            "final_pos": 13,
-                            "value": 0,
-                            "conversion": "int(pkt[13])",
-                            "unit": ""
-                        },
-                        {
-                            "name": "ADC I-sample 0",
-                            "initial_pos": 14,
-                            "final_pos": 15,
-                            "value": 0,
-                            "conversion": "int((pkt[14] << 8) | pkt[15])",
-                            "unit": ""
-                        },
-                        {
-                            "name": "ADC Q-sample 0",
-                            "initial_pos": 16,
-                            "final_pos": 17,
-                            "value": 0,
-                            "conversion": "int((pkt[16] << 8) | pkt[17])",
-                            "unit": ""
-                        },
-                        {
-                            "name": "ADC I-sample 1",
-                            "initial_pos": 18,
-                            "final_pos": 19,
-                            "value": 0,
-                            "conversion": "int((pkt[18] << 8) | pkt[19])",
-                            "unit": ""
-                        },
-                        {
-                            "name": "ADC Q-sample 1",
-                            "initial_pos": 20,
-                            "final_pos": 21,
-                            "value": 0,
-                            "conversion": "int((pkt[20] << 8) | pkt[21])",
-                            "unit": ""
-                        },
-                        {
-                            "name": "ADC I-sample 2",
-                            "initial_pos": 22,
-                            "final_pos": 23,
-                            "value": 0,
-                            "conversion": "int((pkt[22] << 8) | pkt[23])",
-                            "unit": ""
-                        },
-                        {
-                            "name": "ADC Q-sample 2",
-                            "initial_pos": 24,
-                            "final_pos": 25,
-                            "value": 0,
-                            "conversion": "int((pkt[24] << 8) | pkt[25])",
-                            "unit": ""
-                        },
-                        {
-                            "name": "ADC I-sample 3",
-                            "initial_pos": 26,
-                            "final_pos": 27,
-                            "value": 0,
-                            "conversion": "int((pkt[26] << 8) | pkt[27])",
-                            "unit": ""
-                        },
-                        {
-                            "name": "ADC Q-sample 3",
-                            "initial_pos": 28,
-                            "final_pos": 29,
-                            "value": 0,
-                            "conversion": "int((pkt[28] << 8) | pkt[29])",
-                            "unit": ""
-                        },
-                        {
-                            "name": "ADC I-sample 4",
-                            "initial_pos": 30,
-                            "final_pos": 31,
-                            "value": 0,
-                            "conversion": "int((pkt[30] << 8) | pkt[31])",
-                            "unit": ""
-                        },
-                        {
-                            "name": "ADC Q-sample 4",
-                            "initial_pos": 32,
-                            "final_pos": 33,
-                            "value": 0,
-                            "conversion": "int((pkt[32] << 8) | pkt[33])",
-                            "unit": ""
-                        }
-                    ]
-                },
-                {
                     "name": "TC feedback",
                     "fields": [
                         {
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 20,
+                            "value": 19,
                             "conversion": "int(pkt[0])",
                             "unit": ""
                         },
@@ -1102,7 +977,7 @@
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 21,
+                            "value": 20,
                             "conversion": "int(pkt[0])",
                             "unit": ""
                         },
@@ -1155,7 +1030,7 @@
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 22,
+                            "value": 21,
                             "conversion": "int(pkt[0])",
                             "unit": ""
                         },
