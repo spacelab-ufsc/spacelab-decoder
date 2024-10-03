@@ -32,8 +32,7 @@ import socket
 
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
-from gi.repository import GdkPixbuf
+from gi.repository import Gtk, GdkPixbuf, GLib
 
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
@@ -104,6 +103,8 @@ class SpaceLabDecoder:
 
         self.ngham = pyngham.PyNGHam()
 
+        self._tcp_server_socket = None
+
         self.decoded_packets_index = list()
 
         self._run_udp_decode = False
@@ -133,6 +134,7 @@ class SpaceLabDecoder:
 
         self.entry_preferences_udp_address = self.builder.get_object("entry_preferences_udp_address")
         self.entry_preferences_udp_port = self.builder.get_object("entry_preferences_udp_port")
+        self.switch_raw_bits = self.builder.get_object("switch_raw_bits")
 
         # About dialog
         self.aboutdialog = self.builder.get_object("aboutdialog_spacelab_decoder")
@@ -272,6 +274,14 @@ class SpaceLabDecoder:
                 self._run_udp_decode = True
                 self.button_decode.set_sensitive(False)
                 self.button_stop.set_sensitive(True)
+                self.combobox_satellite.set_sensitive(False)
+                self.combobox_packet_type.set_sensitive(False)
+                self.filechooser_audio_file.set_sensitive(False)
+                self.entry_preferences_udp_address.set_sensitive(False)
+                self.entry_preferences_udp_port.set_sensitive(False)
+                self.switch_raw_bits.set_sensitive(False)
+                self.radiobutton_audio_file.set_sensitive(False)
+                self.radiobutton_udp.set_sensitive(False)
 
                 address = self.entry_preferences_udp_address.get_text()
                 port = self.entry_preferences_udp_port.get_text()
@@ -280,9 +290,17 @@ class SpaceLabDecoder:
 
                 baudrate, sync_word, protocol, link_name = self._get_link_info()
 
-                thread_decode = threading.Thread(target=self._decode_stream, args=(address, int(port), baudrate, sync_word, protocol, link_name,))
-                thread_decode.start()
+                if self.switch_raw_bits.get_active():
+                    thread_decode = threading.Thread(target=self._decode_stream, args=(address, int(port), baudrate, sync_word, protocol, link_name,))
+                    thread_decode.start()
 #                self._decode_stream(address, int(port), baudrate, sync_word, protocol, link_name)
+                else:
+                    self._tcp_server_socket = self._create_socket_server(address, int(port))
+
+                    if self._tcp_server_socket:
+                        # Monitor the socket for incoming connections using GLib's IO watch
+                        self._tcp_socket_io_channel = GLib.IOChannel(self._tcp_server_socket.fileno())
+                        GLib.io_add_watch(self._tcp_socket_io_channel, GLib.IO_IN, self._handle_tcp_new_connection)
             else:
                 error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error decoding the satellite data!")
                 error_dialog.format_secondary_text("No input selected!")
@@ -293,6 +311,14 @@ class SpaceLabDecoder:
         self._run_udp_decode = False
         self.button_stop.set_sensitive(False)
         self.button_decode.set_sensitive(True)
+        self.combobox_satellite.set_sensitive(True)
+        self.combobox_packet_type.set_sensitive(True)
+        self.filechooser_audio_file.set_sensitive(True)
+        self.entry_preferences_udp_address.set_sensitive(True)
+        self.entry_preferences_udp_port.set_sensitive(True)
+        self.switch_raw_bits.set_sensitive(True)
+        self.radiobutton_audio_file.set_sensitive(True)
+        self.radiobutton_udp.set_sensitive(True)
 
     def on_button_plot_clicked(self, button):
         if self.filechooser_audio_file.get_filename() is None:
@@ -521,7 +547,11 @@ class SpaceLabDecoder:
                 byte_buf.clear()
 
     def _decode_packet(self, pkt):
-        pkt_txt = "Decoded packet from \"" + self.filechooser_audio_file.get_filename() + "\":\n"
+        pkt_txt = str()
+        if self.radiobutton_audio_file.get_active():
+            pkt_txt = "Decoded packet from \"" + self.filechooser_audio_file.get_filename() + "\":\n"
+        else:
+            pkt_txt = "Decoded packet from " + self.entry_preferences_udp_address.get_text()  + ":" + self.entry_preferences_udp_port.get_text() + ":\n"
 
         p = Packet(self._get_json_filename_of_active_sat(), pkt)
         pkt_txt = pkt_txt + str(p)
@@ -549,3 +579,60 @@ class SpaceLabDecoder:
             protocol    = sat_info['links'][self.combobox_packet_type.get_active()]['protocol']
 
             return baudrate, sync_word, protocol, link_name
+
+    def _create_socket_server(self, adr, port):
+        """Create a TCP/IP socket server"""
+        try:
+            server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            server_socket.bind((adr, port))
+            server_socket.listen(1)
+            return server_socket
+        except socket.error as e:
+            error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error creating a socket server!")
+            error_dialog.format_secondary_text(str(e))
+            error_dialog.run()
+            error_dialog.destroy()
+            return None
+
+    def _handle_tcp_new_connection(self, source, condition):
+        """Handle incoming connections"""
+        if condition == GLib.IO_IN:
+            client_socket, address = self._tcp_server_socket.accept()
+            self.write_log("TCP client connected!")
+
+            # Create an IOChannel for the client socket to handle incoming data
+            client_io_channel = GLib.IOChannel(client_socket.fileno())
+            client_io_channel.set_encoding(None)  # Binary mode (important for raw data)
+
+            # Monitor the client socket for incoming data
+            GLib.io_add_watch(client_io_channel, GLib.IO_IN, self._handle_tcp_client_data, client_socket)
+
+        return True  # Keep the handler active
+
+    def _handle_tcp_client_data(self, source, condition, client_socket):
+        """Handle incoming data from the client"""
+        if condition == GLib.IO_IN:
+            try:
+                data = client_socket.recv(1024)  # Read incoming data (max 1024 bytes)
+                if data:
+                    baudrate, sync_word, protocol, link_name = self._get_link_info()
+
+                    if protocol == _PROTOCOL_NGHAM:
+                        pl, err, err_loc = self.ngham.decode(data)
+                        self._decode_packet(pl)
+                    elif protocol == _PROTOCOL_AX100MODE5:
+                        # TODO
+                        #self._decode_packet(pl)
+                        pass
+                    else:
+                        self.write_log("Unknown protocol received from TCP port!")
+                else:
+                    # Connection closed by client
+                    client_socket.close()
+                    return False  # Stop the IO watch for this client
+            except socket.error as e:
+                client_socket.close()
+                self.write_log("Error receiving data from TCP client: " + str(e))
+                return False  # Stop the IO watch for this client
+        return True  # Keep the handler active
