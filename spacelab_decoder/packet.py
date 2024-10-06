@@ -38,21 +38,26 @@ class Packet:
 
         link_idx = int()
         type_idx = int()
+        pkt_type_found = False
         for i in range(len(self.sat_packet['links'])):
             for j in range(len(self.sat_packet['links'][i]['types'])):
                 if pkt[0] == self.sat_packet['links'][i]['types'][j]['fields'][0]['value']:
                     link_idx = i
                     type_idx = j
+                    pkt_type_found = True
                     break
 
-        buf = buf + "\t" + "Satellite" + ": " + self.sat_packet['name'] + "\n"
-        buf = buf + "\t" + "Link" + ": " + self.sat_packet['links'][link_idx]['name'] + "\n"
-        buf = buf + "\t" + "Data Source" + ": " + self.sat_packet['links'][link_idx]['types'][type_idx]['name'] + "\n"
-        buf = buf + "\t" + "Protocol" + ": " + self.sat_packet['links'][link_idx]['protocol'] + "\n"
-        buf = buf + "\t" + "Data" + ":" + "\n"
+        if pkt_type_found:
+            buf = buf + "\t" + "Satellite" + ": " + self.sat_packet['name'] + "\n"
+            buf = buf + "\t" + "Link" + ": " + self.sat_packet['links'][link_idx]['name'] + "\n"
+            buf = buf + "\t" + "Data Source" + ": " + self.sat_packet['links'][link_idx]['types'][type_idx]['name'] + "\n"
+            buf = buf + "\t" + "Protocol" + ": " + self.sat_packet['links'][link_idx]['protocol'] + "\n"
+            buf = buf + "\t" + "Data" + ":" + "\n"
 
-        for i in range(len(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'])):
-            buf = buf + "\t\t" + self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['name'] + ": " + str(eval(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['conversion'])) + " " + self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['unit'] + "\n"
+            for i in range(len(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'])):
+                buf = buf + "\t\t" + self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['name'] + ": " + str(eval(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['conversion'])) + " " + self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['unit'] + "\n"
+        else:
+            raise RuntimeError("Unknown packet ID!")
 
         return buf
 

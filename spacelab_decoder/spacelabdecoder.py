@@ -251,7 +251,7 @@ class SpaceLabDecoder:
 
     def on_button_decode_clicked(self, button):
         if self.combobox_satellite.get_active() == -1:
-            error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error decoding the audio file!")
+            error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error starting decoding!")
             error_dialog.format_secondary_text("No satellite selected!")
             error_dialog.run()
             error_dialog.destroy()
@@ -271,36 +271,42 @@ class SpaceLabDecoder:
 
                     self._decode_audio(self.filechooser_audio_file.get_filename(), baudrate, sync_word, protocol, link_name)
             elif self.radiobutton_udp.get_active():
-                self._run_udp_decode = True
-                self.button_decode.set_sensitive(False)
-                self.button_stop.set_sensitive(True)
-                self.combobox_satellite.set_sensitive(False)
-                self.combobox_packet_type.set_sensitive(False)
-                self.filechooser_audio_file.set_sensitive(False)
-                self.entry_preferences_udp_address.set_sensitive(False)
-                self.entry_preferences_udp_port.set_sensitive(False)
-                self.switch_raw_bits.set_sensitive(False)
-                self.radiobutton_audio_file.set_sensitive(False)
-                self.radiobutton_udp.set_sensitive(False)
-
-                address = self.entry_preferences_udp_address.get_text()
-                port = self.entry_preferences_udp_port.get_text()
-
-                self.write_log("Listening port " + port + " from " + address)
-
-                baudrate, sync_word, protocol, link_name = self._get_link_info()
-
-                if self.switch_raw_bits.get_active():
-                    thread_decode = threading.Thread(target=self._decode_stream, args=(address, int(port), baudrate, sync_word, protocol, link_name,))
-                    thread_decode.start()
-#                self._decode_stream(address, int(port), baudrate, sync_word, protocol, link_name)
+                if (self.entry_preferences_udp_address.get_text() == "") or (self.entry_preferences_udp_port.get_text() == ""):
+                    error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error opening the socket!")
+                    error_dialog.format_secondary_text("No address or port provided!")
+                    error_dialog.run()
+                    error_dialog.destroy()
                 else:
-                    self._tcp_server_socket = self._create_socket_server(address, int(port))
+                    self._run_udp_decode = True
+                    self.button_decode.set_sensitive(False)
+                    self.button_stop.set_sensitive(True)
+                    self.combobox_satellite.set_sensitive(False)
+                    self.combobox_packet_type.set_sensitive(False)
+                    self.filechooser_audio_file.set_sensitive(False)
+                    self.entry_preferences_udp_address.set_sensitive(False)
+                    self.entry_preferences_udp_port.set_sensitive(False)
+                    self.switch_raw_bits.set_sensitive(False)
+                    self.radiobutton_audio_file.set_sensitive(False)
+                    self.radiobutton_udp.set_sensitive(False)
 
-                    if self._tcp_server_socket:
-                        # Monitor the socket for incoming connections using GLib's IO watch
-                        self._tcp_socket_io_channel = GLib.IOChannel(self._tcp_server_socket.fileno())
-                        GLib.io_add_watch(self._tcp_socket_io_channel, GLib.IO_IN, self._handle_tcp_new_connection)
+                    address = self.entry_preferences_udp_address.get_text()
+                    port = self.entry_preferences_udp_port.get_text()
+
+                    self.write_log("Listening port " + port + " from " + address)
+
+                    baudrate, sync_word, protocol, link_name = self._get_link_info()
+
+                    if self.switch_raw_bits.get_active():
+                        thread_decode = threading.Thread(target=self._decode_stream, args=(address, int(port), baudrate, sync_word, protocol, link_name,))
+                        thread_decode.start()
+#                    self._decode_stream(address, int(port), baudrate, sync_word, protocol, link_name)
+                    else:
+                        self._tcp_server_socket = self._create_socket_server(address, int(port))
+
+                        if self._tcp_server_socket:
+                            # Monitor the socket for incoming connections using GLib's IO watch
+                            self._tcp_socket_io_channel = GLib.IOChannel(self._tcp_server_socket.fileno())
+                            GLib.io_add_watch(self._tcp_socket_io_channel, GLib.IO_IN, self._handle_tcp_new_connection)
             else:
                 error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error decoding the satellite data!")
                 error_dialog.format_secondary_text("No input selected!")
@@ -547,16 +553,23 @@ class SpaceLabDecoder:
                 byte_buf.clear()
 
     def _decode_packet(self, pkt):
-        pkt_txt = str()
-        if self.radiobutton_audio_file.get_active():
-            pkt_txt = "Decoded packet from \"" + self.filechooser_audio_file.get_filename() + "\":\n"
+        try:
+            pkt_data = str(Packet(self._get_json_filename_of_active_sat(), pkt))
+        except RuntimeError as e:
+            error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error decoding a packet!")
+            error_dialog.format_secondary_text(str(e))
+            error_dialog.run()
+            error_dialog.destroy()
         else:
-            pkt_txt = "Decoded packet from " + self.entry_preferences_udp_address.get_text()  + ":" + self.entry_preferences_udp_port.get_text() + ":\n"
+            pkt_txt = str()
+            if self.radiobutton_audio_file.get_active():
+                pkt_txt = "Decoded packet from \"" + self.filechooser_audio_file.get_filename() + "\":\n"
+            else:
+                pkt_txt = "Decoded packet from " + self.entry_preferences_udp_address.get_text()  + ":" + self.entry_preferences_udp_port.get_text() + ":\n"
 
-        p = Packet(self._get_json_filename_of_active_sat(), pkt)
-        pkt_txt = pkt_txt + str(p)
-        pkt_txt = pkt_txt + "========================================================\n"
-        self.textbuffer_pkt_data.insert(self.textbuffer_pkt_data.get_end_iter(), pkt_txt)
+            pkt_txt = pkt_txt + pkt_data
+            pkt_txt = pkt_txt + "========================================================\n"
+            self.textbuffer_pkt_data.insert(self.textbuffer_pkt_data.get_end_iter(), pkt_txt)
 
     def _get_json_filename_of_active_sat(self):
         sat_config_file = str()
