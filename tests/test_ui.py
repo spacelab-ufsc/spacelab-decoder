@@ -30,50 +30,62 @@ def test_ui():
     builder.add_from_file("spacelab_decoder/data/ui/spacelab_decoder.glade")
 
     # Main window
-    window                  = builder.get_object("window_main")
-    button_preferences      = builder.get_object("button_preferences")
-    button_decode           = builder.get_object("button_decode")
-    button_stop             = builder.get_object("button_stop")
-    button_plot_spectrum    = builder.get_object("button_plot_spectrum")
-    button_clean            = builder.get_object("button_clean")
-    toolbutton_about        = builder.get_object("toolbutton_about")
-    combobox_satellite      = builder.get_object("combobox_satellite")
-    combobox_packet_type    = builder.get_object("combobox_packet_type")
-    filechooser_audio_file  = builder.get_object("filechooser_audio_file")
-    textview_pkt_data       = builder.get_object("textview_pkt_data")
-    treeview_events         = builder.get_object("treeview_events")
-    filefilter_audio        = builder.get_object("filefilter_audio")
-    liststore_satellite     = builder.get_object("liststore_satellite")
-    liststore_packet_type   = builder.get_object("liststore_packet_type")
-    radiobutton_audio_file  = builder.get_object("radiobutton_audio_file")
-    radiobutton_udp         = builder.get_object("radiobutton_udp")
+    window                          = builder.get_object("window_main")
+    button_preferences              = builder.get_object("button_preferences")
+    button_decode                   = builder.get_object("button_decode")
+    button_stop                     = builder.get_object("button_stop")
+    button_plot_spectrum            = builder.get_object("button_plot_spectrum")
+    button_clean                    = builder.get_object("button_clean")
+    toolbutton_about                = builder.get_object("toolbutton_about")
+    combobox_satellite              = builder.get_object("combobox_satellite")
+    combobox_packet_type            = builder.get_object("combobox_packet_type")
+    filechooser_audio_file          = builder.get_object("filechooser_audio_file")
+    textview_pkt_data               = builder.get_object("textview_pkt_data")
+    treeview_events                 = builder.get_object("treeview_events")
+    filefilter_audio                = builder.get_object("filefilter_audio")
+    liststore_satellite             = builder.get_object("liststore_satellite")
+    liststore_packet_type           = builder.get_object("liststore_packet_type")
+    radiobutton_audio_file          = builder.get_object("radiobutton_audio_file")
+    radiobutton_udp                 = builder.get_object("radiobutton_udp")
+    entry_preferences_udp_address   = builder.get_object("entry_preferences_udp_address")
+    entry_preferences_udp_port      = builder.get_object("entry_preferences_udp_port")
+    switch_raw_bits                 = builder.get_object("switch_raw_bits")
 
-    assert window                   != None
-    assert button_preferences       != None
-    assert button_decode            != None
-    assert button_plot_spectrum     != None
-    assert button_clean             != None
-    assert toolbutton_about         != None
-    assert combobox_satellite       != None
-    assert combobox_packet_type     != None
-    assert filechooser_audio_file   != None
-    assert textview_pkt_data        != None
-    assert treeview_events          != None
-    assert filefilter_audio         != None
-    assert liststore_satellite      != None
-    assert liststore_packet_type    != None
-    assert radiobutton_audio_file   != None
-    assert radiobutton_udp          != None
+    assert window                           != None
+    assert button_preferences               != None
+    assert button_decode                    != None
+    assert button_plot_spectrum             != None
+    assert button_clean                     != None
+    assert toolbutton_about                 != None
+    assert combobox_satellite               != None
+    assert combobox_packet_type             != None
+    assert filechooser_audio_file           != None
+    assert textview_pkt_data                != None
+    assert treeview_events                  != None
+    assert filefilter_audio                 != None
+    assert liststore_satellite              != None
+    assert liststore_packet_type            != None
+    assert radiobutton_audio_file           != None
+    assert radiobutton_udp                  != None
+    assert entry_preferences_udp_address    != None
+    assert entry_preferences_udp_port       != None
+    assert switch_raw_bits                  != None
 
-    assert window.get_title()       == "SpaceLab Decoder"
+    assert window.get_title()                       == "SpaceLab Decoder"
+
+    assert entry_preferences_udp_address.get_text() == "localhost"
+    assert entry_preferences_udp_port.get_text()    == "7355"
 
     # About dialog
     aboutdialog_spacelab_decoder    = builder.get_object("aboutdialog_spacelab_decoder")
 
     assert aboutdialog_spacelab_decoder != None
 
+    assert aboutdialog_spacelab_decoder.get_program_name()  == "SpaceLab Decoder"
+    assert aboutdialog_spacelab_decoder.get_version()       == "0.1.0"
     assert aboutdialog_spacelab_decoder.get_website()       == "https://github.com/spacelab-ufsc/spacelab-decoder"
     assert aboutdialog_spacelab_decoder.get_website_label() == "https://github.com/spacelab-ufsc/spacelab-decoder"
+    assert aboutdialog_spacelab_decoder.get_copyright()     == "Universidade Federal de Santa Catarina"
     assert aboutdialog_spacelab_decoder.get_title()         == "About SpaceLab Decoder"
 
     # Preferences dialog
@@ -84,8 +96,6 @@ def test_ui():
     button_preferences_ok               = builder.get_object("button_preferences_ok")
     button_preferences_default          = builder.get_object("button_preferences_default")
     button_preferences_cancel           = builder.get_object("button_preferences_cancel")
-    entry_preferences_udp_address       = builder.get_object("entry_preferences_udp_address")
-    entry_preferences_udp_port          = builder.get_object("entry_preferences_udp_port")
 
     assert dialog_preferences                   != None
     assert entry_preferences_general_callsign   != None
@@ -94,7 +104,5 @@ def test_ui():
     assert button_preferences_ok                != None
     assert button_preferences_default           != None
     assert button_preferences_cancel            != None
-    assert entry_preferences_udp_address        != None
-    assert entry_preferences_udp_port           != None
 
     assert dialog_preferences.get_title()       == "Preferences"
