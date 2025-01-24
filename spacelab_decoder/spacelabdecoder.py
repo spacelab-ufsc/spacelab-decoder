@@ -45,7 +45,7 @@ from spacelab_decoder.time_sync import TimeSync
 from spacelab_decoder.bit_buffer import BitBuffer, _BIT_BUFFER_LSB
 from spacelab_decoder.sync_word import SyncWord, _SYNC_WORD_LSB
 from spacelab_decoder.byte_buffer import ByteBuffer, _BYTE_BUFFER_LSB
-from spacelab_decoder.packet import Packet
+from spacelab_decoder.packet import Packet, PacketCSP
 from spacelab_decoder.ccsds import CCSDS_POLY
 from spacelab_decoder.golay24 import Golay24
 
@@ -554,7 +554,12 @@ class SpaceLabDecoder:
 
     def _decode_packet(self, pkt):
         try:
-            pkt_data = str(Packet(self._get_json_filename_of_active_sat(), pkt))
+            pkt_data = str()
+            sat_json = self._get_json_filename_of_active_sat()
+            if sat_json[-16:] == _SATELLITES[4][1]: # Catarina-A2
+                pkt_data = str(PacketCSP(sat_json, pkt))
+            else:
+                pkt_data = str(Packet(sat_json, pkt))
         except RuntimeError as e:
             error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error decoding a packet!")
             error_dialog.format_secondary_text(str(e))
