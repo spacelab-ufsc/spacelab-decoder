@@ -8,6 +8,1205 @@
             "protocol": "AX100-Mode5",
             "types": [
                 {
+                    "name": "CMP ident answer",
+                    "fields": [
+                        {
+                            "name": "Priority",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0] >> 6)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source Address",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 1,
+                            "conversion": "int((pkt[0] >> 1) & 31)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination Address",
+                            "initial_pos": 0,
+                            "final_pos": 1,
+                            "value": 10,
+                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination Port",
+                            "initial_pos": 1,
+                            "final_pos": 2,
+                            "value": 0,
+                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source Port",
+                            "initial_pos": 2,
+                            "final_pos": 2,
+                            "value": 0,
+                            "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "XTEA Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 2) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "RDP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "CRC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool(pkt[3] & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "CMP Type",
+                            "initial_pos": 4,
+                            "final_pos": 4,
+                            "value": 255,
+                            "conversion": "pkt[4]",
+                            "unit": ""
+                        },
+                        {
+                            "name": "CMP Code",
+                            "initial_pos": 5,
+                            "final_pos": 5,
+                            "value": 1,
+                            "conversion": "pkt[5]",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Hostname",
+                            "initial_pos": 6,
+                            "final_pos": 25,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[6:26]])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Model",
+                            "initial_pos": 26,
+                            "final_pos": 55,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[26:56]])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Revision",
+                            "initial_pos": 56,
+                            "final_pos": 75,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[56:76]])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Date",
+                            "initial_pos": 76,
+                            "final_pos": 87,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[76:88]])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Time",
+                            "initial_pos": 88,
+                            "final_pos": 96,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[88:97]])",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "CMP route set answer",
+                    "fields": [
+                        {
+                            "name": "Priority",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0] >> 6)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source Address",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 1,
+                            "conversion": "int((pkt[0] >> 1) & 31)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination Address",
+                            "initial_pos": 0,
+                            "final_pos": 1,
+                            "value": 10,
+                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination Port",
+                            "initial_pos": 1,
+                            "final_pos": 2,
+                            "value": 0,
+                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source Port",
+                            "initial_pos": 2,
+                            "final_pos": 2,
+                            "value": 0,
+                            "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "XTEA Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 2) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "RDP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "CRC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool(pkt[3] & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "CMP Type",
+                            "initial_pos": 4,
+                            "final_pos": 4,
+                            "value": 255,
+                            "conversion": "pkt[4]",
+                            "unit": ""
+                        },
+                        {
+                            "name": "CMP Code",
+                            "initial_pos": 5,
+                            "final_pos": 5,
+                            "value": 2,
+                            "conversion": "pkt[5]",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Route Destination Node",
+                            "initial_pos": 6,
+                            "final_pos": 6,
+                            "value": 0,
+                            "conversion": "pkt[6]",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Route Next Hop MAC",
+                            "initial_pos": 7,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "pkt[7]",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Route Interface",
+                            "initial_pos": 8,
+                            "final_pos": 18,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[8:19]])",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "CMP IF stats answer",
+                    "fields": [
+                        {
+                            "name": "Priority",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0] >> 6)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source Address",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 1,
+                            "conversion": "int((pkt[0] >> 1) & 31)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination Address",
+                            "initial_pos": 0,
+                            "final_pos": 1,
+                            "value": 10,
+                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination Port",
+                            "initial_pos": 1,
+                            "final_pos": 2,
+                            "value": 0,
+                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source Port",
+                            "initial_pos": 2,
+                            "final_pos": 2,
+                            "value": 0,
+                            "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "XTEA Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 2) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "RDP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "CRC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool(pkt[3] & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "CMP Type",
+                            "initial_pos": 4,
+                            "final_pos": 4,
+                            "value": 255,
+                            "conversion": "pkt[4]",
+                            "unit": ""
+                        },
+                        {
+                            "name": "CMP Code",
+                            "initial_pos": 5,
+                            "final_pos": 5,
+                            "value": 3,
+                            "conversion": "pkt[5]",
+                            "unit": ""
+                        },
+                        {
+                            "name": "IF Stat Interface",
+                            "initial_pos": 6,
+                            "final_pos": 16,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[6:17]])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "IF Stat TX",
+                            "initial_pos": 17,
+                            "final_pos": 20,
+                            "value": 0,
+                            "conversion": "int((pkt[17] << 24) | (pkt[18] << 16) | (pkt[19] << 8) | pkt[20])",
+                            "unit": "packet(s)"
+                        },
+                        {
+                            "name": "IF Stat RX",
+                            "initial_pos": 21,
+                            "final_pos": 24,
+                            "value": 0,
+                            "conversion": "int((pkt[21] << 24) | (pkt[22] << 16) | (pkt[23] << 8) | pkt[24])",
+                            "unit": "packet(s)"
+                        },
+                        {
+                            "name": "IF Stat TX Error",
+                            "initial_pos": 22,
+                            "final_pos": 25,
+                            "value": 0,
+                            "conversion": "int((pkt[22] << 24) | (pkt[23] << 16) | (pkt[24] << 8) | pkt[25])",
+                            "unit": "error(s)"
+                        },
+                        {
+                            "name": "IF Stat RX Error",
+                            "initial_pos": 26,
+                            "final_pos": 29,
+                            "value": 0,
+                            "conversion": "int((pkt[26] << 24) | (pkt[27] << 16) | (pkt[28] << 8) | pkt[29])",
+                            "unit": "error(s)"
+                        },
+                        {
+                            "name": "IF Stat Drop",
+                            "initial_pos": 30,
+                            "final_pos": 33,
+                            "value": 0,
+                            "conversion": "int((pkt[30] << 24) | (pkt[31] << 16) | (pkt[32] << 8) | pkt[33])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "IF Stat Auther",
+                            "initial_pos": 34,
+                            "final_pos": 37,
+                            "value": 0,
+                            "conversion": "int((pkt[34] << 24) | (pkt[35] << 16) | (pkt[36] << 8) | pkt[37])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "IF Stat Frame",
+                            "initial_pos": 38,
+                            "final_pos": 41,
+                            "value": 0,
+                            "conversion": "int((pkt[38] << 24) | (pkt[39] << 16) | (pkt[40] << 8) | pkt[41])",
+                            "unit": "frame(s)"
+                        },
+                        {
+                            "name": "IF Stat TX Bytes",
+                            "initial_pos": 42,
+                            "final_pos": 45,
+                            "value": 0,
+                            "conversion": "int((pkt[42] << 24) | (pkt[43] << 16) | (pkt[44] << 8) | pkt[45])",
+                            "unit": "byte(s)"
+                        },
+                        {
+                            "name": "IF Stat RX Bytes",
+                            "initial_pos": 46,
+                            "final_pos": 49,
+                            "value": 0,
+                            "conversion": "int((pkt[46] << 24) | (pkt[47] << 16) | (pkt[48] << 8) | pkt[49])",
+                            "unit": "byte(s)"
+                        },
+                        {
+                            "name": "IF Stat IRQ",
+                            "initial_pos": 50,
+                            "final_pos": 53,
+                            "value": 0,
+                            "conversion": "int((pkt[50] << 24) | (pkt[51] << 16) | (pkt[52] << 8) | pkt[53])",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "CMP peek answer",
+                    "fields": [
+                        {
+                            "name": "Priority",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0] >> 6)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source Address",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 1,
+                            "conversion": "int((pkt[0] >> 1) & 31)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination Address",
+                            "initial_pos": 0,
+                            "final_pos": 1,
+                            "value": 10,
+                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination Port",
+                            "initial_pos": 1,
+                            "final_pos": 2,
+                            "value": 0,
+                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source Port",
+                            "initial_pos": 2,
+                            "final_pos": 2,
+                            "value": 0,
+                            "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "XTEA Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 2) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "RDP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "CRC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool(pkt[3] & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "CMP Type",
+                            "initial_pos": 4,
+                            "final_pos": 4,
+                            "value": 255,
+                            "conversion": "pkt[4]",
+                            "unit": ""
+                        },
+                        {
+                            "name": "CMP Code",
+                            "initial_pos": 5,
+                            "final_pos": 5,
+                            "value": 4,
+                            "conversion": "pkt[5]",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Peek Address",
+                            "initial_pos": 6,
+                            "final_pos": 9,
+                            "value": 0,
+                            "conversion": "int((pkt[6] << 24) | (pkt[7] << 16) | (pkt[8] << 8) | pkt[9])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Peek Length",
+                            "initial_pos": 10,
+                            "final_pos": 10,
+                            "value": 0,
+                            "conversion": "pkt[10]",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Peek Data",
+                            "initial_pos": 11,
+                            "final_pos": 210,
+                            "value": 0,
+                            "conversion": "pkt[11:(11 + pkt[10])]",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "CMP poke answer",
+                    "fields": [
+                        {
+                            "name": "Priority",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0] >> 6)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source Address",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 1,
+                            "conversion": "int((pkt[0] >> 1) & 31)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination Address",
+                            "initial_pos": 0,
+                            "final_pos": 1,
+                            "value": 10,
+                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination Port",
+                            "initial_pos": 1,
+                            "final_pos": 2,
+                            "value": 0,
+                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source Port",
+                            "initial_pos": 2,
+                            "final_pos": 2,
+                            "value": 0,
+                            "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "XTEA Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 2) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "RDP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "CRC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool(pkt[3] & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "CMP Type",
+                            "initial_pos": 4,
+                            "final_pos": 4,
+                            "value": 255,
+                            "conversion": "pkt[4]",
+                            "unit": ""
+                        },
+                        {
+                            "name": "CMP Code",
+                            "initial_pos": 5,
+                            "final_pos": 5,
+                            "value": 5,
+                            "conversion": "pkt[5]",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Poke Address",
+                            "initial_pos": 6,
+                            "final_pos": 9,
+                            "value": 0,
+                            "conversion": "int((pkt[6] << 24) | (pkt[7] << 16) | (pkt[8] << 8) | pkt[9])",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Poke Length",
+                            "initial_pos": 10,
+                            "final_pos": 10,
+                            "value": 0,
+                            "conversion": "pkt[10]",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Poke Data",
+                            "initial_pos": 11,
+                            "final_pos": 210,
+                            "value": 0,
+                            "conversion": "pkt[11:(11 + pkt[10])]",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "CMP clock answer",
+                    "fields": [
+                        {
+                            "name": "Priority",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0] >> 6)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source Address",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 1,
+                            "conversion": "int((pkt[0] >> 1) & 31)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination Address",
+                            "initial_pos": 0,
+                            "final_pos": 1,
+                            "value": 10,
+                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination Port",
+                            "initial_pos": 1,
+                            "final_pos": 2,
+                            "value": 0,
+                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source Port",
+                            "initial_pos": 2,
+                            "final_pos": 2,
+                            "value": 0,
+                            "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "XTEA Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 2) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "RDP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "CRC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool(pkt[3] & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "CMP Type",
+                            "initial_pos": 4,
+                            "final_pos": 4,
+                            "value": 255,
+                            "conversion": "pkt[4]",
+                            "unit": ""
+                        },
+                        {
+                            "name": "CMP Code",
+                            "initial_pos": 5,
+                            "final_pos": 5,
+                            "value": 6,
+                            "conversion": "pkt[5]",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Clock Seconds",
+                            "initial_pos": 6,
+                            "final_pos": 9,
+                            "value": 0,
+                            "conversion": "int((pkt[6] << 24) | (pkt[7] << 16) | (pkt[8] << 8) | pkt[9])",
+                            "unit": "sec"
+                        },
+                        {
+                            "name": "Clock Nanoseconds",
+                            "initial_pos": 10,
+                            "final_pos": 13,
+                            "value": 0,
+                            "conversion": "int((pkt[10] << 24) | (pkt[11] << 16) | (pkt[12] << 8) | pkt[13])",
+                            "unit": "nsec"
+                        }
+                    ]
+                },
+                {
+                    "name": "Ping answer",
+                    "fields": [
+                        {
+                            "name": "Priority",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0] >> 6)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source Address",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 1,
+                            "conversion": "int((pkt[0] >> 1) & 31)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination Address",
+                            "initial_pos": 0,
+                            "final_pos": 1,
+                            "value": 10,
+                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination Port",
+                            "initial_pos": 1,
+                            "final_pos": 2,
+                            "value": 1,
+                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source Port",
+                            "initial_pos": 2,
+                            "final_pos": 2,
+                            "value": 1,
+                            "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "XTEA Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 2) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "RDP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "CRC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool(pkt[3] & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Payload",
+                            "initial_pos": 4,
+                            "final_pos": 103,
+                            "value": 0,
+                            "conversion": "pkt[4:104]",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "PS answer",
+                    "fields": [
+                        {
+                            "name": "Priority",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0] >> 6)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source Address",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 1,
+                            "conversion": "int((pkt[0] >> 1) & 31)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination Address",
+                            "initial_pos": 0,
+                            "final_pos": 1,
+                            "value": 10,
+                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination Port",
+                            "initial_pos": 1,
+                            "final_pos": 2,
+                            "value": 2,
+                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source Port",
+                            "initial_pos": 2,
+                            "final_pos": 2,
+                            "value": 2,
+                            "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "XTEA Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 2) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "RDP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "CRC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool(pkt[3] & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Data",
+                            "initial_pos": 4,
+                            "final_pos": 103,
+                            "value": 0,
+                            "conversion": "pkt[4:104]",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Memfree answer",
+                    "fields": [
+                        {
+                            "name": "Priority",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0] >> 6)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source Address",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 1,
+                            "conversion": "int((pkt[0] >> 1) & 31)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination Address",
+                            "initial_pos": 0,
+                            "final_pos": 1,
+                            "value": 10,
+                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination Port",
+                            "initial_pos": 1,
+                            "final_pos": 2,
+                            "value": 3,
+                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source Port",
+                            "initial_pos": 2,
+                            "final_pos": 2,
+                            "value": 3,
+                            "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "XTEA Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 2) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "RDP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "CRC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool(pkt[3] & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Free Memory",
+                            "initial_pos": 4,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "int((pkt[4] << 24) | (pkt[5] << 16) | (pkt[6] << 8) | pkt[7])",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Buffer free answer",
+                    "fields": [
+                        {
+                            "name": "Priority",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0] >> 6)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source Address",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 1,
+                            "conversion": "int((pkt[0] >> 1) & 31)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination Address",
+                            "initial_pos": 0,
+                            "final_pos": 1,
+                            "value": 10,
+                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination Port",
+                            "initial_pos": 1,
+                            "final_pos": 2,
+                            "value": 5,
+                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source Port",
+                            "initial_pos": 2,
+                            "final_pos": 2,
+                            "value": 5,
+                            "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "XTEA Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 2) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "RDP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "CRC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool(pkt[3] & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Free Buffers",
+                            "initial_pos": 4,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "int((pkt[4] << 24) | (pkt[5] << 16) | (pkt[6] << 8) | pkt[7])",
+                            "unit": "buffer(s)"
+                        }
+                    ]
+                },
+                {
+                    "name": "Uptime answer",
+                    "fields": [
+                        {
+                            "name": "Priority",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0] >> 6)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source Address",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 1,
+                            "conversion": "int((pkt[0] >> 1) & 31)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination Address",
+                            "initial_pos": 0,
+                            "final_pos": 1,
+                            "value": 10,
+                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Destination Port",
+                            "initial_pos": 1,
+                            "final_pos": 2,
+                            "value": 6,
+                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Source Port",
+                            "initial_pos": 2,
+                            "final_pos": 2,
+                            "value": 6,
+                            "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "HMAC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "XTEA Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 2) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "RDP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "CRC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool(pkt[3] & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Uptime",
+                            "initial_pos": 4,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "int((pkt[4] << 24) | (pkt[5] << 16) | (pkt[6] << 8) | pkt[7])",
+                            "unit": "sec"
+                        }
+                    ]
+                },
+                {
                     "name": "Beacon",
                     "fields": [
                         {
@@ -30,7 +1229,7 @@
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
-                            "value": 15,
+                            "value": 10,
                             "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
                             "unit": ""
                         },
@@ -38,7 +1237,7 @@
                             "name": "Destination Port",
                             "initial_pos": 1,
                             "final_pos": 2,
-                            "value": 14,
+                            "value": 10,
                             "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
                             "unit": ""
                         },
@@ -46,7 +1245,7 @@
                             "name": "Source Port",
                             "initial_pos": 2,
                             "final_pos": 2,
-                            "value": 0,
+                            "value": 10,
                             "conversion": "int(pkt[2] & 63)",
                             "unit": ""
                         },
