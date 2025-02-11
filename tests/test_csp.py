@@ -27,8 +27,150 @@ sys.path.append(".")
 
 from spacelab_decoder.csp import CSP
 
+def test_address_config():
+    adr1 = random.randint(0, 31)
+
+    csp = CSP(adr1)
+
+    assert csp.get_address() == adr1
+
+    adr2 = random.randint(0, 31)
+
+    csp.set_address(adr2)
+
+    assert csp.get_address() == adr2
+
+def test_encode_cmp_ident():
+    src_adr = random.randint(0, 31)
+    dst_adr = random.randint(0, 31)
+
+    csp = CSP(src_adr)
+
+    pkt = csp.encode_cmp_ident(dst_adr)
+
+    assert (pkt[0] >> 6) == 2                                       # Priority
+    assert ((pkt[0] >> 1) & 31) == src_adr                          # Source address
+    assert (((pkt[0] & 1) << 4) | ((pkt[1] >> 4) & 15)) == dst_adr  # Destination address
+    assert (((pkt[1] & 15) << 2) | ((pkt[2] >> 6) & 3)) == 0        # CMP port
+    assert pkt[2] & 63 == 0                                         # CMP port
+    assert ((pkt[3] >> 3) & 1) == 0                                 # HMAC
+    assert ((pkt[3] >> 2) & 1) == 0                                 # XTEA
+    assert ((pkt[3] >> 1) & 1)== 0                                  # RDP
+    assert (pkt[3] & 1) == 0                                        # CRC
+    assert pkt[4:] == [0, 1]                                        # Payload
+
+def test_encode_cmp_set_route():
+    src_adr = random.randint(0, 31)
+    dst_adr = random.randint(0, 31)
+
+    csp = CSP(src_adr)
+
+    pkt = csp.encode_cmp_set_route(dst_adr)
+
+    assert (pkt[0] >> 6) == 2                                       # Priority
+    assert ((pkt[0] >> 1) & 31) == src_adr                          # Source address
+    assert (((pkt[0] & 1) << 4) | ((pkt[1] >> 4) & 15)) == dst_adr  # Destination address
+    assert (((pkt[1] & 15) << 2) | ((pkt[2] >> 6) & 3)) == 0        # CMP port
+    assert pkt[2] & 63 == 0                                         # CMP port
+    assert ((pkt[3] >> 3) & 1) == 0                                 # HMAC
+    assert ((pkt[3] >> 2) & 1) == 0                                 # XTEA
+    assert ((pkt[3] >> 1) & 1)== 0                                  # RDP
+    assert (pkt[3] & 1) == 0                                        # CRC
+    assert pkt[4:] == [0, 2]                                        # Payload
+
+def test_encode_cmp_if_stat():
+    src_adr = random.randint(0, 31)
+    dst_adr = random.randint(0, 31)
+
+    csp = CSP(src_adr)
+
+    pkt = csp.encode_cmp_if_stat(dst_adr)
+
+    assert (pkt[0] >> 6) == 2                                       # Priority
+    assert ((pkt[0] >> 1) & 31) == src_adr                          # Source address
+    assert (((pkt[0] & 1) << 4) | ((pkt[1] >> 4) & 15)) == dst_adr  # Destination address
+    assert (((pkt[1] & 15) << 2) | ((pkt[2] >> 6) & 3)) == 0        # CMP port
+    assert pkt[2] & 63 == 0                                         # CMP port
+    assert ((pkt[3] >> 3) & 1) == 0                                 # HMAC
+    assert ((pkt[3] >> 2) & 1) == 0                                 # XTEA
+    assert ((pkt[3] >> 1) & 1)== 0                                  # RDP
+    assert (pkt[3] & 1) == 0                                        # CRC
+    assert pkt[4:] == [0, 3]                                        # Payload
+
+def test_encode_cmp_peek():
+    src_adr = random.randint(0, 31)
+    dst_adr = random.randint(0, 31)
+    mem_adr = random.randint(0, (2**32) - 1)
+    mem_len = random.randint(0, 255)
+
+    csp = CSP(src_adr)
+
+    pkt = csp.encode_cmp_peek(dst_adr, mem_adr, mem_len)
+
+    pl = [0, 4]
+
+    pl += list(mem_adr.to_bytes(4, 'big'))
+
+    pl.append(mem_len)
+
+    assert (pkt[0] >> 6) == 2                                       # Priority
+    assert ((pkt[0] >> 1) & 31) == src_adr                          # Source address
+    assert (((pkt[0] & 1) << 4) | ((pkt[1] >> 4) & 15)) == dst_adr  # Destination address
+    assert (((pkt[1] & 15) << 2) | ((pkt[2] >> 6) & 3)) == 0        # CMP port
+    assert pkt[2] & 63 == 0                                         # CMP port
+    assert ((pkt[3] >> 3) & 1) == 0                                 # HMAC
+    assert ((pkt[3] >> 2) & 1) == 0                                 # XTEA
+    assert ((pkt[3] >> 1) & 1)== 0                                  # RDP
+    assert (pkt[3] & 1) == 0                                        # CRC
+    assert pkt[4:] == pl                                            # Payload
+
+def test_encode_cmp_poke():
+    src_adr = random.randint(0, 31)
+    dst_adr = random.randint(0, 31)
+    mem_adr = random.randint(0, (2**32) - 1)
+    mem_len = random.randint(0, 255)
+
+    csp = CSP(src_adr)
+
+    pkt = csp.encode_cmp_poke(dst_adr, mem_adr, mem_len)
+
+    pl = [0, 5]
+
+    pl += list(mem_adr.to_bytes(4, 'big'))
+
+    pl.append(mem_len)
+
+    assert (pkt[0] >> 6) == 2                                       # Priority
+    assert ((pkt[0] >> 1) & 31) == src_adr                          # Source address
+    assert (((pkt[0] & 1) << 4) | ((pkt[1] >> 4) & 15)) == dst_adr  # Destination address
+    assert (((pkt[1] & 15) << 2) | ((pkt[2] >> 6) & 3)) == 0        # CMP port
+    assert pkt[2] & 63 == 0                                         # CMP port
+    assert ((pkt[3] >> 3) & 1) == 0                                 # HMAC
+    assert ((pkt[3] >> 2) & 1) == 0                                 # XTEA
+    assert ((pkt[3] >> 1) & 1)== 0                                  # RDP
+    assert (pkt[3] & 1) == 0                                        # CRC
+    assert pkt[4:] == pl                                            # Payload
+
+def test_encode_cmp_get_clock():
+    src_adr = random.randint(0, 31)
+    dst_adr = random.randint(0, 31)
+
+    csp = CSP(src_adr)
+
+    pkt = csp.encode_cmp_get_clock(dst_adr)
+
+    assert (pkt[0] >> 6) == 2                                       # Priority
+    assert ((pkt[0] >> 1) & 31) == src_adr                          # Source address
+    assert (((pkt[0] & 1) << 4) | ((pkt[1] >> 4) & 15)) == dst_adr  # Destination address
+    assert (((pkt[1] & 15) << 2) | ((pkt[2] >> 6) & 3)) == 0        # CMP port
+    assert pkt[2] & 63 == 0                                         # CMP port
+    assert ((pkt[3] >> 3) & 1) == 0                                 # HMAC
+    assert ((pkt[3] >> 2) & 1) == 0                                 # XTEA
+    assert ((pkt[3] >> 1) & 1)== 0                                  # RDP
+    assert (pkt[3] & 1) == 0                                        # CRC
+    assert pkt[4:] == [0, 6]                                        # Payload
+
 def test_encode_ping():
-    prio = random.randint(0, 3)
     src_adr = random.randint(0, 31)
     dst_adr = random.randint(0, 31)
     num_bytes = random.randint(1, 2**16)
@@ -38,11 +180,11 @@ def test_encode_ping():
     for i in range(num_bytes):
         ping_pl.append(i)
 
-    csp = CSP()
+    csp = CSP(src_adr)
 
-    pkt = csp.encode_ping(prio, src_adr, dst_adr, num_bytes)
+    pkt = csp.encode_ping(dst_adr, num_bytes)
 
-    assert (pkt[0] >> 6) == prio                                    # Priority
+    assert (pkt[0] >> 6) == 2                                       # Priority
     assert ((pkt[0] >> 1) & 31) == src_adr                          # Source address
     assert (((pkt[0] & 1) << 4) | ((pkt[1] >> 4) & 15)) == dst_adr  # Destination address
     assert (((pkt[1] & 15) << 2) | ((pkt[2] >> 6) & 3)) == 1        # Ping port
@@ -52,3 +194,117 @@ def test_encode_ping():
     assert ((pkt[3] >> 1) & 1)== 0                                  # RDP
     assert (pkt[3] & 1) == 0                                        # CRC
     assert pkt[4:] == ping_pl                                       # Payload
+
+def test_encode_memfree():
+    src_adr = random.randint(0, 31)
+    dst_adr = random.randint(0, 31)
+
+    csp = CSP(src_adr)
+
+    pkt = csp.encode_ps(dst_adr)
+
+    assert (pkt[0] >> 6) == 2                                       # Priority
+    assert ((pkt[0] >> 1) & 31) == src_adr                          # Source address
+    assert (((pkt[0] & 1) << 4) | ((pkt[1] >> 4) & 15)) == dst_adr  # Destination address
+    assert (((pkt[1] & 15) << 2) | ((pkt[2] >> 6) & 3)) == 2        # PS port
+    assert pkt[2] & 63 == 2                                         # PS port
+    assert ((pkt[3] >> 3) & 1) == 0                                 # HMAC
+    assert ((pkt[3] >> 2) & 1) == 0                                 # XTEA
+    assert ((pkt[3] >> 1) & 1)== 0                                  # RDP
+    assert (pkt[3] & 1) == 0                                        # CRC
+    assert pkt[4:] == [0x55]                                        # Payload
+
+def test_encode_memfree():
+    src_adr = random.randint(0, 31)
+    dst_adr = random.randint(0, 31)
+
+    csp = CSP(src_adr)
+
+    pkt = csp.encode_memfree(dst_adr)
+
+    assert (pkt[0] >> 6) == 2                                       # Priority
+    assert ((pkt[0] >> 1) & 31) == src_adr                          # Source address
+    assert (((pkt[0] & 1) << 4) | ((pkt[1] >> 4) & 15)) == dst_adr  # Destination address
+    assert (((pkt[1] & 15) << 2) | ((pkt[2] >> 6) & 3)) == 3        # Memfree port
+    assert pkt[2] & 63 == 3                                         # Memfree port
+    assert ((pkt[3] >> 3) & 1) == 0                                 # HMAC
+    assert ((pkt[3] >> 2) & 1) == 0                                 # XTEA
+    assert ((pkt[3] >> 1) & 1)== 0                                  # RDP
+    assert (pkt[3] & 1) == 0                                        # CRC
+    assert len(pkt) == 4                                            # Payload
+
+def test_encode_reboot():
+    src_adr = random.randint(0, 31)
+    dst_adr = random.randint(0, 31)
+
+    csp = CSP(src_adr)
+
+    pkt = csp.encode_reboot(dst_adr)
+
+    assert (pkt[0] >> 6) == 2                                       # Priority
+    assert ((pkt[0] >> 1) & 31) == src_adr                          # Source address
+    assert (((pkt[0] & 1) << 4) | ((pkt[1] >> 4) & 15)) == dst_adr  # Destination address
+    assert (((pkt[1] & 15) << 2) | ((pkt[2] >> 6) & 3)) == 4        # Reboot port
+    assert pkt[2] & 63 == 4                                         # Reboot port
+    assert ((pkt[3] >> 3) & 1) == 0                                 # HMAC
+    assert ((pkt[3] >> 2) & 1) == 0                                 # XTEA
+    assert ((pkt[3] >> 1) & 1)== 0                                  # RDP
+    assert (pkt[3] & 1) == 0                                        # CRC
+    assert pkt[4:] == [0x80, 0x07, 0x80, 0x07]                      # Payload
+
+def test_encode_shutdown():
+    src_adr = random.randint(0, 31)
+    dst_adr = random.randint(0, 31)
+
+    csp = CSP(src_adr)
+
+    pkt = csp.encode_shutdown(dst_adr)
+
+    assert (pkt[0] >> 6) == 2                                       # Priority
+    assert ((pkt[0] >> 1) & 31) == src_adr                          # Source address
+    assert (((pkt[0] & 1) << 4) | ((pkt[1] >> 4) & 15)) == dst_adr  # Destination address
+    assert (((pkt[1] & 15) << 2) | ((pkt[2] >> 6) & 3)) == 4        # Reboot port
+    assert pkt[2] & 63 == 4                                         # Reboot port
+    assert ((pkt[3] >> 3) & 1) == 0                                 # HMAC
+    assert ((pkt[3] >> 2) & 1) == 0                                 # XTEA
+    assert ((pkt[3] >> 1) & 1)== 0                                  # RDP
+    assert (pkt[3] & 1) == 0                                        # CRC
+    assert pkt[4:] == [0xD1, 0xE5, 0x52, 0x9A]                      # Payload
+
+def test_encode_buf_free():
+    src_adr = random.randint(0, 31)
+    dst_adr = random.randint(0, 31)
+
+    csp = CSP(src_adr)
+
+    pkt = csp.encode_buf_free(dst_adr)
+
+    assert (pkt[0] >> 6) == 2                                       # Priority
+    assert ((pkt[0] >> 1) & 31) == src_adr                          # Source address
+    assert (((pkt[0] & 1) << 4) | ((pkt[1] >> 4) & 15)) == dst_adr  # Destination address
+    assert (((pkt[1] & 15) << 2) | ((pkt[2] >> 6) & 3)) == 5        # Buffer free port
+    assert pkt[2] & 63 == 5                                         # Buffer free port
+    assert ((pkt[3] >> 3) & 1) == 0                                 # HMAC
+    assert ((pkt[3] >> 2) & 1) == 0                                 # XTEA
+    assert ((pkt[3] >> 1) & 1)== 0                                  # RDP
+    assert (pkt[3] & 1) == 0                                        # CRC
+    assert len(pkt) == 4                                            # Payload
+
+def test_encode_uptime():
+    src_adr = random.randint(0, 31)
+    dst_adr = random.randint(0, 31)
+
+    csp = CSP(src_adr)
+
+    pkt = csp.encode_uptime(dst_adr)
+
+    assert (pkt[0] >> 6) == 2                                       # Priority
+    assert ((pkt[0] >> 1) & 31) == src_adr                          # Source address
+    assert (((pkt[0] & 1) << 4) | ((pkt[1] >> 4) & 15)) == dst_adr  # Destination address
+    assert (((pkt[1] & 15) << 2) | ((pkt[2] >> 6) & 3)) == 6        # Uptime port
+    assert pkt[2] & 63 == 6                                         # Uptime port
+    assert ((pkt[3] >> 3) & 1) == 0                                 # HMAC
+    assert ((pkt[3] >> 2) & 1) == 0                                 # XTEA
+    assert ((pkt[3] >> 1) & 1)== 0                                  # RDP
+    assert (pkt[3] & 1) == 0                                        # CRC
+    assert len(pkt) == 4                                            # Payload

@@ -36,6 +36,18 @@ _CSP_PORT_BUF_FREE  = 5
 _CSP_PORT_UPTIME    = 6
 _CSP_PORT_BEACON    = 10
 
+# CMP Types
+_CSP_CMP_REQUEST    = 0
+_CSP_CMP_REPLY      = 255
+
+# CMP Codes
+_CSP_CMP_IDENT      = 1
+_CSP_CMP_ROUTE_SET  = 2
+_CSP_CMP_IF_STATS   = 3
+_CSP_CMP_PEEK       = 4
+_CSP_CMP_POKE       = 5
+_CSP_CMP_CLOCK      = 6
+
 class CSP:
     """
     CSP class.
@@ -43,14 +55,41 @@ class CSP:
     This class implements the CSP protocol.
     """
 
-    def __init__(self):
+    def __init__(self, adr):
         """
         Class initialization.
+
+        :param adr: Source address (must be between 0 and 31).
+        :type: int
 
         :return: None
         :rtype: None
         """
-        pass
+        self.set_address(adr)
+
+    def set_address(self, adr):
+        """
+        Sets the source address.
+
+        :param adr: Source address (must be between 0 and 31).
+        :type: int
+
+        :return: None
+        :rtype: None
+        """
+        if not (0 <= adr <= 31):
+            raise ValueError('The source address must be between 0 and 31!')
+
+        self._my_adr = adr
+
+    def get_address(self):
+        """
+        Gets the source address.
+
+        :return: The source address
+        :rtype: int
+        """
+        return self._my_adr
 
     def encode(self, prio, src_adr, dst_adr, src_port, dst_port, hmac, xtea, rdp, crc, pl):
         """
@@ -120,15 +159,110 @@ class CSP:
 
         return pkt
 
-    def encode_ping(self, prio, src_adr, dst_adr, num_bytes=100):
+    def encode_cmp_ident(self, dst_adr):
+        """
+        Encodes a CSP CMP Ident Request packet.
+
+        :param dst_adr: Destination address (must be between 0 and 31).
+        :type: int
+
+        :return: A list with the byte sequence of the CSP Ping Request packet.
+        :rtype: list[int]
+        """
+        pl = [_CSP_CMP_REQUEST, _CSP_CMP_IDENT]
+
+        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, pl)
+
+    def encode_cmp_set_route(self, dst_adr):
+        """
+        Encodes a CSP CMP Set Route Request packet.
+
+        :param dst_adr: Destination address (must be between 0 and 31).
+        :type: int
+
+        :return: A list with the byte sequence of the CSP Ping Request packet.
+        :rtype: list[int]
+        """
+        pl = [_CSP_CMP_REQUEST, _CSP_CMP_ROUTE_SET]
+
+        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, pl)
+
+    def encode_cmp_if_stat(self, dst_adr):
+        """
+        Encodes a CSP CMP Interface Statistics Request packet.
+
+        :param dst_adr: Destination address (must be between 0 and 31).
+        :type: int
+
+        :return: A list with the byte sequence of the CSP Ping Request packet.
+        :rtype: list[int]
+        """
+        pl = [_CSP_CMP_REQUEST, _CSP_CMP_IF_STATS]
+
+        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, pl)
+
+    def encode_cmp_peek(self, dst_adr, mem_adr, mem_len):
+        """
+        Encodes a CSP CMP Peek Request packet.
+
+        :param dst_adr: Destination address (must be between 0 and 31).
+        :type: int
+
+        :param mem_adr: Memory address to peek.
+        :type: int
+
+        :param mem_len: Number of bytes to peek.
+        :type: int
+
+        :return: A list with the byte sequence of the CSP Ping Request packet.
+        :rtype: list[int]
+        """
+        if mem_len > 255:
+            raise ValueError('The number of bytes to read must be lesser than 255!')
+
+        pl = [_CSP_CMP_REQUEST, _CSP_CMP_PEEK]
+
+        pl += list(mem_adr.to_bytes(4, 'big'))
+
+        pl.append(mem_len)
+
+        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, pl)
+
+    def encode_cmp_poke(self, dst_adr, mem_adr, mem_len):
+        """
+        Encodes a CSP CMP Poke Request packet.
+
+        :param dst_adr: Destination address (must be between 0 and 31).
+        :type: int
+
+        :return: A list with the byte sequence of the CSP Ping Request packet.
+        :rtype: list[int]
+        """
+        pl = [_CSP_CMP_REQUEST, _CSP_CMP_POKE]
+
+        pl += list(mem_adr.to_bytes(4, 'big'))
+
+        pl.append(mem_len)
+
+        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, pl)
+
+    def encode_cmp_get_clock(self, dst_adr):
+        """
+        Encodes a CSP CMP Get Clock Request packet.
+
+        :param dst_adr: Destination address (must be between 0 and 31).
+        :type: int
+
+        :return: A list with the byte sequence of the CSP Ping Request packet.
+        :rtype: list[int]
+        """
+        pl = [_CSP_CMP_REQUEST, _CSP_CMP_CLOCK]
+
+        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, pl)
+
+    def encode_ping(self, dst_adr, num_bytes=100):
         """
         Encodes a CSP Ping Request packet.
-
-        :param prio: Packet priority (must be between 0 and 3).
-        :type: int
-
-        :param src_adr: Source address (must be between 0 and 31).
-        :type: int
 
         :param dst_adr: Destination address (must be between 0 and 31).
         :type: int
@@ -144,7 +278,83 @@ class CSP:
         for i in range(num_bytes):
             pl.append(i)
 
-        return self.encode(prio, src_adr, dst_adr, _CSP_PORT_PING, _CSP_PORT_PING, False, False, False, False, pl)
+        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_PING, _CSP_PORT_PING, False, False, False, False, pl)
+
+    def encode_ps(self, dst_adr):
+        """
+        Encodes a CSP PS Request packet.
+
+        :param dst_adr: Destination address (must be between 0 and 31).
+        :type: int
+
+        :return: A list with the byte sequence of the CSP Ping Request packet.
+        :rtype: list[int]
+        """
+        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_PS, _CSP_PORT_PS, False, False, False, False, [0x55])
+
+    def encode_memfree(self, dst_adr):
+        """
+        Encodes a CSP Mem Free Request packet.
+
+        :param dst_adr: Destination address (must be between 0 and 31).
+        :type: int
+
+        :return: A list with the byte sequence of the CSP Mem Free Request packet.
+        :rtype: list[int]
+        """
+        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_MEMFREE, _CSP_PORT_MEMFREE, False, False, False, False, [])
+
+    def encode_reboot(self, dst_adr):
+        """
+        Encodes a CSP Reboot Request packet.
+
+        :param dst_adr: Destination address (must be between 0 and 31).
+        :type: int
+
+        :return: A list with the byte sequence of the CSP Reboot Request packet.
+        :rtype: list[int]
+        """
+        pl = [0x80, 0x07, 0x80, 0x07]   # Magic word
+
+        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_REBOOT, _CSP_PORT_REBOOT, False, False, False, False, pl)
+
+    def encode_shutdown(self, dst_adr):
+        """
+        Encodes a CSP Shutdown Request packet.
+
+        :param dst_adr: Destination address (must be between 0 and 31).
+        :type: int
+
+        :return: A list with the byte sequence of the CSP Shutdown Request packet.
+        :rtype: list[int]
+        """
+        pl = [0xD1, 0xE5, 0x52, 0x9A]   # Magic word
+
+        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_REBOOT, _CSP_PORT_REBOOT, False, False, False, False, pl)
+
+    def encode_buf_free(self, dst_adr):
+        """
+        Encodes a CSP Buffer Free Request packet.
+
+        :param dst_adr: Destination address (must be between 0 and 31).
+        :type: int
+
+        :return: A list with the byte sequence of the CSP Buffer Free Request packet.
+        :rtype: list[int]
+        """
+        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_BUF_FREE, _CSP_PORT_BUF_FREE, False, False, False, False, [])
+
+    def encode_uptime(self, dst_adr):
+        """
+        Encodes a CSP Uptime Request packet.
+
+        :param dst_adr: Destination address (must be between 0 and 31).
+        :type: int
+
+        :return: A list with the byte sequence of the CSP Uptime Request packet.
+        :rtype: list[int]
+        """
+        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_UPTIME, _CSP_PORT_UPTIME, False, False, False, False, [])
 
     def decode(self, pkt):
         """
