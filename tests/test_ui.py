@@ -50,6 +50,10 @@ def test_ui():
     entry_preferences_udp_address   = builder.get_object("entry_preferences_udp_address")
     entry_preferences_udp_port      = builder.get_object("entry_preferences_udp_port")
     switch_raw_bits                 = builder.get_object("switch_raw_bits")
+    entry_output_address            = builder.get_object("entry_output_address")
+    entry_output_port               = builder.get_object("entry_output_port")
+    toolbutton_output_connect       = builder.get_object("toolbutton_output_connect")
+    toolbutton_output_disconnect    = builder.get_object("toolbutton_output_disconnect")
 
     assert window                           != None
     assert button_preferences               != None

@@ -173,6 +173,12 @@ class SpaceLabDecoder:
         self.radiobutton_udp        = self.builder.get_object("radiobutton_udp")
         self.filechooser_audio_file = self.builder.get_object("filechooser_audio_file")
 
+        # Data output
+        self.entry_output_address           = self.builder.get_object("entry_output_address")
+        self.entry_output_port              = self.builder.get_object("entry_output_port")
+        self.toolbutton_output_connect      = self.builder.get_object("toolbutton_output_connect")
+        self.toolbutton_output_disconnect   = self.builder.get_object("toolbutton_output_disconnect")
+
         # Decode button
         self.button_decode = self.builder.get_object("button_decode")
         self.button_decode.connect("clicked", self.on_button_decode_clicked)
