@@ -178,7 +178,7 @@
                             "initial_pos": 39,
                             "final_pos": 40,
                             "value": 0,
-                            "conversion": "int((pkt[38] << 8) << pkt[40])",
+                            "conversion": "int((pkt[39] << 8) | pkt[40])",
                             "unit": "mV"
                         },
                         {
@@ -187,7 +187,7 @@
                             "initial_pos": 41,
                             "final_pos": 42,
                             "value": 0,
-                            "conversion": "int((pkt[41] << 8) << pkt[42])",
+                            "conversion": "int((pkt[41] << 8) | pkt[42])",
                             "unit": "mV"
                         },
                         {
@@ -196,7 +196,7 @@
                             "initial_pos": 43,
                             "final_pos": 44,
                             "value": 0,
-                            "conversion": "int((pkt[43] << 8) << pkt[44])",
+                            "conversion": "int((pkt[43] << 8) | pkt[44])",
                             "unit": "K"
                         },
                         {
@@ -205,7 +205,7 @@
                             "initial_pos": 45,
                             "final_pos": 46,
                             "value": 0,
-                            "conversion": "int((pkt[45] << 8) << pkt[46])",
+                            "conversion": "int((pkt[45] << 8) | pkt[46])",
                             "unit": "K"
                         },
                         {
@@ -214,7 +214,7 @@
                             "initial_pos": 47,
                             "final_pos": 48,
                             "value": 0,
-                            "conversion": "int((pkt[47] << 8) << pkt[48])",
+                            "conversion": "int((pkt[47] << 8) | pkt[48])",
                             "unit": "K"
                         },
                         {
@@ -223,7 +223,7 @@
                             "initial_pos": 49,
                             "final_pos": 50,
                             "value": 0,
-                            "conversion": "int((pkt[49] << 8) << pkt[50])",
+                            "conversion": "int((pkt[49] << 8) | pkt[50])",
                             "unit": "K"
                         },
                         {
@@ -232,7 +232,7 @@
                             "initial_pos": 51,
                             "final_pos": 52,
                             "value": 0,
-                            "conversion": "int((pkt[51] << 8) << pkt[52])",
+                            "conversion": "int((pkt[51] << 8) | pkt[52])",
                             "unit": "K"
                         },
                         {
@@ -241,7 +241,7 @@
                             "initial_pos": 53,
                             "final_pos": 54,
                             "value": 0,
-                            "conversion": "int((pkt[53] << 8) << pkt[54])",
+                            "conversion": "int((pkt[53] << 8) | pkt[54])",
                             "unit": "K"
                         },
                         {
@@ -250,7 +250,7 @@
                             "initial_pos": 55,
                             "final_pos": 56,
                             "value": 0,
-                            "conversion": "int((pkt[55] << 8) << pkt[56])",
+                            "conversion": "int((pkt[55] << 8) | pkt[56])",
                             "unit": "K"
                         },
                         {
@@ -259,7 +259,7 @@
                             "initial_pos": 57,
                             "final_pos": 58,
                             "value": 0,
-                            "conversion": "int((pkt[57] << 8) << pkt[58])",
+                            "conversion": "int((pkt[57] << 8) | pkt[58])",
                             "unit": "mV"
                         },
                         {
