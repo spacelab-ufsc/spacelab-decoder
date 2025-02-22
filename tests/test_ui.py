@@ -54,6 +54,10 @@ def test_ui():
     entry_output_port               = builder.get_object("entry_output_port")
     toolbutton_output_connect       = builder.get_object("toolbutton_output_connect")
     toolbutton_output_disconnect    = builder.get_object("toolbutton_output_disconnect")
+    entry_output_address            = builder.get_object("entry_output_address")
+    entry_output_port               = builder.get_object("entry_output_port")
+    button_output_connect           = builder.get_object("button_output_connect")
+    button_output_disconnect        = builder.get_object("button_output_disconnect")
 
     assert window                           != None
     assert button_preferences               != None
@@ -74,6 +78,10 @@ def test_ui():
     assert entry_preferences_udp_address    != None
     assert entry_preferences_udp_port       != None
     assert switch_raw_bits                  != None
+    assert entry_output_address             != None
+    assert entry_output_port                != None
+    assert button_output_connect            != None
+    assert button_output_disconnect         != None
 
     assert window.get_title()                       == "SpaceLab Decoder"
 
