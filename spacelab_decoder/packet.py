@@ -61,6 +61,30 @@ class Packet:
 
         return buf
 
+    def get_data(self):
+        pkt = self.packet
+
+        link_idx = int()
+        type_idx = int()
+        pkt_type_found = False
+        for i in range(len(self.sat_packet['links'])):
+            for j in range(len(self.sat_packet['links'][i]['types'])):
+                if pkt[0] == self.sat_packet['links'][i]['types'][j]['fields'][0]['value']:
+                    link_idx = i
+                    type_idx = j
+                    pkt_type_found = True
+                    break
+
+        data = dict()
+
+        if pkt_type_found:
+            for i in range(len(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'])):
+                data[self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['id']] = str(eval(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['conversion']))
+        else:
+            raise RuntimeError("Unknown packet ID!")
+
+        return json.dumps(data)
+
     def _decode_callsign(self, cs_raw):
         found = False
         buf = str()
