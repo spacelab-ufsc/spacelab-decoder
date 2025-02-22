@@ -520,12 +520,11 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                                 <property name="spacing">5</property>
                                 <property name="homogeneous">True</property>
                                 <child>
-                                  <object class="GtkToggleButton" id="toolbutton_output_connect">
+                                  <object class="GtkButton" id="button_output_connect">
                                     <property name="label">gtk-connect</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
                                     <property name="receives-default">True</property>
-                                    <property name="hexpand">True</property>
                                     <property name="use-stock">True</property>
                                     <property name="always-show-image">True</property>
                                   </object>
@@ -536,7 +535,7 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkButton" id="toolbutton_output_disconnect">
+                                  <object class="GtkButton" id="button_output_disconnect">
                                     <property name="label">gtk-disconnect</property>
                                     <property name="visible">True</property>
                                     <property name="sensitive">False</property>

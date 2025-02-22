@@ -109,6 +109,8 @@ class SpaceLabDecoder:
 
         self._run_udp_decode = False
 
+        self._client_socket = None
+
     def _build_widgets(self):
         # Main window
         self.window = self.builder.get_object("window_main")
@@ -176,8 +178,10 @@ class SpaceLabDecoder:
         # Data output
         self.entry_output_address           = self.builder.get_object("entry_output_address")
         self.entry_output_port              = self.builder.get_object("entry_output_port")
-        self.toolbutton_output_connect      = self.builder.get_object("toolbutton_output_connect")
-        self.toolbutton_output_disconnect   = self.builder.get_object("toolbutton_output_disconnect")
+        self.button_output_connect          = self.builder.get_object("button_output_connect")
+        self.button_output_connect.connect("clicked", self.on_button_output_connect_clicked)
+        self.button_output_disconnect       = self.builder.get_object("button_output_disconnect")
+        self.button_output_disconnect.connect("clicked", self.on_button_output_disconnect_clicked)
 
         # Decode button
         self.button_decode = self.builder.get_object("button_decode")
@@ -235,6 +239,9 @@ class SpaceLabDecoder:
         Gtk.main()
 
     def destroy(window, self):
+        if self._client_socket:
+            self._client_socket.close()
+
         Gtk.main_quit()
 
     def on_button_preferences_clicked(self, button):
@@ -407,6 +414,36 @@ class SpaceLabDecoder:
         if response == Gtk.ResponseType.DELETE_EVENT:
             self.aboutdialog.hide()
 
+    def on_button_output_connect_clicked(self, button):
+        try:
+            adr = self.entry_output_address.get_text()
+            port = int(self.entry_output_port.get_text())
+
+            self._client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self._client_socket.connect((adr, port))
+            self.write_log("Connected to " + adr + ":" + str(port))
+
+            self.entry_output_address.set_sensitive(False)
+            self.entry_output_port.set_sensitive(False)
+            self.button_output_connect.set_sensitive(False)
+            self.button_output_disconnect.set_sensitive(True)
+        except socket.error as e:
+            error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error connecting to visualizer server!")
+            error_dialog.format_secondary_text(str(e))
+            error_dialog.run()
+            error_dialog.destroy()
+
+    def on_button_output_disconnect_clicked(self, button):
+        self._client_socket.shutdown(socket.SHUT_RDWR)
+        self._client_socket.close()
+
+        self.write_log("Disconnected from " + self.entry_output_address.get_text() + ":" + self.entry_output_port.get_text())
+
+        self.entry_output_address.set_sensitive(True)
+        self.entry_output_port.set_sensitive(True)
+        self.button_output_connect.set_sensitive(True)
+        self.button_output_disconnect.set_sensitive(False)
+
     def _save_preferences(self):
         home = os.path.expanduser('~')
         location = os.path.join(home, _DIR_CONFIG_LINUX)
@@ -561,11 +598,16 @@ class SpaceLabDecoder:
     def _decode_packet(self, pkt):
         try:
             pkt_data = str()
+            pkt_json = str()
             sat_json = self._get_json_filename_of_active_sat()
             if sat_json[-16:] == _SATELLITES[4][1]: # Catarina-A2
-                pkt_data = str(PacketCSP(sat_json, pkt))
+                pkt_csp = PacketCSP(sat_json, pkt)
+                pkt_data = str(pkt_csp)
+                pkt_json = pkt_csp.get_data()
             else:
-                pkt_data = str(Packet(sat_json, pkt))
+                pkt_sl = Packet(sat_json, pkt)
+                pkt_data = str(pkt_sl)
+                pkt_json = pkt_sl.get_data()
         except RuntimeError as e:
             error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error decoding a packet!")
             error_dialog.format_secondary_text(str(e))
@@ -581,6 +623,15 @@ class SpaceLabDecoder:
             pkt_txt = pkt_txt + pkt_data
             pkt_txt = pkt_txt + "========================================================\n"
             self.textbuffer_pkt_data.insert(self.textbuffer_pkt_data.get_end_iter(), pkt_txt)
+
+            if self._client_socket and not self.button_output_connect.get_sensitive():
+                try:
+                    self._client_socket.send(pkt_json.encode('utf-8'))  # Send message to server
+                except socket.error as e:
+                    error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error transmitting the decoded data!")
+                    error_dialog.format_secondary_text(str(e))
+                    error_dialog.run()
+                    error_dialog.destroy()
 
     def _get_json_filename_of_active_sat(self):
         sat_config_file = str()
