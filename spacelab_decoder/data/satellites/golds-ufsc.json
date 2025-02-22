@@ -11,6 +11,7 @@
                     "name": "EPS data",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -19,6 +20,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_src_adr",
                             "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
@@ -27,6 +29,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "eps_timestamp",
                             "name": "Timestamp",
                             "initial_pos": 8,
                             "final_pos": 11,
@@ -35,6 +38,7 @@
                             "unit": "sec"
                         },
                         {
+                            "id": "eps_mcu_temp",
                             "name": "EPS uC temperature",
                             "initial_pos": 12,
                             "final_pos": 13,
@@ -43,6 +47,7 @@
                             "unit": "K"
                         },
                         {
+                            "id": "eps_mcu_curr",
                             "name": "EPS current",
                             "initial_pos": 14,
                             "final_pos": 15,
@@ -51,6 +56,7 @@
                             "unit": "mA"
                         },
                         {
+                            "id": "eps_mcu_rst_counter",
                             "name": "Reset counter",
                             "initial_pos": 16,
                             "final_pos": 17,
@@ -59,6 +65,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "eps_sp_volt_mypx",
                             "name": "Solar panel voltage (-Y and +X)",
                             "initial_pos": 18,
                             "final_pos": 19,
@@ -67,6 +74,7 @@
                             "unit": "mV"
                         },
                         {
+                            "id": "eps_sp_volt_mxpz",
                             "name": "Solar panel voltage (-X and +Z)",
                             "initial_pos": 20,
                             "final_pos": 21,
@@ -75,6 +83,7 @@
                             "unit": "mV"
                         },
                         {
+                            "id": "eps_sp_volt_mzpy",
                             "name": "Solar panel voltage (-Z and +Y)",
                             "initial_pos": 22,
                             "final_pos": 23,
@@ -83,6 +92,7 @@
                             "unit": "mV"
                         },
                         {
+                            "id": "eps_sp_curr_my",
                             "name": "Solar panel current (-Y)",
                             "initial_pos": 24,
                             "final_pos": 25,
@@ -91,6 +101,7 @@
                             "unit": "mA"
                         },
                         {
+                            "id": "eps_sp_curr_py",
                             "name": "Solar panel current (+Y)",
                             "initial_pos": 26,
                             "final_pos": 27,
@@ -99,6 +110,7 @@
                             "unit": "mA"
                         },
                         {
+                            "id": "eps_sp_curr_mx",
                             "name": "Solar panel current (-X)",
                             "initial_pos": 28,
                             "final_pos": 29,
@@ -107,6 +119,7 @@
                             "unit": "mA"
                         },
                         {
+                            "id": "eps_sp_curr_px",
                             "name": "Solar panel current (+X)",
                             "initial_pos": 30,
                             "final_pos": 31,
@@ -115,6 +128,7 @@
                             "unit": "mA"
                         },
                         {
+                            "id": "eps_sp_curr_mz",
                             "name": "Solar panel current (-Z)",
                             "initial_pos": 32,
                             "final_pos": 33,
@@ -123,6 +137,7 @@
                             "unit": "mA"
                         },
                         {
+                            "id": "eps_sp_curr_pz",
                             "name": "Solar panel current (+Z)",
                             "initial_pos": 34,
                             "final_pos": 35,
@@ -131,6 +146,7 @@
                             "unit": "mA"
                         },
                         {
+                            "id": "eps_mppt_1_dc",
                             "name": "MPPT 1 duty cycle",
                             "initial_pos": 36,
                             "final_pos": 36,
@@ -139,6 +155,7 @@
                             "unit": "%"
                         },
                         {
+                            "id": "eps_mppt_2_dc",
                             "name": "MPPT 2 duty cycle",
                             "initial_pos": 37,
                             "final_pos": 37,
@@ -147,6 +164,7 @@
                             "unit": "%"
                         },
                         {
+                            "id": "eps_mppt_3_dc",
                             "name": "MPPT 3 duty cycle",
                             "initial_pos": 38,
                             "final_pos": 38,
@@ -155,6 +173,7 @@
                             "unit": "%"
                         },
                         {
+                            "id": "eps_mppt_sp_volt",
                             "name": "Solar panel voltage MPPT",
                             "initial_pos": 39,
                             "final_pos": 40,
@@ -163,6 +182,7 @@
                             "unit": "mV"
                         },
                         {
+                            "id": "eps_main_pwr_bus_volt",
                             "name": "Main power bus voltage",
                             "initial_pos": 41,
                             "final_pos": 42,
@@ -171,6 +191,7 @@
                             "unit": "mV"
                         },
                         {
+                            "id": "eps_rtd_0_temp",
                             "name": "RTD 0 temperature",
                             "initial_pos": 43,
                             "final_pos": 44,
@@ -179,6 +200,7 @@
                             "unit": "K"
                         },
                         {
+                            "id": "eps_rtd_1_temp",
                             "name": "Battery cell 1-2 temperature",
                             "initial_pos": 45,
                             "final_pos": 46,
@@ -187,6 +209,7 @@
                             "unit": "K"
                         },
                         {
+                            "id": "eps_rtd_2_temp",
                             "name": "Battery cell 3-4 temperature",
                             "initial_pos": 47,
                             "final_pos": 48,
@@ -195,6 +218,7 @@
                             "unit": "K"
                         },
                         {
+                            "id": "eps_rtd_3_temp",
                             "name": "RTD 3 temperature",
                             "initial_pos": 49,
                             "final_pos": 50,
@@ -203,6 +227,7 @@
                             "unit": "K"
                         },
                         {
+                            "id": "eps_rtd_4_temp",
                             "name": "Battery heater cell 3-4 temperature",
                             "initial_pos": 51,
                             "final_pos": 52,
@@ -211,6 +236,7 @@
                             "unit": "K"
                         },
                         {
+                            "id": "eps_rtd_5_temp",
                             "name": "Battery heater cell 1-2 temperature",
                             "initial_pos": 53,
                             "final_pos": 54,
@@ -219,6 +245,7 @@
                             "unit": "K"
                         },
                         {
+                            "id": "eps_rtd_6_temp",
                             "name": "RTD 6 temperature",
                             "initial_pos": 55,
                             "final_pos": 56,
@@ -227,6 +254,7 @@
                             "unit": "K"
                         },
                         {
+                            "id": "eps_bat_volt",
                             "name": "Battery voltage",
                             "initial_pos": 57,
                             "final_pos": 58,
@@ -235,6 +263,7 @@
                             "unit": "mV"
                         },
                         {
+                            "id": "eps_bat_curr",
                             "name": "Battery current",
                             "initial_pos": 59,
                             "final_pos": 60,
@@ -243,6 +272,7 @@
                             "unit": "mA"
                         },
                         {
+                            "id": "eps_bat_charge",
                             "name": "Battery charge",
                             "initial_pos": 61,
                             "final_pos": 62,
@@ -251,6 +281,7 @@
                             "unit": "mAh"
                         },
                         {
+                            "id": "eps_bat_heater_1_dc",
                             "name": "Battery heater 1 duty cycle",
                             "initial_pos": 63,
                             "final_pos": 63,
@@ -259,6 +290,7 @@
                             "unit": "%"
                         },
                         {
+                            "id": "eps_bat_heater_2_dc",
                             "name": "Battery heater 2 duty cycle",
                             "initial_pos": 64,
                             "final_pos": 64,
@@ -272,6 +304,7 @@
                     "name": "Message broadcast",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -280,6 +313,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_src_adr",
                             "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
@@ -288,6 +322,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "tc_req_adr",
                             "name": "Requester callsign",
                             "initial_pos": 8,
                             "final_pos": 14,
@@ -296,6 +331,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "dst_adr",
                             "name": "Destination callsign",
                             "initial_pos": 15,
                             "final_pos": 21,
@@ -304,6 +340,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "broadcast_msg",
                             "name": "Message",
                             "initial_pos": 22,
                             "final_pos": 59,
@@ -317,6 +354,7 @@
                     "name": "Ping answer",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -325,6 +363,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_src_adr",
                             "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
@@ -333,6 +372,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "tc_req_adr",
                             "name": "Requester callsign",
                             "initial_pos": 8,
                             "final_pos": 14,
@@ -354,6 +394,7 @@
                     "name": "General telemetry",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -362,6 +403,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_src_adr",
                             "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
@@ -370,6 +412,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "obdh_timestamp",
                             "name": "Time counter",
                             "initial_pos": 8,
                             "final_pos": 11,
@@ -378,6 +421,7 @@
                             "unit": "sec"
                         },
                         {
+                            "id": "obdh_mcu_temp",
                             "name": "OBDH uC temperature",
                             "initial_pos": 12,
                             "final_pos": 13,
@@ -386,6 +430,7 @@
                             "unit": "K"
                         },
                         {
+                            "id": "obdh_curr",
                             "name": "OBDH input current",
                             "initial_pos": 14,
                             "final_pos": 15,
@@ -394,6 +439,7 @@
                             "unit": "mA"
                         },
                         {
+                            "id": "obdh_volt",
                             "name": "OBDH input voltage",
                             "initial_pos": 16,
                             "final_pos": 17,
@@ -402,6 +448,7 @@
                             "unit": "mV"
                         },
                         {
+                            "id": "obdh_mcu_last_reset_cause",
                             "name": "OBDH last reset cause",
                             "initial_pos": 18,
                             "final_pos": 18,
@@ -410,6 +457,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "obdh_mcu_rst_count",
                             "name": "OBDH reset counter",
                             "initial_pos": 19,
                             "final_pos": 20,
@@ -418,6 +466,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "obdh_last_valid_tc",
                             "name": "Last valid telecommand",
                             "initial_pos": 21,
                             "final_pos": 21,
@@ -426,6 +475,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "ttc_radio_temp",
                             "name": "Radio temperature",
                             "initial_pos": 22,
                             "final_pos": 23,
@@ -434,6 +484,7 @@
                             "unit": "K"
                         },
                         {
+                            "id": "obdh_last_valid_tc_rssi",
                             "name": "Last valid TC RSSI",
                             "initial_pos": 24,
                             "final_pos": 25,
@@ -442,6 +493,7 @@
                             "unit": "dB"
                         },
                         {
+                            "id": "ant_temp",
                             "name": "Antenna temperature",
                             "initial_pos": 26,
                             "final_pos": 27,
@@ -450,6 +502,7 @@
                             "unit": "K"
                         },
                         {
+                            "id": "ant_status",
                             "name": "Antenna status",
                             "initial_pos": 28,
                             "final_pos": 29,
@@ -458,6 +511,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "eps_mcu_temp",
                             "name": "EPS uC temperature",
                             "initial_pos": 30,
                             "final_pos": 31,
@@ -466,6 +520,7 @@
                             "unit": "K"
                         },
                         {
+                            "id": "eps_mcu_curr",
                             "name": "EPS current",
                             "initial_pos": 32,
                             "final_pos": 33,
@@ -474,6 +529,7 @@
                             "unit": "mA"
                         },
                         {
+                            "id": "eps_mcu_last_rst_cause",
                             "name": "EPS last reset cause",
                             "initial_pos": 34,
                             "final_pos": 34,
@@ -482,6 +538,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "eps_mcu_rst_count",
                             "name": "EPS reset counter",
                             "initial_pos": 35,
                             "final_pos": 36,
@@ -490,6 +547,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "eps_sp_volt_mypx",
                             "name": "Solar panel voltage (-Y and +X)",
                             "initial_pos": 37,
                             "final_pos": 38,
@@ -498,6 +556,7 @@
                             "unit": "mV"
                         },
                         {
+                            "id": "eps_sp_volt_mxpz",
                             "name": "Solar panel voltage (-X and +Z)",
                             "initial_pos": 39,
                             "final_pos": 40,
@@ -506,6 +565,7 @@
                             "unit": "mV"
                         },
                         {
+                            "id": "eps_sp_volt_mzpy",
                             "name": "Solar panel voltage (-Z and +Y)",
                             "initial_pos": 41,
                             "final_pos": 42,
@@ -514,6 +574,7 @@
                             "unit": "mV"
                         },
                         {
+                            "id": "eps_sp_curr_my",
                             "name": "Solar panel current (-Y)",
                             "initial_pos": 43,
                             "final_pos": 44,
@@ -522,6 +583,7 @@
                             "unit": "mA"
                         },
                         {
+                            "id": "eps_sp_curr_py",
                             "name": "Solar panel current (+Y)",
                             "initial_pos": 45,
                             "final_pos": 46,
@@ -530,6 +592,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "eps_sp_curr_mx",
                             "name": "Solar panel current (-X)",
                             "initial_pos": 47,
                             "final_pos": 48,
@@ -538,6 +601,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "eps_sp_curr_px",
                             "name": "Solar panel current (+X)",
                             "initial_pos": 49,
                             "final_pos": 50,
@@ -546,6 +610,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "eps_sp_curr_mz",
                             "name": "Solar panel current (-Z)",
                             "initial_pos": 51,
                             "final_pos": 52,
@@ -554,6 +619,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "eps_sp_curr_pz",
                             "name": "Solar panel current (+Z)",
                             "initial_pos": 53,
                             "final_pos": 54,
@@ -562,6 +628,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "eps_mppt_1_dc",
                             "name": "MPPT 1 duty cycle",
                             "initial_pos": 55,
                             "final_pos": 55,
@@ -570,6 +637,7 @@
                             "unit": "%"
                         },
                         {
+                            "id": "eps_mppt_2_dc",
                             "name": "MPPT 2 duty cycle",
                             "initial_pos": 56,
                             "final_pos": 56,
@@ -578,6 +646,7 @@
                             "unit": "%"
                         },
                         {
+                            "id": "eps_mppt_3_dc",
                             "name": "MPPT 3 duty cycle",
                             "initial_pos": 57,
                             "final_pos": 57,
@@ -586,6 +655,7 @@
                             "unit": "%"
                         },
                         {
+                            "id": "eps_main_pwr_bus_volt",
                             "name": "Main power bus voltage",
                             "initial_pos": 58,
                             "final_pos": 59,
@@ -594,6 +664,7 @@
                             "unit": "mV"
                         },
                         {
+                            "id": "eps_bat_volt",
                             "name": "Batteries voltage",
                             "initial_pos": 60,
                             "final_pos": 61,
@@ -602,7 +673,8 @@
                             "unit": "mV"
                         },
                         {
-                            "name": "Batteries current",
+                            "id": "eps_bat_curr",
+                            "name": "Battery current",
                             "initial_pos": 62,
                             "final_pos": 63,
                             "value": 0,
@@ -610,7 +682,8 @@
                             "unit": "mA"
                         },
                         {
-                            "name": "Batteries average current",
+                            "id": "eps_bat_avg_curr",
+                            "name": "Battery average current",
                             "initial_pos": 64,
                             "final_pos": 65,
                             "value": 0,
@@ -618,7 +691,8 @@
                             "unit": "mA"
                         },
                         {
-                            "name": "Batteries accumulated current",
+                            "id": "eps_bat_acc_curr",
+                            "name": "Battery accumulated current",
                             "initial_pos": 66,
                             "final_pos": 67,
                             "value": 0,
@@ -626,7 +700,8 @@
                             "unit": "mA"
                         },
                         {
-                            "name": "Batteries charge",
+                            "id": "eps_bat_charge",
+                            "name": "Battery charge",
                             "initial_pos": 68,
                             "final_pos": 69,
                             "value": 0,
@@ -634,6 +709,7 @@
                             "unit": "mAh"
                         },
                         {
+                            "id": "eps_bat_mon_temp",
                             "name": "Battery monitor IC temperature",
                             "initial_pos": 70,
                             "final_pos": 71,
@@ -642,6 +718,7 @@
                             "unit": "K"
                         },
                         {
+                            "id": "eps_bat_heater_1_dc",
                             "name": "Battery heater 1 duty cycle",
                             "initial_pos": 72,
                             "final_pos": 72,
@@ -650,6 +727,7 @@
                             "unit": "%"
                         },
                         {
+                            "id": "eps_bat_heater_2_dc",
                             "name": "Battery heater 2 duty cycle",
                             "initial_pos": 73,
                             "final_pos": 73,
@@ -658,6 +736,7 @@
                             "unit": "%"
                         },
                         {
+                            "id": "edc_status",
                             "name": "Payload EDC status",
                             "initial_pos": 74,
                             "final_pos": 74,
@@ -666,6 +745,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "active_pl",
                             "name": "Active payload",
                             "initial_pos": 75,
                             "final_pos": 75,
@@ -674,6 +754,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "active_pl",
                             "name": "Active payload",
                             "initial_pos": 76,
                             "final_pos": 76,
@@ -687,6 +768,7 @@
                     "name": "Data request answer",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -695,6 +777,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_src_adr",
                             "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
@@ -703,6 +786,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "tc_req_adr",
                             "name": "Requester callsign",
                             "initial_pos": 8,
                             "final_pos": 14,
@@ -711,6 +795,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "tc_req_data_type_id",
                             "name": "Data type ID",
                             "initial_pos": 15,
                             "final_pos": 15,
@@ -719,6 +804,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "tc_req_ts",
                             "name": "Timestamp",
                             "initial_pos": 16,
                             "final_pos": 19,
@@ -727,6 +813,7 @@
                             "unit": "sec"
                         },
                         {
+                            "id": "tc_req_data",
                             "name": "Data",
                             "initial_pos": 20,
                             "final_pos": 39,
@@ -740,6 +827,7 @@
                     "name": "Payload data",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -748,6 +836,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_src_adr",
                             "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
@@ -756,6 +845,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "payload_id",
                             "name": "Payload ID",
                             "initial_pos": 8,
                             "final_pos": 8,
@@ -764,6 +854,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "edc_ptt_sig_recv_tm",
                             "name": "PTT signal receiving time",
                             "initial_pos": 9,
                             "final_pos": 12,
@@ -772,6 +863,7 @@
                             "unit": "sec"
                         },
                         {
+                            "id": "edc_err_code",
                             "name": "Error code",
                             "initial_pos": 13,
                             "final_pos": 13,
@@ -780,6 +872,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "edc_carrier_freq",
                             "name": "Carrier frequency",
                             "initial_pos": 14,
                             "final_pos": 15,
@@ -788,6 +881,7 @@
                             "unit": "MHz"
                         },
                         {
+                            "id": "edc_carrier_amp",
                             "name": "Carrier amplitude at ADC interface",
                             "initial_pos": 16,
                             "final_pos": 17,
@@ -796,6 +890,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "edc_user_msg_len",
                             "name": "User message length",
                             "initial_pos": 18,
                             "final_pos": 18,
@@ -804,6 +899,7 @@
                             "unit": "bytes"
                         },
                         {
+                            "id": "edc_user_msg",
                             "name": "User message",
                             "initial_pos": 19,
                             "final_pos": 53,
@@ -812,6 +908,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "edc_cur_tm",
                             "name": "Current time (J2000 epoch)",
                             "initial_pos": 54,
                             "final_pos": 57,
@@ -820,6 +917,7 @@
                             "unit": "sec"
                         },
                         {
+                            "id": "edc_elapsed_tm_last_rst",
                             "name": "Elapsed time since last reset",
                             "initial_pos": 58,
                             "final_pos": 61,
@@ -828,6 +926,7 @@
                             "unit": "sec"
                         },
                         {
+                            "id": "edc_curr",
                             "name": "System current supply",
                             "initial_pos": 62,
                             "final_pos": 63,
@@ -836,6 +935,7 @@
                             "unit": "mA"
                         },
                         {
+                            "id": "edc_volt",
                             "name": "System voltage supply",
                             "initial_pos": 64,
                             "final_pos": 65,
@@ -844,6 +944,7 @@
                             "unit": "mV"
                         },
                         {
+                            "id": "edc_temp",
                             "name": "EDC board temperature",
                             "initial_pos": 66,
                             "final_pos": 66,
@@ -852,6 +953,7 @@
                             "unit": "oC"
                         },
                         {
+                            "id": "edc_rf_front_end_lo",
                             "name": "RF front end LO",
                             "initial_pos": 67,
                             "final_pos": 67,
@@ -860,6 +962,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "edc_rms_lvl",
                             "name": "RMS level at front-end output",
                             "initial_pos": 68,
                             "final_pos": 69,
@@ -868,6 +971,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "edc_gen_ptt_pkg",
                             "name": "Generated PTT packages since last initialization",
                             "initial_pos": 70,
                             "final_pos": 70,
@@ -876,6 +980,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "edc_max",
                             "name": "Max",
                             "initial_pos": 71,
                             "final_pos": 71,
@@ -884,6 +989,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "edc_mem_err_count",
                             "name": "Memory error count",
                             "initial_pos": 72,
                             "final_pos": 72,
@@ -892,6 +998,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "edc_cur_time",
                             "name": "Current time",
                             "initial_pos": 73,
                             "final_pos": 76,
@@ -900,6 +1007,7 @@
                             "unit": "sec"
                         },
                         {
+                            "id": "edc_num_avail_ptt_pkt",
                             "name": "Number of PTT packets available for reading",
                             "initial_pos": 77,
                             "final_pos": 77,
@@ -908,6 +1016,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "edc_ptt_decoder_status",
                             "name": "PTT decoder task status",
                             "initial_pos": 78,
                             "final_pos": 78,
@@ -916,6 +1025,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "edc_adc_sampler_state",
                             "name": "ADC sampler state",
                             "initial_pos": 79,
                             "final_pos": 79,
@@ -929,6 +1039,7 @@
                     "name": "TC feedback",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -937,6 +1048,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_src_adr",
                             "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
@@ -945,6 +1057,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "tc_req_adr",
                             "name": "Requester callsign",
                             "initial_pos": 8,
                             "final_pos": 14,
@@ -953,6 +1066,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "tc_pkt_id",
                             "name": "TC packet ID",
                             "initial_pos": 15,
                             "final_pos": 15,
@@ -961,6 +1075,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "tc_ts",
                             "name": "Timestamp",
                             "initial_pos": 16,
                             "final_pos": 19,
@@ -974,6 +1089,7 @@
                     "name": "Parameter value",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -982,6 +1098,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_src_adr",
                             "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
@@ -990,6 +1107,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "tc_req_adr",
                             "name": "Requester callsign",
                             "initial_pos": 8,
                             "final_pos": 14,
@@ -998,6 +1116,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "subsys_id",
                             "name": "Subsystem ID",
                             "initial_pos": 15,
                             "final_pos": 15,
@@ -1006,6 +1125,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "par_id",
                             "name": "Parameter ID",
                             "initial_pos": 16,
                             "final_pos": 16,
@@ -1014,6 +1134,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "par_val",
                             "name": "Parameter value",
                             "initial_pos": 17,
                             "final_pos": 20,
@@ -1027,6 +1148,7 @@
                     "name": "Packet broadcast",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -1035,6 +1157,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_src_adr",
                             "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
@@ -1043,6 +1166,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_broadcast_data",
                             "name": "Byte sequence",
                             "initial_pos": 8,
                             "final_pos": 59,
