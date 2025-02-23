@@ -268,7 +268,7 @@
                             "initial_pos": 59,
                             "final_pos": 60,
                             "value": 0,
-                            "conversion": "int((pkt[59] << 8) | pkt[60])",
+                            "conversion": "np.int16(np.uint16((pkt[59] << 8) | pkt[60]))",
                             "unit": "mA"
                         },
                         {
@@ -589,7 +589,7 @@
                             "final_pos": 46,
                             "value": 0,
                             "conversion": "int((pkt[46] << 8) | pkt[47])",
-                            "unit": ""
+                            "unit": "mA"
                         },
                         {
                             "id": "eps_sp_curr_mx",
@@ -598,7 +598,7 @@
                             "final_pos": 48,
                             "value": 0,
                             "conversion": "int((pkt[48] << 8) | pkt[49])",
-                            "unit": ""
+                            "unit": "mA"
                         },
                         {
                             "id": "eps_sp_curr_px",
@@ -607,7 +607,7 @@
                             "final_pos": 50,
                             "value": 0,
                             "conversion": "int((pkt[50] << 8) | pkt[51])",
-                            "unit": ""
+                            "unit": "mA"
                         },
                         {
                             "id": "eps_sp_curr_mz",
@@ -616,7 +616,7 @@
                             "final_pos": 52,
                             "value": 0,
                             "conversion": "int((pkt[52] << 8) | pkt[53])",
-                            "unit": ""
+                            "unit": "mA"
                         },
                         {
                             "id": "eps_sp_curr_pz",
@@ -625,7 +625,7 @@
                             "final_pos": 54,
                             "value": 0,
                             "conversion": "int((pkt[54] << 8) | pkt[55])",
-                            "unit": ""
+                            "unit": "mA"
                         },
                         {
                             "id": "eps_mppt_1_dc",
@@ -678,7 +678,7 @@
                             "initial_pos": 62,
                             "final_pos": 63,
                             "value": 0,
-                            "conversion": "int((pkt[62] << 8) | pkt[63])",
+                            "conversion": "np.int16(np.uint16((pkt[62] << 8) | pkt[63]))",
                             "unit": "mA"
                         },
                         {
@@ -687,7 +687,7 @@
                             "initial_pos": 64,
                             "final_pos": 65,
                             "value": 0,
-                            "conversion": "int((pkt[64] << 8) | pkt[65])",
+                            "conversion": "np.int16(np.uint16((pkt[64] << 8) | pkt[65]))",
                             "unit": "mA"
                         },
                         {
@@ -697,7 +697,7 @@
                             "final_pos": 67,
                             "value": 0,
                             "conversion": "int((pkt[66] << 8) | pkt[67])",
-                            "unit": "mA"
+                            "unit": "mAh"
                         },
                         {
                             "id": "eps_bat_charge",
@@ -736,8 +736,8 @@
                             "unit": "%"
                         },
                         {
-                            "id": "edc_status",
-                            "name": "Payload EDC status",
+                            "id": "edc_main_id",
+                            "name": "Main EDC ID",
                             "initial_pos": 74,
                             "final_pos": 74,
                             "value": 0,
@@ -745,8 +745,8 @@
                             "unit": ""
                         },
                         {
-                            "id": "active_pl",
-                            "name": "Active payload",
+                            "id": "main_pl_state",
+                            "name": "Main payload state",
                             "initial_pos": 75,
                             "final_pos": 75,
                             "value": 0,
@@ -754,12 +754,84 @@
                             "unit": ""
                         },
                         {
-                            "id": "active_pl",
-                            "name": "Active payload",
+                            "id": "sec_pl_state",
+                            "name": "Secondary payload state",
                             "initial_pos": 76,
                             "final_pos": 76,
                             "value": 0,
                             "conversion": "int(pkt[76])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "flash_page_n_obdh",
+                            "name": "Used OBDH Sector flash pages",
+                            "initial_pos": 77,
+                            "final_pos": 80,
+                            "value": 0,
+                            "conversion": "int((pkt[77] << 24) | (pkt[78] << 16) | (pkt[79] << 8) | pkt[80])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "flash_page_n_eps",
+                            "name": "Used EPS Sector flash pages",
+                            "initial_pos": 81,
+                            "final_pos": 84,
+                            "value": 0,
+                            "conversion": "int((pkt[81] << 24) | (pkt[82] << 16) | (pkt[83] << 8) | pkt[84])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "flash_page_n_ttc0",
+                            "name": "Used TTC 0 Sector flash pages",
+                            "initial_pos": 85,
+                            "final_pos": 88,
+                            "value": 0,
+                            "conversion": "int((pkt[85] << 24) | (pkt[86] << 16) | (pkt[87] << 8) | pkt[88])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "flash_page_n_ttc1",
+                            "name": "Used TTC 1 Sector flash pages",
+                            "initial_pos": 89,
+                            "final_pos": 92,
+                            "value": 0,
+                            "conversion": "int((pkt[89] << 24) | (pkt[90] << 16) | (pkt[91] << 8) | pkt[92])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "flash_page_n_ant",
+                            "name": "Used Antenna Sector flash pages",
+                            "initial_pos": 93,
+                            "final_pos": 96,
+                            "value": 0,
+                            "conversion": "int((pkt[93] << 24) | (pkt[94] << 16) | (pkt[95] << 8) | pkt[96])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "flash_page_n_edc",
+                            "name": "Used EDC Sector flash pages",
+                            "initial_pos": 97,
+                            "final_pos": 100,
+                            "value": 0,
+                            "conversion": "int((pkt[97] << 24) | (pkt[98] << 16) | (pkt[99] << 8) | pkt[100])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "flash_page_n_px",
+                            "name": "Used Payload X Sector flash pages",
+                            "initial_pos": 101,
+                            "final_pos": 104,
+                            "value": 0,
+                            "conversion": "int((pkt[101] << 24) | (pkt[102] << 16) | (pkt[103] << 8) | pkt[104])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "flash_page_n_sbcd",
+                            "name": "Used SBCD Sector flash pages",
+                            "initial_pos": 105,
+                            "final_pos": 108,
+                            "value": 0,
+                            "conversion": "int((pkt[105] << 24) | (pkt[106] << 16) | (pkt[107] << 8) | pkt[108])",
                             "unit": ""
                         }
                     ]
@@ -845,192 +917,174 @@
                             "unit": ""
                         },
                         {
+                            "id": "tc_req_adr",
+                            "name": "Requester callsign",
+                            "initial_pos": 8,
+                            "final_pos": 14,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[8:15]])",
+                            "unit": ""
+                        },
+                        {
                             "id": "payload_id",
                             "name": "Payload ID",
-                            "initial_pos": 8,
-                            "final_pos": 8,
-                            "value": 0,
-                            "conversion": "int(pkt[8])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "edc_ptt_sig_recv_tm",
-                            "name": "PTT signal receiving time",
-                            "initial_pos": 9,
-                            "final_pos": 12,
-                            "value": 0,
-                            "conversion": "int((pkt[9] << 24) | (pkt[10] << 16) | (pkt[11] << 8) | pkt[12])",
-                            "unit": "sec"
-                        },
-                        {
-                            "id": "edc_err_code",
-                            "name": "Error code",
-                            "initial_pos": 13,
-                            "final_pos": 13,
-                            "value": 0,
-                            "conversion": "int(pkt[13])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "edc_carrier_freq",
-                            "name": "Carrier frequency",
-                            "initial_pos": 14,
+                            "initial_pos": 15,
                             "final_pos": 15,
                             "value": 0,
-                            "conversion": "int((pkt[14] << 8) | pkt[15])",
-                            "unit": "MHz"
+                            "conversion": "int(pkt[15])",
+                            "unit": ""
                         },
                         {
-                            "id": "edc_carrier_amp",
-                            "name": "Carrier amplitude at ADC interface",
+                            "id": "tc_pl_ts",
+                            "name": "Timestamp",
                             "initial_pos": 16,
-                            "final_pos": 17,
+                            "final_pos": 19,
                             "value": 0,
-                            "conversion": "int((pkt[16] << 8) | pkt[17])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "edc_user_msg_len",
-                            "name": "User message length",
-                            "initial_pos": 18,
-                            "final_pos": 18,
-                            "value": 0,
-                            "conversion": "int(pkt[18])",
-                            "unit": "bytes"
-                        },
-                        {
-                            "id": "edc_user_msg",
-                            "name": "User message",
-                            "initial_pos": 19,
-                            "final_pos": 53,
-                            "value": 0,
-                            "conversion": "str(pkt[19:54])",
-                            "unit": ""
+                            "conversion": "int((pkt[16] << 24) | (pkt[17] << 16) | (pkt[18] << 8) | pkt[19])",
+                            "unit": "sec"
                         },
                         {
                             "id": "edc_cur_tm",
                             "name": "Current time (J2000 epoch)",
-                            "initial_pos": 54,
-                            "final_pos": 57,
+                            "initial_pos": 20,
+                            "final_pos": 23,
                             "value": 0,
-                            "conversion": "int((pkt[54] << 24) | (pkt[55] << 16) | (pkt[56] << 8) | pkt[57])",
+                            "conversion": "int((pkt[20] << 24) | (pkt[21] << 16) | (pkt[22] << 8) | pkt[22]) + 946684800",
                             "unit": "sec"
                         },
                         {
                             "id": "edc_elapsed_tm_last_rst",
                             "name": "Elapsed time since last reset",
-                            "initial_pos": 58,
-                            "final_pos": 61,
+                            "initial_pos": 24,
+                            "final_pos": 27,
                             "value": 0,
-                            "conversion": "int((pkt[58] << 24) | (pkt[59] << 16) | (pkt[60] << 8) | pkt[61])",
+                            "conversion": "int((pkt[24] << 24) | (pkt[25] << 16) | (pkt[26] << 8) | pkt[27]) + 946684800",
                             "unit": "sec"
                         },
                         {
-                            "id": "edc_curr",
-                            "name": "System current supply",
-                            "initial_pos": 62,
-                            "final_pos": 63,
+                            "id": "edc_curr_d",
+                            "name": "System digital current supply",
+                            "initial_pos": 28,
+                            "final_pos": 29,
                             "value": 0,
-                            "conversion": "int((pkt[62] << 8) | pkt[63])",
+                            "conversion": "int((pkt[28] << 8) | pkt[29])",
+                            "unit": "mA"
+                        },
+                        {
+                            "id": "edc_curr_a",
+                            "name": "System analog current supply",
+                            "initial_pos": 30,
+                            "final_pos": 31,
+                            "value": 0,
+                            "conversion": "int((pkt[30] << 8) | pkt[31])",
                             "unit": "mA"
                         },
                         {
                             "id": "edc_volt",
                             "name": "System voltage supply",
-                            "initial_pos": 64,
-                            "final_pos": 65,
+                            "initial_pos": 32,
+                            "final_pos": 33,
                             "value": 0,
-                            "conversion": "int((pkt[64] << 8) | pkt[65])",
+                            "conversion": "int((pkt[32] << 8) | pkt[33])",
                             "unit": "mV"
                         },
                         {
                             "id": "edc_temp",
                             "name": "EDC board temperature",
-                            "initial_pos": 66,
-                            "final_pos": 66,
+                            "initial_pos": 34,
+                            "final_pos": 34,
                             "value": 0,
-                            "conversion": "int(pkt[66])",
+                            "conversion": "int(pkt[34]) - 40",
                             "unit": "oC"
                         },
                         {
                             "id": "edc_rf_front_end_lo",
                             "name": "RF front end LO",
-                            "initial_pos": 67,
-                            "final_pos": 67,
+                            "initial_pos": 35,
+                            "final_pos": 35,
                             "value": 0,
-                            "conversion": "int(pkt[67])",
+                            "conversion": "int(pkt[35])",
                             "unit": ""
                         },
                         {
                             "id": "edc_rms_lvl",
                             "name": "RMS level at front-end output",
-                            "initial_pos": 68,
-                            "final_pos": 69,
+                            "initial_pos": 36,
+                            "final_pos": 37,
                             "value": 0,
-                            "conversion": "int((pkt[69] << 8) | pkt[69])",
+                            "conversion": "int((pkt[36] << 8) | pkt[37])",
                             "unit": ""
                         },
                         {
                             "id": "edc_gen_ptt_pkg",
                             "name": "Generated PTT packages since last initialization",
-                            "initial_pos": 70,
-                            "final_pos": 70,
+                            "initial_pos": 38,
+                            "final_pos": 41,
                             "value": 0,
-                            "conversion": "int(pkt[70])",
+                            "conversion": "int((pkt[38] << 24) | (pkt[39] << 16) | (pkt[40] << 8) | pkt[41])",
                             "unit": ""
                         },
                         {
                             "id": "edc_max",
-                            "name": "Max",
-                            "initial_pos": 71,
-                            "final_pos": 71,
+                            "name": "Maximum number of PTT channels",
+                            "initial_pos": 42,
+                            "final_pos": 42,
                             "value": 0,
-                            "conversion": "int(pkt[71])",
+                            "conversion": "int(pkt[42])",
                             "unit": ""
                         },
                         {
                             "id": "edc_mem_err_count",
                             "name": "Memory error count",
-                            "initial_pos": 72,
-                            "final_pos": 72,
+                            "initial_pos": 43,
+                            "final_pos": 43,
                             "value": 0,
-                            "conversion": "int(pkt[72])",
+                            "conversion": "int(pkt[43])",
                             "unit": ""
                         },
                         {
                             "id": "edc_cur_time",
                             "name": "Current time",
-                            "initial_pos": 73,
-                            "final_pos": 76,
+                            "initial_pos": 44,
+                            "final_pos": 47,
                             "value": 0,
-                            "conversion": "int((pkt[73] << 24) | (pkt[74] << 16) | (pkt[75] << 8) | pkt[76])",
+                            "conversion": "int((pkt[44] << 24) | (pkt[45] << 16) | (pkt[46] << 8) | pkt[47]) + 946684800",
                             "unit": "sec"
                         },
                         {
                             "id": "edc_num_avail_ptt_pkt",
                             "name": "Number of PTT packets available for reading",
-                            "initial_pos": 77,
-                            "final_pos": 77,
+                            "initial_pos": 48,
+                            "final_pos": 48,
                             "value": 0,
-                            "conversion": "int(pkt[77])",
+                            "conversion": "int(pkt[48])",
                             "unit": ""
                         },
                         {
                             "id": "edc_ptt_decoder_status",
                             "name": "PTT decoder task status",
-                            "initial_pos": 78,
-                            "final_pos": 78,
+                            "initial_pos": 49,
+                            "final_pos": 49,
                             "value": 0,
-                            "conversion": "int(pkt[78])",
+                            "conversion": "int(pkt[49])",
                             "unit": ""
                         },
                         {
                             "id": "edc_adc_sampler_state",
                             "name": "ADC sampler state",
-                            "initial_pos": 79,
-                            "final_pos": 79,
+                            "initial_pos": 50,
+                            "final_pos": 50,
                             "value": 0,
-                            "conversion": "int(pkt[79])",
+                            "conversion": "int(pkt[50])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "edc_pl_id",
+                            "name": "EDC payload ID",
+                            "initial_pos": 51,
+                            "final_pos": 51,
+                            "value": 0,
+                            "conversion": "int(pkt[51])",
                             "unit": ""
                         }
                     ]
@@ -1075,7 +1129,7 @@
                             "unit": ""
                         },
                         {
-                            "id": "tc_ts",
+                            "id": "tc_feed_ts",
                             "name": "Timestamp",
                             "initial_pos": 16,
                             "final_pos": 19,
