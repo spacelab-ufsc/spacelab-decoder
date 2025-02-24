@@ -23,6 +23,9 @@
 
 import json
 
+# Used inside `eval()` calls
+import numpy as np
+
 class Packet:
 
     def __init__(self, sat_config, pkt_raw):
