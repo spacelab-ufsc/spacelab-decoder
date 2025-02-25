@@ -700,44 +700,53 @@
                             "unit": "mAh"
                         },
                         {
-                            "id": "eps_bat_charge",
-                            "name": "Battery charge",
+                            "id": "eps_bat_mon_temp",
+                            "name": "Battery monitor IC temperature",
                             "initial_pos": 68,
                             "final_pos": 69,
                             "value": 0,
                             "conversion": "int((pkt[68] << 8) | pkt[69])",
-                            "unit": "mAh"
-                        },
-                        {
-                            "id": "eps_bat_mon_temp",
-                            "name": "Battery monitor IC temperature",
-                            "initial_pos": 70,
-                            "final_pos": 71,
-                            "value": 0,
-                            "conversion": "int((pkt[70] << 8) | pkt[71])",
                             "unit": "K"
                         },
                         {
                             "id": "eps_bat_heater_1_dc",
                             "name": "Battery heater 1 duty cycle",
-                            "initial_pos": 72,
-                            "final_pos": 72,
+                            "initial_pos": 70,
+                            "final_pos": 70,
                             "value": 0,
-                            "conversion": "int(pkt[72])",
+                            "conversion": "int(pkt[70])",
                             "unit": "%"
                         },
                         {
                             "id": "eps_bat_heater_2_dc",
                             "name": "Battery heater 2 duty cycle",
-                            "initial_pos": 73,
-                            "final_pos": 73,
+                            "initial_pos": 71,
+                            "final_pos": 71,
                             "value": 0,
-                            "conversion": "int(pkt[73])",
+                            "conversion": "int(pkt[71])",
                             "unit": "%"
                         },
                         {
                             "id": "obdh_op_main_edc",
                             "name": "Main EDC ID",
+                            "initial_pos": 72,
+                            "final_pos": 72,
+                            "value": 0,
+                            "conversion": "int(pkt[72])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_op_pl_main_state",
+                            "name": "Main payload state",
+                            "initial_pos": 73,
+                            "final_pos": 73,
+                            "value": 0,
+                            "conversion": "int(pkt[73])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_op_pl_sec_state",
+                            "name": "Secondary payload state",
                             "initial_pos": 74,
                             "final_pos": 74,
                             "value": 0,
@@ -745,94 +754,76 @@
                             "unit": ""
                         },
                         {
-                            "id": "obdh_op_pl_main_state",
-                            "name": "Main payload state",
+                            "id": "obdh_mem_data_log",
+                            "name": "Used Data Log flash pages",
                             "initial_pos": 75,
-                            "final_pos": 75,
+                            "final_pos": 78,
                             "value": 0,
-                            "conversion": "int(pkt[75])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "obdh_op_pl_sec_state",
-                            "name": "Secondary payload state",
-                            "initial_pos": 76,
-                            "final_pos": 76,
-                            "value": 0,
-                            "conversion": "int(pkt[76])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "obdh_mem_sec_obdh",
-                            "name": "Used OBDH Sector flash pages",
-                            "initial_pos": 77,
-                            "final_pos": 80,
-                            "value": 0,
-                            "conversion": "int((pkt[77] << 24) | (pkt[78] << 16) | (pkt[79] << 8) | pkt[80])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "obdh_mem_sec_eps",
-                            "name": "Used EPS Sector flash pages",
-                            "initial_pos": 81,
-                            "final_pos": 84,
-                            "value": 0,
-                            "conversion": "int((pkt[81] << 24) | (pkt[82] << 16) | (pkt[83] << 8) | pkt[84])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "obdh_mem_sec_ttc_0",
-                            "name": "Used TTC 0 Sector flash pages",
-                            "initial_pos": 85,
-                            "final_pos": 88,
-                            "value": 0,
-                            "conversion": "int((pkt[85] << 24) | (pkt[86] << 16) | (pkt[87] << 8) | pkt[88])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "obdh_mem_sec_ttc_1",
-                            "name": "Used TTC 1 Sector flash pages",
-                            "initial_pos": 89,
-                            "final_pos": 92,
-                            "value": 0,
-                            "conversion": "int((pkt[89] << 24) | (pkt[90] << 16) | (pkt[91] << 8) | pkt[92])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "obdh_mem_sec_ant",
-                            "name": "Used Antenna Sector flash pages",
-                            "initial_pos": 93,
-                            "final_pos": 96,
-                            "value": 0,
-                            "conversion": "int((pkt[93] << 24) | (pkt[94] << 16) | (pkt[95] << 8) | pkt[96])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "obdh_mem_sec_edc",
-                            "name": "Used EDC Sector flash pages",
-                            "initial_pos": 97,
-                            "final_pos": 100,
-                            "value": 0,
-                            "conversion": "int((pkt[97] << 24) | (pkt[98] << 16) | (pkt[99] << 8) | pkt[100])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "obdh_mem_sec_plx",
-                            "name": "Used Payload-X Sector flash pages",
-                            "initial_pos": 101,
-                            "final_pos": 104,
-                            "value": 0,
-                            "conversion": "int((pkt[101] << 24) | (pkt[102] << 16) | (pkt[103] << 8) | pkt[104])",
+                            "conversion": "int((pkt[75] << 24) | (pkt[76] << 16) | (pkt[77] << 8) | pkt[78])",
                             "unit": ""
                         },
                         {
                             "id": "obdh_mem_sec_sbcd",
                             "name": "Used SBCD Sector flash pages",
-                            "initial_pos": 105,
-                            "final_pos": 108,
+                            "initial_pos": 79,
+                            "final_pos": 82,
                             "value": 0,
-                            "conversion": "int((pkt[105] << 24) | (pkt[106] << 16) | (pkt[107] << 8) | pkt[108])",
+                            "conversion": "int((pkt[79] << 24) | (pkt[80] << 16) | (pkt[81] << 8) | pkt[80])",
                             "unit": ""
+                        },
+                        {
+                            "id": "obdh_sensor_read_ts",
+                            "name": "Sensor reading timestamp",
+                            "initial_pos": 83,
+                            "final_pos": 86,
+                            "value": 0,
+                            "conversion": "int((pkt[83] << 24) | (pkt[84] << 16) | (pkt[85] << 8) | pkt[86])",
+                            "unit": "sec"
+                        },
+                        {
+                            "id": "obdh_pos_ts",
+                            "name": "Position timestamp",
+                            "initial_pos": 87,
+                            "final_pos": 90,
+                            "value": 0,
+                            "conversion": "int((pkt[87] << 24) | (pkt[88] << 16) | (pkt[89] << 8) | pkt[90])",
+                            "unit": "sec"
+                        },
+                        {
+                            "id": "obdh_pos_lat",
+                            "name": "Latitude",
+                            "initial_pos": 91,
+                            "final_pos": 92,
+                            "value": 0,
+                            "conversion": "np.int16(np.uint16((pkt[91] << 8) | pkt[92]))",
+                            "unit": "deg"
+                        },
+                        {
+                            "id": "obdh_pos_lon",
+                            "name": "Longitude",
+                            "initial_pos": 93,
+                            "final_pos": 94,
+                            "value": 0,
+                            "conversion": "np.int16(np.uint16((pkt[93] << 8) | pkt[94]))",
+                            "unit": "deg"
+                        },
+                        {
+                            "id": "obdh_pos_alt",
+                            "name": "Altitude",
+                            "initial_pos": 95,
+                            "final_pos": 96,
+                            "value": 0,
+                            "conversion": "np.int16(np.uint16((pkt[95] << 8) | pkt[96]))",
+                            "unit": "km"
+                        },
+                        {
+                            "id": "obdh_last_tle_update_ts",
+                            "name": "Last TLE update",
+                            "initial_pos": 97,
+                            "final_pos": 100,
+                            "value": 0,
+                            "conversion": "int((pkt[97] << 24) | (pkt[98] << 16) | (pkt[99] << 8) | pkt[100])",
+                            "unit": "sec"
                         }
                     ]
                 },
@@ -945,7 +936,7 @@
                         },
                         {
                             "id": "edc_cur_tm",
-                            "name": "Current time (J2000 epoch)",
+                            "name": "Current time",
                             "initial_pos": 20,
                             "final_pos": 23,
                             "value": 0,
