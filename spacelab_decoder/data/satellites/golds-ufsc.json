@@ -56,7 +56,7 @@
                             "unit": "mA"
                         },
                         {
-                            "id": "eps_mcu_rst_counter",
+                            "id": "eps_mcu_rst_count",
                             "name": "Reset counter",
                             "initial_pos": 16,
                             "final_pos": 17,
@@ -448,7 +448,7 @@
                             "unit": "mV"
                         },
                         {
-                            "id": "obdh_mcu_last_reset_cause",
+                            "id": "obdh_mcu_last_rst_cause",
                             "name": "OBDH last reset cause",
                             "initial_pos": 18,
                             "final_pos": 18,
@@ -466,7 +466,7 @@
                             "unit": ""
                         },
                         {
-                            "id": "obdh_last_valid_tc",
+                            "id": "obdh_op_last_val_tc",
                             "name": "Last valid telecommand",
                             "initial_pos": 21,
                             "final_pos": 21,
@@ -736,7 +736,7 @@
                             "unit": "%"
                         },
                         {
-                            "id": "edc_main_id",
+                            "id": "obdh_op_main_edc",
                             "name": "Main EDC ID",
                             "initial_pos": 74,
                             "final_pos": 74,
@@ -745,7 +745,7 @@
                             "unit": ""
                         },
                         {
-                            "id": "main_pl_state",
+                            "id": "obdh_op_pl_main_state",
                             "name": "Main payload state",
                             "initial_pos": 75,
                             "final_pos": 75,
@@ -754,7 +754,7 @@
                             "unit": ""
                         },
                         {
-                            "id": "sec_pl_state",
+                            "id": "obdh_op_pl_sec_state",
                             "name": "Secondary payload state",
                             "initial_pos": 76,
                             "final_pos": 76,
@@ -763,7 +763,7 @@
                             "unit": ""
                         },
                         {
-                            "id": "flash_page_n_obdh",
+                            "id": "obdh_mem_sec_obdh",
                             "name": "Used OBDH Sector flash pages",
                             "initial_pos": 77,
                             "final_pos": 80,
@@ -772,7 +772,7 @@
                             "unit": ""
                         },
                         {
-                            "id": "flash_page_n_eps",
+                            "id": "obdh_mem_sec_eps",
                             "name": "Used EPS Sector flash pages",
                             "initial_pos": 81,
                             "final_pos": 84,
@@ -781,7 +781,7 @@
                             "unit": ""
                         },
                         {
-                            "id": "flash_page_n_ttc0",
+                            "id": "obdh_mem_sec_ttc_0",
                             "name": "Used TTC 0 Sector flash pages",
                             "initial_pos": 85,
                             "final_pos": 88,
@@ -790,7 +790,7 @@
                             "unit": ""
                         },
                         {
-                            "id": "flash_page_n_ttc1",
+                            "id": "obdh_mem_sec_ttc_1",
                             "name": "Used TTC 1 Sector flash pages",
                             "initial_pos": 89,
                             "final_pos": 92,
@@ -799,7 +799,7 @@
                             "unit": ""
                         },
                         {
-                            "id": "flash_page_n_ant",
+                            "id": "obdh_mem_sec_ant",
                             "name": "Used Antenna Sector flash pages",
                             "initial_pos": 93,
                             "final_pos": 96,
@@ -808,7 +808,7 @@
                             "unit": ""
                         },
                         {
-                            "id": "flash_page_n_edc",
+                            "id": "obdh_mem_sec_edc",
                             "name": "Used EDC Sector flash pages",
                             "initial_pos": 97,
                             "final_pos": 100,
@@ -817,7 +817,7 @@
                             "unit": ""
                         },
                         {
-                            "id": "flash_page_n_px",
+                            "id": "obdh_mem_sec_plx",
                             "name": "Used Payload-X Sector flash pages",
                             "initial_pos": 101,
                             "final_pos": 104,
@@ -826,7 +826,7 @@
                             "unit": ""
                         },
                         {
-                            "id": "flash_page_n_sbcd",
+                            "id": "obdh_mem_sec_sbcd",
                             "name": "Used SBCD Sector flash pages",
                             "initial_pos": 105,
                             "final_pos": 108,
