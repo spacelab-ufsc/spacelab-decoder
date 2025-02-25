@@ -861,7 +861,7 @@
                             "initial_pos": 4,
                             "final_pos": 103,
                             "value": 0,
-                            "conversion": "pkt[4:104]",
+                            "conversion": "pkt[4:9]",
                             "unit": ""
                         }
                     ]
@@ -1279,6 +1279,14 @@
                             "final_pos": 3,
                             "value": 0,
                             "conversion": "bool(pkt[3] & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "name": "Payload",
+                            "initial_pos": 4,
+                            "final_pos": 50,
+                            "value": 0,
+                            "conversion": "pkt[4:51]",
                             "unit": ""
                         }
                     ]
