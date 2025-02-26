@@ -475,7 +475,7 @@
                             "unit": ""
                         },
                         {
-                            "id": "ttc_radio_temp",
+                            "id": "ttc_radio1_temp",
                             "name": "Radio temperature",
                             "initial_pos": 22,
                             "final_pos": 23,
@@ -736,7 +736,7 @@
                             "unit": ""
                         },
                         {
-                            "id": "obdh_op_pl_main_state",
+                            "id": "obdh_op_main_pl_state",
                             "name": "Main payload state",
                             "initial_pos": 73,
                             "final_pos": 73,
@@ -745,7 +745,7 @@
                             "unit": ""
                         },
                         {
-                            "id": "obdh_op_pl_sec_state",
+                            "id": "obdh_op_sec_pl_state",
                             "name": "Secondary payload state",
                             "initial_pos": 74,
                             "final_pos": 74,
@@ -768,7 +768,7 @@
                             "initial_pos": 79,
                             "final_pos": 82,
                             "value": 0,
-                            "conversion": "int((pkt[79] << 24) | (pkt[80] << 16) | (pkt[81] << 8) | pkt[80])",
+                            "conversion": "int((pkt[79] << 24) | (pkt[80] << 16) | (pkt[81] << 8) | pkt[82])",
                             "unit": ""
                         },
                         {
@@ -817,7 +817,7 @@
                             "unit": "km"
                         },
                         {
-                            "id": "obdh_last_tle_update_ts",
+                            "id": "obdh_last_tle_upd_ts",
                             "name": "Last TLE update",
                             "initial_pos": 97,
                             "final_pos": 100,
