@@ -11,6 +11,7 @@
                     "name": "Ping request",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -19,6 +20,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_src_adr",
                             "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
@@ -32,6 +34,7 @@
                     "name": "Data request",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -40,6 +43,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_src_adr",
                             "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
@@ -48,6 +52,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "data_type_id",
                             "name": "Data type ID",
                             "initial_pos": 8,
                             "final_pos": 8,
@@ -56,6 +61,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "start_ts",
                             "name": "Start Timestamp",
                             "initial_pos": 9,
                             "final_pos": 12,
@@ -64,6 +70,7 @@
                             "unit": "sec"
                         },
                         {
+                            "id": "end_ts",
                             "name": "End Timestamp",
                             "initial_pos": 13,
                             "final_pos": 16,
@@ -72,6 +79,7 @@
                             "unit": "sec"
                         },
                         {
+                            "id": "hmac_hash",
                             "name": "HMAC Hash",
                             "initial_pos": 17,
                             "final_pos": 36,
@@ -85,6 +93,7 @@
                     "name": "Broadcast message",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -93,7 +102,8 @@
                             "unit": ""
                         },
                         {
-                            "name": "Ground station callsign",
+                            "id": "pkt_src_adr",
+                            "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
@@ -101,6 +111,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_dst_adr",
                             "name": "Destination callsign",
                             "initial_pos": 8,
                             "final_pos": 14,
@@ -109,6 +120,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "txt_msg",
                             "name": "Message",
                             "initial_pos": 15,
                             "final_pos": 52,
@@ -122,6 +134,7 @@
                     "name": "Enter hibernation",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -130,7 +143,8 @@
                             "unit": ""
                         },
                         {
-                            "name": "Ground station callsign",
+                            "id": "pkt_src_adr",
+                            "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
@@ -138,6 +152,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "hib_dur",
                             "name": "Hibernation duration",
                             "initial_pos": 8,
                             "final_pos": 9,
@@ -146,6 +161,7 @@
                             "unit": "h"
                         },
                         {
+                            "id": "hmac_hash",
                             "name": "HMAC Hash",
                             "initial_pos": 10,
                             "final_pos": 29,
@@ -159,6 +175,7 @@
                     "name": "Leave hibernation",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -167,6 +184,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_src_adr",
                             "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
@@ -175,6 +193,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "hmac_hash",
                             "name": "HMAC Hash",
                             "initial_pos": 8,
                             "final_pos": 27,
@@ -188,6 +207,7 @@
                     "name": "Activate module",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -196,6 +216,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_src_adr",
                             "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
@@ -204,6 +225,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "mod_id",
                             "name": "Module ID",
                             "initial_pos": 8,
                             "final_pos": 8,
@@ -212,6 +234,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "hmac_hash",
                             "name": "HMAC Hash",
                             "initial_pos": 9,
                             "final_pos": 28,
@@ -225,6 +248,7 @@
                     "name": "Deactivate module",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -233,6 +257,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_src_adr",
                             "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
@@ -241,6 +266,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "mod_id",
                             "name": "Module ID",
                             "initial_pos": 8,
                             "final_pos": 8,
@@ -249,6 +275,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "hmac_hash",
                             "name": "HMAC Hash",
                             "initial_pos": 9,
                             "final_pos": 28,
@@ -262,6 +289,7 @@
                     "name": "Activate payload",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -270,6 +298,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_src_adr",
                             "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
@@ -278,6 +307,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pl_id",
                             "name": "Payload ID",
                             "initial_pos": 8,
                             "final_pos": 8,
@@ -286,6 +316,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "hmac_hash",
                             "name": "HMAC Hash",
                             "initial_pos": 9,
                             "final_pos": 28,
@@ -299,6 +330,7 @@
                     "name": "Deactivate payload",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -307,6 +339,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_src_adr",
                             "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
@@ -315,6 +348,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pl_id",
                             "name": "Payload ID",
                             "initial_pos": 8,
                             "final_pos": 8,
@@ -323,6 +357,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "hmac_hash",
                             "name": "HMAC Hash",
                             "initial_pos": 9,
                             "final_pos": 28,
@@ -336,6 +371,7 @@
                     "name": "Erase memory",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -344,6 +380,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_src_adr",
                             "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
@@ -352,11 +389,21 @@
                             "unit": ""
                         },
                         {
-                            "name": "HMAC Hash",
+                            "id": "mem_id",
+                            "name": "Memory ID",
                             "initial_pos": 8,
-                            "final_pos": 27,
+                            "final_pos": 8,
                             "value": 0,
-                            "conversion": "str(pkt[8:28])",
+                            "conversion": "pkt[8]",
+                            "unit": ""
+                        },
+                        {
+                            "id": "hmac_hash",
+                            "name": "HMAC Hash",
+                            "initial_pos": 9,
+                            "final_pos": 28,
+                            "value": 0,
+                            "conversion": "str(pkt[9:29])",
                             "unit": ""
                         }
                     ]
@@ -365,6 +412,7 @@
                     "name": "Force reset",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -373,6 +421,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_src_adr",
                             "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
@@ -381,6 +430,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "hmac_hash",
                             "name": "HMAC Hash",
                             "initial_pos": 8,
                             "final_pos": 27,
@@ -394,6 +444,7 @@
                     "name": "Get payload data",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -402,6 +453,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_src_adr",
                             "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
@@ -410,6 +462,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pl_id",
                             "name": "Payload ID",
                             "initial_pos": 8,
                             "final_pos": 8,
@@ -418,6 +471,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pl_arg",
                             "name": "Payload arguments",
                             "initial_pos": 9,
                             "final_pos": 20,
@@ -426,6 +480,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "hmac_hash",
                             "name": "HMAC Hash",
                             "initial_pos": 21,
                             "final_pos": 40,
@@ -439,6 +494,7 @@
                     "name": "Set parameter",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -447,6 +503,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_src_adr",
                             "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
@@ -455,6 +512,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "subsys_id",
                             "name": "Subsystem ID",
                             "initial_pos": 8,
                             "final_pos": 8,
@@ -463,6 +521,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "par_id",
                             "name": "Parameter ID",
                             "initial_pos": 9,
                             "final_pos": 9,
@@ -471,6 +530,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "par_val",
                             "name": "Parameter Value",
                             "initial_pos": 10,
                             "final_pos": 13,
@@ -479,6 +539,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "hmac_hash",
                             "name": "HMAC Hash",
                             "initial_pos": 14,
                             "final_pos": 33,
@@ -492,6 +553,7 @@
                     "name": "Get parameter",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -500,6 +562,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_src_adr",
                             "name": "Source callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
@@ -508,6 +571,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "subsys_id",
                             "name": "Subsystem ID",
                             "initial_pos": 8,
                             "final_pos": 8,
@@ -516,6 +580,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "par_id",
                             "name": "Parameter ID",
                             "initial_pos": 9,
                             "final_pos": 9,
@@ -524,6 +589,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "hmac_hash",
                             "name": "HMAC Hash",
                             "initial_pos": 10,
                             "final_pos": 19,
