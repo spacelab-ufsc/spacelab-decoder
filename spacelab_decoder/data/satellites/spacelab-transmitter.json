@@ -598,6 +598,56 @@
                             "unit": ""
                         }
                     ]
+                },
+                {
+                    "name": "Update TLE",
+                    "fields": [
+                        {
+                            "id": "pkt_id",
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 79,
+                            "conversion": "None",
+                            "unit": ""
+                        },
+                        {
+                            "id": "pkt_src_adr",
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "tle_line_num",
+                            "name": "TLE Line Number",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "int(pkt[8])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "tle_line",
+                            "name": "TLE Line",
+                            "initial_pos": 9,
+                            "final_pos": 77,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[9:78]])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "hmac_hash",
+                            "name": "HMAC Hash",
+                            "initial_pos": 78,
+                            "final_pos": 97,
+                            "value": 0,
+                            "conversion": "str(pkt[78:98])",
+                            "unit": ""
+                        }
+                    ]
                 }
             ]
         }
