@@ -1,5 +1,5 @@
 <h1 align="center">
-    SPACELAB PACKET DECODER
+    SPACELAB-DECODER
     <br>
 </h1>
 
@@ -19,8 +19,9 @@
 
 <p align="center">
     <a href="#overview">Overview</a> •
-    <a href="#satellites">Satellites</a> •
     <a href="#dependencies">Dependencies</a> •
+    <a href="#installing">Installing</a> •
+    <a href="#documentation">Documentation</a> •
     <a href="#license">License</a>
 </p>
 
@@ -30,14 +31,15 @@ SpaceLab Packet Decoder is a software to decode audio records from the satellite
 
 <img src="docs/img/main-window.png" width=""/>
 
-## Satellites
+### Satellites
 
 Until now, this program supports the satellites below:
 
 * FloripaSat-1 (launched in December 2019)
 * GOLDS-UFSC (to be launched on 2025)
-* Aldebaran-1 (to be launched on TBC)
-* Catarina-A1 (to be launched on 2025)
+* Aldebaran-1
+* Catarina-A1
+* Catarina-A2
 
 ## Dependencies
 
@@ -51,11 +53,15 @@ Until now, this program supports the satellites below:
 
 ```sudo apt install python3 python3-gi python3-scipy python3-matplotlib```
 
+```pip install pyngham```
+
 ### Installation on Fedora
 
 ```sudo dnf install python3 python3-gobject python3-scipy python3-matplotlib```
 
-## Building and Installing
+```pip install pyngham```
+
+## Installing
 
 * ```python setup.py install```
 
