@@ -113,7 +113,6 @@ class PacketCSP(Packet):
         type_idx = int()
         pkt_type_found = False
         dst_port = int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))
-        print(dst_port)
         for i in range(len(self.sat_packet['links'])):
             for j in range(len(self.sat_packet['links'][i]['types'])):
                 if dst_port == self.sat_packet['links'][i]['types'][j]['fields'][3]['value']: # Search for the destination port
@@ -135,6 +134,32 @@ class PacketCSP(Packet):
             for i in range(len(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'])):
                 buf = buf + "\t\t" + self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['name'] + ": " + str(eval(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['conversion'])) + " " + self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['unit'] + "\n"
         else:
-            raise RuntimeError("Unknown packet ID!")
+            raise RuntimeError("Unknown destination port!")
 
         return buf
+
+    def get_data(self):
+        pkt = self.packet
+
+        link_idx = int()
+        type_idx = int()
+        pkt_type_found = False
+        dst_port = int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))
+        for i in range(len(self.sat_packet['links'])):
+            for j in range(len(self.sat_packet['links'][i]['types'])):
+                if dst_port == self.sat_packet['links'][i]['types'][j]['fields'][3]['value']:   # Search for the destination port
+                    if dst_port == 0:   # CSP CMP packets
+                        if pkt[5] != self.sat_packet['links'][i]['types'][j]['fields'][11]['value']:
+                            continue
+                    link_idx = i
+                    type_idx = j
+                    pkt_type_found = True
+                    break
+
+        data = dict()
+
+        if pkt_type_found:
+            for i in range(len(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'])):
+                data[self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['id']] = str(eval(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['conversion']))
+        else:
+            raise RuntimeError("Unknown destination port!")
