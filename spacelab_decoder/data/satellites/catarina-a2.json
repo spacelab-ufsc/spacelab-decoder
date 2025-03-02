@@ -11,6 +11,7 @@
                     "name": "CMP ident answer",
                     "fields": [
                         {
+                            "id": "csp_prio",
                             "name": "Priority",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -19,6 +20,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_src_adr",
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -27,6 +29,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_dst_adr",
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
@@ -35,6 +38,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_dst_port",
                             "name": "Destination Port",
                             "initial_pos": 1,
                             "final_pos": 2,
@@ -43,6 +47,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_src_port",
                             "name": "Source Port",
                             "initial_pos": 2,
                             "final_pos": 2,
@@ -51,6 +56,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -59,6 +65,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_xtea",
                             "name": "XTEA Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -67,6 +74,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_rdp",
                             "name": "RDP Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -75,6 +83,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_crc",
                             "name": "CRC Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -83,6 +92,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_type",
                             "name": "CMP Type",
                             "initial_pos": 4,
                             "final_pos": 4,
@@ -91,6 +101,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_code",
                             "name": "CMP Code",
                             "initial_pos": 5,
                             "final_pos": 5,
@@ -99,6 +110,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_hostname",
                             "name": "Hostname",
                             "initial_pos": 6,
                             "final_pos": 25,
@@ -107,6 +119,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_model",
                             "name": "Model",
                             "initial_pos": 26,
                             "final_pos": 55,
@@ -115,6 +128,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_rev",
                             "name": "Revision",
                             "initial_pos": 56,
                             "final_pos": 75,
@@ -123,6 +137,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_date",
                             "name": "Date",
                             "initial_pos": 76,
                             "final_pos": 87,
@@ -131,6 +146,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_time",
                             "name": "Time",
                             "initial_pos": 88,
                             "final_pos": 96,
@@ -144,6 +160,7 @@
                     "name": "CMP route set answer",
                     "fields": [
                         {
+                            "id": "csp_prio",
                             "name": "Priority",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -152,6 +169,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_src_adr",
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -160,6 +178,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_dst_adr",
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
@@ -168,6 +187,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_dst_port",
                             "name": "Destination Port",
                             "initial_pos": 1,
                             "final_pos": 2,
@@ -176,6 +196,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_src_port",
                             "name": "Source Port",
                             "initial_pos": 2,
                             "final_pos": 2,
@@ -184,6 +205,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -192,6 +214,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_xtea",
                             "name": "XTEA Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -200,6 +223,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_rdp",
                             "name": "RDP Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -208,6 +232,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_crc",
                             "name": "CRC Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -216,6 +241,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_type",
                             "name": "CMP Type",
                             "initial_pos": 4,
                             "final_pos": 4,
@@ -224,6 +250,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_code",
                             "name": "CMP Code",
                             "initial_pos": 5,
                             "final_pos": 5,
@@ -232,6 +259,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_route_dst_node",
                             "name": "Route Destination Node",
                             "initial_pos": 6,
                             "final_pos": 6,
@@ -240,6 +268,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_route_next_hop_mac",
                             "name": "Route Next Hop MAC",
                             "initial_pos": 7,
                             "final_pos": 7,
@@ -248,6 +277,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_route_if",
                             "name": "Route Interface",
                             "initial_pos": 8,
                             "final_pos": 18,
@@ -261,6 +291,7 @@
                     "name": "CMP IF stats answer",
                     "fields": [
                         {
+                            "id": "csp_prio",
                             "name": "Priority",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -269,6 +300,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_src_adr",
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -277,6 +309,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_dst_adr",
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
@@ -285,6 +318,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_dst_port",
                             "name": "Destination Port",
                             "initial_pos": 1,
                             "final_pos": 2,
@@ -293,6 +327,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_src_port",
                             "name": "Source Port",
                             "initial_pos": 2,
                             "final_pos": 2,
@@ -301,6 +336,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -309,6 +345,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_xtea",
                             "name": "XTEA Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -317,6 +354,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_rdp",
                             "name": "RDP Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -325,6 +363,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_crc",
                             "name": "CRC Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -333,6 +372,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_type",
                             "name": "CMP Type",
                             "initial_pos": 4,
                             "final_pos": 4,
@@ -341,6 +381,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_code",
                             "name": "CMP Code",
                             "initial_pos": 5,
                             "final_pos": 5,
@@ -349,6 +390,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_if_stat_if",
                             "name": "IF Stat Interface",
                             "initial_pos": 6,
                             "final_pos": 16,
@@ -357,6 +399,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_if_stat_tx",
                             "name": "IF Stat TX",
                             "initial_pos": 17,
                             "final_pos": 20,
@@ -365,6 +408,7 @@
                             "unit": "packet(s)"
                         },
                         {
+                            "id": "csp_cmp_if_stat_rx",
                             "name": "IF Stat RX",
                             "initial_pos": 21,
                             "final_pos": 24,
@@ -373,6 +417,7 @@
                             "unit": "packet(s)"
                         },
                         {
+                            "id": "csp_cmp_if_stat_tx_err",
                             "name": "IF Stat TX Error",
                             "initial_pos": 22,
                             "final_pos": 25,
@@ -381,6 +426,7 @@
                             "unit": "error(s)"
                         },
                         {
+                            "id": "csp_cmp_if_stat_rx_err",
                             "name": "IF Stat RX Error",
                             "initial_pos": 26,
                             "final_pos": 29,
@@ -389,6 +435,7 @@
                             "unit": "error(s)"
                         },
                         {
+                            "id": "csp_cmp_if_stat_drop",
                             "name": "IF Stat Drop",
                             "initial_pos": 30,
                             "final_pos": 33,
@@ -397,6 +444,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_if_stat_auther",
                             "name": "IF Stat Auther",
                             "initial_pos": 34,
                             "final_pos": 37,
@@ -405,6 +453,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_if_stat_frame",
                             "name": "IF Stat Frame",
                             "initial_pos": 38,
                             "final_pos": 41,
@@ -413,6 +462,7 @@
                             "unit": "frame(s)"
                         },
                         {
+                            "id": "csp_cmp_if_stat_tx_bytes",
                             "name": "IF Stat TX Bytes",
                             "initial_pos": 42,
                             "final_pos": 45,
@@ -421,6 +471,7 @@
                             "unit": "byte(s)"
                         },
                         {
+                            "id": "csp_cmp_if_stat_rx_bytes",
                             "name": "IF Stat RX Bytes",
                             "initial_pos": 46,
                             "final_pos": 49,
@@ -429,6 +480,7 @@
                             "unit": "byte(s)"
                         },
                         {
+                            "id": "csp_cmp_if_stat_irq",
                             "name": "IF Stat IRQ",
                             "initial_pos": 50,
                             "final_pos": 53,
@@ -442,6 +494,7 @@
                     "name": "CMP peek answer",
                     "fields": [
                         {
+                            "id": "csp_prio",
                             "name": "Priority",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -450,6 +503,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_src_adr",
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -458,6 +512,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_dst_adr",
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
@@ -466,6 +521,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_dst_port",
                             "name": "Destination Port",
                             "initial_pos": 1,
                             "final_pos": 2,
@@ -474,6 +530,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_src_port",
                             "name": "Source Port",
                             "initial_pos": 2,
                             "final_pos": 2,
@@ -482,6 +539,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -490,6 +548,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_xtea",
                             "name": "XTEA Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -498,6 +557,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_rdp",
                             "name": "RDP Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -506,6 +566,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_crc",
                             "name": "CRC Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -514,6 +575,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_type",
                             "name": "CMP Type",
                             "initial_pos": 4,
                             "final_pos": 4,
@@ -522,6 +584,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_code",
                             "name": "CMP Code",
                             "initial_pos": 5,
                             "final_pos": 5,
@@ -530,6 +593,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_peek_adr",
                             "name": "Peek Address",
                             "initial_pos": 6,
                             "final_pos": 9,
@@ -538,6 +602,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_peek_len",
                             "name": "Peek Length",
                             "initial_pos": 10,
                             "final_pos": 10,
@@ -546,6 +611,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_peek_data",
                             "name": "Peek Data",
                             "initial_pos": 11,
                             "final_pos": 210,
@@ -559,6 +625,7 @@
                     "name": "CMP poke answer",
                     "fields": [
                         {
+                            "id": "csp_prio",
                             "name": "Priority",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -567,6 +634,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_src_adr",
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -575,6 +643,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_dst_adr",
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
@@ -583,6 +652,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_dst_port",
                             "name": "Destination Port",
                             "initial_pos": 1,
                             "final_pos": 2,
@@ -591,6 +661,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_src_port",
                             "name": "Source Port",
                             "initial_pos": 2,
                             "final_pos": 2,
@@ -599,6 +670,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -607,6 +679,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_xtea",
                             "name": "XTEA Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -615,6 +688,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_rdp",
                             "name": "RDP Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -623,6 +697,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_crc",
                             "name": "CRC Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -631,6 +706,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_type",
                             "name": "CMP Type",
                             "initial_pos": 4,
                             "final_pos": 4,
@@ -639,6 +715,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_code",
                             "name": "CMP Code",
                             "initial_pos": 5,
                             "final_pos": 5,
@@ -647,6 +724,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_poke_adr",
                             "name": "Poke Address",
                             "initial_pos": 6,
                             "final_pos": 9,
@@ -655,6 +733,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_poke_len",
                             "name": "Poke Length",
                             "initial_pos": 10,
                             "final_pos": 10,
@@ -663,6 +742,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_poke_data",
                             "name": "Poke Data",
                             "initial_pos": 11,
                             "final_pos": 210,
@@ -676,6 +756,7 @@
                     "name": "CMP clock answer",
                     "fields": [
                         {
+                            "id": "csp_prio",
                             "name": "Priority",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -684,6 +765,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_src_adr",
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -692,6 +774,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_dst_adr",
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
@@ -700,6 +783,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_dst_port",
                             "name": "Destination Port",
                             "initial_pos": 1,
                             "final_pos": 2,
@@ -708,6 +792,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_src_port",
                             "name": "Source Port",
                             "initial_pos": 2,
                             "final_pos": 2,
@@ -716,6 +801,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -724,6 +810,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_xtea",
                             "name": "XTEA Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -732,6 +819,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_rdp",
                             "name": "RDP Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -740,6 +828,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_crc",
                             "name": "CRC Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -748,6 +837,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_type",
                             "name": "CMP Type",
                             "initial_pos": 4,
                             "final_pos": 4,
@@ -756,6 +846,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_code",
                             "name": "CMP Code",
                             "initial_pos": 5,
                             "final_pos": 5,
@@ -764,6 +855,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_clk_sec",
                             "name": "Clock Seconds",
                             "initial_pos": 6,
                             "final_pos": 9,
@@ -772,6 +864,7 @@
                             "unit": "sec"
                         },
                         {
+                            "id": "csp_cmp_clk_ns",
                             "name": "Clock Nanoseconds",
                             "initial_pos": 10,
                             "final_pos": 13,
@@ -785,6 +878,7 @@
                     "name": "Ping answer",
                     "fields": [
                         {
+                            "id": "csp_prio",
                             "name": "Priority",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -793,6 +887,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_src_adr",
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -801,6 +896,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_dst_adr",
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
@@ -809,6 +905,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_dst_port",
                             "name": "Destination Port",
                             "initial_pos": 1,
                             "final_pos": 2,
@@ -817,6 +914,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_src_port",
                             "name": "Source Port",
                             "initial_pos": 2,
                             "final_pos": 2,
@@ -825,6 +923,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -833,6 +932,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_xtea",
                             "name": "XTEA Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -841,6 +941,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_rdp",
                             "name": "RDP Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -849,6 +950,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_crc",
                             "name": "CRC Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -857,6 +959,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_ping_pl",
                             "name": "Payload",
                             "initial_pos": 4,
                             "final_pos": 103,
@@ -870,6 +973,7 @@
                     "name": "PS answer",
                     "fields": [
                         {
+                            "id": "csp_prio",
                             "name": "Priority",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -878,6 +982,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_src_adr",
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -886,6 +991,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_dst_adr",
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
@@ -894,6 +1000,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_dst_port",
                             "name": "Destination Port",
                             "initial_pos": 1,
                             "final_pos": 2,
@@ -902,6 +1009,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_src_port",
                             "name": "Source Port",
                             "initial_pos": 2,
                             "final_pos": 2,
@@ -910,6 +1018,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -918,6 +1027,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_xtea",
                             "name": "XTEA Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -926,6 +1036,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_rdp",
                             "name": "RDP Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -934,6 +1045,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_crc",
                             "name": "CRC Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -942,6 +1054,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_ps_data",
                             "name": "Data",
                             "initial_pos": 4,
                             "final_pos": 103,
@@ -955,6 +1068,7 @@
                     "name": "Memfree answer",
                     "fields": [
                         {
+                            "id": "csp_prio",
                             "name": "Priority",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -963,6 +1077,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_src_adr",
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -971,6 +1086,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_dst_adr",
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
@@ -979,6 +1095,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_dst_port",
                             "name": "Destination Port",
                             "initial_pos": 1,
                             "final_pos": 2,
@@ -987,6 +1104,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_src_port",
                             "name": "Source Port",
                             "initial_pos": 2,
                             "final_pos": 2,
@@ -995,6 +1113,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -1003,6 +1122,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_xtea",
                             "name": "XTEA Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -1011,6 +1131,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_rdp",
                             "name": "RDP Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -1019,6 +1140,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_crc",
                             "name": "CRC Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -1027,6 +1149,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_memfree",
                             "name": "Free Memory",
                             "initial_pos": 4,
                             "final_pos": 7,
@@ -1040,6 +1163,7 @@
                     "name": "Buffer free answer",
                     "fields": [
                         {
+                            "id": "csp_prio",
                             "name": "Priority",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -1048,6 +1172,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_src_adr",
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -1056,6 +1181,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_dst_adr",
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
@@ -1064,6 +1190,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_dst_port",
                             "name": "Destination Port",
                             "initial_pos": 1,
                             "final_pos": 2,
@@ -1072,6 +1199,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_src_port",
                             "name": "Source Port",
                             "initial_pos": 2,
                             "final_pos": 2,
@@ -1080,6 +1208,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -1088,6 +1217,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_xtea",
                             "name": "XTEA Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -1096,6 +1226,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_rdp",
                             "name": "RDP Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -1104,6 +1235,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_crc",
                             "name": "CRC Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -1112,6 +1244,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_free_buf",
                             "name": "Free Buffers",
                             "initial_pos": 4,
                             "final_pos": 7,
@@ -1125,6 +1258,7 @@
                     "name": "Uptime answer",
                     "fields": [
                         {
+                            "id": "csp_prio",
                             "name": "Priority",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -1133,6 +1267,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_src_adr",
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -1141,6 +1276,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_dst_adr",
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
@@ -1149,6 +1285,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_dst_port",
                             "name": "Destination Port",
                             "initial_pos": 1,
                             "final_pos": 2,
@@ -1157,6 +1294,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_src_port",
                             "name": "Source Port",
                             "initial_pos": 2,
                             "final_pos": 2,
@@ -1165,6 +1303,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -1173,6 +1312,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_xtea",
                             "name": "XTEA Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -1181,6 +1321,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_rdp",
                             "name": "RDP Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -1189,6 +1330,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_crc",
                             "name": "CRC Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -1197,6 +1339,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_uptime",
                             "name": "Uptime",
                             "initial_pos": 4,
                             "final_pos": 7,
@@ -1210,6 +1353,7 @@
                     "name": "Beacon",
                     "fields": [
                         {
+                            "id": "csp_prio",
                             "name": "Priority",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -1218,6 +1362,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_src_adr",
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -1226,6 +1371,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_dst_adr",
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
@@ -1234,6 +1380,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_dst_port",
                             "name": "Destination Port",
                             "initial_pos": 1,
                             "final_pos": 2,
@@ -1242,6 +1389,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_src_port",
                             "name": "Source Port",
                             "initial_pos": 2,
                             "final_pos": 2,
@@ -1250,6 +1398,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -1258,6 +1407,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_xtea",
                             "name": "XTEA Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -1266,6 +1416,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_rdp",
                             "name": "RDP Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -1274,6 +1425,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_crc",
                             "name": "CRC Enabled",
                             "initial_pos": 3,
                             "final_pos": 3,
@@ -1282,6 +1434,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "beacon_pl",
                             "name": "Payload",
                             "initial_pos": 4,
                             "final_pos": 50,
