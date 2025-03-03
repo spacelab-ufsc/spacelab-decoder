@@ -25,7 +25,7 @@ import random
 
 sys.path.append(".")
 
-from spacelab_decoder.csp import CSP
+from spacelab_decoder.csp import CSP, _CSP_PRIO_NORM
 
 def test_address_config():
     adr1 = random.randint(0, 31)
@@ -308,3 +308,58 @@ def test_encode_uptime():
     assert ((pkt[3] >> 1) & 1)== 0                                  # RDP
     assert (pkt[3] & 1) == 0                                        # CRC
     assert len(pkt) == 4                                            # Payload
+
+def test_encode():
+    src_adr = random.randint(0, 31)
+    dst_adr = random.randint(0, 31)
+
+    src_port = random.randint(0, 31)
+    dst_port = random.randint(0, 31)
+
+    pl = list()
+    for i in range(random.randint(0, 2**16-1)):
+        pl.append(random.randint(0, 2**8-1))
+
+    csp = CSP(src_adr)
+
+    pkt = csp.encode(_CSP_PRIO_NORM, src_adr, dst_adr, src_port, dst_port, False, False, False, False, False, pl)
+
+    assert (pkt[0] >> 6) == 2                                       # Priority
+    assert ((pkt[0] >> 1) & 31) == src_adr                          # Source address
+    assert (((pkt[0] & 1) << 4) | ((pkt[1] >> 4) & 15)) == dst_adr  # Destination address
+    assert (((pkt[1] & 15) << 2) | ((pkt[2] >> 6) & 3)) == dst_port # Uptime port
+    assert pkt[2] & 63 == src_port                                  # Uptime port
+    assert ((pkt[3] >> 4) & 1) == 0                                 # SFP
+    assert ((pkt[3] >> 3) & 1) == 0                                 # HMAC
+    assert ((pkt[3] >> 2) & 1) == 0                                 # XTEA
+    assert ((pkt[3] >> 1) & 1)== 0                                  # RDP
+    assert (pkt[3] & 1) == 0                                        # CRC
+    assert pkt[4:] == pl                                            # Payload
+
+def test_decode():
+    src_adr = random.randint(0, 31)
+    dst_adr = random.randint(0, 31)
+
+    src_port = random.randint(0, 31)
+    dst_port = random.randint(0, 31)
+
+    pl = list()
+    for i in range(random.randint(0, 2**16-1)):
+        pl.append(random.randint(0, 2**8-1))
+
+    csp = CSP(src_adr)
+
+    pkt = csp.encode(_CSP_PRIO_NORM, src_adr, dst_adr, src_port, dst_port, False, False, False, False, False, pl)
+    pkt_dec = csp.decode(pkt)
+
+    assert pkt_dec["priority"] == 2         # Priority
+    assert pkt_dec["src_adr"] == src_adr    # Source address
+    assert pkt_dec["dst_adr"] == dst_adr    # Destination address
+    assert pkt_dec["src_port"] == src_port  # Source port
+    assert pkt_dec["dst_port"] == dst_port  # Destination port
+    assert pkt_dec["sfp"] == False          # SFP
+    assert pkt_dec["hmac"] == False         # HMAC
+    assert pkt_dec["xtea"] == False         # XTEA
+    assert pkt_dec["rdp"] == False          # RDP
+    assert pkt_dec["crc"] == False          # CRC
+    assert pkt_dec["payload"] == pl         # Payload
