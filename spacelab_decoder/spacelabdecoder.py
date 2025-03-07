@@ -47,7 +47,7 @@ from spacelab_decoder.sync_word import SyncWord, _SYNC_WORD_LSB
 from spacelab_decoder.byte_buffer import ByteBuffer, _BYTE_BUFFER_LSB
 from spacelab_decoder.packet import Packet, PacketCSP
 from spacelab_decoder.ccsds import CCSDS_POLY
-from spacelab_decoder.golay24 import Golay24
+from spacelab_decoder.ax100 import AX100Mode5
 
 _UI_FILE_LOCAL                  = os.path.abspath(os.path.dirname(__file__)) + '/data/ui/spacelab_decoder.glade'
 _UI_FILE_LINUX_SYSTEM           = '/usr/share/spacelab_decoder/spacelab_decoder.glade'
@@ -549,43 +549,23 @@ class SpaceLabDecoder:
         byte_buf = ByteBuffer(_BYTE_BUFFER_LSB)
 
         packet_detected = False
-        packet_buf = list()
 
-        packet_len = 255
+        ax100 = AX100Mode5()
 
         for bit in bitstream:
             if packet_detected:
                 byte_buf.push(bool(bit))
                 if byte_buf.is_full():
-                    pkt_byte = byte_buf.to_byte()
-                    packet_buf.append(pkt_byte)
+                    res = ax100.decode_byte(byte_buf.to_byte())
+                    if type(res) is list:
+                        self._decode_packet(res)
 
-                    if len(packet_buf) == 3:
-                        # Decode lenght field
-                        gol = Golay24()
-                        packet_len = gol.decode(packet_buf)[1]
-                    elif len(packet_buf) == packet_len + 3:
-                        packet_detected = False
-                        # Add padding with zeros
-                        rs_pl = packet_buf[3:-32]
-                        while len(rs_pl) < 223:
-                            rs_pl.append(0)
-                        # Reed-Solomon decoding
-                        rs = pyngham.RS(8, 0x187, 112, 11, 16, 0)
-                        csp_pkt, num_err, err_pos = rs.decode(rs_pl + packet_buf[-32:], [0], 0)
-                        if len(csp_pkt) == 0:
-                            self.write_log("Error decoding a " + link_name + " packet from " + _SATELLITES[self.combobox_satellite.get_active()][0] + "!")
-                        else:
-                            # Write event log
-                            tm_now = datetime.now()
-                            self.decoded_packets_index.append(self.textbuffer_pkt_data.create_mark(str(tm_now), self.textbuffer_pkt_data.get_end_iter(), True))
-                            self.write_log(link_name + " packet from " + _SATELLITES[self.combobox_satellite.get_active()][0] + " decoded!")
+                        # Write event log
+                        tm_now = datetime.now()
+                        self.decoded_packets_index.append(self.textbuffer_pkt_data.create_mark(str(tm_now), self.textbuffer_pkt_data.get_end_iter(), True))
+                        self.write_log(link_name + " packet from " + _SATELLITES[self.combobox_satellite.get_active()][0] + " decoded!")
 
-                            # Decode Reed-Solomon payload
-                            self._decode_packet(csp_pkt)
-                    elif len(packet_buf) > 3:
-                        # De-scramble
-                        packet_buf[-1] = packet_buf[-1] ^ CCSDS_POLY[len(packet_buf) - 4]
+                        ax100.reset_decoder()
 
                     byte_buf.clear()
             sync_word_buf.push(bool(bit))
