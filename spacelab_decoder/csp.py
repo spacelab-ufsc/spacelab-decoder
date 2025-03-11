@@ -20,11 +20,14 @@
 #  
 #
 
+import hashlib
+import hmac
+
 # Priorities
-_CSP_PRIO_CRITICAL  = 0
-_CSP_PRIO_HIGH      = 1
-_CSP_PRIO_NORM      = 2
-_CSP_PRIO_LOW       = 3
+CSP_PRIO_CRITICAL   = 0
+CSP_PRIO_HIGH       = 1
+CSP_PRIO_NORM       = 2
+CSP_PRIO_LOW        = 3
 
 # Ports
 _CSP_PORT_CMP       = 0
@@ -34,7 +37,6 @@ _CSP_PORT_MEMFREE   = 3
 _CSP_PORT_REBOOT    = 4
 _CSP_PORT_BUF_FREE  = 5
 _CSP_PORT_UPTIME    = 6
-_CSP_PORT_BEACON    = 10
 
 # CMP Types
 _CSP_CMP_REQUEST    = 0
@@ -91,14 +93,11 @@ class CSP:
         """
         return self._my_adr
 
-    def encode(self, prio, src_adr, dst_adr, src_port, dst_port, sfp, hmac, xtea, rdp, crc, pl):
+    def encode(self, prio, dst_adr, src_port, dst_port, sfp, hmac, xtea, rdp, crc, pl, hmac_key=str()):
         """
         Encode a CSP packet.
 
         :param prio: Packet priority (must be between 0 and 3).
-        :type: int
-
-        :param src_adr: Source address (must be between 0 and 31).
         :type: int
 
         :param dst_adr: Destination address (must be between 0 and 31).
@@ -128,14 +127,14 @@ class CSP:
         :param pl: Is the payload of the CSP packet.
         :type: list[int]
 
+        :param hmac_key: Is the HMAC key (optional, only used if the HMAC is enabled).
+        :type: str
+
         :return: A list with the byte sequence of the CSP packet.
         :rtype: list[int]
         """
         if not (0 <= prio <= 3):
             raise ValueError('The priority must be between 0 and 3!')
-
-        if not (0 <= src_adr <= 31):
-            raise ValueError('The source address must be between 0 and 31!')
 
         if not (0 <= dst_adr <= 31):
             raise ValueError('The destination address must be between 0 and 31!')
@@ -149,16 +148,20 @@ class CSP:
         pkt = list()
 
         # Header
-        pkt.append((prio << 6) | (src_adr << 1) | ((dst_adr >> 4) & 1))
+        pkt.append((prio << 6) | (self.get_address() << 1) | ((dst_adr >> 4) & 1))
 
         pkt.append(((dst_adr & 15) << 4) | ((dst_port & 60) >> 2))
 
-        pkt.append((dst_port << 6) | src_port)
+        pkt.append(((dst_port & 3) << 6) | src_port)
 
         pkt.append((int(sfp) << 4) | (int(hmac) << 3) | (int(xtea) << 2) | (int(rdp) << 2) | int(crc))
 
         # Payload
         pkt += pl
+
+        # HMAC
+        if hmac:
+            pkt = self.append_hmac(pkt, hmac_key)
 
         return pkt
 
@@ -174,7 +177,7 @@ class CSP:
         """
         pl = [_CSP_CMP_REQUEST, _CSP_CMP_IDENT]
 
-        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
+        return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
 
     def encode_cmp_set_route(self, dst_adr):
         """
@@ -188,7 +191,7 @@ class CSP:
         """
         pl = [_CSP_CMP_REQUEST, _CSP_CMP_ROUTE_SET]
 
-        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
+        return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
 
     def encode_cmp_if_stat(self, dst_adr):
         """
@@ -202,7 +205,7 @@ class CSP:
         """
         pl = [_CSP_CMP_REQUEST, _CSP_CMP_IF_STATS]
 
-        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
+        return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
 
     def encode_cmp_peek(self, dst_adr, mem_adr, mem_len):
         """
@@ -229,7 +232,7 @@ class CSP:
 
         pl.append(mem_len)
 
-        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
+        return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
 
     def encode_cmp_poke(self, dst_adr, mem_adr, mem_len):
         """
@@ -247,7 +250,7 @@ class CSP:
 
         pl.append(mem_len)
 
-        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
+        return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
 
     def encode_cmp_get_clock(self, dst_adr):
         """
@@ -261,7 +264,7 @@ class CSP:
         """
         pl = [_CSP_CMP_REQUEST, _CSP_CMP_CLOCK]
 
-        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
+        return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
 
     def encode_ping(self, dst_adr, num_bytes=100):
         """
@@ -281,7 +284,7 @@ class CSP:
         for i in range(num_bytes):
             pl.append(i)
 
-        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_PING, _CSP_PORT_PING, False, False, False, False, False, pl)
+        return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_PING, _CSP_PORT_PING, False, False, False, False, False, pl)
 
     def encode_ps(self, dst_adr):
         """
@@ -293,7 +296,7 @@ class CSP:
         :return: A list with the byte sequence of the CSP Ping Request packet.
         :rtype: list[int]
         """
-        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_PS, _CSP_PORT_PS, False, False, False, False, False, [0x55])
+        return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_PS, _CSP_PORT_PS, False, False, False, False, False, [0x55])
 
     def encode_memfree(self, dst_adr):
         """
@@ -305,7 +308,7 @@ class CSP:
         :return: A list with the byte sequence of the CSP Mem Free Request packet.
         :rtype: list[int]
         """
-        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_MEMFREE, _CSP_PORT_MEMFREE, False, False, False, False, False, [])
+        return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_MEMFREE, _CSP_PORT_MEMFREE, False, False, False, False, False, [])
 
     def encode_reboot(self, dst_adr):
         """
@@ -319,7 +322,7 @@ class CSP:
         """
         pl = [0x80, 0x07, 0x80, 0x07]   # Magic word
 
-        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_REBOOT, _CSP_PORT_REBOOT, False, False, False, False, False, pl)
+        return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_REBOOT, _CSP_PORT_REBOOT, False, False, False, False, False, pl)
 
     def encode_shutdown(self, dst_adr):
         """
@@ -333,7 +336,7 @@ class CSP:
         """
         pl = [0xD1, 0xE5, 0x52, 0x9A]   # Magic word
 
-        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_REBOOT, _CSP_PORT_REBOOT, False, False, False, False, False, pl)
+        return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_REBOOT, _CSP_PORT_REBOOT, False, False, False, False, False, pl)
 
     def encode_buf_free(self, dst_adr):
         """
@@ -345,7 +348,7 @@ class CSP:
         :return: A list with the byte sequence of the CSP Buffer Free Request packet.
         :rtype: list[int]
         """
-        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_BUF_FREE, _CSP_PORT_BUF_FREE, False, False, False, False, False, [])
+        return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_BUF_FREE, _CSP_PORT_BUF_FREE, False, False, False, False, False, [])
 
     def encode_uptime(self, dst_adr):
         """
@@ -357,7 +360,7 @@ class CSP:
         :return: A list with the byte sequence of the CSP Uptime Request packet.
         :rtype: list[int]
         """
-        return self.encode(_CSP_PRIO_NORM, self.get_address(), dst_adr, _CSP_PORT_UPTIME, _CSP_PORT_UPTIME, False, False, False, False, False, [])
+        return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_UPTIME, _CSP_PORT_UPTIME, False, False, False, False, False, [])
 
     def decode(self, pkt):
         """
@@ -417,3 +420,34 @@ class CSP:
 
     def _decode_pl(self, pl):
         return {"payload": pl}
+
+    def append_hmac(self, pkt, key, inc_header=False):
+        """
+        Enables the HMAC authentication to an existing packet.
+
+        :param pkt: Is the CSP packet to add the HMAC hash.
+        :type: list
+
+        :param key: Is the HMAC key to compute the hash.
+        :type: str
+
+        :param inc_header: A flag to indicate if the HMAC must be computed considering the CSP header or not.
+        :type: bool
+
+        :return: The given CSP packet with the HMAC hash enabled.
+        :rtype: list
+        """
+        # Enabling HMAC flag in header
+        pkt[3] |= (1 << 3)
+
+        # Defining if the HMAC will be computed considering the CSP header or not
+        pkt4hmac = list()
+        if inc_header:
+            pkt4hmac = pkt
+        else:
+            pkt4hmac = pkt[4:]
+
+        # Compute the HMAC hash
+        hashed = hmac.new(key.encode('utf-8'), bytes(pkt4hmac), hashlib.sha1)
+
+        return pkt + list(hashed.digest())

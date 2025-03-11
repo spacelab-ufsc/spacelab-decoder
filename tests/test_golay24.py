@@ -20,12 +20,9 @@
 #  
 #
 
-import sys
 import pytest
 
-sys.path.append(".")
-
-from spacelab_decoder.golay24 import Golay24
+from golay24 import Golay24
 
 @pytest.fixture
 def golay():

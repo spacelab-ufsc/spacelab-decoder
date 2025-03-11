@@ -36,6 +36,7 @@ from gi.repository import Gtk, GdkPixbuf, GLib
 
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
+import numpy as np
 
 import pyngham
 
@@ -312,7 +313,6 @@ class SpaceLabDecoder:
                     if self.switch_raw_bits.get_active():
                         thread_decode = threading.Thread(target=self._decode_stream, args=(address, int(port), baudrate, sync_word, protocol, link_name,))
                         thread_decode.start()
-#                    self._decode_stream(address, int(port), baudrate, sync_word, protocol, link_name)
                     else:
                         self._tcp_server_socket = self._create_socket_server(address, int(port))
 
@@ -493,7 +493,8 @@ class SpaceLabDecoder:
 
         while self._run_udp_decode:
             try:
-                samples, addr = sock.recvfrom(1024) # Buffer size is 1024 bytes
+                samples_raw, addr = sock.recvfrom(1024)    # Buffer size is 1024 bytes
+                samples = np.frombuffer(bytes(samples_raw), dtype=np.int16).tolist()    # Convert the input bytes to int16 samples
                 if protocol == _PROTOCOL_NGHAM:
                     self._find_ngham_pkts(mm.get_bitstream(samples, 48000.0, baud), sync_word, link_name)
                 elif protocol == _PROTOCOL_AX100MODE5:

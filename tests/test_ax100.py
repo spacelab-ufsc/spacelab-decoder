@@ -20,14 +20,11 @@
 #  
 #
 
-import sys
 import random
 
 import pytest
 
-sys.path.append(".")
-
-from spacelab_decoder.ax100 import AX100Mode5
+from ax100 import AX100Mode5
 
 @pytest.fixture
 def ax100_mode5():
