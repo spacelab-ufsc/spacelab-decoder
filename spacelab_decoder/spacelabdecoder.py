@@ -46,6 +46,7 @@ from spacelab_decoder.time_sync import TimeSync
 from spacelab_decoder.bit_buffer import BitBuffer, _BIT_BUFFER_LSB
 from spacelab_decoder.sync_word import SyncWord, _SYNC_WORD_LSB
 from spacelab_decoder.byte_buffer import ByteBuffer, _BYTE_BUFFER_LSB
+from spacelab_decoder.bit_decoder import BitDecoder
 from spacelab_decoder.packet import Packet, PacketCSP
 from spacelab_decoder.ccsds import CCSDS_POLY
 from spacelab_decoder.ax100 import AX100Mode5
@@ -101,8 +102,6 @@ class SpaceLabDecoder:
         self._build_widgets()
 
         self._load_preferences()
-
-        self.ngham = pyngham.PyNGHam()
 
         self._tcp_server_socket = None
 
@@ -472,12 +471,12 @@ class SpaceLabDecoder:
         else:
             samples = data
 
-        mm = TimeSync()
+        mm = TimeSync(sample_rate, baud)
 
         if protocol == _PROTOCOL_NGHAM:
-            self._find_ngham_pkts(mm.get_bitstream(samples, sample_rate, baud), sync_word, link_name)
+            self._find_ngham_pkts(mm.get_bitstream(samples), sync_word, link_name)
         elif protocol == _PROTOCOL_AX100MODE5:
-            self._find_ax100mode5_pkts(mm.get_bitstream(samples, sample_rate, baud), sync_word, link_name)
+            self._find_ax100mode5_pkts(mm.get_bitstream(samples), sync_word, link_name)
         else:
             error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error decoding the audio file!")
             error_dialog.format_secondary_text("The protocol \"" + protocol + "\" is not supported!")
@@ -489,92 +488,97 @@ class SpaceLabDecoder:
         sock.settimeout(1)
         sock.bind((address, port))
 
-        mm = TimeSync()
+        mm = TimeSync(48000, baud)
 
+        sync_word.reverse()
+
+        bit_decoder = BitDecoder(sync_word)
+
+        ngham = pyngham.PyNGHam()
+        ax100 = AX100Mode5()
+
+        samples_buf = list()
         while self._run_udp_decode:
             try:
                 samples_raw, addr = sock.recvfrom(1024)    # Buffer size is 1024 bytes
-                samples = np.frombuffer(bytes(samples_raw), dtype=np.int16).tolist()    # Convert the input bytes to int16 samples
-                if protocol == _PROTOCOL_NGHAM:
-                    self._find_ngham_pkts(mm.get_bitstream(samples, 48000.0, baud), sync_word, link_name)
-                elif protocol == _PROTOCOL_AX100MODE5:
-                    self._find_ax100mode5_pkts(mm.get_bitstream(samples, 48000.0, baud), sync_word, link_name)
+                samples_buf += np.frombuffer(bytes(samples_raw), dtype=np.int16).tolist()    # Convert the input bytes to int16 samples
+
+                if len(samples_buf) >= 300*(48000/baud)*8*2:    # Approximately 300 bytes in samples
+                    bitstream = mm.decode_stream(samples_buf)
+                    samples_buf.clear()
+                    for b in bitstream:
+                        decoded_byte = bit_decoder.decode_bit(b)
+                        if type(decoded_byte) is int:
+                            if protocol == _PROTOCOL_NGHAM:
+                                pl, err, err_loc = ngham.decode_byte(decoded_byte)
+                                if len(pl) == 0:
+                                    if err == -1:
+                                        bit_decoder.reset()
+                                        self.write_log("Error decoding a " + link_name + " packet from " + _SATELLITES[self.combobox_satellite.get_active()][0] + "!")
+                                else:
+                                    bit_decoder.reset()
+                                    tm_now = datetime.now()
+                                    self.decoded_packets_index.append(self.textbuffer_pkt_data.create_mark(str(tm_now), self.textbuffer_pkt_data.get_end_iter(), True))
+                                    self.write_log(link_name + " packet from " + _SATELLITES[self.combobox_satellite.get_active()][0] + " decoded!")
+                                    self._decode_packet(pl)
+                            elif protocol == _PROTOCOL_AX100MODE5:
+                                pl = ax100.decode_byte(decoded_byte)
+                                if type(pl) is list:
+                                    self._decode_packet(pl)
+
+                                    # Write event log
+                                    tm_now = datetime.now()
+                                    self.decoded_packets_index.append(self.textbuffer_pkt_data.create_mark(str(tm_now), self.textbuffer_pkt_data.get_end_iter(), True))
+                                    self.write_log(link_name + " packet from " + _SATELLITES[self.combobox_satellite.get_active()][0] + " decoded!")
+
+                                    ax100.reset_decoder()
             except socket.timeout:
                 pass
 
         sock.close()
 
-    def _find_ngham_pkts(self, bitstream, s_word, link_name):
-        sync_word_buf = BitBuffer(32, _BIT_BUFFER_LSB)
+    def _find_ngham_pkts(self, bitstream, sync_word, link_name):
+        sync_word.reverse()
 
-        s_word.reverse()
-        sync_word = SyncWord(s_word, _SYNC_WORD_LSB)
+        bit_decoder = BitDecoder(sync_word)
 
-        byte_buf = ByteBuffer(_BYTE_BUFFER_LSB)
+        ngham = pyngham.PyNGHam()
 
-        packet_detected = False
-        packet_buf = list()
+        for b in bitstream:
+            decoded_byte = bit_decoder.decode_bit(b)
+            if type(decoded_byte) is int:
+                pl, err, err_loc = ngham.decode_byte(decoded_byte)
+                if len(pl) == 0:
+                    if err == -1:
+                        bit_decoder.reset()
+                        self.write_log("Error decoding a " + link_name + " packet from " + _SATELLITES[self.combobox_satellite.get_active()][0] + "!")
+                else:
+                    bit_decoder.reset()
+                    tm_now = datetime.now()
+                    self.decoded_packets_index.append(self.textbuffer_pkt_data.create_mark(str(tm_now), self.textbuffer_pkt_data.get_end_iter(), True))
+                    self.write_log(link_name + " packet from " + _SATELLITES[self.combobox_satellite.get_active()][0] + " decoded!")
+                    self._decode_packet(pl)
 
-        for bit in bitstream:
-            if packet_detected:
-                byte_buf.push(bool(bit))
-                if byte_buf.is_full():
-                    if len(packet_buf) < _DEFAULT_MAX_PKT_LEN_BYTES:
-                        pkt_byte = byte_buf.to_byte()
-                        packet_buf.append(pkt_byte)
+    def _find_ax100mode5_pkts(self, bitstream, sync_word, link_name):
+        sync_word.reverse()
 
-                        pl, err, err_loc = self.ngham.decode_byte(pkt_byte)
-                        if len(pl) == 0:
-                            if err == -1:
-                                packet_detected = False
-                                self.write_log("Error decoding a " + link_name + " packet from " + _SATELLITES[self.combobox_satellite.get_active()][0] + "!")
-                        else:
-                            packet_detected = False
-                            tm_now = datetime.now()
-                            self.decoded_packets_index.append(self.textbuffer_pkt_data.create_mark(str(tm_now), self.textbuffer_pkt_data.get_end_iter(), True))
-                            self.write_log(link_name + " packet from " + _SATELLITES[self.combobox_satellite.get_active()][0] + " decoded!")
-                            self._decode_packet(pl)
-                        byte_buf.clear()
-            sync_word_buf.push(bool(bit))
-            if (sync_word_buf == sync_word):
-                packet_buf = []
-                packet_detected = True
-                byte_buf.clear()
-
-    def _find_ax100mode5_pkts(self, bitstream, s_word, link_name):
-        sync_word_buf = BitBuffer(32, _BIT_BUFFER_LSB)
-
-        s_word.reverse()
-        sync_word = SyncWord(s_word, _SYNC_WORD_LSB)
-
-        byte_buf = ByteBuffer(_BYTE_BUFFER_LSB)
-
-        packet_detected = False
+        bit_decoder = BitDecoder(sync_word)
 
         ax100 = AX100Mode5()
 
-        for bit in bitstream:
-            if packet_detected:
-                byte_buf.push(bool(bit))
-                if byte_buf.is_full():
-                    res = ax100.decode_byte(byte_buf.to_byte())
-                    if type(res) is list:
-                        self._decode_packet(res)
+        for b in bitstream:
+            decoded_byte = bit_decoder.decode_bit(b)
+            if type(decoded_byte) is int:
+                pl = ax100.decode_byte(decoded_byte)
+                if type(pl) is list:
+                    self._decode_packet(pl)
 
-                        # Write event log
-                        tm_now = datetime.now()
-                        self.decoded_packets_index.append(self.textbuffer_pkt_data.create_mark(str(tm_now), self.textbuffer_pkt_data.get_end_iter(), True))
-                        self.write_log(link_name + " packet from " + _SATELLITES[self.combobox_satellite.get_active()][0] + " decoded!")
+                    # Write event log
+                    tm_now = datetime.now()
+                    self.decoded_packets_index.append(self.textbuffer_pkt_data.create_mark(str(tm_now), self.textbuffer_pkt_data.get_end_iter(), True))
+                    self.write_log(link_name + " packet from " + _SATELLITES[self.combobox_satellite.get_active()][0] + " decoded!")
 
-                        ax100.reset_decoder()
-
-                    byte_buf.clear()
-            sync_word_buf.push(bool(bit))
-            # Detect sync word
-            if (sync_word_buf == sync_word):
-                packet_buf = []
-                packet_detected = True
-                byte_buf.clear()
+                    ax100.reset_decoder()
 
     def _decode_packet(self, pkt):
         try:
@@ -669,13 +673,14 @@ class SpaceLabDecoder:
     def _handle_tcp_client_data(self, source, condition, client_socket):
         """Handle incoming data from the client"""
         if condition == GLib.IO_IN:
+            ngham = pyngham.PyNGHam()
             try:
                 data = client_socket.recv(1024)  # Read incoming data (max 1024 bytes)
                 if data:
                     baudrate, sync_word, protocol, link_name = self._get_link_info()
 
                     if protocol == _PROTOCOL_NGHAM:
-                        pl, err, err_loc = self.ngham.decode(data)
+                        pl, err, err_loc = ngham.decode(data)
                         self._decode_packet(pl)
                     elif protocol == _PROTOCOL_AX100MODE5:
                         # TODO
