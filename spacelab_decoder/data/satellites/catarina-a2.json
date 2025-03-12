@@ -1443,6 +1443,584 @@
                             "unit": ""
                         }
                     ]
+                },
+                {
+                    "name": "Data request answer",
+                    "fields": [
+                        {
+                            "id": "csp_prio",
+                            "name": "Priority",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0] >> 6)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_src_adr",
+                            "name": "Source Address",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 1,
+                            "conversion": "int((pkt[0] >> 1) & 31)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_dst_adr",
+                            "name": "Destination Address",
+                            "initial_pos": 0,
+                            "final_pos": 1,
+                            "value": 10,
+                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_dst_port",
+                            "name": "Destination Port",
+                            "initial_pos": 1,
+                            "final_pos": 2,
+                            "value": 35,
+                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_src_port",
+                            "name": "Source Port",
+                            "initial_pos": 2,
+                            "final_pos": 2,
+                            "value": 35,
+                            "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_hmac",
+                            "name": "HMAC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_xtea",
+                            "name": "XTEA Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 2) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_rdp",
+                            "name": "RDP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_crc",
+                            "name": "CRC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool(pkt[3] & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "data_req_pl",
+                            "name": "Payload",
+                            "initial_pos": 4,
+                            "final_pos": 50,
+                            "value": 0,
+                            "conversion": "pkt[4:51]",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Message broadcast",
+                    "fields": [
+                        {
+                            "id": "csp_prio",
+                            "name": "Priority",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0] >> 6)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_src_adr",
+                            "name": "Source Address",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 1,
+                            "conversion": "int((pkt[0] >> 1) & 31)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_dst_adr",
+                            "name": "Destination Address",
+                            "initial_pos": 0,
+                            "final_pos": 1,
+                            "value": 10,
+                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_dst_port",
+                            "name": "Destination Port",
+                            "initial_pos": 1,
+                            "final_pos": 2,
+                            "value": 36,
+                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_src_port",
+                            "name": "Source Port",
+                            "initial_pos": 2,
+                            "final_pos": 2,
+                            "value": 36,
+                            "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_hmac",
+                            "name": "HMAC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_xtea",
+                            "name": "XTEA Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 2) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_rdp",
+                            "name": "RDP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_crc",
+                            "name": "CRC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool(pkt[3] & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "brd_msg_pl",
+                            "name": "Payload",
+                            "initial_pos": 4,
+                            "final_pos": 50,
+                            "value": 0,
+                            "conversion": "pkt[4:51]",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Payload data answer",
+                    "fields": [
+                        {
+                            "id": "csp_prio",
+                            "name": "Priority",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0] >> 6)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_src_adr",
+                            "name": "Source Address",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 1,
+                            "conversion": "int((pkt[0] >> 1) & 31)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_dst_adr",
+                            "name": "Destination Address",
+                            "initial_pos": 0,
+                            "final_pos": 1,
+                            "value": 10,
+                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_dst_port",
+                            "name": "Destination Port",
+                            "initial_pos": 1,
+                            "final_pos": 2,
+                            "value": 45,
+                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_src_port",
+                            "name": "Source Port",
+                            "initial_pos": 2,
+                            "final_pos": 2,
+                            "value": 45,
+                            "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_hmac",
+                            "name": "HMAC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_xtea",
+                            "name": "XTEA Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 2) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_rdp",
+                            "name": "RDP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_crc",
+                            "name": "CRC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool(pkt[3] & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "pl_data_pl",
+                            "name": "Payload",
+                            "initial_pos": 4,
+                            "final_pos": 50,
+                            "value": 0,
+                            "conversion": "pkt[4:51]",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Parameter value",
+                    "fields": [
+                        {
+                            "id": "csp_prio",
+                            "name": "Priority",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0] >> 6)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_src_adr",
+                            "name": "Source Address",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 1,
+                            "conversion": "int((pkt[0] >> 1) & 31)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_dst_adr",
+                            "name": "Destination Address",
+                            "initial_pos": 0,
+                            "final_pos": 1,
+                            "value": 10,
+                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_dst_port",
+                            "name": "Destination Port",
+                            "initial_pos": 1,
+                            "final_pos": 2,
+                            "value": 47,
+                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_src_port",
+                            "name": "Source Port",
+                            "initial_pos": 2,
+                            "final_pos": 2,
+                            "value": 47,
+                            "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_hmac",
+                            "name": "HMAC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_xtea",
+                            "name": "XTEA Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 2) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_rdp",
+                            "name": "RDP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_crc",
+                            "name": "CRC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool(pkt[3] & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "param_pl",
+                            "name": "Payload",
+                            "initial_pos": 4,
+                            "final_pos": 50,
+                            "value": 0,
+                            "conversion": "pkt[4:51]",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Telecommand feedback",
+                    "fields": [
+                        {
+                            "id": "csp_prio",
+                            "name": "Priority",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0] >> 6)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_src_adr",
+                            "name": "Source Address",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 1,
+                            "conversion": "int((pkt[0] >> 1) & 31)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_dst_adr",
+                            "name": "Destination Address",
+                            "initial_pos": 0,
+                            "final_pos": 1,
+                            "value": 10,
+                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_dst_port",
+                            "name": "Destination Port",
+                            "initial_pos": 1,
+                            "final_pos": 2,
+                            "value": 49,
+                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_src_port",
+                            "name": "Source Port",
+                            "initial_pos": 2,
+                            "final_pos": 2,
+                            "value": 49,
+                            "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_hmac",
+                            "name": "HMAC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_xtea",
+                            "name": "XTEA Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 2) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_rdp",
+                            "name": "RDP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_crc",
+                            "name": "CRC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool(pkt[3] & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "tc_fb_pl",
+                            "name": "Payload",
+                            "initial_pos": 4,
+                            "final_pos": 11,
+                            "value": 0,
+                            "conversion": "pkt[4:12]",
+                            "unit": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Downlink (Payload)",
+            "baudrate": 4800,
+            "sync_word": [201, 208, 138, 123],
+            "protocol": "AX100-Mode5",
+            "types": [
+                {
+                    "name": "Beacon",
+                    "fields": [
+                        {
+                            "id": "csp_prio",
+                            "name": "Priority",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0] >> 6)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_src_adr",
+                            "name": "Source Address",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 3,
+                            "conversion": "int((pkt[0] >> 1) & 31)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_dst_adr",
+                            "name": "Destination Address",
+                            "initial_pos": 0,
+                            "final_pos": 1,
+                            "value": 10,
+                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_dst_port",
+                            "name": "Destination Port",
+                            "initial_pos": 1,
+                            "final_pos": 2,
+                            "value": 10,
+                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_src_port",
+                            "name": "Source Port",
+                            "initial_pos": 2,
+                            "final_pos": 2,
+                            "value": 10,
+                            "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_hmac",
+                            "name": "HMAC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_xtea",
+                            "name": "XTEA Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 2) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_rdp",
+                            "name": "RDP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_crc",
+                            "name": "CRC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool(pkt[3] & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "pl_beacon_pl",
+                            "name": "Payload",
+                            "initial_pos": 4,
+                            "final_pos": 50,
+                            "value": 0,
+                            "conversion": "pkt[4:51]",
+                            "unit": ""
+                        }
+                    ]
                 }
             ]
         }
