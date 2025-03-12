@@ -293,6 +293,7 @@ class SpaceLabDecoder:
                     self._run_udp_decode = True
                     self.button_decode.set_sensitive(False)
                     self.button_stop.set_sensitive(True)
+                    self.button_plot_spectrum.set_sensitive(False)
                     self.combobox_satellite.set_sensitive(False)
                     self.combobox_packet_type.set_sensitive(False)
                     self.filechooser_audio_file.set_sensitive(False)
@@ -329,6 +330,7 @@ class SpaceLabDecoder:
         self._run_udp_decode = False
         self.button_stop.set_sensitive(False)
         self.button_decode.set_sensitive(True)
+        self.button_plot_spectrum.set_sensitive(True)
         self.combobox_satellite.set_sensitive(True)
         self.combobox_packet_type.set_sensitive(True)
         self.filechooser_audio_file.set_sensitive(True)
