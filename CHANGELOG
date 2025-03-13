@@ -1,0 +1,43 @@
+===========================================
+
+v0.5 - TBC
+
+- Adding the option of transmiting the decoded data over a socket
+- Adding support for Catarina-A2 satellite
+- Real time decoding using GQRX UDP stream
+- General fixes and improvements
+
+===========================================
+===========================================
+
+v0.4 - 2024/05/19
+
+- GNURadio dependency removed
+- NGHam packets decoding using the PyNGHam library
+- Adding support to new satlellites: GOLDS-UFSC, Aldebaran-1 and Catarina-1
+- Adding support to the "SpaceLab-Transmitter" packets (decoding uplink packets)
+- Adding a test for UI project
+- General fixes and improvements
+
+===========================================
+===========================================
+
+v0.3 - 2022/08/09
+
+- 
+
+===========================================
+===========================================
+
+v0.2 - 2022/06/14
+
+- 
+
+===========================================
+===========================================
+
+v0.1 - 2022/04/26
+
+- 
+
+===========================================
