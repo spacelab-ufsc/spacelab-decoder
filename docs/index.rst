@@ -16,5 +16,6 @@ Overview
    overview
    logfile
    usage
+   troubleshooting
    installation
    packaging

@@ -37,7 +37,6 @@ Until now, this program supports the satellites below:
 
 * FloripaSat-1 (launched in December 2019)
 * GOLDS-UFSC (to be launched on 2025)
-* Aldebaran-1
 * Catarina-A1
 * Catarina-A2
 
