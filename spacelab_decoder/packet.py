@@ -1,7 +1,7 @@
 #
 #  packet.py
 #  
-#  Copyright (C) 2021, Universidade Federal de Santa Catarina
+#  Copyright The SpaceLab-Decoder Contributors.
 #  
 #  This file is part of SpaceLab-Decoder.
 #
@@ -23,6 +23,9 @@
 
 import json
 
+# Used inside `eval()` calls
+import numpy as np
+
 class Packet:
 
     def __init__(self, sat_config, pkt_raw):
@@ -38,23 +41,52 @@ class Packet:
 
         link_idx = int()
         type_idx = int()
+        pkt_type_found = False
         for i in range(len(self.sat_packet['links'])):
             for j in range(len(self.sat_packet['links'][i]['types'])):
                 if pkt[0] == self.sat_packet['links'][i]['types'][j]['fields'][0]['value']:
                     link_idx = i
                     type_idx = j
+                    pkt_type_found = True
                     break
 
-        buf = buf + "\t" + "Satellite" + ": " + self.sat_packet['name'] + "\n"
-        buf = buf + "\t" + "Link" + ": " + self.sat_packet['links'][link_idx]['name'] + "\n"
-        buf = buf + "\t" + "Data Source" + ": " + self.sat_packet['links'][link_idx]['types'][type_idx]['name'] + "\n"
-        buf = buf + "\t" + "Source Address" + ": " + self._decode_callsign(pkt[1:8]) + "\n"
-        buf = buf + "\t" + "Data" + ":" + "\n"
+        if pkt_type_found:
+            buf = buf + "\t" + "Satellite" + ": " + self.sat_packet['name'] + "\n"
+            buf = buf + "\t" + "Link" + ": " + self.sat_packet['links'][link_idx]['name'] + "\n"
+            buf = buf + "\t" + "Data Source" + ": " + self.sat_packet['links'][link_idx]['types'][type_idx]['name'] + "\n"
+            buf = buf + "\t" + "Protocol" + ": " + self.sat_packet['links'][link_idx]['protocol'] + "\n"
+            buf = buf + "\t" + "Data" + ":" + "\n"
 
-        for i in range(2, len(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'])):
-            buf = buf + "\t\t" + self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['name'] + ": " + str(eval(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['conversion'])) + " " + self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['unit'] + "\n"
+            for i in range(len(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'])):
+                buf = buf + "\t\t" + self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['name'] + ": " + str(eval(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['conversion'])) + " " + self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['unit'] + "\n"
+        else:
+            raise RuntimeError("Unknown packet ID!")
 
         return buf
+
+    def get_data(self):
+        pkt = self.packet
+
+        link_idx = int()
+        type_idx = int()
+        pkt_type_found = False
+        for i in range(len(self.sat_packet['links'])):
+            for j in range(len(self.sat_packet['links'][i]['types'])):
+                if pkt[0] == self.sat_packet['links'][i]['types'][j]['fields'][0]['value']:
+                    link_idx = i
+                    type_idx = j
+                    pkt_type_found = True
+                    break
+
+        data = dict()
+
+        if pkt_type_found:
+            for i in range(len(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'])):
+                data[self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['id']] = str(eval(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['conversion']))
+        else:
+            raise RuntimeError("Unknown packet ID!")
+
+        return json.dumps(data)
 
     def _decode_callsign(self, cs_raw):
         found = False
@@ -68,3 +100,66 @@ class Packet:
                     found = True
 
         return buf
+
+
+class PacketCSP(Packet):
+
+    def __str__(self):
+        buf = str()
+
+        pkt = self.packet
+
+        link_idx = int()
+        type_idx = int()
+        pkt_type_found = False
+        dst_port = int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))
+        for i in range(len(self.sat_packet['links'])):
+            for j in range(len(self.sat_packet['links'][i]['types'])):
+                if dst_port == self.sat_packet['links'][i]['types'][j]['fields'][3]['value']: # Search for the destination port
+                    if dst_port == 0:   # CSP CMP packets
+                        if pkt[5] != self.sat_packet['links'][i]['types'][j]['fields'][11]['value']:
+                            continue
+                    link_idx = i
+                    type_idx = j
+                    pkt_type_found = True
+                    break
+
+        if pkt_type_found:
+            buf = buf + "\t" + "Satellite" + ": " + self.sat_packet['name'] + "\n"
+            buf = buf + "\t" + "Link" + ": " + self.sat_packet['links'][link_idx]['name'] + "\n"
+            buf = buf + "\t" + "Packet Type" + ": " + self.sat_packet['links'][link_idx]['types'][type_idx]['name'] + "\n"
+            buf = buf + "\t" + "Protocol" + ": " + self.sat_packet['links'][link_idx]['protocol'] + "\n"
+            buf = buf + "\t" + "Data" + ":" + "\n"
+
+            for i in range(len(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'])):
+                buf = buf + "\t\t" + self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['name'] + ": " + str(eval(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['conversion'])) + " " + self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['unit'] + "\n"
+        else:
+            raise RuntimeError("Unknown destination port!")
+
+        return buf
+
+    def get_data(self):
+        pkt = self.packet
+
+        link_idx = int()
+        type_idx = int()
+        pkt_type_found = False
+        dst_port = int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))
+        for i in range(len(self.sat_packet['links'])):
+            for j in range(len(self.sat_packet['links'][i]['types'])):
+                if dst_port == self.sat_packet['links'][i]['types'][j]['fields'][3]['value']:   # Search for the destination port
+                    if dst_port == 0:   # CSP CMP packets
+                        if pkt[5] != self.sat_packet['links'][i]['types'][j]['fields'][11]['value']:
+                            continue
+                    link_idx = i
+                    type_idx = j
+                    pkt_type_found = True
+                    break
+
+        data = dict()
+
+        if pkt_type_found:
+            for i in range(len(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'])):
+                data[self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['id']] = str(eval(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['conversion']))
+        else:
+            raise RuntimeError("Unknown destination port!")

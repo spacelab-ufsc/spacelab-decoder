@@ -1,7 +1,7 @@
 #
 #  sync_word.py
 #  
-#  Copyright (C) 2021, Universidade Federal de Santa Catarina
+#  Copyright The SpaceLab-Decoder Contributors.
 #  
 #  This file is part of SpaceLab-Decoder.
 #
@@ -35,6 +35,24 @@ class SyncWord(list):
                     self.append(buf[i])
         else:
             raise RuntimeError("SyncWord: the given sync word isn't a list!")
+
+    def __str__(self):
+        res = 0
+        res_lst = list()
+        k = 0
+        for i in range(0, len(self), 8):
+            for j in range(8, 0, -1):
+                import math
+                x = math.pow(2, k)
+                res += x * int(self[i+j-1])
+                if(k > len(self)):
+                    break
+                k += 1
+            res_lst.append(int(res))
+            res = 0
+            k = 0
+
+        return str(res_lst) + " = " + str([1 if digit == True else 0 for digit in self])
 
     def byte_to_bitfield(self, val):
         buf = [True if digit == '1' else False for digit in bin(val)[2:].zfill(8)]  # [2:] to chop off the "0b" part

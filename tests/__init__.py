@@ -1,5 +1,5 @@
 #
-#  version.py
+#  __init__.py
 #  
 #  Copyright The SpaceLab-Decoder Contributors.
 #  
@@ -19,12 +19,3 @@
 #  License along with SpaceLab-Decoder; if not, see <http://www.gnu.org/licenses/>.
 #  
 #
-
-__author__      = "Gabriel Mariano Marcelino - PU5GMA"
-__copyright__   = "Copyright The SpaceLab-Decoder Contributors"
-__credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
-__license__     = "GPLv3"
-__version__     = "0.4.25"
-__maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
-__email__       = "gabriel.mm8@gmail.com"
-__status__      = "Development"

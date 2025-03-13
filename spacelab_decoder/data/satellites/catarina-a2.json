@@ -1,705 +1,14 @@
 {
-    "name": "SpaceLab-Transmitter",
+    "name": "Catarina-A2",
     "links": [
         {
-            "name": "Uplink (NGHam)",
-            "baudrate": 1200,
-            "sync_word": [93, 230, 42, 126],
-            "protocol": "NGHam",
-            "types": [
-                {
-                    "name": "Ping request",
-                    "fields": [
-                        {
-                            "id": "pkt_id",
-                            "name": "ID",
-                            "initial_pos": 0,
-                            "final_pos": 0,
-                            "value": 64,
-                            "conversion": "int(pkt[0])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "pkt_src_adr",
-                            "name": "Source callsign",
-                            "initial_pos": 1,
-                            "final_pos": 7,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
-                            "unit": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "Data request",
-                    "fields": [
-                        {
-                            "id": "pkt_id",
-                            "name": "ID",
-                            "initial_pos": 0,
-                            "final_pos": 0,
-                            "value": 65,
-                            "conversion": "int(pkt[0])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "pkt_src_adr",
-                            "name": "Source callsign",
-                            "initial_pos": 1,
-                            "final_pos": 7,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "data_type_id",
-                            "name": "Data type ID",
-                            "initial_pos": 8,
-                            "final_pos": 8,
-                            "value": 0,
-                            "conversion": "int(pkt[8])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "start_ts",
-                            "name": "Start Timestamp",
-                            "initial_pos": 9,
-                            "final_pos": 12,
-                            "value": 0,
-                            "conversion": "int((pkt[9] << 24) | (pkt[10] << 16) | (pkt[11] << 8) | pkt[12])",
-                            "unit": "sec"
-                        },
-                        {
-                            "id": "end_ts",
-                            "name": "End Timestamp",
-                            "initial_pos": 13,
-                            "final_pos": 16,
-                            "value": 0,
-                            "conversion": "int((pkt[13] << 24) | (pkt[14] << 16) | (pkt[15] << 8) | pkt[16])",
-                            "unit": "sec"
-                        },
-                        {
-                            "id": "hmac_hash",
-                            "name": "HMAC Hash",
-                            "initial_pos": 17,
-                            "final_pos": 36,
-                            "value": 0,
-                            "conversion": "str(pkt[17:37])",
-                            "unit": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "Broadcast message",
-                    "fields": [
-                        {
-                            "id": "pkt_id",
-                            "name": "ID",
-                            "initial_pos": 0,
-                            "final_pos": 0,
-                            "value": 66,
-                            "conversion": "int(pkt[0])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "pkt_src_adr",
-                            "name": "Source callsign",
-                            "initial_pos": 1,
-                            "final_pos": 7,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "pkt_dst_adr",
-                            "name": "Destination callsign",
-                            "initial_pos": 8,
-                            "final_pos": 14,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[8:15]])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "txt_msg",
-                            "name": "Message",
-                            "initial_pos": 15,
-                            "final_pos": 52,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[15:53]])",
-                            "unit": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "Enter hibernation",
-                    "fields": [
-                        {
-                            "id": "pkt_id",
-                            "name": "ID",
-                            "initial_pos": 0,
-                            "final_pos": 0,
-                            "value": 67,
-                            "conversion": "int(pkt[0])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "pkt_src_adr",
-                            "name": "Source callsign",
-                            "initial_pos": 1,
-                            "final_pos": 7,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "hib_dur",
-                            "name": "Hibernation duration",
-                            "initial_pos": 8,
-                            "final_pos": 9,
-                            "value": 0,
-                            "conversion": "int((pkt[8] << 8) | pkt[9])",
-                            "unit": "h"
-                        },
-                        {
-                            "id": "hmac_hash",
-                            "name": "HMAC Hash",
-                            "initial_pos": 10,
-                            "final_pos": 29,
-                            "value": 0,
-                            "conversion": "str(pkt[10:30])",
-                            "unit": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "Leave hibernation",
-                    "fields": [
-                        {
-                            "id": "pkt_id",
-                            "name": "ID",
-                            "initial_pos": 0,
-                            "final_pos": 0,
-                            "value": 68,
-                            "conversion": "int(pkt[0])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "pkt_src_adr",
-                            "name": "Source callsign",
-                            "initial_pos": 1,
-                            "final_pos": 7,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "hmac_hash",
-                            "name": "HMAC Hash",
-                            "initial_pos": 8,
-                            "final_pos": 27,
-                            "value": 0,
-                            "conversion": "str(pkt[8:28])",
-                            "unit": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "Activate module",
-                    "fields": [
-                        {
-                            "id": "pkt_id",
-                            "name": "ID",
-                            "initial_pos": 0,
-                            "final_pos": 0,
-                            "value": 69,
-                            "conversion": "int(pkt[0])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "pkt_src_adr",
-                            "name": "Source callsign",
-                            "initial_pos": 1,
-                            "final_pos": 7,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "mod_id",
-                            "name": "Module ID",
-                            "initial_pos": 8,
-                            "final_pos": 8,
-                            "value": 0,
-                            "conversion": "int(pkt[8])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "hmac_hash",
-                            "name": "HMAC Hash",
-                            "initial_pos": 9,
-                            "final_pos": 28,
-                            "value": 0,
-                            "conversion": "str(pkt[9:29])",
-                            "unit": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "Deactivate module",
-                    "fields": [
-                        {
-                            "id": "pkt_id",
-                            "name": "ID",
-                            "initial_pos": 0,
-                            "final_pos": 0,
-                            "value": 70,
-                            "conversion": "int(pkt[0])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "pkt_src_adr",
-                            "name": "Source callsign",
-                            "initial_pos": 1,
-                            "final_pos": 7,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "mod_id",
-                            "name": "Module ID",
-                            "initial_pos": 8,
-                            "final_pos": 8,
-                            "value": 0,
-                            "conversion": "int(pkt[8])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "hmac_hash",
-                            "name": "HMAC Hash",
-                            "initial_pos": 9,
-                            "final_pos": 28,
-                            "value": 0,
-                            "conversion": "str(pkt[9:29])",
-                            "unit": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "Activate payload",
-                    "fields": [
-                        {
-                            "id": "pkt_id",
-                            "name": "ID",
-                            "initial_pos": 0,
-                            "final_pos": 0,
-                            "value": 71,
-                            "conversion": "int(pkt[0])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "pkt_src_adr",
-                            "name": "Source callsign",
-                            "initial_pos": 1,
-                            "final_pos": 7,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "pl_id",
-                            "name": "Payload ID",
-                            "initial_pos": 8,
-                            "final_pos": 8,
-                            "value": 0,
-                            "conversion": "int(pkt[8])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "hmac_hash",
-                            "name": "HMAC Hash",
-                            "initial_pos": 9,
-                            "final_pos": 28,
-                            "value": 0,
-                            "conversion": "str(pkt[9:29])",
-                            "unit": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "Deactivate payload",
-                    "fields": [
-                        {
-                            "id": "pkt_id",
-                            "name": "ID",
-                            "initial_pos": 0,
-                            "final_pos": 0,
-                            "value": 72,
-                            "conversion": "int(pkt[0])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "pkt_src_adr",
-                            "name": "Source callsign",
-                            "initial_pos": 1,
-                            "final_pos": 7,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "pl_id",
-                            "name": "Payload ID",
-                            "initial_pos": 8,
-                            "final_pos": 8,
-                            "value": 0,
-                            "conversion": "int(pkt[8])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "hmac_hash",
-                            "name": "HMAC Hash",
-                            "initial_pos": 9,
-                            "final_pos": 28,
-                            "value": 0,
-                            "conversion": "str(pkt[9:29])",
-                            "unit": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "Erase memory",
-                    "fields": [
-                        {
-                            "id": "pkt_id",
-                            "name": "ID",
-                            "initial_pos": 0,
-                            "final_pos": 0,
-                            "value": 73,
-                            "conversion": "int(pkt[0])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "pkt_src_adr",
-                            "name": "Source callsign",
-                            "initial_pos": 1,
-                            "final_pos": 7,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "mem_id",
-                            "name": "Memory ID",
-                            "initial_pos": 8,
-                            "final_pos": 8,
-                            "value": 0,
-                            "conversion": "pkt[8]",
-                            "unit": ""
-                        },
-                        {
-                            "id": "hmac_hash",
-                            "name": "HMAC Hash",
-                            "initial_pos": 9,
-                            "final_pos": 28,
-                            "value": 0,
-                            "conversion": "str(pkt[9:29])",
-                            "unit": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "Force reset",
-                    "fields": [
-                        {
-                            "id": "pkt_id",
-                            "name": "ID",
-                            "initial_pos": 0,
-                            "final_pos": 0,
-                            "value": 74,
-                            "conversion": "int(pkt[0])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "pkt_src_adr",
-                            "name": "Source callsign",
-                            "initial_pos": 1,
-                            "final_pos": 7,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "hmac_hash",
-                            "name": "HMAC Hash",
-                            "initial_pos": 8,
-                            "final_pos": 27,
-                            "value": 0,
-                            "conversion": "str(pkt[8:28])",
-                            "unit": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "Get payload data",
-                    "fields": [
-                        {
-                            "id": "pkt_id",
-                            "name": "ID",
-                            "initial_pos": 0,
-                            "final_pos": 0,
-                            "value": 75,
-                            "conversion": "int(pkt[0])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "pkt_src_adr",
-                            "name": "Source callsign",
-                            "initial_pos": 1,
-                            "final_pos": 7,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "pl_id",
-                            "name": "Payload ID",
-                            "initial_pos": 8,
-                            "final_pos": 8,
-                            "value": 0,
-                            "conversion": "int(pkt[8])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "pl_arg",
-                            "name": "Payload arguments",
-                            "initial_pos": 9,
-                            "final_pos": 20,
-                            "value": 0,
-                            "conversion": "str(pkt[9:21])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "hmac_hash",
-                            "name": "HMAC Hash",
-                            "initial_pos": 21,
-                            "final_pos": 40,
-                            "value": 0,
-                            "conversion": "str(pkt[21:41])",
-                            "unit": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "Set parameter",
-                    "fields": [
-                        {
-                            "id": "pkt_id",
-                            "name": "ID",
-                            "initial_pos": 0,
-                            "final_pos": 0,
-                            "value": 76,
-                            "conversion": "int(pkt[0])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "pkt_src_adr",
-                            "name": "Source callsign",
-                            "initial_pos": 1,
-                            "final_pos": 7,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "subsys_id",
-                            "name": "Subsystem ID",
-                            "initial_pos": 8,
-                            "final_pos": 8,
-                            "value": 0,
-                            "conversion": "int(pkt[8])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "par_id",
-                            "name": "Parameter ID",
-                            "initial_pos": 9,
-                            "final_pos": 9,
-                            "value": 0,
-                            "conversion": "int(pkt[9])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "par_val",
-                            "name": "Parameter Value",
-                            "initial_pos": 10,
-                            "final_pos": 13,
-                            "value": 0,
-                            "conversion": "int((pkt[10] << 24) | (pkt[11] << 16) | (pkt[12] << 8) | pkt[13])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "hmac_hash",
-                            "name": "HMAC Hash",
-                            "initial_pos": 14,
-                            "final_pos": 33,
-                            "value": 0,
-                            "conversion": "str(pkt[14:34])",
-                            "unit": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "Get parameter",
-                    "fields": [
-                        {
-                            "id": "pkt_id",
-                            "name": "ID",
-                            "initial_pos": 0,
-                            "final_pos": 0,
-                            "value": 77,
-                            "conversion": "int(pkt[0])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "pkt_src_adr",
-                            "name": "Source callsign",
-                            "initial_pos": 1,
-                            "final_pos": 7,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "subsys_id",
-                            "name": "Subsystem ID",
-                            "initial_pos": 8,
-                            "final_pos": 8,
-                            "value": 0,
-                            "conversion": "int(pkt[8])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "par_id",
-                            "name": "Parameter ID",
-                            "initial_pos": 9,
-                            "final_pos": 9,
-                            "value": 0,
-                            "conversion": "int(pkt[9])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "hmac_hash",
-                            "name": "HMAC Hash",
-                            "initial_pos": 10,
-                            "final_pos": 19,
-                            "value": 0,
-                            "conversion": "str(pkt[10:20])",
-                            "unit": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "Transmit packet",
-                    "fields": [
-                        {
-                            "id": "pkt_id",
-                            "name": "ID",
-                            "initial_pos": 0,
-                            "final_pos": 0,
-                            "value": 78,
-                            "conversion": "int(pkt[0])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "pkt_src_adr",
-                            "name": "Source callsign",
-                            "initial_pos": 1,
-                            "final_pos": 7,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "pkt_data",
-                            "name": "Data",
-                            "initial_pos": 8,
-                            "final_pos": 53,
-                            "value": 0,
-                            "conversion": "str(pkt[8:54])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "hmac_hash",
-                            "name": "HMAC Hash",
-                            "initial_pos": 10,
-                            "final_pos": 19,
-                            "value": 0,
-                            "conversion": "str(pkt[10:20])",
-                            "unit": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "Update TLE",
-                    "fields": [
-                        {
-                            "id": "pkt_id",
-                            "name": "ID",
-                            "initial_pos": 0,
-                            "final_pos": 0,
-                            "value": 79,
-                            "conversion": "int(pkt[0])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "pkt_src_adr",
-                            "name": "Source callsign",
-                            "initial_pos": 1,
-                            "final_pos": 7,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "tle_line_num",
-                            "name": "TLE Line Number",
-                            "initial_pos": 8,
-                            "final_pos": 8,
-                            "value": 0,
-                            "conversion": "int(pkt[8])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "tle_line",
-                            "name": "TLE Line",
-                            "initial_pos": 9,
-                            "final_pos": 77,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[9:78]])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "hmac_hash",
-                            "name": "HMAC Hash",
-                            "initial_pos": 78,
-                            "final_pos": 97,
-                            "value": 0,
-                            "conversion": "str(pkt[78:98])",
-                            "unit": ""
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Uplink (CSP)",
+            "name": "Downlink",
             "baudrate": 4800,
             "sync_word": [147, 11, 81, 222],
             "protocol": "AX100-Mode5",
             "types": [
                 {
-                    "name": "CMP ident request",
+                    "name": "CMP ident answer",
                     "fields": [
                         {
                             "id": "csp_prio",
@@ -715,7 +24,7 @@
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 10,
+                            "value": 1,
                             "conversion": "int((pkt[0] >> 1) & 31)",
                             "unit": ""
                         },
@@ -724,7 +33,7 @@
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
-                            "value": 1,
+                            "value": 10,
                             "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
                             "unit": ""
                         },
@@ -848,7 +157,7 @@
                     ]
                 },
                 {
-                    "name": "CMP route set request",
+                    "name": "CMP route set answer",
                     "fields": [
                         {
                             "id": "csp_prio",
@@ -864,7 +173,7 @@
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 10,
+                            "value": 1,
                             "conversion": "int((pkt[0] >> 1) & 31)",
                             "unit": ""
                         },
@@ -873,7 +182,7 @@
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
-                            "value": 1,
+                            "value": 10,
                             "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
                             "unit": ""
                         },
@@ -979,7 +288,7 @@
                     ]
                 },
                 {
-                    "name": "CMP IF stats request",
+                    "name": "CMP IF stats answer",
                     "fields": [
                         {
                             "id": "csp_prio",
@@ -995,7 +304,7 @@
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 10,
+                            "value": 1,
                             "conversion": "int((pkt[0] >> 1) & 31)",
                             "unit": ""
                         },
@@ -1004,7 +313,7 @@
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
-                            "value": 1,
+                            "value": 10,
                             "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
                             "unit": ""
                         },
@@ -1182,7 +491,7 @@
                     ]
                 },
                 {
-                    "name": "CMP peek request",
+                    "name": "CMP peek answer",
                     "fields": [
                         {
                             "id": "csp_prio",
@@ -1198,7 +507,7 @@
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 10,
+                            "value": 1,
                             "conversion": "int((pkt[0] >> 1) & 31)",
                             "unit": ""
                         },
@@ -1207,7 +516,7 @@
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
-                            "value": 1,
+                            "value": 10,
                             "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
                             "unit": ""
                         },
@@ -1313,7 +622,7 @@
                     ]
                 },
                 {
-                    "name": "CMP poke request",
+                    "name": "CMP poke answer",
                     "fields": [
                         {
                             "id": "csp_prio",
@@ -1329,7 +638,7 @@
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 10,
+                            "value": 1,
                             "conversion": "int((pkt[0] >> 1) & 31)",
                             "unit": ""
                         },
@@ -1338,7 +647,7 @@
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
-                            "value": 1,
+                            "value": 10,
                             "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
                             "unit": ""
                         },
@@ -1444,7 +753,7 @@
                     ]
                 },
                 {
-                    "name": "CMP clock request",
+                    "name": "CMP clock answer",
                     "fields": [
                         {
                             "id": "csp_prio",
@@ -1460,7 +769,7 @@
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 10,
+                            "value": 1,
                             "conversion": "int((pkt[0] >> 1) & 31)",
                             "unit": ""
                         },
@@ -1469,7 +778,7 @@
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
-                            "value": 1,
+                            "value": 10,
                             "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
                             "unit": ""
                         },
@@ -1566,7 +875,7 @@
                     ]
                 },
                 {
-                    "name": "Ping resquest",
+                    "name": "Ping answer",
                     "fields": [
                         {
                             "id": "csp_prio",
@@ -1582,7 +891,7 @@
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 10,
+                            "value": 1,
                             "conversion": "int((pkt[0] >> 1) & 31)",
                             "unit": ""
                         },
@@ -1591,7 +900,7 @@
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
-                            "value": 1,
+                            "value": 10,
                             "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
                             "unit": ""
                         },
@@ -1661,7 +970,7 @@
                     ]
                 },
                 {
-                    "name": "PS request",
+                    "name": "PS answer",
                     "fields": [
                         {
                             "id": "csp_prio",
@@ -1677,7 +986,7 @@
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 10,
+                            "value": 1,
                             "conversion": "int((pkt[0] >> 1) & 31)",
                             "unit": ""
                         },
@@ -1686,7 +995,7 @@
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
-                            "value": 1,
+                            "value": 10,
                             "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
                             "unit": ""
                         },
@@ -1756,7 +1065,7 @@
                     ]
                 },
                 {
-                    "name": "Memfree request",
+                    "name": "Memfree answer",
                     "fields": [
                         {
                             "id": "csp_prio",
@@ -1772,7 +1081,7 @@
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 10,
+                            "value": 1,
                             "conversion": "int((pkt[0] >> 1) & 31)",
                             "unit": ""
                         },
@@ -1781,7 +1090,7 @@
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
-                            "value": 1,
+                            "value": 10,
                             "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
                             "unit": ""
                         },
@@ -1851,7 +1160,7 @@
                     ]
                 },
                 {
-                    "name": "Buffer free request",
+                    "name": "Buffer free answer",
                     "fields": [
                         {
                             "id": "csp_prio",
@@ -1867,7 +1176,7 @@
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 10,
+                            "value": 1,
                             "conversion": "int((pkt[0] >> 1) & 31)",
                             "unit": ""
                         },
@@ -1876,7 +1185,7 @@
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
-                            "value": 1,
+                            "value": 10,
                             "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
                             "unit": ""
                         },
@@ -1946,7 +1255,7 @@
                     ]
                 },
                 {
-                    "name": "Uptime request",
+                    "name": "Uptime answer",
                     "fields": [
                         {
                             "id": "csp_prio",
@@ -1962,7 +1271,7 @@
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 10,
+                            "value": 1,
                             "conversion": "int((pkt[0] >> 1) & 31)",
                             "unit": ""
                         },
@@ -1971,7 +1280,7 @@
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
-                            "value": 1,
+                            "value": 10,
                             "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
                             "unit": ""
                         },
@@ -2041,7 +1350,7 @@
                     ]
                 },
                 {
-                    "name": "Reboot request",
+                    "name": "Beacon",
                     "fields": [
                         {
                             "id": "csp_prio",
@@ -2057,7 +1366,7 @@
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 10,
+                            "value": 1,
                             "conversion": "int((pkt[0] >> 1) & 31)",
                             "unit": ""
                         },
@@ -2066,7 +1375,7 @@
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
-                            "value": 1,
+                            "value": 10,
                             "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
                             "unit": ""
                         },
@@ -2075,7 +1384,7 @@
                             "name": "Destination Port",
                             "initial_pos": 1,
                             "final_pos": 2,
-                            "value": 4,
+                            "value": 10,
                             "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
                             "unit": ""
                         },
@@ -2084,7 +1393,7 @@
                             "name": "Source Port",
                             "initial_pos": 2,
                             "final_pos": 2,
-                            "value": 4,
+                            "value": 10,
                             "conversion": "int(pkt[2] & 63)",
                             "unit": ""
                         },
@@ -2125,18 +1434,18 @@
                             "unit": ""
                         },
                         {
-                            "id": "csp_reboot_magic_word",
-                            "name": "Reboot code",
+                            "id": "beacon_pl",
+                            "name": "Payload",
                             "initial_pos": 4,
-                            "final_pos": 7,
-                            "value": [128, 7, 128, 7],
-                            "conversion": "pkt[4:8]",
+                            "final_pos": 50,
+                            "value": 0,
+                            "conversion": "pkt[4:51]",
                             "unit": ""
                         }
                     ]
                 },
                 {
-                    "name": "Shutdown request",
+                    "name": "Data request answer",
                     "fields": [
                         {
                             "id": "csp_prio",
@@ -2152,7 +1461,7 @@
                             "name": "Source Address",
                             "initial_pos": 0,
                             "final_pos": 0,
-                            "value": 10,
+                            "value": 1,
                             "conversion": "int((pkt[0] >> 1) & 31)",
                             "unit": ""
                         },
@@ -2161,7 +1470,7 @@
                             "name": "Destination Address",
                             "initial_pos": 0,
                             "final_pos": 1,
-                            "value": 1,
+                            "value": 10,
                             "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
                             "unit": ""
                         },
@@ -2170,7 +1479,7 @@
                             "name": "Destination Port",
                             "initial_pos": 1,
                             "final_pos": 2,
-                            "value": 4,
+                            "value": 35,
                             "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
                             "unit": ""
                         },
@@ -2179,7 +1488,7 @@
                             "name": "Source Port",
                             "initial_pos": 2,
                             "final_pos": 2,
-                            "value": 4,
+                            "value": 35,
                             "conversion": "int(pkt[2] & 63)",
                             "unit": ""
                         },
@@ -2220,12 +1529,495 @@
                             "unit": ""
                         },
                         {
-                            "id": "csp_shutdown_magic_word",
-                            "name": "Shutdown code",
+                            "id": "data_req_pl",
+                            "name": "Payload",
                             "initial_pos": 4,
-                            "final_pos": 7,
-                            "value": [209, 229, 82, 154],
-                            "conversion": "pkt[4:8]",
+                            "final_pos": 50,
+                            "value": 0,
+                            "conversion": "pkt[4:51]",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Message broadcast",
+                    "fields": [
+                        {
+                            "id": "csp_prio",
+                            "name": "Priority",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0] >> 6)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_src_adr",
+                            "name": "Source Address",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 1,
+                            "conversion": "int((pkt[0] >> 1) & 31)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_dst_adr",
+                            "name": "Destination Address",
+                            "initial_pos": 0,
+                            "final_pos": 1,
+                            "value": 10,
+                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_dst_port",
+                            "name": "Destination Port",
+                            "initial_pos": 1,
+                            "final_pos": 2,
+                            "value": 36,
+                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_src_port",
+                            "name": "Source Port",
+                            "initial_pos": 2,
+                            "final_pos": 2,
+                            "value": 36,
+                            "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_hmac",
+                            "name": "HMAC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_xtea",
+                            "name": "XTEA Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 2) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_rdp",
+                            "name": "RDP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_crc",
+                            "name": "CRC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool(pkt[3] & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "brd_msg_pl",
+                            "name": "Payload",
+                            "initial_pos": 4,
+                            "final_pos": 50,
+                            "value": 0,
+                            "conversion": "pkt[4:51]",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Payload data answer",
+                    "fields": [
+                        {
+                            "id": "csp_prio",
+                            "name": "Priority",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0] >> 6)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_src_adr",
+                            "name": "Source Address",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 1,
+                            "conversion": "int((pkt[0] >> 1) & 31)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_dst_adr",
+                            "name": "Destination Address",
+                            "initial_pos": 0,
+                            "final_pos": 1,
+                            "value": 10,
+                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_dst_port",
+                            "name": "Destination Port",
+                            "initial_pos": 1,
+                            "final_pos": 2,
+                            "value": 45,
+                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_src_port",
+                            "name": "Source Port",
+                            "initial_pos": 2,
+                            "final_pos": 2,
+                            "value": 45,
+                            "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_hmac",
+                            "name": "HMAC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_xtea",
+                            "name": "XTEA Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 2) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_rdp",
+                            "name": "RDP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_crc",
+                            "name": "CRC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool(pkt[3] & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "pl_data_pl",
+                            "name": "Payload",
+                            "initial_pos": 4,
+                            "final_pos": 50,
+                            "value": 0,
+                            "conversion": "pkt[4:51]",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Parameter value",
+                    "fields": [
+                        {
+                            "id": "csp_prio",
+                            "name": "Priority",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0] >> 6)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_src_adr",
+                            "name": "Source Address",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 1,
+                            "conversion": "int((pkt[0] >> 1) & 31)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_dst_adr",
+                            "name": "Destination Address",
+                            "initial_pos": 0,
+                            "final_pos": 1,
+                            "value": 10,
+                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_dst_port",
+                            "name": "Destination Port",
+                            "initial_pos": 1,
+                            "final_pos": 2,
+                            "value": 47,
+                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_src_port",
+                            "name": "Source Port",
+                            "initial_pos": 2,
+                            "final_pos": 2,
+                            "value": 47,
+                            "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_hmac",
+                            "name": "HMAC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_xtea",
+                            "name": "XTEA Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 2) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_rdp",
+                            "name": "RDP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_crc",
+                            "name": "CRC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool(pkt[3] & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "param_pl",
+                            "name": "Payload",
+                            "initial_pos": 4,
+                            "final_pos": 50,
+                            "value": 0,
+                            "conversion": "pkt[4:51]",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Telecommand feedback",
+                    "fields": [
+                        {
+                            "id": "csp_prio",
+                            "name": "Priority",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0] >> 6)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_src_adr",
+                            "name": "Source Address",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 1,
+                            "conversion": "int((pkt[0] >> 1) & 31)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_dst_adr",
+                            "name": "Destination Address",
+                            "initial_pos": 0,
+                            "final_pos": 1,
+                            "value": 10,
+                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_dst_port",
+                            "name": "Destination Port",
+                            "initial_pos": 1,
+                            "final_pos": 2,
+                            "value": 49,
+                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_src_port",
+                            "name": "Source Port",
+                            "initial_pos": 2,
+                            "final_pos": 2,
+                            "value": 49,
+                            "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_hmac",
+                            "name": "HMAC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_xtea",
+                            "name": "XTEA Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 2) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_rdp",
+                            "name": "RDP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_crc",
+                            "name": "CRC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool(pkt[3] & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "tc_fb_pl",
+                            "name": "Payload",
+                            "initial_pos": 4,
+                            "final_pos": 11,
+                            "value": 0,
+                            "conversion": "pkt[4:12]",
+                            "unit": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Downlink (Payload)",
+            "baudrate": 4800,
+            "sync_word": [201, 208, 138, 123],
+            "protocol": "AX100-Mode5",
+            "types": [
+                {
+                    "name": "Beacon",
+                    "fields": [
+                        {
+                            "id": "csp_prio",
+                            "name": "Priority",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0] >> 6)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_src_adr",
+                            "name": "Source Address",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 3,
+                            "conversion": "int((pkt[0] >> 1) & 31)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_dst_adr",
+                            "name": "Destination Address",
+                            "initial_pos": 0,
+                            "final_pos": 1,
+                            "value": 10,
+                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_dst_port",
+                            "name": "Destination Port",
+                            "initial_pos": 1,
+                            "final_pos": 2,
+                            "value": 10,
+                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_src_port",
+                            "name": "Source Port",
+                            "initial_pos": 2,
+                            "final_pos": 2,
+                            "value": 10,
+                            "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_hmac",
+                            "name": "HMAC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_xtea",
+                            "name": "XTEA Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 2) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_rdp",
+                            "name": "RDP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_crc",
+                            "name": "CRC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool(pkt[3] & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "pl_beacon_pl",
+                            "name": "Payload",
+                            "initial_pos": 4,
+                            "final_pos": 50,
+                            "value": 0,
+                            "conversion": "pkt[4:51]",
                             "unit": ""
                         }
                     ]
