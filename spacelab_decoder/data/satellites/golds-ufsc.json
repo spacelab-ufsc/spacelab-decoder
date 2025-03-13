@@ -824,6 +824,15 @@
                             "value": 0,
                             "conversion": "int((pkt[97] << 24) | (pkt[98] << 16) | (pkt[99] << 8) | pkt[100])",
                             "unit": "sec"
+                        },
+                        {
+                            "id": "obdh_last_contact_ts",
+                            "name": "Last TC contact",
+                            "initial_pos": 101,
+                            "final_pos": 104,
+                            "value": 0,
+                            "conversion": "int((pkt[101] << 24) | (pkt[102] << 16) | (pkt[103] << 8) | pkt[104])",
+                            "unit": "sec"
                         }
                     ]
                 },
