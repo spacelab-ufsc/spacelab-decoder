@@ -15,4 +15,6 @@ Overview
 
    overview
    logfile
+   usage
+   installation
    packaging

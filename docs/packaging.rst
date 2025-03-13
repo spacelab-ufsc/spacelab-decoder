@@ -21,9 +21,9 @@ To generate an RPM package, follow the instructions below:
 ::
 
     %define name spacelab_decoder
-    %define version 0.4.0
-    %define unmangled_version 0.4.0
-    %define unmangled_version 0.4.0
+    %define version 1.0.0
+    %define unmangled_version 1.0.0
+    %define unmangled_version 1.0.0
     %define release 1
 
     %global debug_package %{nil}
