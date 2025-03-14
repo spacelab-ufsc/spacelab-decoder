@@ -54,7 +54,8 @@ class Packet:
             buf = buf + "\t" + "Satellite" + ": " + self.sat_packet['name'] + "\n"
             buf = buf + "\t" + "Link" + ": " + self.sat_packet['links'][link_idx]['name'] + "\n"
             buf = buf + "\t" + "Data Source" + ": " + self.sat_packet['links'][link_idx]['types'][type_idx]['name'] + "\n"
-            buf = buf + "\t" + "Protocol" + ": " + self.sat_packet['links'][link_idx]['protocol'] + "\n"
+            buf = buf + "\t" + "Link Protocol" + ": " + self.sat_packet['links'][link_idx]['protocol_link'] + "\n"
+            buf = buf + "\t" + "Network Protocol" + ": " + self.sat_packet['links'][link_idx]['protocol_network'] + "\n"
             buf = buf + "\t" + "Data" + ":" + "\n"
 
             for i in range(len(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'])):
@@ -128,7 +129,8 @@ class PacketCSP(Packet):
             buf = buf + "\t" + "Satellite" + ": " + self.sat_packet['name'] + "\n"
             buf = buf + "\t" + "Link" + ": " + self.sat_packet['links'][link_idx]['name'] + "\n"
             buf = buf + "\t" + "Packet Type" + ": " + self.sat_packet['links'][link_idx]['types'][type_idx]['name'] + "\n"
-            buf = buf + "\t" + "Protocol" + ": " + self.sat_packet['links'][link_idx]['protocol'] + "\n"
+            buf = buf + "\t" + "Link Protocol" + ": " + self.sat_packet['links'][link_idx]['protocol_link'] + "\n"
+            buf = buf + "\t" + "Network Protocol" + ": " + self.sat_packet['links'][link_idx]['protocol_network'] + "\n"
             buf = buf + "\t" + "Data" + ":" + "\n"
 
             for i in range(len(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'])):

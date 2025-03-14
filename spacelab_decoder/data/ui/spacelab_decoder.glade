@@ -41,7 +41,7 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
       <pattern>*.wav</pattern>
     </patterns>
   </object>
-  <object class="GtkListStore" id="liststore_packet_type">
+  <object class="GtkListStore" id="liststore_link">
     <columns>
       <!-- column-name gchararray1 -->
       <column type="gchararray"/>
@@ -279,12 +279,12 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkComboBox" id="combobox_packet_type">
+                              <object class="GtkComboBox" id="combobox_link">
                                 <property name="width-request">200</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
                                 <property name="tooltip-text" translatable="yes">Packet type</property>
-                                <property name="model">liststore_packet_type</property>
+                                <property name="model">liststore_link</property>
                                 <property name="active">0</property>
                               </object>
                               <packing>

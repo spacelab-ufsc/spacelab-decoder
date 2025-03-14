@@ -1,11 +1,18 @@
 {
+    "id": "cat-a2",
     "name": "Catarina-A2",
     "links": [
         {
+            "id": "downlink",
             "name": "Downlink",
+            "direction": "down",
+            "frequency": 400.3e6,
+            "modulation": "GMSK",
             "baudrate": 4800,
+            "preamble": [170, 170, 170, 170],
             "sync_word": [147, 11, 81, 222],
-            "protocol": "AX100-Mode5",
+            "protocol_link": "AX100-Mode5",
+            "protocol_network": "CSP",
             "types": [
                 {
                     "name": "CMP ident answer",
@@ -1922,10 +1929,16 @@
             ]
         },
         {
+            "id": "downlink_pl",
             "name": "Downlink (Payload)",
+            "direction": "down",
+            "frequency": 400.3e6,
+            "modulation": "GMSK",
             "baudrate": 4800,
+            "preamble": [170, 170, 170, 170],
             "sync_word": [201, 208, 138, 123],
-            "protocol": "AX100-Mode5",
+            "protocol_link": "AX100-Mode5",
+            "protocol_network": "CSP",
             "types": [
                 {
                     "name": "Beacon",

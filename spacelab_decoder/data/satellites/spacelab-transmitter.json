@@ -1,11 +1,18 @@
 {
+    "id": "spacelab-transmitter",
     "name": "SpaceLab-Transmitter",
     "links": [
         {
+            "id": "uplink_ngham",
             "name": "Uplink (NGHam)",
             "baudrate": 1200,
+            "direction": "up",
+            "frequency": 145.9e6,
+            "modulation": "GMSK",
+            "preamble": [170, 170, 170, 170],
             "sync_word": [93, 230, 42, 126],
-            "protocol": "NGHam",
+            "protocol_link": "NGHam",
+            "protocol_network": "SLP",
             "types": [
                 {
                     "name": "Ping request",
@@ -693,10 +700,16 @@
             ]
         },
         {
+            "id": "uplink_csp",
             "name": "Uplink (CSP)",
             "baudrate": 4800,
+            "direction": "up",
+            "frequency": 402.9e6,
+            "modulation": "GMSK",
+            "preamble": [170, 170, 170, 170, 170, 170, 170, 170],
             "sync_word": [147, 11, 81, 222],
-            "protocol": "AX100-Mode5",
+            "protocol_link": "AX100-Mode5",
+            "protocol_network": "CSP",
             "types": [
                 {
                     "name": "CMP ident request",
