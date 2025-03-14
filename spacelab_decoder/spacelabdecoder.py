@@ -47,7 +47,7 @@ from spacelab_decoder.bit_buffer import BitBuffer, _BIT_BUFFER_LSB
 from spacelab_decoder.sync_word import SyncWord, _SYNC_WORD_LSB
 from spacelab_decoder.byte_buffer import ByteBuffer, _BYTE_BUFFER_LSB
 from spacelab_decoder.bit_decoder import BitDecoder
-from spacelab_decoder.packet import Packet, PacketCSP
+from spacelab_decoder.packet import PacketSLP, PacketCSP
 from spacelab_decoder.ccsds import CCSDS_POLY
 from spacelab_decoder.ax100 import AX100Mode5
 from spacelab_decoder.satellite import Satellite
@@ -535,21 +535,28 @@ class SpaceLabDecoder:
                                         self.write_log("Error decoding a " + link_name + " packet from " + _SATELLITES[self.combobox_satellite.get_active()][0] + "!")
                                 else:
                                     bit_decoder.reset()
+
                                     tm_now = datetime.now()
                                     self.decoded_packets_index.append(self.textbuffer_pkt_data.create_mark(str(tm_now), self.textbuffer_pkt_data.get_end_iter(), True))
-                                    self.write_log(link_name + " packet from " + _SATELLITES[self.combobox_satellite.get_active()][0] + " decoded!")
+                                    self.write_log(link_name + " packet from " + self._satellite.get_name() + " decoded!")
+
                                     self._decode_packet(pl)
                             elif protocol == _PROTOCOL_AX100MODE5:
                                 pl = ax100.decode_byte(decoded_byte)
                                 if type(pl) is list:
-                                    self._decode_packet(pl)
+                                    bit_decoder.reset()
 
-                                    # Write event log
                                     tm_now = datetime.now()
                                     self.decoded_packets_index.append(self.textbuffer_pkt_data.create_mark(str(tm_now), self.textbuffer_pkt_data.get_end_iter(), True))
-                                    self.write_log(link_name + " packet from " + _SATELLITES[self.combobox_satellite.get_active()][0] + " decoded!")
+                                    self.write_log(link_name + " packet from " + self._satellite.get_name() + " decoded!")
+
+                                    self._decode_packet(pl)
 
                                     ax100.reset_decoder()
+            except RuntimeError as e:
+                bit_decoder.reset()
+                ax100.reset_decoder()
+                self.write_log("Error decoding a " + link_name + " packet from " + self._satellite.get_name() + ": " + str(e))
             except socket.timeout:
                 pass
 
@@ -608,7 +615,7 @@ class SpaceLabDecoder:
                 pkt_data = str(pkt_csp)
                 pkt_json = pkt_csp.get_data()
             elif self._satellite.get_active_link().get_network_protocol() == "SLP":
-                pkt_sl = Packet(sat_json, pkt)
+                pkt_sl = PacketSLP(sat_json, pkt)
                 pkt_data = str(pkt_sl)
                 pkt_json = pkt_sl.get_data()
         except RuntimeError as e:
