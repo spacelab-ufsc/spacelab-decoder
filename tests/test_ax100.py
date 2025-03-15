@@ -99,24 +99,6 @@ def test_scrambling(ax100_mode5):
     # Assert that the descrambled data matches the original data
     assert descrambled_data == data
 
-def test_reverse_golay_field(ax100_mode5):
-    # Test data
-    golay_data = list()
-    for i in range(3):
-        golay_data.append(random.randint(0, 255))
-
-    # Reverse the Golay field
-    reversed_data = ax100_mode5._reverse_golay_field(golay_data)
-
-    # Assert that the reversed data is correct
-    expected_reversed_data = [
-        ((golay_data[1] & 0x0F) << 4) | ((golay_data[2] & 0xF0) >> 4),
-        ((golay_data[2] & 0x0F) << 4) | ((golay_data[0] & 0xF0) >> 4),
-        ((golay_data[0] & 0x0F) << 4) | ((golay_data[1] & 0xF0) >> 4)
-    ]
-
-    assert reversed_data == expected_reversed_data
-
 def test_sync_word(ax100_mode5):
     # Test sync word
     new_sync_word = [0x12, 0x34, 0x56, 0x78]

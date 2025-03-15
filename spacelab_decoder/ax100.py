@@ -177,7 +177,7 @@ class AX100Mode5:
         data, err, err_pos = rs.decode(rs_data + rs_par, [0], 0)
 
         # Return the payload data after Reed-Solomon correction
-        return data[:pkt_len-len(self.get_sync_word()-32)]  # 32 = Reed-Solomon parity block
+        return data[:pkt_len-len(self.get_sync_word())-32]  # 32 = Reed-Solomon parity block
 
     def decode_byte(self, byte):
         """
