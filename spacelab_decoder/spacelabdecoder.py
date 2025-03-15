@@ -70,7 +70,7 @@ _SAT_JSON_SYSTEM_PATH           = '/usr/share/spacelab_decoder/'
 _DEFAULT_CALLSIGN               = 'PP5UF'
 _DEFAULT_LOCATION               = 'Florianópolis'
 _DEFAULT_COUNTRY                = 'Brazil'
-_DEFAULT_MAX_PKT_LEN_BYTES      = 300
+_DEFAULT_SYNC_WORD_BIT_ERROR    = 4
 
 # Defining logfile default local
 _DIR_CONFIG_LOGFILE_LINUX       = 'spacelab_decoder'
@@ -135,6 +135,8 @@ class SpaceLabDecoder:
         self.entry_preferences_general_callsign = self.builder.get_object("entry_preferences_general_callsign")
         self.entry_preferences_general_location = self.builder.get_object("entry_preferences_general_location")
         self.entry_preferences_general_country = self.builder.get_object("entry_preferences_general_country")
+
+        self.entry_preferences_max_bit_err = self.builder.get_object("entry_preferences_max_bit_err")
 
         self.entry_preferences_udp_address = self.builder.get_object("entry_preferences_udp_address")
         self.entry_preferences_udp_port = self.builder.get_object("entry_preferences_udp_port")
@@ -476,6 +478,7 @@ class SpaceLabDecoder:
         self.entry_preferences_general_callsign.set_text(_DEFAULT_CALLSIGN)
         self.entry_preferences_general_location.set_text(_DEFAULT_LOCATION)
         self.entry_preferences_general_country.set_text(_DEFAULT_COUNTRY)
+        self.entry_preferences_max_bit_err.set_text(_DEFAULT_SYNC_WORD_BIT_ERROR)
 
     def _decode_audio(self, audio_file, baud, sync_word, protocol, link_name):
         sample_rate, data = wavfile.read(audio_file)
@@ -510,7 +513,7 @@ class SpaceLabDecoder:
 
         sync_word.reverse()
 
-        bit_decoder = BitDecoder(sync_word)
+        bit_decoder = BitDecoder(sync_word, int(self.entry_preferences_max_bit_err.get_text()))
 
         ngham = pyngham.PyNGHam()
         ax100 = AX100Mode5()
@@ -565,7 +568,7 @@ class SpaceLabDecoder:
     def _find_ngham_pkts(self, bitstream, sync_word, link_name):
         sync_word.reverse()
 
-        bit_decoder = BitDecoder(sync_word)
+        bit_decoder = BitDecoder(sync_word, int(self.entry_preferences_max_bit_err.get_text()))
 
         ngham = pyngham.PyNGHam()
 
@@ -587,7 +590,7 @@ class SpaceLabDecoder:
     def _find_ax100mode5_pkts(self, bitstream, sync_word, link_name):
         sync_word.reverse()
 
-        bit_decoder = BitDecoder(sync_word)
+        bit_decoder = BitDecoder(sync_word, int(self.entry_preferences_max_bit_err.get_text()))
 
         ax100 = AX100Mode5()
 

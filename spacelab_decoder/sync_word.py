@@ -20,7 +20,6 @@
 #  
 #
 
-
 _SYNC_WORD_MSB = "msb"
 _SYNC_WORD_LSB = "lsb"
 
@@ -53,6 +52,20 @@ class SyncWord(list):
             k = 0
 
         return str(res_lst) + " = " + str([1 if digit == True else 0 for digit in self])
+
+    def __eq__(self, other):
+        if not isinstance(other, list):
+            return NotImplemented   # Handle comparison with non-list objects
+
+        if len(other) < len(self):
+            return 0
+
+        equal_bits = 0
+        for i in range(len(self)):
+            if self[i] == other[i]:
+                equal_bits += 1
+
+        return equal_bits
 
     def byte_to_bitfield(self, val):
         buf = [True if digit == '1' else False for digit in bin(val)[2:].zfill(8)]  # [2:] to chop off the "0b" part
