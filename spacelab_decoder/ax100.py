@@ -130,11 +130,7 @@ class AX100Mode5:
         # Golay24
         gol = Golay24()
 
-        op_fec_field = 0x06 # GomSpace Magic
-        gol_res = gol.encode((op_fec_field << 8) | len(data))
-
-        # Reversing the Golay24 data (another GomSpace magic)
-        pkt += self._reverse_golay_field(gol_res)
+        pkt += gol.encode(len(self.get_sync_word()) + len(data) + 32)   # 32 = Reed-Solomon parity block
 
         # Data
         pkt += data
@@ -145,7 +141,7 @@ class AX100Mode5:
         pkt += rs.encode(self._padding(data))
 
         # Scramble
-        pkt[11:] = self._scrambling(pkt[11:])
+        pkt[len(self.get_preamble())+len(self.get_sync_word())+3:] = self._scrambling(pkt[len(self.get_preamble())+len(self.get_sync_word())+3:])
 
         return pkt
 
@@ -164,8 +160,7 @@ class AX100Mode5:
         # Golay24
         gol = Golay24()
 
-        # Reversing the Golay24 data (GomSpace magic)
-        pkt_len = gol.decode(self._reverse_golay_field(pkt[:3])) & 0xFF # 0xFF = Removing 0x06, GomSpace magic...
+        pkt_len, golay_err = gol.decode(pkt[:3])
 
         # De-scrambling
         rs_block = self._scrambling(pkt[3:])    # 3 = Removing Golay24 bytes
@@ -182,7 +177,7 @@ class AX100Mode5:
         data, err, err_pos = rs.decode(rs_data + rs_par, [0], 0)
 
         # Return the payload data after Reed-Solomon correction
-        return data[:pkt_len]
+        return data[:pkt_len-len(self.get_sync_word()-32)]  # 32 = Reed-Solomon parity block
 
     def decode_byte(self, byte):
         """
@@ -203,7 +198,13 @@ class AX100Mode5:
 
             gol = Golay24()
 
-            self._decoder_pkt_len = gol.decode(self._reverse_golay_field(self._decoder_golay_buf)) & 0xFF
+            self._decoder_pkt_len, golay_err = gol.decode(self._decoder_golay_buf)
+
+            if self._decoder_pkt_len == -1:
+                self.reset_decoder()
+                raise RuntimeError("Impossible to correct the Golay field!")
+            else:
+                self._decoder_pkt_len -= (len(self.get_sync_word()) + 32)   # 32 = Reed-Solomon parity block
 
             self._decoder_golay_buf.clear()
         elif self._decoder_pos < 3 + self._decoder_pkt_len - 1:         # Receiving Reed-Solomon block (data part)
@@ -278,21 +279,3 @@ class AX100Mode5:
             data[i-start_pos] = data[i-start_pos] ^ _AX100_CCSDS_POLY[i]
 
         return data
-
-    def _reverse_golay_field(self, data):
-        """
-        Reverses the Golay24 field according to the GomSpace AX100 format.
-
-        :param data: The encoded data using Golay24 common format.
-        :type: list[int]
-
-        :return: The reversed data in GomSpace format.
-        :rtype: list[int]
-        """
-        rev_data = list()
-
-        rev_data.append(((data[1] & 0x0F) << 4) | ((data[2] & 0xF0) >> 4))
-        rev_data.append(((data[2] & 0x0F) << 4) | ((data[0] & 0xF0) >> 4))
-        rev_data.append(((data[0] & 0x0F) << 4) | ((data[1] & 0xF0) >> 4))
-
-        return rev_data
