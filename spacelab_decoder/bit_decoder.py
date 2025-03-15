@@ -39,7 +39,8 @@ class BitDecoder:
         self._byte_buf = ByteBuffer(_BYTE_BUFFER_LSB)
         self._pkt_detected = False
         self._decoded_bytes = 0
-        self._max_bit_err = max_err
+        self._max_bit_err = 0
+        self.set_max_bit_errors(max_err)
 
     def decode_bit(self, bit):
         """
@@ -91,7 +92,10 @@ class BitDecoder:
 
         :return: None
         """
-        self._max_bit_err = err
+        if err > len(self._sync_word)/2:
+            raise ValueError("The maximum allowed bit errors in the sync word must not exceed 50 % of the sync word!")
+        else:
+            self._max_bit_err = err
 
     def get_max_bit_errors(self):
         """
