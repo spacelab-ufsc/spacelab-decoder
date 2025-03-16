@@ -58,7 +58,7 @@ def test_decode_byte(ax100_mode5):
 
     # Decode the packet byte by byte
     decoded_data = []
-    for byte in encoded_packet[8:]:  # Skip preamble and sync word
+    for byte in encoded_packet[len(ax100_mode5.get_preamble())+len(ax100_mode5.get_sync_word()):]:  # Skip preamble and sync word
         result = ax100_mode5.decode_byte(byte)
         if result is not None:
             decoded_data = result
