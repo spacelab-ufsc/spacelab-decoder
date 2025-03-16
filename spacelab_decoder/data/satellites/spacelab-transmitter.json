@@ -1214,15 +1214,6 @@
                             "value": 0,
                             "conversion": "pkt[10]",
                             "unit": ""
-                        },
-                        {
-                            "id": "csp_cmp_peek_data",
-                            "name": "Peek Data",
-                            "initial_pos": 11,
-                            "final_pos": 210,
-                            "value": 0,
-                            "conversion": "pkt[11:(11 + pkt[10])]",
-                            "unit": ""
                         }
                     ]
                 },
