@@ -24,6 +24,7 @@ import random
 import string
 import hashlib
 import hmac
+import time
 
 from csp import CSP, CSP_PRIO_NORM
 
@@ -83,10 +84,11 @@ def test_encode_cmp_set_route():
 def test_encode_cmp_if_stat():
     src_adr = random.randint(0, 31)
     dst_adr = random.randint(0, 31)
+    if_name = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=random.randint(1, 11)))
 
     csp = CSP(src_adr)
 
-    pkt = csp.encode_cmp_if_stat(dst_adr)
+    pkt = csp.encode_cmp_if_stat(dst_adr, if_name)
 
     assert (pkt[0] >> 6) == 2                                       # Priority
     assert ((pkt[0] >> 1) & 31) == src_adr                          # Source address
@@ -98,7 +100,9 @@ def test_encode_cmp_if_stat():
     assert ((pkt[3] >> 2) & 1) == 0                                 # XTEA
     assert ((pkt[3] >> 1) & 1)== 0                                  # RDP
     assert (pkt[3] & 1) == 0                                        # CRC
-    assert pkt[4:] == [0, 3]                                        # Payload
+    assert pkt[4] == 0                                              # CMP Type
+    assert pkt[5] == 3                                              # CMP Code
+    assert pkt[6:] == [ord(c) for c in if_name]                     # Payload
 
 def test_encode_cmp_peek():
     src_adr = random.randint(0, 31)
@@ -156,6 +160,43 @@ def test_encode_cmp_poke():
     assert (pkt[3] & 1) == 0                                        # CRC
     assert pkt[4:] == pl                                            # Payload
 
+def test_encode_cmp_set_clock():
+    src_adr = random.randint(0, 31)
+    dst_adr = random.randint(0, 31)
+    ts = int(time.time())
+    ns = random.randint(0, 2**32-1)
+
+    ts_list = list()
+    ts_list.append((ts >> 24) & 0xFF)
+    ts_list.append((ts >> 16) & 0xFF)
+    ts_list.append((ts >> 8) & 0xFF)
+    ts_list.append((ts >> 0) & 0xFF)
+
+    ns_list = list()
+    ns_list.append((ns >> 24) & 0xFF)
+    ns_list.append((ns >> 16) & 0xFF)
+    ns_list.append((ns >> 8) & 0xFF)
+    ns_list.append((ns >> 0) & 0xFF)
+
+    csp = CSP(src_adr)
+
+    pkt = csp.encode_cmp_set_clock(dst_adr, ts ,ns)
+
+    assert (pkt[0] >> 6) == 2                                       # Priority
+    assert ((pkt[0] >> 1) & 31) == src_adr                          # Source address
+    assert (((pkt[0] & 1) << 4) | ((pkt[1] >> 4) & 15)) == dst_adr  # Destination address
+    assert (((pkt[1] & 15) << 2) | ((pkt[2] >> 6) & 3)) == 0        # CMP port
+    assert pkt[2] & 63 == 0                                         # CMP port
+    assert ((pkt[3] >> 4) & 1) == 0                                 # SFP
+    assert ((pkt[3] >> 3) & 1) == 0                                 # HMAC
+    assert ((pkt[3] >> 2) & 1) == 0                                 # XTEA
+    assert ((pkt[3] >> 1) & 1)== 0                                  # RDP
+    assert (pkt[3] & 1) == 0                                        # CRC
+    assert pkt[4] == 0                                              # CMP Type
+    assert pkt[5] == 6                                              # CMP Code
+    assert pkt[6:10] == ts_list                                     # Seconds
+    assert pkt[10:14] == ns_list                                    # Nanoseconds
+
 def test_encode_cmp_get_clock():
     src_adr = random.randint(0, 31)
     dst_adr = random.randint(0, 31)
@@ -174,7 +215,9 @@ def test_encode_cmp_get_clock():
     assert ((pkt[3] >> 2) & 1) == 0                                 # XTEA
     assert ((pkt[3] >> 1) & 1)== 0                                  # RDP
     assert (pkt[3] & 1) == 0                                        # CRC
-    assert pkt[4:] == [0, 6]                                        # Payload
+    assert pkt[4] == 0                                              # CMP Type
+    assert pkt[5] == 6                                              # CMP Code
+    assert pkt[6:15] == 8*[0]                                       # Payload
 
 def test_encode_ping():
     src_adr = random.randint(0, 31)

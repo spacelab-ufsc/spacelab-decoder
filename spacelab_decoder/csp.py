@@ -193,7 +193,7 @@ class CSP:
 
         return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
 
-    def encode_cmp_if_stat(self, dst_adr):
+    def encode_cmp_if_stat(self, dst_adr, ifc):
         """
         Encodes a CSP CMP Interface Statistics Request packet.
 
@@ -203,7 +203,12 @@ class CSP:
         :return: A list with the byte sequence of the CSP Ping Request packet.
         :rtype: list[int]
         """
+        if len(ifc) > 11:
+            raise ValueError('The interface name must have up to 11 characters!')
+
         pl = [_CSP_CMP_REQUEST, _CSP_CMP_IF_STATS]
+
+        pl += [ord(c) for c in ifc]
 
         return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
 
@@ -252,6 +257,36 @@ class CSP:
 
         return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
 
+    def encode_cmp_set_clock(self, dst_adr, sec, ns):
+        """
+        Encodes a CSP CMP Set Clock Request packet.
+
+        :param dst_adr: Destination address (must be between 0 and 31).
+        :type: int
+
+        :param sec: Seconds of the clock to set.
+        :type: int
+
+        :param ns: Nanoseconds of the clock to set.
+        :type: int
+
+        :return: A list with the byte sequence of the CSP Ping Request packet.
+        :rtype: list[int]
+        """
+        pl = [_CSP_CMP_REQUEST, _CSP_CMP_CLOCK]
+
+        pl.append((sec >> 24) & 0xFF)
+        pl.append((sec >> 16) & 0xFF)
+        pl.append((sec >> 8) & 0xFF)
+        pl.append((sec >> 0) & 0xFF)
+
+        pl.append((ns >> 24) & 0xFF)
+        pl.append((ns >> 16) & 0xFF)
+        pl.append((ns >> 8) & 0xFF)
+        pl.append((ns >> 0) & 0xFF)
+
+        return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
+
     def encode_cmp_get_clock(self, dst_adr):
         """
         Encodes a CSP CMP Get Clock Request packet.
@@ -263,6 +298,8 @@ class CSP:
         :rtype: list[int]
         """
         pl = [_CSP_CMP_REQUEST, _CSP_CMP_CLOCK]
+
+        pl += 8*[0]
 
         return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
 
