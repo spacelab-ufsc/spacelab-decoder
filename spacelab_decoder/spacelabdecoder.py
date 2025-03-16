@@ -48,7 +48,6 @@ from spacelab_decoder.sync_word import SyncWord, _SYNC_WORD_LSB
 from spacelab_decoder.byte_buffer import ByteBuffer, _BYTE_BUFFER_LSB
 from spacelab_decoder.bit_decoder import BitDecoder
 from spacelab_decoder.packet import PacketSLP, PacketCSP
-from spacelab_decoder.ccsds import CCSDS_POLY
 from spacelab_decoder.ax100 import AX100Mode5
 from spacelab_decoder.satellite import Satellite
 
