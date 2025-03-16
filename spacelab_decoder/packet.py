@@ -121,7 +121,7 @@ class PacketCSP(PacketSLP):
                 for j in range(len(self.sat_packet['links'][i]['types'])):
                     if dst_port == self.sat_packet['links'][i]['types'][j]['fields'][3]['value']: # Search for the destination port
                         if dst_port == 0:   # CSP CMP packets
-                            if pkt[5] != self.sat_packet['links'][i]['types'][j]['fields'][11]['value']:
+                            if pkt[5] != self.sat_packet['links'][i]['types'][j]['fields'][11]['value']:    # 11 = CMP Code field
                                 continue
                         link_idx = i
                         type_idx = j
@@ -155,7 +155,7 @@ class PacketCSP(PacketSLP):
                 for j in range(len(self.sat_packet['links'][i]['types'])):
                     if dst_port == self.sat_packet['links'][i]['types'][j]['fields'][3]['value']:   # Search for the destination port
                         if dst_port == 0:   # CSP CMP packets
-                            if pkt[5] != self.sat_packet['links'][i]['types'][j]['fields'][11]['value']:
+                            if pkt[5] != self.sat_packet['links'][i]['types'][j]['fields'][11]['value']:    # 11 = CMP Code field
                                 continue
                         link_idx = i
                         type_idx = j

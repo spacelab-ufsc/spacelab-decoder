@@ -105,6 +105,7 @@ def test_ui():
     entry_preferences_general_callsign  = builder.get_object("entry_preferences_general_callsign")
     entry_preferences_general_location  = builder.get_object("entry_preferences_general_location")
     entry_preferences_general_country   = builder.get_object("entry_preferences_general_country")
+    entry_preferences_max_bit_err       = builder.get_object("entry_preferences_max_bit_err")
     button_preferences_ok               = builder.get_object("button_preferences_ok")
     button_preferences_default          = builder.get_object("button_preferences_default")
     button_preferences_cancel           = builder.get_object("button_preferences_cancel")
@@ -113,6 +114,7 @@ def test_ui():
     assert entry_preferences_general_callsign   != None
     assert entry_preferences_general_location   != None
     assert entry_preferences_general_country    != None
+    assert entry_preferences_max_bit_err        != None
     assert button_preferences_ok                != None
     assert button_preferences_default           != None
     assert button_preferences_cancel            != None
