@@ -20,9 +20,8 @@
 #
 #
 
-from pyngham import RS
-
 from spacelab_decoder.golay24 import Golay24
+from spacelab_decoder.rs import RS
 
 _AX100_PREAMBLE_DEFAULT     = [0xAA]*8
 _AX100_SYNC_WORD_DEFAULT    = [147, 11, 81, 222]
