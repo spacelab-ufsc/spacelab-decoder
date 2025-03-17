@@ -64,10 +64,13 @@ def test_encode_cmp_ident():
 def test_encode_cmp_set_route():
     src_adr = random.randint(0, 31)
     dst_adr = random.randint(0, 31)
+    dest_node = random.randint(0, 255)
+    next_hop_mac = random.randint(0, 255)
+    if_name = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=random.randint(1, 11)))
 
     csp = CSP(src_adr)
 
-    pkt = csp.encode_cmp_set_route(dst_adr)
+    pkt = csp.encode_cmp_set_route(dst_adr, dest_node, next_hop_mac, if_name)
 
     assert (pkt[0] >> 6) == 2                                       # Priority
     assert ((pkt[0] >> 1) & 31) == src_adr                          # Source address
@@ -79,7 +82,11 @@ def test_encode_cmp_set_route():
     assert ((pkt[3] >> 2) & 1) == 0                                 # XTEA
     assert ((pkt[3] >> 1) & 1)== 0                                  # RDP
     assert (pkt[3] & 1) == 0                                        # CRC
-    assert pkt[4:] == [0, 2]                                        # Payload
+    assert pkt[4] == 0                                              # CMP Type
+    assert pkt[5] == 2                                              # CMP Code
+    assert pkt[6] == dest_node                                      # Destination node
+    assert pkt[7] == next_hop_mac                                   # Next hop MAC
+    assert pkt[8:] == [ord(c) for c in if_name]                     # Interface
 
 def test_encode_cmp_if_stat():
     src_adr = random.randint(0, 31)
@@ -108,7 +115,7 @@ def test_encode_cmp_peek():
     src_adr = random.randint(0, 31)
     dst_adr = random.randint(0, 31)
     mem_adr = random.randint(0, (2**32) - 1)
-    mem_len = random.randint(0, 255)
+    mem_len = random.randint(0, 200)
 
     csp = CSP(src_adr)
 
@@ -120,6 +127,12 @@ def test_encode_cmp_peek():
 
     pl.append(mem_len)
 
+    mem_adr_list = list()
+    mem_adr_list.append((mem_adr >> 24) & 0xFF)
+    mem_adr_list.append((mem_adr >> 16) & 0xFF)
+    mem_adr_list.append((mem_adr >> 8) & 0xFF)
+    mem_adr_list.append((mem_adr >> 0) & 0xFF)
+
     assert (pkt[0] >> 6) == 2                                       # Priority
     assert ((pkt[0] >> 1) & 31) == src_adr                          # Source address
     assert (((pkt[0] & 1) << 4) | ((pkt[1] >> 4) & 15)) == dst_adr  # Destination address
@@ -130,17 +143,23 @@ def test_encode_cmp_peek():
     assert ((pkt[3] >> 2) & 1) == 0                                 # XTEA
     assert ((pkt[3] >> 1) & 1)== 0                                  # RDP
     assert (pkt[3] & 1) == 0                                        # CRC
-    assert pkt[4:] == pl                                            # Payload
+    assert pkt[4] == 0                                              # CMP Type
+    assert pkt[5] == 4                                              # CMP Code
+    assert pkt[6:10] == mem_adr_list                                # Memory address
+    assert pkt[10] == mem_len                                       # Memory length
 
 def test_encode_cmp_poke():
     src_adr = random.randint(0, 31)
     dst_adr = random.randint(0, 31)
     mem_adr = random.randint(0, (2**32) - 1)
-    mem_len = random.randint(0, 255)
+    mem_len = random.randint(0, 200)
+    mem_data = list()
+    for i in range(mem_len):
+        mem_data.append(random.randint(0, 255))
 
     csp = CSP(src_adr)
 
-    pkt = csp.encode_cmp_poke(dst_adr, mem_adr, mem_len)
+    pkt = csp.encode_cmp_poke(dst_adr, mem_adr, mem_data)
 
     pl = [0, 5]
 
@@ -148,6 +167,12 @@ def test_encode_cmp_poke():
 
     pl.append(mem_len)
 
+    mem_adr_list = list()
+    mem_adr_list.append((mem_adr >> 24) & 0xFF)
+    mem_adr_list.append((mem_adr >> 16) & 0xFF)
+    mem_adr_list.append((mem_adr >> 8) & 0xFF)
+    mem_adr_list.append((mem_adr >> 0) & 0xFF)
+
     assert (pkt[0] >> 6) == 2                                       # Priority
     assert ((pkt[0] >> 1) & 31) == src_adr                          # Source address
     assert (((pkt[0] & 1) << 4) | ((pkt[1] >> 4) & 15)) == dst_adr  # Destination address
@@ -158,7 +183,11 @@ def test_encode_cmp_poke():
     assert ((pkt[3] >> 2) & 1) == 0                                 # XTEA
     assert ((pkt[3] >> 1) & 1)== 0                                  # RDP
     assert (pkt[3] & 1) == 0                                        # CRC
-    assert pkt[4:] == pl                                            # Payload
+    assert pkt[4] == 0                                              # CMP Type
+    assert pkt[5] == 5                                              # CMP Code
+    assert pkt[6:10] == mem_adr_list                                # Payload
+    assert pkt[10] == mem_len                                       # Payload
+    assert pkt[11:] == mem_data                                     # Memory data
 
 def test_encode_cmp_set_clock():
     src_adr = random.randint(0, 31)

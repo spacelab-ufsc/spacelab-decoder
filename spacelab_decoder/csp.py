@@ -179,17 +179,34 @@ class CSP:
 
         return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
 
-    def encode_cmp_set_route(self, dst_adr):
+    def encode_cmp_set_route(self, dst_adr, dest_node, next_hop_mac, ifc):
         """
         Encodes a CSP CMP Set Route Request packet.
 
         :param dst_adr: Destination address (must be between 0 and 31).
         :type: int
 
+        :param dest_node: Is the destination node to set the route.
+        :type: int
+
+        :param next_hop_mac: Is the next hop MAC to set the route.
+        :type: int
+
+        :param ifc: Is the interface name to set the route.
+        :type: str
+
         :return: A list with the byte sequence of the CSP Ping Request packet.
         :rtype: list[int]
         """
+        if len(ifc) > 11:
+            raise ValueError('The interface name must have up to 11 characters!')
+
         pl = [_CSP_CMP_REQUEST, _CSP_CMP_ROUTE_SET]
+
+        pl.append(dest_node)
+        pl.append(next_hop_mac)
+
+        pl += [ord(c) for c in ifc]
 
         return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
 
@@ -228,8 +245,8 @@ class CSP:
         :return: A list with the byte sequence of the CSP Ping Request packet.
         :rtype: list[int]
         """
-        if mem_len > 255:
-            raise ValueError('The number of bytes to read must be lesser than 255!')
+        if mem_len > 200:
+            raise ValueError('The number of bytes to read must be lesser than 200!')
 
         pl = [_CSP_CMP_REQUEST, _CSP_CMP_PEEK]
 
@@ -239,21 +256,32 @@ class CSP:
 
         return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
 
-    def encode_cmp_poke(self, dst_adr, mem_adr, mem_len):
+    def encode_cmp_poke(self, dst_adr, mem_adr, mem_data):
         """
         Encodes a CSP CMP Poke Request packet.
 
         :param dst_adr: Destination address (must be between 0 and 31).
         :type: int
 
+        :param mem_adr: Memory address to poke.
+        :type: int
+
+        :param mem_data: Data to write in the given address.
+        :type: int
+
         :return: A list with the byte sequence of the CSP Ping Request packet.
         :rtype: list[int]
         """
+        if len(mem_data) > 200:
+            raise ValueError('The number of bytes to write must be lesser than 200!')
+
         pl = [_CSP_CMP_REQUEST, _CSP_CMP_POKE]
 
         pl += list(mem_adr.to_bytes(4, 'big'))
 
-        pl.append(mem_len)
+        pl.append(len(mem_data))
+
+        pl += mem_data
 
         return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
 
