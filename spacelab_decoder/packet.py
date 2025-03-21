@@ -131,7 +131,7 @@ class PacketCSP(PacketSLP):
         if pkt_type_found:
             buf = buf + "\t" + "Satellite" + ": " + self.sat_packet['name'] + "\n"
             buf = buf + "\t" + "Link" + ": " + self.sat_packet['links'][link_idx]['name'] + "\n"
-            buf = buf + "\t" + "Packet Type" + ": " + self.sat_packet['links'][link_idx]['types'][type_idx]['name'] + "\n"
+            buf = buf + "\t" + "Data Source" + ": " + self.sat_packet['links'][link_idx]['types'][type_idx]['name'] + "\n"
             buf = buf + "\t" + "Link Protocol" + ": " + self.sat_packet['links'][link_idx]['protocol_link'] + "\n"
             buf = buf + "\t" + "Network Protocol" + ": " + self.sat_packet['links'][link_idx]['protocol_network'] + "\n"
             buf = buf + "\t" + "Data" + ":" + "\n"
@@ -169,3 +169,5 @@ class PacketCSP(PacketSLP):
                 data[self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['id']] = str(eval(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['conversion']))
         else:
             raise RuntimeError("Unknown destination port!")
+
+        return json.dumps(data)
