@@ -66,24 +66,6 @@ def test_decode_byte(ax100_mode5):
     # Assert that the decoded data matches the original data
     assert decoded_data == data
 
-def test_padding(ax100_mode5):
-    # Test data
-    data = [0x01, 0x02, 0x03]
-
-    target_len = 10
-
-    # Apply padding
-    padded_data = ax100_mode5._padding(data, target_len)
-
-    # Assert that the length of padded data matches the target length
-    assert len(padded_data) == target_len
-
-    # Assert that the padded data contains the original data
-    assert padded_data[:len(data)] == data
-
-    # Assert that the padding is done with zeros
-    assert all(byte == 0 for byte in padded_data[len(data):])
-
 def test_scrambling(ax100_mode5):
     # Test data
     data = list()

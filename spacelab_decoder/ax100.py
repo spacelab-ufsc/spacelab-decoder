@@ -21,7 +21,7 @@
 #
 
 from spacelab_decoder.golay24 import Golay24
-from spacelab_decoder.rs import RS
+from spacelab_decoder.reed_solomon import ReedSolomon
 
 _AX100_PREAMBLE_DEFAULT     = [0xAA]*8
 _AX100_SYNC_WORD_DEFAULT    = [147, 11, 81, 222]
@@ -134,10 +134,10 @@ class AX100Mode5:
         # Data
         pkt += data
 
-        # Reed-Solomon
-        rs = RS(8, 0x187, 112, 11, 32, 0)
+        # Reed-Solomon parity
+        rs = ReedSolomon()
 
-        pkt += rs.encode(self._padding(data))
+        pkt += rs.encode(data, 255 - 32 - len(data))
 
         # Scramble
         pkt[len(self.get_preamble())+len(self.get_sync_word())+3:] = self._scrambling(pkt[len(self.get_preamble())+len(self.get_sync_word())+3:])
@@ -164,16 +164,10 @@ class AX100Mode5:
         # De-scrambling
         rs_block = self._scrambling(pkt[3:])    # 3 = Removing Golay24 bytes
 
-        # Get Reed-Solomon parity data
-        rs_par = rs_block[-32:]
-
-        # Getting the payload and adding padding
-        rs_data = self._padding(rs_block[:-32])
-
         # Applying the Reed-Solomon decoder
-        rs = RS(8, 0x187, 112, 11, 32, 0)
+        rs = ReedSolomon()
 
-        data, err, err_pos = rs.decode(rs_data + rs_par, [0], 0)
+        data, err_pos, err = rs.decode(rs_block, 255 - 32 - (pkt_len - len(self.get_sync_word()) - 32))
 
         # Return the payload data after Reed-Solomon correction
         return data[:pkt_len-len(self.get_sync_word())-32]  # 32 = Reed-Solomon parity block
@@ -212,9 +206,6 @@ class AX100Mode5:
         elif self._decoder_pos == 3 + self._decoder_pkt_len - 1:        # Data part of the Reed-Solomon block received
             self._decoder_rs_buf.append(self._scrambling([byte], start_pos=self._decoder_pos-3)[0])
             self._decoder_pos += 1
-
-            # Adding padding
-            self._decoder_rs_buf = self._padding(self._decoder_rs_buf)
         elif self._decoder_pos < 3 + self._decoder_pkt_len + 32 - 1:    # Receiving Reed-Solomon block (parity part)
             self._decoder_rs_buf.append(self._scrambling([byte], start_pos=self._decoder_pos-3)[0])
             self._decoder_pos += 1
@@ -222,9 +213,9 @@ class AX100Mode5:
             self._decoder_rs_buf.append(self._scrambling([byte], start_pos=self._decoder_pos-3)[0])
             self._decoder_pos = 0
 
-            rs = RS(8, 0x187, 112, 11, 32, 0)
+            rs = ReedSolomon()
 
-            data, err, err_pos = rs.decode(self._decoder_rs_buf.copy(), [0], 0)
+            data, err_pos, err = rs.decode(self._decoder_rs_buf.copy(), 255 - 32 - self._decoder_pkt_len)
 
             self._decoder_rs_buf.clear()
 
@@ -244,21 +235,6 @@ class AX100Mode5:
         self._decoder_pkt_len = 0
         self._decoder_golay_buf.clear()
         self._decoder_rs_buf.clear()
-
-    def _padding(self, data, target_len=223):
-        """
-        :param data: Is the list to add padding.
-        :type: list[int]
-
-        :return: .
-        :rtype: list[int]
-        """
-        buf = data.copy()
-
-        while(len(buf) < target_len):
-            buf.append(0)
-
-        return buf
 
     def _scrambling(self, data, start_pos=0):
         """
