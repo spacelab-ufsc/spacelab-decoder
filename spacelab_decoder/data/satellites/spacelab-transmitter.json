@@ -669,30 +669,93 @@
                             "unit": ""
                         },
                         {
-                            "id": "tle_line_num",
-                            "name": "TLE Line Number",
+                            "id": "tle_epoch_year",
+                            "name": "Epoch year",
                             "initial_pos": 8,
-                            "final_pos": 8,
+                            "final_pos": 9,
                             "value": 0,
-                            "conversion": "int(pkt[8])",
+                            "conversion": "struct.unpack('>H', bytes(pkt[8:10]))[0]",
                             "unit": ""
                         },
                         {
-                            "id": "tle_line",
-                            "name": "TLE Line",
-                            "initial_pos": 9,
-                            "final_pos": 77,
+                            "id": "tle_epoch_day",
+                            "name": "Epoch day",
+                            "initial_pos": 10,
+                            "final_pos": 17,
                             "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[9:78]])",
+                            "conversion": "struct.unpack('>d', bytes(pkt[10:18]))[0]",
                             "unit": ""
+                        },
+                        {
+                            "id": "tle_eccentricity",
+                            "name": "Eccentricity",
+                            "initial_pos": 18,
+                            "final_pos": 21,
+                            "value": 0,
+                            "conversion": "struct.unpack('>I', bytes(pkt[18:22]))[0]",
+                            "unit": ""
+                        },
+                        {
+                            "id": "tle_mean_anomaly",
+                            "name": "Mean anomaly",
+                            "initial_pos": 22,
+                            "final_pos": 25,
+                            "value": 0,
+                            "conversion": "struct.unpack('>f', bytes(pkt[22:26]))[0]",
+                            "unit": "°"
+                        },
+                        {
+                            "id": "tle_aop",
+                            "name": "AOP",
+                            "initial_pos": 26,
+                            "final_pos": 29,
+                            "value": 0,
+                            "conversion": "struct.unpack('>f', bytes(pkt[26:30]))[0]",
+                            "unit": "°"
+                        },
+                        {
+                            "id": "tle_bstar_drag_term",
+                            "name": "B-star drag term",
+                            "initial_pos": 30,
+                            "final_pos": 33,
+                            "value": 0,
+                            "conversion": "struct.unpack('>f', bytes(pkt[30:34]))[0]",
+                            "unit": "Earth radii"
+                        },
+                        {
+                            "id": "tle_inclination",
+                            "name": "Inclination",
+                            "initial_pos": 34,
+                            "final_pos": 41,
+                            "value": 0,
+                            "conversion": "struct.unpack('>d', bytes(pkt[34:42]))[0]",
+                            "unit": "°"
+                        },
+                        {
+                            "id": "tle_right_ascension",
+                            "name": "Right ascension",
+                            "initial_pos": 42,
+                            "final_pos": 49,
+                            "value": 0,
+                            "conversion": "struct.unpack('>d', bytes(pkt[42:50]))[0]",
+                            "unit": "°"
+                        },
+                        {
+                            "id": "tle_mean_motion",
+                            "name": "Mean motion",
+                            "initial_pos": 50,
+                            "final_pos": 57,
+                            "value": 0,
+                            "conversion": "struct.unpack('>d', bytes(pkt[50:58]))[0]",
+                            "unit": "°"
                         },
                         {
                             "id": "hmac_hash",
                             "name": "HMAC Hash",
-                            "initial_pos": 78,
-                            "final_pos": 97,
+                            "initial_pos": 58,
+                            "final_pos": 77,
                             "value": 0,
-                            "conversion": "str(pkt[78:98])",
+                            "conversion": "str(pkt[58:78])",
                             "unit": ""
                         }
                     ]
