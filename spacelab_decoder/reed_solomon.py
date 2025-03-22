@@ -243,7 +243,7 @@ class ReedSolomon:
         count = 0  # Number of roots of lambda(x)
         i = 1
         k = self._IPRIM - 1
-        while i <= NN:
+        while i <= self._NN:
             q = 1  # lambda[0] is always 0
             for j in range(deg_lambda, 0, -1):
                 if reg[j] != self._A0:
