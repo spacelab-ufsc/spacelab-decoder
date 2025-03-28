@@ -493,15 +493,15 @@ class SpaceLabDecoder:
 
         mm = TimeSync(sample_rate, baud)
 
-        if protocol == _PROTOCOL_NGHAM:
-            self._find_ngham_pkts(mm.get_bitstream(samples), sync_word, link_name)
-        elif protocol == _PROTOCOL_AX100MODE5:
-            self._find_ax100mode5_pkts(mm.get_bitstream(samples), sync_word, link_name)
-        else:
-            error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error decoding the audio file!")
-            error_dialog.format_secondary_text("The protocol \"" + protocol + "\" is not supported!")
-            error_dialog.run()
-            error_dialog.destroy()
+        try:
+            if protocol == _PROTOCOL_NGHAM:
+                self._find_ngham_pkts(mm.get_bitstream(samples), sync_word, link_name)
+            elif protocol == _PROTOCOL_AX100MODE5:
+                self._find_ax100mode5_pkts(mm.get_bitstream(samples), sync_word, link_name)
+            else:
+                raise RuntimeError("The protocol \"" + protocol + "\" is not supported!")
+        except RuntimeError as err:
+            self.write_log("Error decoding audio file: " + str(err))
 
     def _decode_stream(self, address, port, baud, sync_word, protocol, link_name):
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
