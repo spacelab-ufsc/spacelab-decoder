@@ -508,11 +508,11 @@ class CSP:
         # Defining if the HMAC will be computed considering the CSP header or not
         pkt4hmac = list()
         if inc_header:
-            pkt4hmac = pkt
+            pkt4hmac = pkt.copy()
         else:
-            pkt4hmac = pkt[4:]
+            pkt4hmac = pkt[4:].copy()
 
         # Compute the HMAC hash
         hashed = hmac.new(key.encode('utf-8'), bytes(pkt4hmac), hashlib.sha1)
 
-        return pkt + list(hashed.digest())
+        return pkt + list(hashed.digest())[:4]  # Only the four first bytes are used in the CSP implementation

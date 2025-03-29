@@ -450,8 +450,8 @@ def test_encode_with_hmac():
     assert ((pkt[3] >> 2) & 1) == 0                                 # XTEA
     assert ((pkt[3] >> 1) & 1)== 0                                  # RDP
     assert (pkt[3] & 1) == 0                                        # CRC
-    assert pkt[4:-20] == pl                                         # Payload
-    assert pkt[-20:] == pl_hash                                     # HMAC hash
+    assert pkt[4:-4] == pl                                          # Payload
+    assert pkt[-4:] == pl_hash[:4]                                  # HMAC hash
 
 def test_decode():
     src_adr = random.randint(0, 31)
@@ -512,5 +512,5 @@ def test_append_hmac():
     assert ((pkt[3] >> 2) & 1) == 0                                 # XTEA
     assert ((pkt[3] >> 1) & 1)== 0                                  # RDP
     assert (pkt[3] & 1) == 0                                        # CRC
-    assert pkt[4:-20] == pl                                         # Payload
-    assert pkt[-20:] == pl_hash                                     # HMAC hash
+    assert pkt[4:-4] == pl                                          # Payload
+    assert pkt[-4:] == pl_hash[:4]                                  # HMAC hash
