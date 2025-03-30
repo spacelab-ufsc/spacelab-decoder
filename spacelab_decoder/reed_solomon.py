@@ -20,6 +20,8 @@
 #
 #
 
+import numpy as np
+
 class ReedSolomon:
     """
     CCSDS Reed-Solomon (without dual basis representation) class.
@@ -95,7 +97,7 @@ class ReedSolomon:
         :return: Parity data list with 32 bytes.
         :rtype: list
         """
-        parity = [0]*self._NROOTS
+        parity = np.zeros(self._NROOTS, dtype=np.uint8)
     
         for i in range(self._NN - self._NROOTS - pad):
             feedback = self._ccsds_index_of[data[i] ^ parity[0]]  # Compute feedback term
@@ -108,13 +110,13 @@ class ReedSolomon:
                     parity[j] ^= self._ccsds_alpha_to[self._mod255(feedback + self._ccsds_genpoly[self._NROOTS - j])]
     
             # Shift parity array
-            parity[:-1] = parity[1:]  # Shift left by one
+            parity[:-1] = parity[1:].copy() # Shift left by one
             if feedback != self._A0:
                 parity[-1] = self._ccsds_alpha_to[self._mod255(feedback + self._ccsds_genpoly[0])]
             else:
-                parity[-1] = 0
+                parity[-1] = np.int8(0)
     
-        return parity
+        return list(parity)
 
     def decode(self, data, pad, eras_pos=None, no_eras=0):
         """
@@ -135,30 +137,30 @@ class ReedSolomon:
         :return: The number of detected errors.
         :rtype: int
         """
-        deg_lambda  = int()
-        el          = int()
-        deg_omega   = int()
-        i           = int()
-        j           = int()
-        r           = int()
-        k           = int()
-        u           = int()
-        q           = int()
-        tmp         = int()
-        num1        = int()
-        num2        = int()
-        den         = int()
-        discr_r     = int()
-        lambda_poly = [0]*(self._NROOTS + 1)
-        s           = [0]*self._NROOTS
-        b           = [0]*(self._NROOTS + 1)
-        t           = [0]*(self._NROOTS + 1)
-        omega       = [0]*(self._NROOTS + 1)
-        root        = [0]*self._NROOTS
-        reg         = [0]*(self._NROOTS + 1)
-        loc         = [0]*self._NROOTS
-        syn_error   = 0
-        count       = 0
+        deg_lambda  = np.int16()
+        el          = np.int16()
+        deg_omega   = np.int16()
+        i           = np.int16()
+        j           = np.int16()
+        r           = np.int16()
+        k           = np.int16()
+        u           = np.uint8()
+        q           = np.uint8()
+        tmp         = np.uint8()
+        num1        = np.uint8()
+        num2        = np.uint8()
+        den         = np.uint8()
+        discr_r     = np.uint8()
+        lambda_poly = np.zeros(self._NROOTS + 1, dtype=np.uint8)
+        s           = np.zeros(self._NROOTS, dtype=np.uint8)
+        b           = np.zeros(self._NROOTS + 1, dtype=np.uint8)
+        t           = np.zeros(self._NROOTS + 1, dtype=np.uint8)
+        omega       = np.zeros(self._NROOTS + 1, dtype=np.uint8)
+        root        = np.zeros(self._NROOTS, dtype=np.uint8)
+        reg         = np.zeros(self._NROOTS + 1, dtype=np.uint8)
+        loc         = np.zeros(self._NROOTS, dtype=np.uint8)
+        syn_error   = np.int16()
+        count       = np.int16()
 
         # Form the syndromes; i.e., evaluate data(x) at roots of g(x)
         for i in range(self._NROOTS):
@@ -181,9 +183,9 @@ class ReedSolomon:
             # If syndrome is zero, data[] is a codeword and there are no errors to correct
             return data[:-32], list(), 0
 
-        lambda_poly[0] = 1
+        lambda_poly[0] = np.uint8(1)
 
-        if no_eras > 0:
+        if no_eras > 0 and eras_pos is not None:
             # Init lambda to be the erasure locator polynomial
             lambda_poly[1] = self._ccsds_alpha_to[self._mod255(self._PRIM * (self._NN - 1 - eras_pos[0]))]
             for i in range(1, no_eras):
@@ -202,14 +204,14 @@ class ReedSolomon:
         r += 1
         while r <= self._NROOTS:
             # Compute discrepancy at the r-th step in poly-form
-            discr_r = 0
+            discr_r = np.int8(0)
             for i in range(r):
                 if lambda_poly[i] != 0 and s[r - i - 1] != self._A0:
                     discr_r ^= self._ccsds_alpha_to[self._mod255(self._ccsds_index_of[lambda_poly[i]] + s[r - i - 1])]
             discr_r = self._ccsds_index_of[discr_r] # Index form
             if discr_r == self._A0:
                 # B(x) <-- x*B(x)
-                b[1:] = b[:-1]
+                b[1:] = b[:-1].copy()
                 b[0] = self._A0
             else:
                 # T(x) <-- lambda(x) - discr_r*x*b(x)
@@ -226,9 +228,9 @@ class ReedSolomon:
                         b[i] = self._A0 if lambda_poly[i] == 0 else self._mod255(self._ccsds_index_of[lambda_poly[i]] - discr_r + self._NN)
                 else:
                     # B(x) <-- x*B(x)
-                    b[1:] = b[:-1]
+                    b[1:] = b[:-1].copy()
                     b[0] = self._A0
-                lambda_poly = t
+                lambda_poly = t.copy()
             r += 1
 
         # Convert lambda to index form and compute deg(lambda(x))
@@ -239,7 +241,7 @@ class ReedSolomon:
                 deg_lambda = i
 
         # Find roots of the error+erasure locator polynomial by Chien search
-        reg[1:] = lambda_poly[1:]
+        reg[1:] = lambda_poly[1:].copy()
         count = 0  # Number of roots of lambda(x)
         i = 1
         k = self._IPRIM - 1
@@ -249,22 +251,22 @@ class ReedSolomon:
                 if reg[j] != self._A0:
                     reg[j] = self._mod255(reg[j] + j)
                     q ^= self._ccsds_alpha_to[reg[j]]
-            
+
             if q != 0:
                 # Not a root, continue to the next iteration
                 i += 1
                 k = self._mod255(k + self._IPRIM)
                 continue
-            
+
             # Store root (index-form) and error location number
             root[count] = i
             loc[count] = k
-            
+
             # If we've already found max possible roots, abort the search to save time
             count += 1
             if count == deg_lambda:
                 break
-            
+
             # Update i and k for the next iteration
             i += 1
             k = self._mod255(k + self._IPRIM)
@@ -276,10 +278,10 @@ class ReedSolomon:
         # Compute err+eras evaluator poly omega(x) = s(x)*lambda(x) (modulo x**NROOTS)
         deg_omega = deg_lambda - 1
         for i in range(deg_omega + 1):
-            tmp = 0
+            tmp = np.uint8(0)
             for j in range(i, -1, -1):
                 if s[i - j] != self._A0 and lambda_poly[j] != self._A0:
-                    tmp ^= self._ccsds_alpha_to[self._mod255(s[i - j] + lambda_poly[j])]
+                    tmp ^= self._ccsds_alpha_to[self._mod255(np.uint16(s[i - j]) + np.uint16(lambda_poly[j]))]
             omega[i] = self._ccsds_index_of[tmp]
 
         # Compute error values in poly-form
@@ -292,7 +294,7 @@ class ReedSolomon:
             den = 0
 
             # lambda[i+1] for i even is the formal derivative lambda_pr of lambda[i]
-            for i in range(min(deg_lambda, NROOTS - 1) & ~1, -1, -2):
+            for i in range(min(deg_lambda, self._NROOTS - 1) & ~1, -1, -2):
                 if lambda_poly[i + 1] != self._A0:
                     den ^= self._ccsds_alpha_to[self._mod255(lambda_poly[i + 1] + i * root[j])]
 
@@ -300,9 +302,9 @@ class ReedSolomon:
             if num1 != 0 and loc[j] >= pad:
                 data[loc[j] - pad] ^= self._ccsds_alpha_to[self._mod255(self._ccsds_index_of[num1] + self._ccsds_index_of[num2] + self._NN - self._ccsds_index_of[den])]
 
-        if eras_pos is not None:
-            for i in range(count):
-                eras_pos[i] = loc[i]
+        eras_pos = list()
+        for i in range(count):
+            eras_pos.append(loc[i] - pad)
 
         return data[:-32], eras_pos, count
 
@@ -316,8 +318,4 @@ class ReedSolomon:
         :return: The modulo result.
         :rtype: int
         """
-        while x >= 255:
-            x -= 255
-            x = (x >> 8) + (x & 255)
-
-        return x
+        return x % 255
