@@ -20,7 +20,6 @@
 #  
 #
 
-
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
@@ -101,22 +100,24 @@ def test_ui():
     assert aboutdialog_spacelab_decoder.get_title()         == "About SpaceLab Decoder"
 
     # Preferences dialog
-    dialog_preferences                  = builder.get_object("dialog_preferences")
-    entry_preferences_general_callsign  = builder.get_object("entry_preferences_general_callsign")
-    entry_preferences_general_location  = builder.get_object("entry_preferences_general_location")
-    entry_preferences_general_country   = builder.get_object("entry_preferences_general_country")
-    entry_preferences_max_bit_err       = builder.get_object("entry_preferences_max_bit_err")
-    button_preferences_ok               = builder.get_object("button_preferences_ok")
-    button_preferences_default          = builder.get_object("button_preferences_default")
-    button_preferences_cancel           = builder.get_object("button_preferences_cancel")
+    dialog_preferences                          = builder.get_object("dialog_preferences")
+    entry_preferences_general_callsign          = builder.get_object("entry_preferences_general_callsign")
+    entry_preferences_general_location          = builder.get_object("entry_preferences_general_location")
+    entry_preferences_general_country           = builder.get_object("entry_preferences_general_country")
+    entry_preferences_max_bit_err               = builder.get_object("entry_preferences_max_bit_err")
+    checkbutton_preferences_protocols_ax100_len = builder.get_object("checkbutton_preferences_protocols_ax100_len")
+    button_preferences_ok                       = builder.get_object("button_preferences_ok")
+    button_preferences_default                  = builder.get_object("button_preferences_default")
+    button_preferences_cancel                   = builder.get_object("button_preferences_cancel")
 
-    assert dialog_preferences                   != None
-    assert entry_preferences_general_callsign   != None
-    assert entry_preferences_general_location   != None
-    assert entry_preferences_general_country    != None
-    assert entry_preferences_max_bit_err        != None
-    assert button_preferences_ok                != None
-    assert button_preferences_default           != None
-    assert button_preferences_cancel            != None
+    assert dialog_preferences                           != None
+    assert entry_preferences_general_callsign           != None
+    assert entry_preferences_general_location           != None
+    assert entry_preferences_general_country            != None
+    assert entry_preferences_max_bit_err                != None
+    assert checkbutton_preferences_protocols_ax100_len  != None
+    assert button_preferences_ok                        != None
+    assert button_preferences_default                   != None
+    assert button_preferences_cancel                    != None
 
     assert dialog_preferences.get_title()       == "Preferences"

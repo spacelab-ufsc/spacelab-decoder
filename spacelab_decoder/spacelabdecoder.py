@@ -26,7 +26,6 @@
 import os
 from datetime import datetime
 import json
-import csv
 import threading
 import socket
 
@@ -50,6 +49,7 @@ from spacelab_decoder.bit_decoder import BitDecoder
 from spacelab_decoder.packet import PacketSLP, PacketCSP
 from spacelab_decoder.ax100 import AX100Mode5
 from spacelab_decoder.satellite import Satellite
+from spacelab_decoder.log import Log
 
 _UI_FILE_LOCAL                  = os.path.abspath(os.path.dirname(__file__)) + '/data/ui/spacelab_decoder.glade'
 _UI_FILE_LINUX_SYSTEM           = '/usr/share/spacelab_decoder/spacelab_decoder.glade'
@@ -112,6 +112,8 @@ class SpaceLabDecoder:
 
         self._satellite = Satellite()
 
+        self._log = Log(_DEFAULT_LOGFILE, _DEFAULT_LOGFILE_PATH)
+
     def _build_widgets(self):
         # Main window
         self.window = self.builder.get_object("window_main")
@@ -136,6 +138,8 @@ class SpaceLabDecoder:
         self.entry_preferences_general_country = self.builder.get_object("entry_preferences_general_country")
 
         self.entry_preferences_max_bit_err = self.builder.get_object("entry_preferences_max_bit_err")
+
+        self.checkbutton_preferences_protocols_ax100_len = self.builder.get_object("checkbutton_preferences_protocols_ax100_len")
 
         self.entry_preferences_udp_address = self.builder.get_object("entry_preferences_udp_address")
         self.entry_preferences_udp_port = self.builder.get_object("entry_preferences_udp_port")
@@ -230,12 +234,7 @@ class SpaceLabDecoder:
 
         self.listmodel_events.append(event)
 
-        if not os.path.exists(_DEFAULT_LOGFILE_PATH):
-            os.mkdir(_DEFAULT_LOGFILE_PATH)
-
-        with open(self.logfile_chooser_button.get_filename() + '/' + _DEFAULT_LOGFILE, 'a') as logfile:
-            writer = csv.writer(logfile, delimiter='\t')
-            writer.writerow(event)
+        self._log.write(msg, event[0])
 
     def run(self):
         self.window.show_all()
@@ -517,6 +516,9 @@ class SpaceLabDecoder:
         ngham = pyngham.PyNGHam()
         ax100 = AX100Mode5()
 
+        if self.checkbutton_preferences_protocols_ax100_len.get_active():
+            ax100.set_ignore_golay_error(True)
+
         samples_buf = list()
         while self._run_udp_decode:
             try:
@@ -592,6 +594,9 @@ class SpaceLabDecoder:
         bit_decoder = BitDecoder(sync_word, int(self.entry_preferences_max_bit_err.get_text()))
 
         ax100 = AX100Mode5()
+
+        if self.checkbutton_preferences_protocols_ax100_len.get_active():
+            ax100.set_ignore_golay_error(True)
 
         for b in bitstream:
             decoded_byte = bit_decoder.decode_bit(b)

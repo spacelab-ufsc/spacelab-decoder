@@ -62,6 +62,7 @@ class AX100Mode5:
         self._decoder_pkt_len = 0
         self._decoder_golay_buf = list()
         self._decoder_rs_buf = list()
+        self._ignore_golay_error = False
 
         self.set_preamble(_AX100_PREAMBLE_DEFAULT)
         self.set_sync_word(_AX100_SYNC_WORD_DEFAULT)
@@ -107,6 +108,26 @@ class AX100Mode5:
         :rtype: list[int]
         """
         return self._sync_word
+
+    def set_ignore_golay_error(self, enabled):
+        """
+        Configures the behaviour when a Golay24 field error is detected.
+
+        :param enabled:
+        :type: bool
+
+        :return: None
+        """
+        self._ignore_golay_error = enabled
+
+    def get_ignore_golay_error(self):
+        """
+        Gets the configuration flag to ignore or not a Golay24 error.
+
+        :return: True/False if a Golay24 error must be ignored or not.
+        :rtype: bool
+        """
+        return self._ignore_golay_error
 
     def encode(self, data):
         """
@@ -161,6 +182,12 @@ class AX100Mode5:
 
         pkt_len, golay_err = gol.decode(pkt[:3])
 
+        if pkt_len == -1:
+            if self.get_ignore_golay_error():
+                pkt_len = pkt[2]
+            else:
+                raise RuntimeError("Impossible to correct the Golay field!")
+
         # De-scrambling
         rs_block = self._scrambling(pkt[3:])    # 3 = Removing Golay24 bytes
 
@@ -194,8 +221,11 @@ class AX100Mode5:
             self._decoder_pkt_len, golay_err = gol.decode(self._decoder_golay_buf)
 
             if self._decoder_pkt_len == -1:
-                self.reset_decoder()
-                raise RuntimeError("Impossible to correct the Golay field!")
+                if self.get_ignore_golay_error():
+                    self._decoder_pkt_len = byte - (len(self.get_sync_word()) + 32)
+                else:
+                    self.reset_decoder()
+                    raise RuntimeError("Impossible to correct the Golay field!")
             else:
                 self._decoder_pkt_len -= (len(self.get_sync_word()) + 32)   # 32 = Reed-Solomon parity block
 
