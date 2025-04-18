@@ -13,4 +13,9 @@ Overview
 .. toctree::
    :maxdepth: 3
 
+   overview
+   logfile
+   usage
+   troubleshooting
+   installation
    packaging
