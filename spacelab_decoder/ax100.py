@@ -150,7 +150,7 @@ class AX100Mode5:
         # Golay24
         gol = Golay24()
 
-        pkt += gol.encode(len(self.get_sync_word()) + len(data) + 32)   # 32 = Reed-Solomon parity block
+        pkt += gol.encode(len(data) + 32)   # 32 = Reed-Solomon parity block
 
         # Data
         pkt += data
@@ -194,10 +194,10 @@ class AX100Mode5:
         # Applying the Reed-Solomon decoder
         rs = ReedSolomon()
 
-        data, err_pos, err = rs.decode(rs_block, 255 - 32 - (pkt_len - len(self.get_sync_word()) - 32))
+        data, err_pos, err = rs.decode(rs_block, 255 - 32 - (pkt_len - 32))
 
         # Return the payload data after Reed-Solomon correction
-        return data[:pkt_len-len(self.get_sync_word())-32]  # 32 = Reed-Solomon parity block
+        return data[:pkt_len-32]    # 32 = Reed-Solomon parity block
 
     def decode_byte(self, byte):
         """
@@ -222,12 +222,12 @@ class AX100Mode5:
 
             if self._decoder_pkt_len == -1:
                 if self.get_ignore_golay_error():
-                    self._decoder_pkt_len = byte - (len(self.get_sync_word()) + 32)
+                    self._decoder_pkt_len = byte - 32
                 else:
                     self.reset_decoder()
                     raise RuntimeError("Impossible to correct the Golay field!")
             else:
-                self._decoder_pkt_len -= (len(self.get_sync_word()) + 32)   # 32 = Reed-Solomon parity block
+                self._decoder_pkt_len -= 32 # 32 = Reed-Solomon parity block
 
             self._decoder_golay_buf.clear()
         elif self._decoder_pos < 3 + self._decoder_pkt_len - 1:         # Receiving Reed-Solomon block (data part)
