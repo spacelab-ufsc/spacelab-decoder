@@ -30,7 +30,7 @@ class BitDecoder:
     """
     Bitstream decoder.
     """
-    def __init__(self, sync_word):
+    def __init__(self, sync_word, max_err):
         """
         Class constructor.
         """
@@ -39,6 +39,8 @@ class BitDecoder:
         self._byte_buf = ByteBuffer(_BYTE_BUFFER_LSB)
         self._pkt_detected = False
         self._decoded_bytes = 0
+        self._max_bit_err = 0
+        self.set_max_bit_errors(max_err)
 
     def decode_bit(self, bit):
         """
@@ -65,7 +67,7 @@ class BitDecoder:
                 else:
                     self.reset()
 
-        if (self._sync_word_buf == self._sync_word):
+        if (self._sync_word == self._sync_word_buf) >= (len(self._sync_word) - self.get_max_bit_errors()):
             self._decoded_bytes = 0
             self._pkt_detected = True
             self._byte_buf.clear()
@@ -80,3 +82,26 @@ class BitDecoder:
         """
         self._pkt_detected = False
         self._byte_buf.clear()
+
+    def set_max_bit_errors(self, err):
+        """
+        Sets the maximum allowed bit errors to detect the sync word.
+
+        :param err: Is the maximum allowed bit errors in the sync word.
+        :type: int
+
+        :return: None
+        """
+        if err > len(self._sync_word)/2:
+            raise ValueError("The maximum allowed bit errors in the sync word must not exceed 50 % of the sync word!")
+        else:
+            self._max_bit_err = err
+
+    def get_max_bit_errors(self):
+        """
+        Gets the maximum allowed bit errors to detect the sync word.
+
+        :return: The maximum allowed bit errors.
+        :rtype: int
+        """
+        return self._max_bit_err

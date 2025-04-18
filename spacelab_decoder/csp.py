@@ -179,21 +179,38 @@ class CSP:
 
         return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
 
-    def encode_cmp_set_route(self, dst_adr):
+    def encode_cmp_set_route(self, dst_adr, dest_node, next_hop_mac, ifc):
         """
         Encodes a CSP CMP Set Route Request packet.
 
         :param dst_adr: Destination address (must be between 0 and 31).
         :type: int
 
+        :param dest_node: Is the destination node to set the route.
+        :type: int
+
+        :param next_hop_mac: Is the next hop MAC to set the route.
+        :type: int
+
+        :param ifc: Is the interface name to set the route.
+        :type: str
+
         :return: A list with the byte sequence of the CSP Ping Request packet.
         :rtype: list[int]
         """
+        if len(ifc) > 11:
+            raise ValueError('The interface name must have up to 11 characters!')
+
         pl = [_CSP_CMP_REQUEST, _CSP_CMP_ROUTE_SET]
+
+        pl.append(dest_node)
+        pl.append(next_hop_mac)
+
+        pl += [ord(c) for c in ifc]
 
         return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
 
-    def encode_cmp_if_stat(self, dst_adr):
+    def encode_cmp_if_stat(self, dst_adr, ifc):
         """
         Encodes a CSP CMP Interface Statistics Request packet.
 
@@ -203,7 +220,12 @@ class CSP:
         :return: A list with the byte sequence of the CSP Ping Request packet.
         :rtype: list[int]
         """
+        if len(ifc) > 11:
+            raise ValueError('The interface name must have up to 11 characters!')
+
         pl = [_CSP_CMP_REQUEST, _CSP_CMP_IF_STATS]
+
+        pl += [ord(c) for c in ifc]
 
         return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
 
@@ -223,8 +245,8 @@ class CSP:
         :return: A list with the byte sequence of the CSP Ping Request packet.
         :rtype: list[int]
         """
-        if mem_len > 255:
-            raise ValueError('The number of bytes to read must be lesser than 255!')
+        if mem_len > 200:
+            raise ValueError('The number of bytes to read must be lesser than 200!')
 
         pl = [_CSP_CMP_REQUEST, _CSP_CMP_PEEK]
 
@@ -234,21 +256,62 @@ class CSP:
 
         return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
 
-    def encode_cmp_poke(self, dst_adr, mem_adr, mem_len):
+    def encode_cmp_poke(self, dst_adr, mem_adr, mem_data):
         """
         Encodes a CSP CMP Poke Request packet.
 
         :param dst_adr: Destination address (must be between 0 and 31).
         :type: int
 
+        :param mem_adr: Memory address to poke.
+        :type: int
+
+        :param mem_data: Data to write in the given address.
+        :type: int
+
         :return: A list with the byte sequence of the CSP Ping Request packet.
         :rtype: list[int]
         """
+        if len(mem_data) > 200:
+            raise ValueError('The number of bytes to write must be lesser than 200!')
+
         pl = [_CSP_CMP_REQUEST, _CSP_CMP_POKE]
 
         pl += list(mem_adr.to_bytes(4, 'big'))
 
-        pl.append(mem_len)
+        pl.append(len(mem_data))
+
+        pl += mem_data
+
+        return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
+
+    def encode_cmp_set_clock(self, dst_adr, sec, ns):
+        """
+        Encodes a CSP CMP Set Clock Request packet.
+
+        :param dst_adr: Destination address (must be between 0 and 31).
+        :type: int
+
+        :param sec: Seconds of the clock to set.
+        :type: int
+
+        :param ns: Nanoseconds of the clock to set.
+        :type: int
+
+        :return: A list with the byte sequence of the CSP Ping Request packet.
+        :rtype: list[int]
+        """
+        pl = [_CSP_CMP_REQUEST, _CSP_CMP_CLOCK]
+
+        pl.append((sec >> 24) & 0xFF)
+        pl.append((sec >> 16) & 0xFF)
+        pl.append((sec >> 8) & 0xFF)
+        pl.append((sec >> 0) & 0xFF)
+
+        pl.append((ns >> 24) & 0xFF)
+        pl.append((ns >> 16) & 0xFF)
+        pl.append((ns >> 8) & 0xFF)
+        pl.append((ns >> 0) & 0xFF)
 
         return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
 
@@ -263,6 +326,8 @@ class CSP:
         :rtype: list[int]
         """
         pl = [_CSP_CMP_REQUEST, _CSP_CMP_CLOCK]
+
+        pl += 8*[0]
 
         return self.encode(CSP_PRIO_NORM, dst_adr, _CSP_PORT_CMP, _CSP_PORT_CMP, False, False, False, False, False, pl)
 
@@ -421,7 +486,7 @@ class CSP:
     def _decode_pl(self, pl):
         return {"payload": pl}
 
-    def append_hmac(self, pkt, key, inc_header=False):
+    def append_hmac(self, pkt, key, inc_header=True):
         """
         Enables the HMAC authentication to an existing packet.
 
@@ -443,11 +508,14 @@ class CSP:
         # Defining if the HMAC will be computed considering the CSP header or not
         pkt4hmac = list()
         if inc_header:
-            pkt4hmac = pkt
+            pkt4hmac = pkt.copy()
         else:
-            pkt4hmac = pkt[4:]
+            pkt4hmac = pkt[4:].copy()
+
+        # Compute the SHA1 hash of the key
+        key_hash = hashlib.sha1(key.encode('utf-8'))
 
         # Compute the HMAC hash
-        hashed = hmac.new(key.encode('utf-8'), bytes(pkt4hmac), hashlib.sha1)
+        hashed = hmac.new(key_hash.digest()[:16], bytes(pkt4hmac), hashlib.sha1) # Only the first 16 bytes of the SHA1 hashed key digest are used as the HMAC key
 
-        return pkt + list(hashed.digest())
+        return pkt + list(hashed.digest())[:4]  # Only the four first bytes are used in the CSP implementation

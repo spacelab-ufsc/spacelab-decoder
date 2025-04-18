@@ -42,21 +42,22 @@ Until now, this program supports the satellites below:
 
 ## Dependencies
 
-* python (>= 3)
-* gi
-* scipy
-* matplotlib
-* pyngham
+* python3 (>= 3.12.9-1)
+* gi (>= 3.48.2-1)
+* numpy (>= 1:1.26.4-3)
+* scipy (>= 1.11.3-11)
+* matplotlib (>= 3.8.4-1)
+* pyngham (>= 1.1.1)
 
 ### Installation on Ubuntu
 
-```sudo apt install python3 python3-gi python3-scipy python3-matplotlib```
+```sudo apt install python3 python3-gi python3-numpy python3-scipy python3-matplotlib```
 
 ```pip install pyngham```
 
 ### Installation on Fedora
 
-```sudo dnf install python3 python3-gobject python3-scipy python3-matplotlib```
+```sudo dnf install python3 python3-gobject python3-numpy python3-scipy python3-matplotlib```
 
 ```pip install pyngham```
 

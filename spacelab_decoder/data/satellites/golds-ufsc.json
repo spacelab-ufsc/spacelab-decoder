@@ -1,11 +1,18 @@
 {
+    "id": "golds-ufsc",
     "name": "GOLDS-UFSC",
     "links": [
         {
+            "id": "downlink_vhf",
             "name": "Downlink (VHF)",
+            "direction": "down",
+            "frequency": 145.9e6,
+            "modulation": "GMSK",
             "baudrate": 1200,
+            "preamble": [170, 170, 170, 170],
             "sync_word": [93, 230, 42, 126],
-            "protocol": "NGHam",
+            "protocol_link": "NGHam",
+            "protocol_network": "SLP",
             "types": [
                 {
                     "name": "EPS data",
@@ -385,10 +392,16 @@
             ]
         },
         {
+            "id": "downlink_uhf",
             "name": "Downlink (UHF)",
+            "direction": "down",
+            "frequency": 468.4e6,
+            "modulation": "GMSK",
             "baudrate": 4800,
+            "preamble": [170, 170, 170, 170],
             "sync_word": [93, 230, 42, 126],
-            "protocol": "NGHam",
+            "protocol_link": "NGHam",
+            "protocol_network": "SLP",
             "types": [
                 {
                     "name": "General telemetry",

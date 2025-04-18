@@ -1,11 +1,18 @@
 {
+    "id": "spacelab-transmitter",
     "name": "SpaceLab-Transmitter",
     "links": [
         {
+            "id": "uplink_ngham",
             "name": "Uplink (NGHam)",
             "baudrate": 1200,
+            "direction": "up",
+            "frequency": 145.9e6,
+            "modulation": "GMSK",
+            "preamble": [170, 170, 170, 170],
             "sync_word": [93, 230, 42, 126],
-            "protocol": "NGHam",
+            "protocol_link": "NGHam",
+            "protocol_network": "SLP",
             "types": [
                 {
                     "name": "Ping request",
@@ -662,30 +669,93 @@
                             "unit": ""
                         },
                         {
-                            "id": "tle_line_num",
-                            "name": "TLE Line Number",
+                            "id": "tle_epoch_year",
+                            "name": "Epoch year",
                             "initial_pos": 8,
-                            "final_pos": 8,
+                            "final_pos": 9,
                             "value": 0,
-                            "conversion": "int(pkt[8])",
+                            "conversion": "struct.unpack('>H', bytes(pkt[8:10]))[0]",
                             "unit": ""
                         },
                         {
-                            "id": "tle_line",
-                            "name": "TLE Line",
-                            "initial_pos": 9,
-                            "final_pos": 77,
+                            "id": "tle_epoch_day",
+                            "name": "Epoch day",
+                            "initial_pos": 10,
+                            "final_pos": 17,
                             "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[9:78]])",
+                            "conversion": "struct.unpack('>d', bytes(pkt[10:18]))[0]",
                             "unit": ""
+                        },
+                        {
+                            "id": "tle_eccentricity",
+                            "name": "Eccentricity",
+                            "initial_pos": 18,
+                            "final_pos": 21,
+                            "value": 0,
+                            "conversion": "struct.unpack('>I', bytes(pkt[18:22]))[0]",
+                            "unit": ""
+                        },
+                        {
+                            "id": "tle_mean_anomaly",
+                            "name": "Mean anomaly",
+                            "initial_pos": 22,
+                            "final_pos": 25,
+                            "value": 0,
+                            "conversion": "struct.unpack('>f', bytes(pkt[22:26]))[0]",
+                            "unit": "°"
+                        },
+                        {
+                            "id": "tle_aop",
+                            "name": "AOP",
+                            "initial_pos": 26,
+                            "final_pos": 29,
+                            "value": 0,
+                            "conversion": "struct.unpack('>f', bytes(pkt[26:30]))[0]",
+                            "unit": "°"
+                        },
+                        {
+                            "id": "tle_bstar_drag_term",
+                            "name": "B-star drag term",
+                            "initial_pos": 30,
+                            "final_pos": 33,
+                            "value": 0,
+                            "conversion": "struct.unpack('>f', bytes(pkt[30:34]))[0]",
+                            "unit": "Earth radii"
+                        },
+                        {
+                            "id": "tle_inclination",
+                            "name": "Inclination",
+                            "initial_pos": 34,
+                            "final_pos": 41,
+                            "value": 0,
+                            "conversion": "struct.unpack('>d', bytes(pkt[34:42]))[0]",
+                            "unit": "°"
+                        },
+                        {
+                            "id": "tle_right_ascension",
+                            "name": "Right ascension",
+                            "initial_pos": 42,
+                            "final_pos": 49,
+                            "value": 0,
+                            "conversion": "struct.unpack('>d', bytes(pkt[42:50]))[0]",
+                            "unit": "°"
+                        },
+                        {
+                            "id": "tle_mean_motion",
+                            "name": "Mean motion",
+                            "initial_pos": 50,
+                            "final_pos": 57,
+                            "value": 0,
+                            "conversion": "struct.unpack('>d', bytes(pkt[50:58]))[0]",
+                            "unit": "°"
                         },
                         {
                             "id": "hmac_hash",
                             "name": "HMAC Hash",
-                            "initial_pos": 78,
-                            "final_pos": 97,
+                            "initial_pos": 58,
+                            "final_pos": 77,
                             "value": 0,
-                            "conversion": "str(pkt[78:98])",
+                            "conversion": "str(pkt[58:78])",
                             "unit": ""
                         }
                     ]
@@ -693,10 +763,16 @@
             ]
         },
         {
+            "id": "uplink_csp",
             "name": "Uplink (CSP)",
             "baudrate": 4800,
+            "direction": "up",
+            "frequency": 402.9e6,
+            "modulation": "GMSK",
+            "preamble": [170, 170, 170, 170, 170, 170, 170, 170],
             "sync_word": [147, 11, 81, 222],
-            "protocol": "AX100-Mode5",
+            "protocol_link": "AX100-Mode5",
+            "protocol_network": "CSP",
             "types": [
                 {
                     "name": "CMP ident request",
@@ -744,6 +820,15 @@
                             "final_pos": 2,
                             "value": 0,
                             "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
                             "unit": ""
                         },
                         {
@@ -799,51 +884,6 @@
                             "value": 1,
                             "conversion": "pkt[5]",
                             "unit": ""
-                        },
-                        {
-                            "id": "csp_cmp_hostname",
-                            "name": "Hostname",
-                            "initial_pos": 6,
-                            "final_pos": 25,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[6:26]])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "csp_cmp_model",
-                            "name": "Model",
-                            "initial_pos": 26,
-                            "final_pos": 55,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[26:56]])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "csp_cmp_rev",
-                            "name": "Revision",
-                            "initial_pos": 56,
-                            "final_pos": 75,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[56:76]])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "csp_cmp_date",
-                            "name": "Date",
-                            "initial_pos": 76,
-                            "final_pos": 87,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[76:88]])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "csp_cmp_time",
-                            "name": "Time",
-                            "initial_pos": 88,
-                            "final_pos": 96,
-                            "value": 0,
-                            "conversion": "\"\".join([chr(val) for val in pkt[88:97]])",
-                            "unit": ""
                         }
                     ]
                 },
@@ -893,6 +933,15 @@
                             "final_pos": 2,
                             "value": 0,
                             "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
                             "unit": ""
                         },
                         {
@@ -979,7 +1028,7 @@
                     ]
                 },
                 {
-                    "name": "CMP IF stats request",
+                    "name": "CMP IF status request",
                     "fields": [
                         {
                             "id": "csp_prio",
@@ -1024,6 +1073,15 @@
                             "final_pos": 2,
                             "value": 0,
                             "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
                             "unit": ""
                         },
                         {
@@ -1088,96 +1146,6 @@
                             "value": 0,
                             "conversion": "\"\".join([chr(val) for val in pkt[6:17]])",
                             "unit": ""
-                        },
-                        {
-                            "id": "csp_cmp_if_stat_tx",
-                            "name": "IF Stat TX",
-                            "initial_pos": 17,
-                            "final_pos": 20,
-                            "value": 0,
-                            "conversion": "int((pkt[17] << 24) | (pkt[18] << 16) | (pkt[19] << 8) | pkt[20])",
-                            "unit": "packet(s)"
-                        },
-                        {
-                            "id": "csp_cmp_if_stat_rx",
-                            "name": "IF Stat RX",
-                            "initial_pos": 21,
-                            "final_pos": 24,
-                            "value": 0,
-                            "conversion": "int((pkt[21] << 24) | (pkt[22] << 16) | (pkt[23] << 8) | pkt[24])",
-                            "unit": "packet(s)"
-                        },
-                        {
-                            "id": "csp_cmp_if_stat_tx_err",
-                            "name": "IF Stat TX Error",
-                            "initial_pos": 22,
-                            "final_pos": 25,
-                            "value": 0,
-                            "conversion": "int((pkt[22] << 24) | (pkt[23] << 16) | (pkt[24] << 8) | pkt[25])",
-                            "unit": "error(s)"
-                        },
-                        {
-                            "id": "csp_cmp_if_stat_rx_err",
-                            "name": "IF Stat RX Error",
-                            "initial_pos": 26,
-                            "final_pos": 29,
-                            "value": 0,
-                            "conversion": "int((pkt[26] << 24) | (pkt[27] << 16) | (pkt[28] << 8) | pkt[29])",
-                            "unit": "error(s)"
-                        },
-                        {
-                            "id": "csp_cmp_if_stat_drop",
-                            "name": "IF Stat Drop",
-                            "initial_pos": 30,
-                            "final_pos": 33,
-                            "value": 0,
-                            "conversion": "int((pkt[30] << 24) | (pkt[31] << 16) | (pkt[32] << 8) | pkt[33])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "csp_cmp_if_stat_auther",
-                            "name": "IF Stat Auther",
-                            "initial_pos": 34,
-                            "final_pos": 37,
-                            "value": 0,
-                            "conversion": "int((pkt[34] << 24) | (pkt[35] << 16) | (pkt[36] << 8) | pkt[37])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "csp_cmp_if_stat_frame",
-                            "name": "IF Stat Frame",
-                            "initial_pos": 38,
-                            "final_pos": 41,
-                            "value": 0,
-                            "conversion": "int((pkt[38] << 24) | (pkt[39] << 16) | (pkt[40] << 8) | pkt[41])",
-                            "unit": "frame(s)"
-                        },
-                        {
-                            "id": "csp_cmp_if_stat_tx_bytes",
-                            "name": "IF Stat TX Bytes",
-                            "initial_pos": 42,
-                            "final_pos": 45,
-                            "value": 0,
-                            "conversion": "int((pkt[42] << 24) | (pkt[43] << 16) | (pkt[44] << 8) | pkt[45])",
-                            "unit": "byte(s)"
-                        },
-                        {
-                            "id": "csp_cmp_if_stat_rx_bytes",
-                            "name": "IF Stat RX Bytes",
-                            "initial_pos": 46,
-                            "final_pos": 49,
-                            "value": 0,
-                            "conversion": "int((pkt[46] << 24) | (pkt[47] << 16) | (pkt[48] << 8) | pkt[49])",
-                            "unit": "byte(s)"
-                        },
-                        {
-                            "id": "csp_cmp_if_stat_irq",
-                            "name": "IF Stat IRQ",
-                            "initial_pos": 50,
-                            "final_pos": 53,
-                            "value": 0,
-                            "conversion": "int((pkt[50] << 24) | (pkt[51] << 16) | (pkt[52] << 8) | pkt[53])",
-                            "unit": ""
                         }
                     ]
                 },
@@ -1227,6 +1195,15 @@
                             "final_pos": 2,
                             "value": 0,
                             "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
                             "unit": ""
                         },
                         {
@@ -1300,15 +1277,6 @@
                             "value": 0,
                             "conversion": "pkt[10]",
                             "unit": ""
-                        },
-                        {
-                            "id": "csp_cmp_peek_data",
-                            "name": "Peek Data",
-                            "initial_pos": 11,
-                            "final_pos": 210,
-                            "value": 0,
-                            "conversion": "pkt[11:(11 + pkt[10])]",
-                            "unit": ""
                         }
                     ]
                 },
@@ -1358,6 +1326,15 @@
                             "final_pos": 2,
                             "value": 0,
                             "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
                             "unit": ""
                         },
                         {
@@ -1444,7 +1421,7 @@
                     ]
                 },
                 {
-                    "name": "CMP clock request",
+                    "name": "CMP set/get clock request",
                     "fields": [
                         {
                             "id": "csp_prio",
@@ -1489,6 +1466,15 @@
                             "final_pos": 2,
                             "value": 0,
                             "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
                             "unit": ""
                         },
                         {
@@ -1566,7 +1552,7 @@
                     ]
                 },
                 {
-                    "name": "Ping resquest",
+                    "name": "Ping request",
                     "fields": [
                         {
                             "id": "csp_prio",
@@ -1611,6 +1597,15 @@
                             "final_pos": 2,
                             "value": 1,
                             "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
                             "unit": ""
                         },
                         {
@@ -1709,6 +1704,15 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
+                            "unit": ""
+                        },
+                        {
                             "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
@@ -1745,12 +1749,12 @@
                             "unit": ""
                         },
                         {
-                            "id": "csp_ps_data",
+                            "id": "csp_ps_req_code",
                             "name": "Data",
                             "initial_pos": 4,
                             "final_pos": 103,
-                            "value": 0,
-                            "conversion": "pkt[4:104]",
+                            "value": 85,
+                            "conversion": "pkt[4]",
                             "unit": ""
                         }
                     ]
@@ -1804,6 +1808,15 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
+                            "unit": ""
+                        },
+                        {
                             "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
@@ -1837,15 +1850,6 @@
                             "final_pos": 3,
                             "value": 0,
                             "conversion": "bool(pkt[3] & 1)",
-                            "unit": ""
-                        },
-                        {
-                            "id": "csp_memfree",
-                            "name": "Free Memory",
-                            "initial_pos": 4,
-                            "final_pos": 7,
-                            "value": 0,
-                            "conversion": "int((pkt[4] << 24) | (pkt[5] << 16) | (pkt[6] << 8) | pkt[7])",
                             "unit": ""
                         }
                     ]
@@ -1899,6 +1903,15 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
+                            "unit": ""
+                        },
+                        {
                             "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
@@ -1933,15 +1946,6 @@
                             "value": 0,
                             "conversion": "bool(pkt[3] & 1)",
                             "unit": ""
-                        },
-                        {
-                            "id": "csp_free_buf",
-                            "name": "Free Buffers",
-                            "initial_pos": 4,
-                            "final_pos": 7,
-                            "value": 0,
-                            "conversion": "int((pkt[4] << 24) | (pkt[5] << 16) | (pkt[6] << 8) | pkt[7])",
-                            "unit": "buffer(s)"
                         }
                     ]
                 },
@@ -1994,6 +1998,15 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
+                            "unit": ""
+                        },
+                        {
                             "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
@@ -2028,15 +2041,6 @@
                             "value": 0,
                             "conversion": "bool(pkt[3] & 1)",
                             "unit": ""
-                        },
-                        {
-                            "id": "csp_uptime",
-                            "name": "Uptime",
-                            "initial_pos": 4,
-                            "final_pos": 7,
-                            "value": 0,
-                            "conversion": "int((pkt[4] << 24) | (pkt[5] << 16) | (pkt[6] << 8) | pkt[7])",
-                            "unit": "sec"
                         }
                     ]
                 },
@@ -2086,6 +2090,15 @@
                             "final_pos": 2,
                             "value": 4,
                             "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
                             "unit": ""
                         },
                         {
@@ -2181,6 +2194,15 @@
                             "final_pos": 2,
                             "value": 4,
                             "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
                             "unit": ""
                         },
                         {

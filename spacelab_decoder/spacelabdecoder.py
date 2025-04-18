@@ -26,7 +26,6 @@
 import os
 from datetime import datetime
 import json
-import csv
 import threading
 import socket
 
@@ -47,9 +46,10 @@ from spacelab_decoder.bit_buffer import BitBuffer, _BIT_BUFFER_LSB
 from spacelab_decoder.sync_word import SyncWord, _SYNC_WORD_LSB
 from spacelab_decoder.byte_buffer import ByteBuffer, _BYTE_BUFFER_LSB
 from spacelab_decoder.bit_decoder import BitDecoder
-from spacelab_decoder.packet import Packet, PacketCSP
-from spacelab_decoder.ccsds import CCSDS_POLY
+from spacelab_decoder.packet import PacketSLP, PacketCSP
 from spacelab_decoder.ax100 import AX100Mode5
+from spacelab_decoder.satellite import Satellite
+from spacelab_decoder.log import Log
 
 _UI_FILE_LOCAL                  = os.path.abspath(os.path.dirname(__file__)) + '/data/ui/spacelab_decoder.glade'
 _UI_FILE_LINUX_SYSTEM           = '/usr/share/spacelab_decoder/spacelab_decoder.glade'
@@ -69,7 +69,7 @@ _SAT_JSON_SYSTEM_PATH           = '/usr/share/spacelab_decoder/'
 _DEFAULT_CALLSIGN               = 'PP5UF'
 _DEFAULT_LOCATION               = 'Florianópolis'
 _DEFAULT_COUNTRY                = 'Brazil'
-_DEFAULT_MAX_PKT_LEN_BYTES      = 300
+_DEFAULT_SYNC_WORD_BIT_ERROR    = 4
 
 # Defining logfile default local
 _DIR_CONFIG_LOGFILE_LINUX       = 'spacelab_decoder'
@@ -110,6 +110,10 @@ class SpaceLabDecoder:
 
         self._client_socket = None
 
+        self._satellite = Satellite()
+
+        self._log = Log(_DEFAULT_LOGFILE, _DEFAULT_LOGFILE_PATH)
+
     def _build_widgets(self):
         # Main window
         self.window = self.builder.get_object("window_main")
@@ -132,6 +136,10 @@ class SpaceLabDecoder:
         self.entry_preferences_general_callsign = self.builder.get_object("entry_preferences_general_callsign")
         self.entry_preferences_general_location = self.builder.get_object("entry_preferences_general_location")
         self.entry_preferences_general_country = self.builder.get_object("entry_preferences_general_country")
+
+        self.entry_preferences_max_bit_err = self.builder.get_object("entry_preferences_max_bit_err")
+
+        self.checkbutton_preferences_protocols_ax100_len = self.builder.get_object("checkbutton_preferences_protocols_ax100_len")
 
         self.entry_preferences_udp_address = self.builder.get_object("entry_preferences_udp_address")
         self.entry_preferences_udp_port = self.builder.get_object("entry_preferences_udp_port")
@@ -164,10 +172,11 @@ class SpaceLabDecoder:
         self.combobox_satellite.connect("changed", self.on_combobox_satellite_changed)
 
         # Packet type combobox
-        self.liststore_packet_type = self.builder.get_object("liststore_packet_type")
-        self.combobox_packet_type = self.builder.get_object("combobox_packet_type")
-        self.combobox_packet_type.pack_start(cell, True)
-        self.combobox_packet_type.add_attribute(cell, "text", 0)
+        self.liststore_link = self.builder.get_object("liststore_link")
+        self.combobox_link = self.builder.get_object("combobox_link")
+        self.combobox_link.pack_start(cell, True)
+        self.combobox_link.add_attribute(cell, "text", 0)
+        self.combobox_link.connect("changed", self.on_combobox_link_changed)
 
         # Signal source
         self.radiobutton_audio_file = self.builder.get_object("radiobutton_audio_file")
@@ -225,12 +234,7 @@ class SpaceLabDecoder:
 
         self.listmodel_events.append(event)
 
-        if not os.path.exists(_DEFAULT_LOGFILE_PATH):
-            os.mkdir(_DEFAULT_LOGFILE_PATH)
-
-        with open(self.logfile_chooser_button.get_filename() + '/' + _DEFAULT_LOGFILE, 'a') as logfile:
-            writer = csv.writer(logfile, delimiter='\t')
-            writer.writerow(event)
+        self._log.write(msg, event[0])
 
     def run(self):
         self.window.show_all()
@@ -279,7 +283,10 @@ class SpaceLabDecoder:
                     wav_filename = self.filechooser_audio_file.get_filename()
                     self.write_log("Audio file opened with a sample rate of " + str(sample_rate) + " Hz")
 
-                    baudrate, sync_word, protocol, link_name = self._get_link_info()
+                    baudrate = self._satellite.get_active_link().get_baudrate()
+                    sync_word = self._satellite.get_active_link().get_sync_word()
+                    protocol = self._satellite.get_active_link().get_link_protocol()
+                    link_name = self._satellite.get_active_link().get_name()
 
                     self._decode_audio(self.filechooser_audio_file.get_filename(), baudrate, sync_word, protocol, link_name)
             elif self.radiobutton_udp.get_active():
@@ -294,7 +301,7 @@ class SpaceLabDecoder:
                     self.button_stop.set_sensitive(True)
                     self.button_plot_spectrum.set_sensitive(False)
                     self.combobox_satellite.set_sensitive(False)
-                    self.combobox_packet_type.set_sensitive(False)
+                    self.combobox_link.set_sensitive(False)
                     self.filechooser_audio_file.set_sensitive(False)
                     self.entry_preferences_udp_address.set_sensitive(False)
                     self.entry_preferences_udp_port.set_sensitive(False)
@@ -307,7 +314,10 @@ class SpaceLabDecoder:
 
                     self.write_log("Listening port " + port + " from " + address)
 
-                    baudrate, sync_word, protocol, link_name = self._get_link_info()
+                    baudrate = self._satellite.get_active_link().get_baudrate()
+                    sync_word = self._satellite.get_active_link().get_sync_word()
+                    protocol = self._satellite.get_active_link().get_link_protocol()
+                    link_name = self._satellite.get_active_link().get_name()
 
                     if self.switch_raw_bits.get_active():
                         thread_decode = threading.Thread(target=self._decode_stream, args=(address, int(port), baudrate, sync_word, protocol, link_name,))
@@ -331,7 +341,7 @@ class SpaceLabDecoder:
         self.button_decode.set_sensitive(True)
         self.button_plot_spectrum.set_sensitive(True)
         self.combobox_satellite.set_sensitive(True)
-        self.combobox_packet_type.set_sensitive(True)
+        self.combobox_link.set_sensitive(True)
         self.filechooser_audio_file.set_sensitive(True)
         self.entry_preferences_udp_address.set_sensitive(True)
         self.entry_preferences_udp_port.set_sensitive(True)
@@ -389,24 +399,31 @@ class SpaceLabDecoder:
         self.decoded_packets_index = []
 
     def on_combobox_satellite_changed(self, combobox):
-        # Clear the list of packet types
-        self.liststore_packet_type.clear()
+        try:
+            self._satellite.load_from_file(self._get_json_filename_of_active_sat())
 
-        links_names = list()
+            self.liststore_link.clear()  # Clear the list of packet types
 
-        with open(self._get_json_filename_of_active_sat()) as f:
-            sat_info = json.load(f)
-            for i in range(len(sat_info['links'])):
-                links_names.append(sat_info['links'][i]['name'])
+            for lk in self._satellite.get_links():
+                self.liststore_link.append([lk.get_name()])
+        except (FileNotFoundError, RuntimeError) as e:
+            error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error opening the satellite configuration file!")
+            error_dialog.format_secondary_text(str(e))
+            error_dialog.run()
+            error_dialog.destroy()
 
-        # Define the list of packet types from the JSON file of the given satellite
-        for n in links_names:
-            self.liststore_packet_type.append([n])
+            self.combobox_link.set_active(-1)
+        except:
+            error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error opening the satellite configuration file!")
+            error_dialog.format_secondary_text("Is the configuration file correct?")
+            error_dialog.run()
+            error_dialog.destroy()
+        finally:
+            # Sets the first packet type as the active packet type
+            self.combobox_link.set_active(0)
 
-        # Sets the first packet type as the active packet type
-        self.combobox_packet_type.set_active(0)
-
-        self._get_link_info()
+    def on_combobox_link_changed(self, combobox):
+        self._satellite.set_active_link(self.combobox_link.get_active())
 
     def on_toolbutton_about_clicked(self, toolbutton):
         response = self.aboutdialog.run()
@@ -459,6 +476,7 @@ class SpaceLabDecoder:
         self.entry_preferences_general_callsign.set_text(_DEFAULT_CALLSIGN)
         self.entry_preferences_general_location.set_text(_DEFAULT_LOCATION)
         self.entry_preferences_general_country.set_text(_DEFAULT_COUNTRY)
+        self.entry_preferences_max_bit_err.set_text(_DEFAULT_SYNC_WORD_BIT_ERROR)
 
     def _decode_audio(self, audio_file, baud, sync_word, protocol, link_name):
         sample_rate, data = wavfile.read(audio_file)
@@ -474,15 +492,15 @@ class SpaceLabDecoder:
 
         mm = TimeSync(sample_rate, baud)
 
-        if protocol == _PROTOCOL_NGHAM:
-            self._find_ngham_pkts(mm.get_bitstream(samples), sync_word, link_name)
-        elif protocol == _PROTOCOL_AX100MODE5:
-            self._find_ax100mode5_pkts(mm.get_bitstream(samples), sync_word, link_name)
-        else:
-            error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error decoding the audio file!")
-            error_dialog.format_secondary_text("The protocol \"" + protocol + "\" is not supported!")
-            error_dialog.run()
-            error_dialog.destroy()
+        try:
+            if protocol == _PROTOCOL_NGHAM:
+                self._find_ngham_pkts(mm.get_bitstream(samples), sync_word, link_name)
+            elif protocol == _PROTOCOL_AX100MODE5:
+                self._find_ax100mode5_pkts(mm.get_bitstream(samples), sync_word, link_name)
+            else:
+                raise RuntimeError("The protocol \"" + protocol + "\" is not supported!")
+        except RuntimeError as err:
+            self.write_log("Error decoding audio file: " + str(err))
 
     def _decode_stream(self, address, port, baud, sync_word, protocol, link_name):
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
@@ -493,10 +511,13 @@ class SpaceLabDecoder:
 
         sync_word.reverse()
 
-        bit_decoder = BitDecoder(sync_word)
+        bit_decoder = BitDecoder(sync_word, int(self.entry_preferences_max_bit_err.get_text()))
 
         ngham = pyngham.PyNGHam()
         ax100 = AX100Mode5()
+
+        if self.checkbutton_preferences_protocols_ax100_len.get_active():
+            ax100.set_ignore_golay_error(True)
 
         samples_buf = list()
         while self._run_udp_decode:
@@ -518,21 +539,28 @@ class SpaceLabDecoder:
                                         self.write_log("Error decoding a " + link_name + " packet from " + _SATELLITES[self.combobox_satellite.get_active()][0] + "!")
                                 else:
                                     bit_decoder.reset()
+
                                     tm_now = datetime.now()
                                     self.decoded_packets_index.append(self.textbuffer_pkt_data.create_mark(str(tm_now), self.textbuffer_pkt_data.get_end_iter(), True))
-                                    self.write_log(link_name + " packet from " + _SATELLITES[self.combobox_satellite.get_active()][0] + " decoded!")
+                                    self.write_log(link_name + " packet from " + self._satellite.get_name() + " decoded!")
+
                                     self._decode_packet(pl)
                             elif protocol == _PROTOCOL_AX100MODE5:
                                 pl = ax100.decode_byte(decoded_byte)
                                 if type(pl) is list:
-                                    self._decode_packet(pl)
+                                    bit_decoder.reset()
 
-                                    # Write event log
                                     tm_now = datetime.now()
                                     self.decoded_packets_index.append(self.textbuffer_pkt_data.create_mark(str(tm_now), self.textbuffer_pkt_data.get_end_iter(), True))
-                                    self.write_log(link_name + " packet from " + _SATELLITES[self.combobox_satellite.get_active()][0] + " decoded!")
+                                    self.write_log(link_name + " packet from " + self._satellite.get_name() + " decoded!")
+
+                                    self._decode_packet(pl)
 
                                     ax100.reset_decoder()
+            except RuntimeError as e:
+                bit_decoder.reset()
+                ax100.reset_decoder()
+                self.write_log("Error decoding a " + link_name + " packet from " + self._satellite.get_name() + ": " + str(e))
             except socket.timeout:
                 pass
 
@@ -541,7 +569,7 @@ class SpaceLabDecoder:
     def _find_ngham_pkts(self, bitstream, sync_word, link_name):
         sync_word.reverse()
 
-        bit_decoder = BitDecoder(sync_word)
+        bit_decoder = BitDecoder(sync_word, int(self.entry_preferences_max_bit_err.get_text()))
 
         ngham = pyngham.PyNGHam()
 
@@ -563,9 +591,12 @@ class SpaceLabDecoder:
     def _find_ax100mode5_pkts(self, bitstream, sync_word, link_name):
         sync_word.reverse()
 
-        bit_decoder = BitDecoder(sync_word)
+        bit_decoder = BitDecoder(sync_word, int(self.entry_preferences_max_bit_err.get_text()))
 
         ax100 = AX100Mode5()
+
+        if self.checkbutton_preferences_protocols_ax100_len.get_active():
+            ax100.set_ignore_golay_error(True)
 
         for b in bitstream:
             decoded_byte = bit_decoder.decode_bit(b)
@@ -586,12 +617,12 @@ class SpaceLabDecoder:
             pkt_data = str()
             pkt_json = str()
             sat_json = self._get_json_filename_of_active_sat()
-            if sat_json[-16:] == _SATELLITES[4][1]: # Catarina-A2
+            if self._satellite.get_active_link().get_network_protocol() == "CSP":
                 pkt_csp = PacketCSP(sat_json, pkt)
                 pkt_data = str(pkt_csp)
                 pkt_json = pkt_csp.get_data()
-            else:
-                pkt_sl = Packet(sat_json, pkt)
+            elif self._satellite.get_active_link().get_network_protocol() == "SLP":
+                pkt_sl = PacketSLP(sat_json, pkt)
                 pkt_data = str(pkt_sl)
                 pkt_json = pkt_sl.get_data()
         except RuntimeError as e:
@@ -631,16 +662,6 @@ class SpaceLabDecoder:
 
         return sat_config_file
 
-    def _get_link_info(self):
-        with open(self._get_json_filename_of_active_sat()) as f:
-            sat_info = json.load(f)
-            link_name   = sat_info['links'][self.combobox_packet_type.get_active()]['name']
-            baudrate    = sat_info['links'][self.combobox_packet_type.get_active()]['baudrate']
-            sync_word   = sat_info['links'][self.combobox_packet_type.get_active()]['sync_word']
-            protocol    = sat_info['links'][self.combobox_packet_type.get_active()]['protocol']
-
-            return baudrate, sync_word, protocol, link_name
-
     def _create_socket_server(self, adr, port):
         """Create a TCP/IP socket server"""
         try:
@@ -678,8 +699,6 @@ class SpaceLabDecoder:
             try:
                 data = client_socket.recv(1024)  # Read incoming data (max 1024 bytes)
                 if data:
-                    baudrate, sync_word, protocol, link_name = self._get_link_info()
-
                     if protocol == _PROTOCOL_NGHAM:
                         pl, err, err_loc = ngham.decode(data)
                         self._decode_packet(pl)

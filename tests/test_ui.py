@@ -20,7 +20,6 @@
 #  
 #
 
-
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
@@ -38,13 +37,13 @@ def test_ui():
     button_clean                    = builder.get_object("button_clean")
     toolbutton_about                = builder.get_object("toolbutton_about")
     combobox_satellite              = builder.get_object("combobox_satellite")
-    combobox_packet_type            = builder.get_object("combobox_packet_type")
+    combobox_link                   = builder.get_object("combobox_link")
     filechooser_audio_file          = builder.get_object("filechooser_audio_file")
     textview_pkt_data               = builder.get_object("textview_pkt_data")
     treeview_events                 = builder.get_object("treeview_events")
     filefilter_audio                = builder.get_object("filefilter_audio")
     liststore_satellite             = builder.get_object("liststore_satellite")
-    liststore_packet_type           = builder.get_object("liststore_packet_type")
+    liststore_link                  = builder.get_object("liststore_link")
     radiobutton_audio_file          = builder.get_object("radiobutton_audio_file")
     radiobutton_udp                 = builder.get_object("radiobutton_udp")
     entry_preferences_udp_address   = builder.get_object("entry_preferences_udp_address")
@@ -66,13 +65,13 @@ def test_ui():
     assert button_clean                     != None
     assert toolbutton_about                 != None
     assert combobox_satellite               != None
-    assert combobox_packet_type             != None
+    assert combobox_link                    != None
     assert filechooser_audio_file           != None
     assert textview_pkt_data                != None
     assert treeview_events                  != None
     assert filefilter_audio                 != None
     assert liststore_satellite              != None
-    assert liststore_packet_type            != None
+    assert liststore_link                   != None
     assert radiobutton_audio_file           != None
     assert radiobutton_udp                  != None
     assert entry_preferences_udp_address    != None
@@ -101,20 +100,24 @@ def test_ui():
     assert aboutdialog_spacelab_decoder.get_title()         == "About SpaceLab Decoder"
 
     # Preferences dialog
-    dialog_preferences                  = builder.get_object("dialog_preferences")
-    entry_preferences_general_callsign  = builder.get_object("entry_preferences_general_callsign")
-    entry_preferences_general_location  = builder.get_object("entry_preferences_general_location")
-    entry_preferences_general_country   = builder.get_object("entry_preferences_general_country")
-    button_preferences_ok               = builder.get_object("button_preferences_ok")
-    button_preferences_default          = builder.get_object("button_preferences_default")
-    button_preferences_cancel           = builder.get_object("button_preferences_cancel")
+    dialog_preferences                          = builder.get_object("dialog_preferences")
+    entry_preferences_general_callsign          = builder.get_object("entry_preferences_general_callsign")
+    entry_preferences_general_location          = builder.get_object("entry_preferences_general_location")
+    entry_preferences_general_country           = builder.get_object("entry_preferences_general_country")
+    entry_preferences_max_bit_err               = builder.get_object("entry_preferences_max_bit_err")
+    checkbutton_preferences_protocols_ax100_len = builder.get_object("checkbutton_preferences_protocols_ax100_len")
+    button_preferences_ok                       = builder.get_object("button_preferences_ok")
+    button_preferences_default                  = builder.get_object("button_preferences_default")
+    button_preferences_cancel                   = builder.get_object("button_preferences_cancel")
 
-    assert dialog_preferences                   != None
-    assert entry_preferences_general_callsign   != None
-    assert entry_preferences_general_location   != None
-    assert entry_preferences_general_country    != None
-    assert button_preferences_ok                != None
-    assert button_preferences_default           != None
-    assert button_preferences_cancel            != None
+    assert dialog_preferences                           != None
+    assert entry_preferences_general_callsign           != None
+    assert entry_preferences_general_location           != None
+    assert entry_preferences_general_country            != None
+    assert entry_preferences_max_bit_err                != None
+    assert checkbutton_preferences_protocols_ax100_len  != None
+    assert button_preferences_ok                        != None
+    assert button_preferences_default                   != None
+    assert button_preferences_cancel                    != None
 
     assert dialog_preferences.get_title()       == "Preferences"

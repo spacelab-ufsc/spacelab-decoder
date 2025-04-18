@@ -1,4 +1,5 @@
 PyGObject
+numpy
 scipy
 matplotlib
 pyngham

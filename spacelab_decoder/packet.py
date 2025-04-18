@@ -25,8 +25,9 @@ import json
 
 # Used inside `eval()` calls
 import numpy as np
+import struct
 
-class Packet:
+class PacketSLP:
 
     def __init__(self, sat_config, pkt_raw):
         with open(sat_config) as f:
@@ -43,18 +44,20 @@ class Packet:
         type_idx = int()
         pkt_type_found = False
         for i in range(len(self.sat_packet['links'])):
-            for j in range(len(self.sat_packet['links'][i]['types'])):
-                if pkt[0] == self.sat_packet['links'][i]['types'][j]['fields'][0]['value']:
-                    link_idx = i
-                    type_idx = j
-                    pkt_type_found = True
-                    break
+            if self.sat_packet['links'][i]['protocol_network'] == "SLP":    # Check if the link uses SLP
+                for j in range(len(self.sat_packet['links'][i]['types'])):
+                    if pkt[0] == self.sat_packet['links'][i]['types'][j]['fields'][0]['value']:
+                        link_idx = i
+                        type_idx = j
+                        pkt_type_found = True
+                        break
 
         if pkt_type_found:
             buf = buf + "\t" + "Satellite" + ": " + self.sat_packet['name'] + "\n"
             buf = buf + "\t" + "Link" + ": " + self.sat_packet['links'][link_idx]['name'] + "\n"
             buf = buf + "\t" + "Data Source" + ": " + self.sat_packet['links'][link_idx]['types'][type_idx]['name'] + "\n"
-            buf = buf + "\t" + "Protocol" + ": " + self.sat_packet['links'][link_idx]['protocol'] + "\n"
+            buf = buf + "\t" + "Link Protocol" + ": " + self.sat_packet['links'][link_idx]['protocol_link'] + "\n"
+            buf = buf + "\t" + "Network Protocol" + ": " + self.sat_packet['links'][link_idx]['protocol_network'] + "\n"
             buf = buf + "\t" + "Data" + ":" + "\n"
 
             for i in range(len(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'])):
@@ -71,12 +74,13 @@ class Packet:
         type_idx = int()
         pkt_type_found = False
         for i in range(len(self.sat_packet['links'])):
-            for j in range(len(self.sat_packet['links'][i]['types'])):
-                if pkt[0] == self.sat_packet['links'][i]['types'][j]['fields'][0]['value']:
-                    link_idx = i
-                    type_idx = j
-                    pkt_type_found = True
-                    break
+            if self.sat_packet['links'][i]['protocol_network'] == "SLP":    # Check if the link uses SLP
+                for j in range(len(self.sat_packet['links'][i]['types'])):
+                    if pkt[0] == self.sat_packet['links'][i]['types'][j]['fields'][0]['value']:
+                        link_idx = i
+                        type_idx = j
+                        pkt_type_found = True
+                        break
 
         data = dict()
 
@@ -102,7 +106,7 @@ class Packet:
         return buf
 
 
-class PacketCSP(Packet):
+class PacketCSP(PacketSLP):
 
     def __str__(self):
         buf = str()
@@ -114,21 +118,23 @@ class PacketCSP(Packet):
         pkt_type_found = False
         dst_port = int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))
         for i in range(len(self.sat_packet['links'])):
-            for j in range(len(self.sat_packet['links'][i]['types'])):
-                if dst_port == self.sat_packet['links'][i]['types'][j]['fields'][3]['value']: # Search for the destination port
-                    if dst_port == 0:   # CSP CMP packets
-                        if pkt[5] != self.sat_packet['links'][i]['types'][j]['fields'][11]['value']:
-                            continue
-                    link_idx = i
-                    type_idx = j
-                    pkt_type_found = True
-                    break
+            if self.sat_packet['links'][i]['protocol_network'] == "CSP":    # Check if the link uses CSP
+                for j in range(len(self.sat_packet['links'][i]['types'])):
+                    if dst_port == self.sat_packet['links'][i]['types'][j]['fields'][3]['value']: # Search for the destination port
+                        if dst_port == 0:   # CSP CMP packets
+                            if pkt[5] != self.sat_packet['links'][i]['types'][j]['fields'][11]['value']:    # 11 = CMP Code field
+                                continue
+                        link_idx = i
+                        type_idx = j
+                        pkt_type_found = True
+                        break
 
         if pkt_type_found:
             buf = buf + "\t" + "Satellite" + ": " + self.sat_packet['name'] + "\n"
             buf = buf + "\t" + "Link" + ": " + self.sat_packet['links'][link_idx]['name'] + "\n"
-            buf = buf + "\t" + "Packet Type" + ": " + self.sat_packet['links'][link_idx]['types'][type_idx]['name'] + "\n"
-            buf = buf + "\t" + "Protocol" + ": " + self.sat_packet['links'][link_idx]['protocol'] + "\n"
+            buf = buf + "\t" + "Data Source" + ": " + self.sat_packet['links'][link_idx]['types'][type_idx]['name'] + "\n"
+            buf = buf + "\t" + "Link Protocol" + ": " + self.sat_packet['links'][link_idx]['protocol_link'] + "\n"
+            buf = buf + "\t" + "Network Protocol" + ": " + self.sat_packet['links'][link_idx]['protocol_network'] + "\n"
             buf = buf + "\t" + "Data" + ":" + "\n"
 
             for i in range(len(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'])):
@@ -146,15 +152,16 @@ class PacketCSP(Packet):
         pkt_type_found = False
         dst_port = int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))
         for i in range(len(self.sat_packet['links'])):
-            for j in range(len(self.sat_packet['links'][i]['types'])):
-                if dst_port == self.sat_packet['links'][i]['types'][j]['fields'][3]['value']:   # Search for the destination port
-                    if dst_port == 0:   # CSP CMP packets
-                        if pkt[5] != self.sat_packet['links'][i]['types'][j]['fields'][11]['value']:
-                            continue
-                    link_idx = i
-                    type_idx = j
-                    pkt_type_found = True
-                    break
+            if self.sat_packet['links'][i]['protocol_network'] == "CSP":    # Check if the link uses CSP
+                for j in range(len(self.sat_packet['links'][i]['types'])):
+                    if dst_port == self.sat_packet['links'][i]['types'][j]['fields'][3]['value']:   # Search for the destination port
+                        if dst_port == 0:   # CSP CMP packets
+                            if pkt[5] != self.sat_packet['links'][i]['types'][j]['fields'][11]['value']:    # 11 = CMP Code field
+                                continue
+                        link_idx = i
+                        type_idx = j
+                        pkt_type_found = True
+                        break
 
         data = dict()
 
@@ -163,3 +170,5 @@ class PacketCSP(Packet):
                 data[self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['id']] = str(eval(self.sat_packet['links'][link_idx]['types'][type_idx]['fields'][i]['conversion']))
         else:
             raise RuntimeError("Unknown destination port!")
+
+        return json.dumps(data)

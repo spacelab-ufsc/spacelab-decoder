@@ -1,11 +1,18 @@
 {
+    "id": "cat-a2",
     "name": "Catarina-A2",
     "links": [
         {
+            "id": "downlink",
             "name": "Downlink",
+            "direction": "down",
+            "frequency": 400.3e6,
+            "modulation": "GMSK",
             "baudrate": 4800,
+            "preamble": [170, 170, 170, 170],
             "sync_word": [147, 11, 81, 222],
-            "protocol": "AX100-Mode5",
+            "protocol_link": "AX100-Mode5",
+            "protocol_network": "CSP",
             "types": [
                 {
                     "name": "CMP ident answer",
@@ -53,6 +60,15 @@
                             "final_pos": 2,
                             "value": 0,
                             "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
                             "unit": ""
                         },
                         {
@@ -205,6 +221,15 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
+                            "unit": ""
+                        },
+                        {
                             "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
@@ -336,6 +361,15 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
+                            "unit": ""
+                        },
+                        {
                             "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
@@ -419,71 +453,71 @@
                         {
                             "id": "csp_cmp_if_stat_tx_err",
                             "name": "IF Stat TX Error",
-                            "initial_pos": 22,
-                            "final_pos": 25,
+                            "initial_pos": 25,
+                            "final_pos": 28,
                             "value": 0,
-                            "conversion": "int((pkt[22] << 24) | (pkt[23] << 16) | (pkt[24] << 8) | pkt[25])",
+                            "conversion": "int((pkt[25] << 24) | (pkt[26] << 16) | (pkt[27] << 8) | pkt[28])",
                             "unit": "error(s)"
                         },
                         {
                             "id": "csp_cmp_if_stat_rx_err",
                             "name": "IF Stat RX Error",
-                            "initial_pos": 26,
-                            "final_pos": 29,
+                            "initial_pos": 29,
+                            "final_pos": 32,
                             "value": 0,
-                            "conversion": "int((pkt[26] << 24) | (pkt[27] << 16) | (pkt[28] << 8) | pkt[29])",
+                            "conversion": "int((pkt[29] << 24) | (pkt[30] << 16) | (pkt[31] << 8) | pkt[32])",
                             "unit": "error(s)"
                         },
                         {
                             "id": "csp_cmp_if_stat_drop",
                             "name": "IF Stat Drop",
-                            "initial_pos": 30,
-                            "final_pos": 33,
+                            "initial_pos": 33,
+                            "final_pos": 36,
                             "value": 0,
-                            "conversion": "int((pkt[30] << 24) | (pkt[31] << 16) | (pkt[32] << 8) | pkt[33])",
+                            "conversion": "int((pkt[33] << 24) | (pkt[34] << 16) | (pkt[35] << 8) | pkt[36])",
                             "unit": ""
                         },
                         {
                             "id": "csp_cmp_if_stat_auther",
                             "name": "IF Stat Auther",
-                            "initial_pos": 34,
-                            "final_pos": 37,
+                            "initial_pos": 37,
+                            "final_pos": 40,
                             "value": 0,
-                            "conversion": "int((pkt[34] << 24) | (pkt[35] << 16) | (pkt[36] << 8) | pkt[37])",
+                            "conversion": "int((pkt[37] << 24) | (pkt[38] << 16) | (pkt[39] << 8) | pkt[40])",
                             "unit": ""
                         },
                         {
                             "id": "csp_cmp_if_stat_frame",
                             "name": "IF Stat Frame",
-                            "initial_pos": 38,
-                            "final_pos": 41,
+                            "initial_pos": 41,
+                            "final_pos": 44,
                             "value": 0,
-                            "conversion": "int((pkt[38] << 24) | (pkt[39] << 16) | (pkt[40] << 8) | pkt[41])",
+                            "conversion": "int((pkt[41] << 24) | (pkt[42] << 16) | (pkt[43] << 8) | pkt[44])",
                             "unit": "frame(s)"
                         },
                         {
                             "id": "csp_cmp_if_stat_tx_bytes",
                             "name": "IF Stat TX Bytes",
-                            "initial_pos": 42,
-                            "final_pos": 45,
+                            "initial_pos": 45,
+                            "final_pos": 48,
                             "value": 0,
-                            "conversion": "int((pkt[42] << 24) | (pkt[43] << 16) | (pkt[44] << 8) | pkt[45])",
+                            "conversion": "int((pkt[45] << 24) | (pkt[46] << 16) | (pkt[47] << 8) | pkt[48])",
                             "unit": "byte(s)"
                         },
                         {
                             "id": "csp_cmp_if_stat_rx_bytes",
                             "name": "IF Stat RX Bytes",
-                            "initial_pos": 46,
-                            "final_pos": 49,
+                            "initial_pos": 49,
+                            "final_pos": 52,
                             "value": 0,
-                            "conversion": "int((pkt[46] << 24) | (pkt[47] << 16) | (pkt[48] << 8) | pkt[49])",
+                            "conversion": "int((pkt[49] << 24) | (pkt[50] << 16) | (pkt[51] << 8) | pkt[52])",
                             "unit": "byte(s)"
                         },
                         {
                             "id": "csp_cmp_if_stat_irq",
                             "name": "IF Stat IRQ",
-                            "initial_pos": 50,
-                            "final_pos": 53,
+                            "initial_pos": 53,
+                            "final_pos": 56,
                             "value": 0,
                             "conversion": "int((pkt[50] << 24) | (pkt[51] << 16) | (pkt[52] << 8) | pkt[53])",
                             "unit": ""
@@ -536,6 +570,15 @@
                             "final_pos": 2,
                             "value": 0,
                             "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
                             "unit": ""
                         },
                         {
@@ -670,6 +713,15 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
+                            "unit": ""
+                        },
+                        {
                             "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
@@ -801,6 +853,15 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
+                            "unit": ""
+                        },
+                        {
                             "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
@@ -923,6 +984,15 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
+                            "unit": ""
+                        },
+                        {
                             "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
@@ -1015,6 +1085,15 @@
                             "final_pos": 2,
                             "value": 2,
                             "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
                             "unit": ""
                         },
                         {
@@ -1113,6 +1192,15 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
+                            "unit": ""
+                        },
+                        {
                             "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
@@ -1205,6 +1293,15 @@
                             "final_pos": 2,
                             "value": 5,
                             "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
                             "unit": ""
                         },
                         {
@@ -1303,6 +1400,15 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
+                            "unit": ""
+                        },
+                        {
                             "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
@@ -1395,6 +1501,15 @@
                             "final_pos": 2,
                             "value": 10,
                             "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
                             "unit": ""
                         },
                         {
@@ -1493,6 +1608,15 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
+                            "unit": ""
+                        },
+                        {
                             "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
@@ -1585,6 +1709,15 @@
                             "final_pos": 2,
                             "value": 36,
                             "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
                             "unit": ""
                         },
                         {
@@ -1683,6 +1816,15 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
+                            "unit": ""
+                        },
+                        {
                             "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
@@ -1775,6 +1917,15 @@
                             "final_pos": 2,
                             "value": 47,
                             "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
                             "unit": ""
                         },
                         {
@@ -1873,6 +2024,15 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
+                            "unit": ""
+                        },
+                        {
                             "id": "csp_flag_hmac",
                             "name": "HMAC Enabled",
                             "initial_pos": 3,
@@ -1909,12 +2069,30 @@
                             "unit": ""
                         },
                         {
-                            "id": "tc_fb_pl",
-                            "name": "Payload",
+                            "id": "tc_fb_tc_id",
+                            "name": "Telecommand ID",
                             "initial_pos": 4,
                             "final_pos": 11,
                             "value": 0,
                             "conversion": "pkt[4:12]",
+                            "unit": ""
+                        },
+                        {
+                            "id": "tc_fb_tc_exec_ts",
+                            "name": "TC Execution Timestamp",
+                            "initial_pos": 8,
+                            "final_pos": 11,
+                            "value": 0,
+                            "conversion": "pkt[8:12]",
+                            "unit": ""
+                        },
+                        {
+                            "id": "tc_fb_tc_err",
+                            "name": "TC Error",
+                            "initial_pos": 12,
+                            "final_pos": 15,
+                            "value": 0,
+                            "conversion": "pkt[12:16]",
                             "unit": ""
                         }
                     ]
@@ -1922,10 +2100,16 @@
             ]
         },
         {
+            "id": "downlink_pl",
             "name": "Downlink (Payload)",
+            "direction": "down",
+            "frequency": 400.3e6,
+            "modulation": "GMSK",
             "baudrate": 4800,
+            "preamble": [170, 170, 170, 170],
             "sync_word": [201, 208, 138, 123],
-            "protocol": "AX100-Mode5",
+            "protocol_link": "AX100-Mode5",
+            "protocol_network": "CSP",
             "types": [
                 {
                     "name": "Beacon",
@@ -1973,6 +2157,15 @@
                             "final_pos": 2,
                             "value": 10,
                             "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
                             "unit": ""
                         },
                         {
