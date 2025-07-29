@@ -109,6 +109,8 @@ class SpaceLabDecoder:
         self._run_udp_decode = False
 
         self._client_socket = None
+        self._tcp_new_conn_cb_id = None
+        self._tcp_client_cb_id = None
 
         self._satellite = Satellite()
 
@@ -245,6 +247,9 @@ class SpaceLabDecoder:
         if self._client_socket:
             self._client_socket.close()
 
+        if self._tcp_server_socket:
+            self._tcp_server_socket.close()
+
         Gtk.main_quit()
 
     def on_button_preferences_clicked(self, button):
@@ -328,7 +333,7 @@ class SpaceLabDecoder:
                         if self._tcp_server_socket:
                             # Monitor the socket for incoming connections using GLib's IO watch
                             self._tcp_socket_io_channel = GLib.IOChannel(self._tcp_server_socket.fileno())
-                            GLib.io_add_watch(self._tcp_socket_io_channel, GLib.IO_IN, self._handle_tcp_new_connection)
+                            self._tcp_new_conn_cb_id = GLib.io_add_watch(self._tcp_socket_io_channel, GLib.IO_IN, self._handle_tcp_new_connection)
             else:
                 error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error decoding the satellite data!")
                 error_dialog.format_secondary_text("No input selected!")
@@ -336,7 +341,9 @@ class SpaceLabDecoder:
                 error_dialog.destroy()
 
     def on_button_stop_clicked(self, button):
-        self._run_udp_decode = False
+        self._stop_decoding()
+
+    def _stop_decoding(self):
         self.button_stop.set_sensitive(False)
         self.button_decode.set_sensitive(True)
         self.button_plot_spectrum.set_sensitive(True)
@@ -348,6 +355,20 @@ class SpaceLabDecoder:
         self.switch_raw_bits.set_sensitive(True)
         self.radiobutton_audio_file.set_sensitive(True)
         self.radiobutton_udp.set_sensitive(True)
+
+        if self.radiobutton_udp.get_active():
+            if self.switch_raw_bits.get_active():
+                self._run_udp_decode = False
+            else:
+                if self._tcp_new_conn_cb_id is not None:
+                    GLib.source_remove(self._tcp_new_conn_cb_id)
+                    self._tcp_new_conn_cb_id = None
+                if self._tcp_client_cb_id is not None:
+                    GLib.source_remove(self._tcp_client_cb_id)
+                    self._tcp_client_cb_id = None
+                if self._tcp_server_socket is not None:
+                    self._tcp_server_socket.close()
+                    self._tcp_server_socket = None
 
     def on_button_plot_clicked(self, button):
         if self.filechooser_audio_file.get_filename() is None:
@@ -688,18 +709,18 @@ class SpaceLabDecoder:
             client_io_channel.set_encoding(None)  # Binary mode (important for raw data)
 
             # Monitor the client socket for incoming data
-            GLib.io_add_watch(client_io_channel, GLib.IO_IN, self._handle_tcp_client_data, client_socket)
+            self._tcp_client_cb_id = GLib.io_add_watch(client_io_channel, GLib.IO_IN, self._handle_tcp_client_data, client_socket)
 
         return True  # Keep the handler active
 
     def _handle_tcp_client_data(self, source, condition, client_socket):
         """Handle incoming data from the client"""
         if condition == GLib.IO_IN:
-            ngham = pyngham.PyNGHam()
             try:
                 data = client_socket.recv(1024)  # Read incoming data (max 1024 bytes)
                 if data:
                     if protocol == _PROTOCOL_NGHAM:
+                        ngham = pyngham.PyNGHam()
                         pl, err, err_loc = ngham.decode(data)
                         self._decode_packet(pl)
                     elif protocol == _PROTOCOL_AX100MODE5:
@@ -707,13 +728,19 @@ class SpaceLabDecoder:
                         #self._decode_packet(pl)
                         pass
                     else:
-                        self.write_log("Unknown protocol received from TCP port!")
+                        self.write_log("Unknown protocol received from TCP client!")
                 else:
                     # Connection closed by client
+                    self.write_log("TCP connection closed by client!")
                     client_socket.close()
+                    self._tcp_server_socket.close()
+                    self._stop_decoding()
                     return False  # Stop the IO watch for this client
             except socket.error as e:
-                client_socket.close()
                 self.write_log("Error receiving data from TCP client: " + str(e))
-                return False  # Stop the IO watch for this client
+                client_socket.close()
+                self._tcp_server_socket.close()
+                self._stop_decoding()
+                return False    # Stop the IO watch for this client
+
         return True  # Keep the handler active
