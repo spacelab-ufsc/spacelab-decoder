@@ -124,6 +124,9 @@ class PacketCSP(PacketSLP):
                         if dst_port == 0:   # CSP CMP packets
                             if pkt[5] != self.sat_packet['links'][i]['types'][j]['fields'][11]['value']:    # 11 = CMP Code field
                                 continue
+                        if dst_port == 46:  # Set parameter packets
+                            if pkt[6] != self.sat_packet['links'][i]['types'][j]['fields'][12]['value']:    # 12 = Parameter size field
+                                continue
                         link_idx = i
                         type_idx = j
                         pkt_type_found = True
