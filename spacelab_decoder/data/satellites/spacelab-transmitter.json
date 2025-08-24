@@ -3076,7 +3076,7 @@
                     ]
                 },
                 {
-                    "name": "Get payload data",
+                    "name": "Get Table",
                     "fields": [
                         {
                             "id": "csp_prio",
@@ -3179,7 +3179,7 @@
                         },
                         {
                             "id": "table_id",
-                            "name": "Table Select",
+                            "name": "Table ID",
                             "initial_pos": 5,
                             "final_pos": 5,
                             "value": 0,
@@ -3189,7 +3189,7 @@
                     ]
                 },
                 {
-                    "name": "Set parameter (bool)",
+                    "name": "Set parameter (bool, uint8 or int8)",
                     "fields": [
                         {
                             "id": "csp_prio",
@@ -3309,149 +3309,36 @@
                             "unit": ""
                         },
                         {
-                            "id": "par_val",
-                            "name": "Parameter Value",
+                            "id": "par_val_bool",
+                            "name": "Parameter Value (bool)",
                             "initial_pos": 7,
                             "final_pos": 7,
                             "value": 0,
                             "conversion": "bool(int(pkt[7]))",
                             "unit": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "Set parameter (uint8)",
-                    "fields": [
-                        {
-                            "id": "csp_prio",
-                            "name": "Priority",
-                            "initial_pos": 0,
-                            "final_pos": 0,
-                            "value": 2,
-                            "conversion": "int(pkt[0] >> 6)",
-                            "unit": ""
                         },
                         {
-                            "id": "csp_src_adr",
-                            "name": "Source Address",
-                            "initial_pos": 0,
-                            "final_pos": 0,
-                            "value": 10,
-                            "conversion": "int((pkt[0] >> 1) & 31)",
-                            "unit": ""
-                        },
-                        {
-                            "id": "csp_dst_adr",
-                            "name": "Destination Address",
-                            "initial_pos": 0,
-                            "final_pos": 1,
-                            "value": 1,
-                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
-                            "unit": ""
-                        },
-                        {
-                            "id": "csp_dst_port",
-                            "name": "Destination Port",
-                            "initial_pos": 1,
-                            "final_pos": 2,
-                            "value": 46,
-                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
-                            "unit": ""
-                        },
-                        {
-                            "id": "csp_src_port",
-                            "name": "Source Port",
-                            "initial_pos": 2,
-                            "final_pos": 2,
-                            "value": 46,
-                            "conversion": "int(pkt[2] & 63)",
-                            "unit": ""
-                        },
-                        {
-                            "id": "csp_flag_sfp",
-                            "name": "SFP Enabled",
-                            "initial_pos": 3,
-                            "final_pos": 3,
-                            "value": 0,
-                            "conversion": "bool((pkt[3] >> 4) & 1)",
-                            "unit": ""
-                        },
-                        {
-                            "id": "csp_flag_hmac",
-                            "name": "HMAC Enabled",
-                            "initial_pos": 3,
-                            "final_pos": 3,
-                            "value": 0,
-                            "conversion": "bool((pkt[3] >> 3) & 1)",
-                            "unit": ""
-                        },
-                        {
-                            "id": "csp_flag_xtea",
-                            "name": "XTEA Enabled",
-                            "initial_pos": 3,
-                            "final_pos": 3,
-                            "value": 0,
-                            "conversion": "bool((pkt[3] >> 2) & 1)",
-                            "unit": ""
-                        },
-                        {
-                            "id": "csp_flag_rdp",
-                            "name": "RDP Enabled",
-                            "initial_pos": 3,
-                            "final_pos": 3,
-                            "value": 0,
-                            "conversion": "bool((pkt[3] >> 1) & 1)",
-                            "unit": ""
-                        },
-                        {
-                            "id": "csp_flag_crc",
-                            "name": "CRC Enabled",
-                            "initial_pos": 3,
-                            "final_pos": 3,
-                            "value": 0,
-                            "conversion": "bool(pkt[3] & 1)",
-                            "unit": ""
-                        },
-                        {
-                            "id": "subsys_id",
-                            "name": "Subsystem ID",
-                            "initial_pos": 4,
-                            "final_pos": 4,
-                            "value": 0,
-                            "conversion": "int(pkt[4])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "par_id",
-                            "name": "Parameter ID",
-                            "initial_pos": 5,
-                            "final_pos": 5,
-                            "value": 0,
-                            "conversion": "int(pkt[5])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "par_size",
-                            "name": "Parameter Size",
-                            "initial_pos": 6,
-                            "final_pos": 6,
-                            "value": 1,
-                            "conversion": "int(pkt[6])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "par_val",
-                            "name": "Parameter Value",
+                            "id": "par_val_uint8",
+                            "name": "Parameter Value (uint8)",
                             "initial_pos": 7,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "int(pkt[7])",
+                            "conversion": "struct.unpack('>B', bytes([pkt[7]]))[0]",
+                            "unit": ""
+                        },
+                        {
+                            "id": "par_val_int8",
+                            "name": "Parameter Value (int8)",
+                            "initial_pos": 7,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "struct.unpack('>b', bytes([pkt[7]]))[0]",
                             "unit": ""
                         }
                     ]
                 },
                 {
-                    "name": "Set parameter (uint16)",
+                    "name": "Set parameter (uint16 or int16)",
                     "fields": [
                         {
                             "id": "csp_prio",
@@ -3571,18 +3458,27 @@
                             "unit": ""
                         },
                         {
-                            "id": "par_val",
-                            "name": "Parameter Value",
+                            "id": "par_val_uint16",
+                            "name": "Parameter Value (uint16)",
                             "initial_pos": 7,
                             "final_pos": 8,
                             "value": 0,
                             "conversion": "struct.unpack('>H', bytes(pkt[7:9]))[0]",
                             "unit": ""
+                        },
+                        {
+                            "id": "par_val_int16",
+                            "name": "Parameter Value (int16)",
+                            "initial_pos": 7,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "struct.unpack('>h', bytes(pkt[7:9]))[0]",
+                            "unit": ""
                         }
                     ]
                 },
                 {
-                    "name": "Set parameter (uint32)",
+                    "name": "Set parameter (uint32, int32 or float)",
                     "fields": [
                         {
                             "id": "csp_prio",
@@ -3702,18 +3598,36 @@
                             "unit": ""
                         },
                         {
-                            "id": "par_val",
-                            "name": "Parameter Value",
+                            "id": "par_val_uint32",
+                            "name": "Parameter Value (uint32)",
                             "initial_pos": 7,
                             "final_pos": 10,
                             "value": 0,
                             "conversion": "struct.unpack('>I', bytes(pkt[7:11]))[0]",
                             "unit": ""
+                        },
+                        {
+                            "id": "par_val_int32",
+                            "name": "Parameter Value (int32)",
+                            "initial_pos": 7,
+                            "final_pos": 10,
+                            "value": 0,
+                            "conversion": "struct.unpack('>i', bytes(pkt[7:11]))[0]",
+                            "unit": ""
+                        },
+                        {
+                            "id": "par_val_flt",
+                            "name": "Parameter Value (float)",
+                            "initial_pos": 7,
+                            "final_pos": 10,
+                            "value": 0,
+                            "conversion": "struct.unpack('>f', bytes(pkt[7:11]))[0]",
+                            "unit": ""
                         }
                     ]
                 },
                 {
-                    "name": "Set parameter (uint64)",
+                    "name": "Set parameter (uint64, int64 or double)",
                     "fields": [
                         {
                             "id": "csp_prio",
@@ -3833,12 +3747,30 @@
                             "unit": ""
                         },
                         {
-                            "id": "par_val",
-                            "name": "Parameter Value",
+                            "id": "par_val_uint64",
+                            "name": "Parameter Value (uint64)",
                             "initial_pos": 7,
                             "final_pos": 14,
                             "value": 0,
                             "conversion": "struct.unpack('>Q', bytes(pkt[7:15]))[0]",
+                            "unit": ""
+                        },
+                        {
+                            "id": "par_val_int64",
+                            "name": "Parameter Value (int64)",
+                            "initial_pos": 7,
+                            "final_pos": 14,
+                            "value": 0,
+                            "conversion": "struct.unpack('>q', bytes(pkt[7:15]))[0]",
+                            "unit": ""
+                        },
+                        {
+                            "id": "par_val_dbl",
+                            "name": "Parameter Value (double)",
+                            "initial_pos": 7,
+                            "final_pos": 14,
+                            "value": 0,
+                            "conversion": "struct.unpack('>d', bytes(pkt[7:15]))[0]",
                             "unit": ""
                         }
                     ]
