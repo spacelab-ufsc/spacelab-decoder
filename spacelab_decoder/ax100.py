@@ -226,6 +226,9 @@ class AX100Mode5:
                 else:
                     self.reset_decoder()
                     raise RuntimeError("Impossible to correct the Golay field!")
+            elif self._decoder_pkt_len > 255:
+                self.reset_decoder()
+                raise RuntimeError("Invalid packet length!")
             else:
                 self._decoder_pkt_len -= 32 # 32 = Reed-Solomon parity block
 
@@ -278,6 +281,6 @@ class AX100Mode5:
         :rtype: list[int]
         """
         for i in range(len(data)):
-            data[i] ^= _AX100_CCSDS_POLY[(i + start_pos) % (len(_AX100_CCSDS_POLY) + 1)]
+            data[i] ^= _AX100_CCSDS_POLY[(i + start_pos) % len(_AX100_CCSDS_POLY)]
 
         return data
