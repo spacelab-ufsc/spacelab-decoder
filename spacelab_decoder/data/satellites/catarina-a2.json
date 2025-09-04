@@ -9,7 +9,7 @@
             "frequency": 400.3e6,
             "modulation": "GMSK",
             "baudrate": 4800,
-            "preamble": [170, 170, 170, 170],
+            "preamble": [170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170],
             "sync_word": [147, 11, 81, 222],
             "protocol_link": "AX100-Mode5",
             "protocol_network": "CSP",
@@ -916,6 +916,15 @@
                             "unit": ""
                         },
                         {
+                            "id": "csp_cmp_clk_dt",
+                            "name": "Datetime",
+                            "initial_pos": 6,
+                            "final_pos": 9,
+                            "value": 0,
+                            "conversion": "datetime.datetime.fromtimestamp(struct.unpack('>I', bytes(pkt[6:10]))[0]).strftime('%Y/%m/%d - %H:%M:%S')",
+                            "unit": ""
+                        },
+                        {
                             "id": "csp_cmp_clk_sec",
                             "name": "Clock Seconds",
                             "initial_pos": 6,
@@ -1136,9 +1145,9 @@
                             "id": "csp_ps_data",
                             "name": "Data",
                             "initial_pos": 4,
-                            "final_pos": 103,
+                            "final_pos": 199,
                             "value": 0,
-                            "conversion": "pkt[4:104]",
+                            "conversion": "\"\".join([chr(val) for val in pkt[4:200]])",
                             "unit": ""
                         }
                     ]
@@ -1450,7 +1459,7 @@
                             "initial_pos": 4,
                             "final_pos": 7,
                             "value": 0,
-                            "conversion": "int((pkt[4] << 24) | (pkt[5] << 16) | (pkt[6] << 8) | pkt[7])",
+                            "conversion": "struct.unpack('>I', bytes(pkt[4:8]))[0]",
                             "unit": "sec"
                         }
                     ]
@@ -1552,9 +1561,9 @@
                             "id": "beacon_pl",
                             "name": "Payload",
                             "initial_pos": 4,
-                            "final_pos": 50,
+                            "final_pos": 186,
                             "value": 0,
-                            "conversion": "pkt[4:51]",
+                            "conversion": "pkt[4:187]",
                             "unit": ""
                         }
                     ]
@@ -1861,12 +1870,30 @@
                             "unit": ""
                         },
                         {
+                            "id": "subsys_id",
+                            "name": "Subsystem ID",
+                            "initial_pos": 4,
+                            "final_pos": 4,
+                            "value": 0,
+                            "conversion": "int(pkt[4])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "table_id",
+                            "name": "Table ID",
+                            "initial_pos": 5,
+                            "final_pos": 5,
+                            "value": 0,
+                            "conversion": "int(pkt[5])",
+                            "unit": ""
+                        },
+                        {
                             "id": "pl_data_pl",
                             "name": "Payload",
-                            "initial_pos": 4,
+                            "initial_pos": 6,
                             "final_pos": 50,
                             "value": 0,
-                            "conversion": "pkt[4:51]",
+                            "conversion": "pkt[6:51]",
                             "unit": ""
                         }
                     ]
@@ -2072,9 +2099,9 @@
                             "id": "tc_fb_tc_id",
                             "name": "Telecommand ID",
                             "initial_pos": 4,
-                            "final_pos": 11,
+                            "final_pos": 7,
                             "value": 0,
-                            "conversion": "pkt[4:12]",
+                            "conversion": "struct.unpack('>I', bytes(pkt[4:8]))[0]",
                             "unit": ""
                         },
                         {
@@ -2083,7 +2110,7 @@
                             "initial_pos": 8,
                             "final_pos": 11,
                             "value": 0,
-                            "conversion": "pkt[8:12]",
+                            "conversion": "datetime.datetime.fromtimestamp(struct.unpack('>I', bytes(pkt[8:12]))[0]).strftime('%Y/%m/%d - %H:%M:%S')",
                             "unit": ""
                         },
                         {
@@ -2092,125 +2119,7 @@
                             "initial_pos": 12,
                             "final_pos": 15,
                             "value": 0,
-                            "conversion": "pkt[12:16]",
-                            "unit": ""
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "downlink_pl",
-            "name": "Downlink (Payload)",
-            "direction": "down",
-            "frequency": 400.3e6,
-            "modulation": "GMSK",
-            "baudrate": 4800,
-            "preamble": [170, 170, 170, 170],
-            "sync_word": [201, 208, 138, 123],
-            "protocol_link": "AX100-Mode5",
-            "protocol_network": "CSP",
-            "types": [
-                {
-                    "name": "Beacon",
-                    "fields": [
-                        {
-                            "id": "csp_prio",
-                            "name": "Priority",
-                            "initial_pos": 0,
-                            "final_pos": 0,
-                            "value": 2,
-                            "conversion": "int(pkt[0] >> 6)",
-                            "unit": ""
-                        },
-                        {
-                            "id": "csp_src_adr",
-                            "name": "Source Address",
-                            "initial_pos": 0,
-                            "final_pos": 0,
-                            "value": 3,
-                            "conversion": "int((pkt[0] >> 1) & 31)",
-                            "unit": ""
-                        },
-                        {
-                            "id": "csp_dst_adr",
-                            "name": "Destination Address",
-                            "initial_pos": 0,
-                            "final_pos": 1,
-                            "value": 10,
-                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
-                            "unit": ""
-                        },
-                        {
-                            "id": "csp_dst_port",
-                            "name": "Destination Port",
-                            "initial_pos": 1,
-                            "final_pos": 2,
-                            "value": 10,
-                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
-                            "unit": ""
-                        },
-                        {
-                            "id": "csp_src_port",
-                            "name": "Source Port",
-                            "initial_pos": 2,
-                            "final_pos": 2,
-                            "value": 10,
-                            "conversion": "int(pkt[2] & 63)",
-                            "unit": ""
-                        },
-                        {
-                            "id": "csp_flag_sfp",
-                            "name": "SFP Enabled",
-                            "initial_pos": 3,
-                            "final_pos": 3,
-                            "value": 0,
-                            "conversion": "bool((pkt[3] >> 4) & 1)",
-                            "unit": ""
-                        },
-                        {
-                            "id": "csp_flag_hmac",
-                            "name": "HMAC Enabled",
-                            "initial_pos": 3,
-                            "final_pos": 3,
-                            "value": 0,
-                            "conversion": "bool((pkt[3] >> 3) & 1)",
-                            "unit": ""
-                        },
-                        {
-                            "id": "csp_flag_xtea",
-                            "name": "XTEA Enabled",
-                            "initial_pos": 3,
-                            "final_pos": 3,
-                            "value": 0,
-                            "conversion": "bool((pkt[3] >> 2) & 1)",
-                            "unit": ""
-                        },
-                        {
-                            "id": "csp_flag_rdp",
-                            "name": "RDP Enabled",
-                            "initial_pos": 3,
-                            "final_pos": 3,
-                            "value": 0,
-                            "conversion": "bool((pkt[3] >> 1) & 1)",
-                            "unit": ""
-                        },
-                        {
-                            "id": "csp_flag_crc",
-                            "name": "CRC Enabled",
-                            "initial_pos": 3,
-                            "final_pos": 3,
-                            "value": 0,
-                            "conversion": "bool(pkt[3] & 1)",
-                            "unit": ""
-                        },
-                        {
-                            "id": "pl_beacon_pl",
-                            "name": "Payload",
-                            "initial_pos": 4,
-                            "final_pos": 50,
-                            "value": 0,
-                            "conversion": "pkt[4:51]",
+                            "conversion": "struct.unpack('>i', bytes(pkt[12:16]))[0]",
                             "unit": ""
                         }
                     ]
