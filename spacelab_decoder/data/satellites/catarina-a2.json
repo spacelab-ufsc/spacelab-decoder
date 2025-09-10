@@ -2123,6 +2123,128 @@
                             "unit": ""
                         }
                     ]
+                },
+                {
+                    "name": "Application updater status",
+                    "fields": [
+                        {
+                            "id": "csp_prio",
+                            "name": "Priority",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0] >> 6)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_src_adr",
+                            "name": "Source Address",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 1,
+                            "conversion": "int((pkt[0] >> 1) & 31)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_dst_adr",
+                            "name": "Destination Address",
+                            "initial_pos": 0,
+                            "final_pos": 1,
+                            "value": 10,
+                            "conversion": "int(((pkt[0] & 1) << 4) | (pkt[1] >> 4))",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_dst_port",
+                            "name": "Destination Port",
+                            "initial_pos": 1,
+                            "final_pos": 2,
+                            "value": 50,
+                            "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_src_port",
+                            "name": "Source Port",
+                            "initial_pos": 2,
+                            "final_pos": 2,
+                            "value": 50,
+                            "conversion": "int(pkt[2] & 63)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_sfp",
+                            "name": "SFP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 4) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_hmac",
+                            "name": "HMAC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_xtea",
+                            "name": "XTEA Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 2) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_rdp",
+                            "name": "RDP Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool((pkt[3] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "csp_flag_crc",
+                            "name": "CRC Enabled",
+                            "initial_pos": 3,
+                            "final_pos": 3,
+                            "value": 0,
+                            "conversion": "bool(pkt[3] & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "file_id",
+                            "name": "File ID",
+                            "initial_pos": 4,
+                            "final_pos": 4,
+                            "value": 0,
+                            "conversion": "int(pkt[4])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "install_status",
+                            "name": "Install Status",
+                            "initial_pos": 5,
+                            "final_pos": 5,
+                            "value": 0,
+                            "conversion": "int(pkt[5])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "pkt_status_list",
+                            "name": "List of packet status",
+                            "initial_pos": 10,
+                            "final_pos": 20,
+                            "value": 0,
+                            "conversion": "pkt[10:9+1+struct.unpack('>I', bytes(pkt[6:10]))[0]]",
+                            "unit": ""
+                        }
+                    ]
                 }
             ]
         }
