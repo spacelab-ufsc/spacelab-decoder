@@ -1563,7 +1563,7 @@
                             "initial_pos": 4,
                             "final_pos": 186,
                             "value": 0,
-                            "conversion": "pkt[4:187]",
+                            "conversion": "pkt[4:190]",
                             "unit": ""
                         }
                     ]
@@ -1891,9 +1891,9 @@
                             "id": "pl_data_pl",
                             "name": "Payload",
                             "initial_pos": 6,
-                            "final_pos": 50,
+                            "final_pos": 199,
                             "value": 0,
-                            "conversion": "pkt[6:51]",
+                            "conversion": "pkt[6:200]",
                             "unit": ""
                         }
                     ]
