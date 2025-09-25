@@ -204,7 +204,7 @@ class ReedSolomon:
         r += 1
         while r <= self._NROOTS:
             # Compute discrepancy at the r-th step in poly-form
-            discr_r = np.int8(0)
+            discr_r = np.uint8(0)
             for i in range(r):
                 if lambda_poly[i] != 0 and s[r - i - 1] != self._A0:
                     discr_r ^= self._ccsds_alpha_to[self._mod255(self._ccsds_index_of[lambda_poly[i]] + s[r - i - 1])]
