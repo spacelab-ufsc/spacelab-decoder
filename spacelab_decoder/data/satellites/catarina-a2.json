@@ -1563,7 +1563,7 @@
                             "initial_pos": 4,
                             "final_pos": 186,
                             "value": 0,
-                            "conversion": "pkt[4:190]",
+                            "conversion": "pkt[4:191]",
                             "unit": ""
                         }
                     ]
@@ -1603,7 +1603,7 @@
                             "name": "Destination Port",
                             "initial_pos": 1,
                             "final_pos": 2,
-                            "value": 35,
+                            "value": 38,
                             "conversion": "int(((pkt[1] & 15) << 2) | (pkt[2] >> 6))",
                             "unit": ""
                         },
@@ -1662,12 +1662,48 @@
                             "unit": ""
                         },
                         {
+                            "id": "total_pkt",
+                            "name": "Total Packets",
+                            "initial_pos": 5,
+                            "final_pos": 5,
+                            "value": 0,
+                            "conversion": "int(pkt[5])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "dr_counter",
+                            "name": "Data Request Packet Counter",
+                            "initial_pos": 6,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "struct.unpack('>H', bytes(pkt[6:8]))[0]",
+                            "unit": ""
+                        },
+                        {
+                            "id": "file_id",
+                            "name": "File ID",
+                            "initial_pos": 8,
+                            "final_pos": 8,
+                            "value": 0,
+                            "conversion": "int(pkt[8])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "size_pl",
+                            "name": "Payload Size",
+                            "initial_pos": 9,
+                            "final_pos": 11,
+                            "value": 0,
+                            "conversion": "struct.unpack('>H', bytes(pkt[9:11]))[0]",
+                            "unit": "bytes"
+                        },
+                        {
                             "id": "data_req_pl",
                             "name": "Payload",
-                            "initial_pos": 4,
-                            "final_pos": 50,
+                            "initial_pos": 11,
+                            "final_pos": 211,
                             "value": 0,
-                            "conversion": "pkt[4:51]",
+                            "conversion": "pkt[11:11+200]",
                             "unit": ""
                         }
                     ]
