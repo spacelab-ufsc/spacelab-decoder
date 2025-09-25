@@ -609,6 +609,7 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                         <property name="tooltip-text" translatable="yes">Decoded packets</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
+                        <property name="wrap-mode">word</property>
                         <property name="cursor-visible">False</property>
                       </object>
                     </child>
@@ -625,7 +626,6 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                     <property name="can-focus">True</property>
                     <property name="hexpand">True</property>
                     <property name="vexpand">False</property>
-                    <property name="hscrollbar-policy">never</property>
                     <property name="shadow-type">in</property>
                     <child>
                       <object class="GtkTreeView" id="treeview_events">
