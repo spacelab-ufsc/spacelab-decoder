@@ -116,6 +116,8 @@ class SpaceLabDecoder:
 
         self._log = Log(_DEFAULT_LOGFILE, _DEFAULT_LOGFILE_PATH)
 
+        self._packet_csp_buf = PacketCSP()
+
     def _build_widgets(self):
         # Main window
         self.window = self.builder.get_object("window_main")
@@ -639,9 +641,10 @@ class SpaceLabDecoder:
             pkt_json = str()
             sat_json = self._get_json_filename_of_active_sat()
             if self._satellite.get_active_link().get_network_protocol() == "CSP":
-                pkt_csp = PacketCSP(sat_json, pkt)
-                pkt_data = str(pkt_csp)
-                pkt_json = pkt_csp.get_data()
+                self._packet_csp_buf.set_config(sat_json)
+                self._packet_csp_buf.set_pkt(pkt)
+                pkt_data = str(self._packet_csp_buf)
+                pkt_json = self._packet_csp_buf.get_data()
             elif self._satellite.get_active_link().get_network_protocol() == "SLP":
                 pkt_sl = PacketSLP(sat_json, pkt)
                 pkt_data = str(pkt_sl)
