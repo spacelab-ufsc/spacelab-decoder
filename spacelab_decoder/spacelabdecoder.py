@@ -62,7 +62,7 @@ _ICON_FILE_LINUX_SYSTEM         = '/usr/share/icons/spacelab_decoder_256x256.png
 _LOGO_FILE_LOCAL                = os.path.abspath(os.path.dirname(__file__)) + '/data/img/spacelab-logo-full-400x200.png'
 _LOGO_FILE_LINUX_SYSTEM         = '/usr/share/spacelab_decoder/spacelab-logo-full-400x200.png'
 
-_DIR_CONFIG_LINUX               = '.spacelab_decoder'
+_DIR_CONFIG_LINUX               = '.config/spacelab_decoder'
 _DIR_CONFIG_WINDOWS             = 'spacelab_decoder'
 
 _SAT_JSON_LOCAL_PATH            = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/'
@@ -72,6 +72,11 @@ _DEFAULT_CALLSIGN               = 'PP5UF'
 _DEFAULT_LOCATION               = 'Florianópolis'
 _DEFAULT_COUNTRY                = 'Brazil'
 _DEFAULT_SYNC_WORD_BIT_ERROR    = 4
+_DEFAULT_AX100_USE_LEN_ERR      = False
+_DEFAULT_INPUT_SOCKET_TYPE_TCP  = True
+_DEFAULT_INPUT_SOCKET_LINK_EN   = True
+
+_DIR_CONFIG_DEFAULTJSON         = 'spacelab_decoder.json'
 
 # Defining logfile default local
 _DIR_CONFIG_LOGFILE_LINUX       = 'spacelab_decoder'
@@ -521,19 +526,53 @@ class SpaceLabDecoder:
         if not os.path.exists(location):
             os.mkdir(location)
 
+        with open(location + '/' + _DIR_CONFIG_DEFAULTJSON, 'w', encoding='utf-8') as f:
+            json.dump({"callsign":                          self.entry_preferences_general_callsign.get_text(),
+                       "location":                          self.entry_preferences_general_location.get_text(),
+                       "country":                           self.entry_preferences_general_country.get_text(),
+                       "sync_word_max_sync_error":          self.entry_preferences_max_bit_err.get_text(),
+                       "ax100_use_len_field_with_err":      self.checkbutton_preferences_protocols_ax100_len.get_active(),
+                       "input_socket_type_tcp":             self.radiobutton_preferences_conn_tcp.get_active(),
+                       "input_socket_link_layer_enabled":   self.switch_preferences_conn_link_layer.get_active(),
+                       "logfile_path":                      self.logfile_chooser_button.get_filename()}, f, ensure_ascii=False, indent=4)
+
     def _load_preferences(self):
         home = os.path.expanduser('~')
         location = os.path.join(home, _DIR_CONFIG_LINUX)
+
+        if not os.path.isfile(location + "/" + _DIR_CONFIG_DEFAULTJSON):
+            self._load_default_preferences()
+            self._save_preferences()
+
+        f = open(location + "/" + _DIR_CONFIG_DEFAULTJSON, "r")
+        config = json.loads(f.read())
+        f.close()
+
+        try:
+            self.entry_preferences_general_callsign.set_text(config["callsign"])
+            self.entry_preferences_general_location.set_text(config["location"])
+            self.entry_preferences_general_country.set_text(config["country"])
+            self.entry_preferences_max_bit_err.set_text(config["sync_word_max_sync_error"])
+            self.checkbutton_preferences_protocols_ax100_len.set_active(config["ax100_use_len_field_with_err"])
+            if config["input_socket_type_tcp"]:
+                self.radiobutton_preferences_conn_tcp.set_active(True)
+            else:
+                self.radiobutton_preferences_conn_zmq.set_active(True)
+            self.switch_preferences_conn_link_layer.set_active(config["input_socket_link_layer_enabled"])
+            self.logfile_chooser_button.set_filename(config["logfile_path"])
+        except:
+            self._load_default_preferences()
+            self._save_preferences()
 
     def _load_default_preferences(self):
         self.entry_preferences_general_callsign.set_text(_DEFAULT_CALLSIGN)
         self.entry_preferences_general_location.set_text(_DEFAULT_LOCATION)
         self.entry_preferences_general_country.set_text(_DEFAULT_COUNTRY)
-        self.entry_preferences_max_bit_err.set_text(_DEFAULT_SYNC_WORD_BIT_ERROR)
-
-        self.entry_preferences_max_bit_err.set_text("4")
-
-        self.radiobutton_preferences_conn_tcp.set_active(True)
+        self.entry_preferences_max_bit_err.set_text(str(_DEFAULT_SYNC_WORD_BIT_ERROR))
+        self.checkbutton_preferences_protocols_ax100_len.set_active(_DEFAULT_AX100_USE_LEN_ERR)
+        self.radiobutton_preferences_conn_tcp.set_active(_DEFAULT_INPUT_SOCKET_TYPE_TCP)
+        self.switch_preferences_conn_link_layer.set_active(_DEFAULT_INPUT_SOCKET_LINK_EN)
+        self.logfile_chooser_button.set_filename(_DEFAULT_LOGFILE_PATH)
 
     def _decode_audio(self, audio_file, baud, sync_word, protocol, link_name):
         sample_rate, data = wavfile.read(audio_file)
