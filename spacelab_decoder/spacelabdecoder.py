@@ -37,6 +37,8 @@ import matplotlib.pyplot as plt
 from scipy.io import wavfile
 import numpy as np
 
+import zmq
+
 import pyngham
 
 import spacelab_decoder.version
@@ -112,6 +114,10 @@ class SpaceLabDecoder:
         self._tcp_new_conn_cb_id = None
         self._tcp_client_cb_id = None
 
+        self._zmq_ctx = zmq.Context()
+        self._zmq_sub = None
+        self._zmq_new_conn_cb_id = None
+
         self._satellite = Satellite()
 
         self._log = Log(_DEFAULT_LOGFILE, _DEFAULT_LOGFILE_PATH)
@@ -147,6 +153,8 @@ class SpaceLabDecoder:
 
         self.radiobutton_preferences_conn_tcp = self.builder.get_object("radiobutton_preferences_conn_tcp")
         self.radiobutton_preferences_conn_zmq = self.builder.get_object("radiobutton_preferences_conn_zmq")
+
+        self.switch_preferences_conn_link_layer = self.builder.get_object("switch_preferences_conn_link_layer")
 
         self.entry_preferences_udp_address = self.builder.get_object("entry_preferences_udp_address")
         self.entry_preferences_udp_port = self.builder.get_object("entry_preferences_udp_port")
@@ -255,6 +263,8 @@ class SpaceLabDecoder:
         if self._tcp_server_socket:
             self._tcp_server_socket.close()
 
+        sele._zmq_ctx.term()
+
         Gtk.main_quit()
 
     def on_button_preferences_clicked(self, button):
@@ -333,12 +343,25 @@ class SpaceLabDecoder:
                         thread_decode = threading.Thread(target=self._decode_stream, args=(address, int(port), baudrate, sync_word, protocol, link_name,))
                         thread_decode.start()
                     else:
-                        self._tcp_server_socket = self._create_socket_server(address, int(port))
+                        if self.radiobutton_preferences_conn_tcp.get_active():
+                            self._tcp_server_socket = self._create_socket_server(address, int(port))
 
-                        if self._tcp_server_socket:
-                            # Monitor the socket for incoming connections using GLib's IO watch
-                            self._tcp_socket_io_channel = GLib.IOChannel(self._tcp_server_socket.fileno())
-                            self._tcp_new_conn_cb_id = GLib.io_add_watch(self._tcp_socket_io_channel, GLib.IO_IN, self._handle_tcp_new_connection)
+                            if self._tcp_server_socket:
+                                # Monitor the socket for incoming connections using GLib's IO watch
+                                self._tcp_socket_io_channel = GLib.IOChannel(self._tcp_server_socket.fileno())
+                                self._tcp_new_conn_cb_id = GLib.io_add_watch(self._tcp_socket_io_channel, GLib.IO_IN, self._handle_tcp_new_connection)
+                        else:
+                            # Create SUB socket
+                            self._zmq_sub = self._zmq_ctx.socket(zmq.SUB)
+                            self._zmq_sub.setsockopt(zmq.RCVTIMEO, 0)   # Non-blocking
+
+                            self._zmq_sub.bind("tcp://" + address + ":" + port)
+
+                            self._zmq_sub.subscribe(b'')    # All topics
+
+                            # Add watch to GLib main loop
+                            channel = GLib.IOChannel.unix_new(self._zmq_sub.getsockopt(zmq.FD))
+                            self._zmq_new_conn_cb_id = GLib.io_add_watch(channel, GLib.IO_IN, self._handle_zmq_message)
             else:
                 error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error decoding the satellite data!")
                 error_dialog.format_secondary_text("No input selected!")
@@ -374,6 +397,10 @@ class SpaceLabDecoder:
                 if self._tcp_server_socket is not None:
                     self._tcp_server_socket.close()
                     self._tcp_server_socket = None
+                if self._zmq_new_conn_cb_id is not None:
+                    self._zmq_sub.close()
+                    GLib.source_remove(self._zmq_new_conn_cb_id)
+                    self._zmq_new_conn_cb_id = None
 
     def on_button_plot_clicked(self, button):
         if self.filechooser_audio_file.get_filename() is None:
@@ -503,6 +530,10 @@ class SpaceLabDecoder:
         self.entry_preferences_general_location.set_text(_DEFAULT_LOCATION)
         self.entry_preferences_general_country.set_text(_DEFAULT_COUNTRY)
         self.entry_preferences_max_bit_err.set_text(_DEFAULT_SYNC_WORD_BIT_ERROR)
+
+        self.entry_preferences_max_bit_err.set_text("4")
+
+        self.radiobutton_preferences_conn_tcp.set_active(True)
 
     def _decode_audio(self, audio_file, baud, sync_word, protocol, link_name):
         sample_rate, data = wavfile.read(audio_file)
@@ -750,3 +781,35 @@ class SpaceLabDecoder:
                 return False    # Stop the IO watch for this client
 
         return True  # Keep the handler active
+
+    def _handle_zmq_message(self, source, condition):
+        """Callback for ZMQ messages"""
+        protocol = self._satellite.get_active_link().get_link_protocol()
+
+        try:
+            # Check for events without blocking
+            events = self._zmq_sub.getsockopt(zmq.EVENTS)
+
+            if events & zmq.POLLIN:
+                # Message available, receive it
+                data = self._zmq_sub.recv()
+
+                pl = list(data)[1:].copy()
+
+                if protocol == _PROTOCOL_NGHAM:
+                    if self.switch_preferences_conn_link_layer.get_active():
+                        ngham = pyngham.PyNGHam()
+                        pl, err, err_loc = ngham.decode(list(data))
+                    self._decode_packet(pl)
+                elif protocol == _PROTOCOL_AX100MODE5:
+                    if self.switch_preferences_conn_link_layer.get_active():
+                        ax100 = AX100Mode5()
+                        pl = ax100.decode(list(data)[len(self._satellite.get_active_link().get_preamble()) + 4:])
+                    self._decode_packet(pl)
+                else:
+                    self.write_log("Unknown protocol received from ZMQ socket!")
+        except Exception as e:
+            self.write_log("Error receiving data from ZMQ socket: " + str(e))
+            return False    # Return False to remove the watch if there's a critical error
+
+        return True # Keep the handler active
