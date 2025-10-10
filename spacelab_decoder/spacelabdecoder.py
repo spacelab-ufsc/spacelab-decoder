@@ -145,6 +145,9 @@ class SpaceLabDecoder:
 
         self.checkbutton_preferences_protocols_ax100_len = self.builder.get_object("checkbutton_preferences_protocols_ax100_len")
 
+        self.radiobutton_preferences_conn_tcp = self.builder.get_object("radiobutton_preferences_conn_tcp")
+        self.radiobutton_preferences_conn_zmq = self.builder.get_object("radiobutton_preferences_conn_zmq")
+
         self.entry_preferences_udp_address = self.builder.get_object("entry_preferences_udp_address")
         self.entry_preferences_udp_port = self.builder.get_object("entry_preferences_udp_port")
         self.switch_raw_bits = self.builder.get_object("switch_raw_bits")
