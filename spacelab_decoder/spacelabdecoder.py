@@ -360,9 +360,9 @@ class SpaceLabDecoder:
                             self._zmq_sub = self._zmq_ctx.socket(zmq.SUB)
                             self._zmq_sub.setsockopt(zmq.RCVTIMEO, 0)   # Non-blocking
 
-                            self._zmq_sub.bind("tcp://" + address + ":" + port)
+                            self._zmq_sub.connect("tcp://" + address + ":" + port)
 
-                            self._zmq_sub.subscribe(b'')    # All topics
+                            self._zmq_sub.setsockopt(zmq.SUBSCRIBE, bytes([10]))
 
                             # Add watch to GLib main loop
                             channel = GLib.IOChannel.unix_new(self._zmq_sub.getsockopt(zmq.FD))
@@ -825,13 +825,9 @@ class SpaceLabDecoder:
         """Callback for ZMQ messages"""
         protocol = self._satellite.get_active_link().get_link_protocol()
 
-        try:
-            # Check for events without blocking
-            events = self._zmq_sub.getsockopt(zmq.EVENTS)
-
-            if events & zmq.POLLIN:
-                # Message available, receive it
-                data = self._zmq_sub.recv()
+        while True:
+            try:
+                data = self._zmq_sub.recv(flags=zmq.NOBLOCK)
 
                 pl = list(data)[1:].copy()
 
@@ -847,8 +843,10 @@ class SpaceLabDecoder:
                     self._decode_packet(pl)
                 else:
                     self.write_log("Unknown protocol received from ZMQ socket!")
-        except Exception as e:
-            self.write_log("Error receiving data from ZMQ socket: " + str(e))
-            return False    # Return False to remove the watch if there's a critical error
+            except zmq.Again:
+                break;
+            except Exception as e:
+                self.write_log("Error receiving data from ZMQ socket: " + str(e))
+                return False    # Return False to remove the watch if there's a critical error
 
         return True # Keep the handler active
