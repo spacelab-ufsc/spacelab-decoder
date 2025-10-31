@@ -84,6 +84,7 @@ _DEFAULT_LOGFILE_PATH           = os.path.join(os.path.expanduser('~'), _DIR_CON
 _DEFAULT_LOGFILE                = 'logfile.csv'
 
 _SATELLITES                     = [["FloripaSat-1", "floripasat-1.json"],
+                                   ["FloripaSat-2A", "floripasat-2a.json"],
                                    ["GOLDS-UFSC", "golds-ufsc.json"],
                                    ["Catarina-A1", "catarina-a1.json"],
                                    ["Catarina-A2", "catarina-a2.json"],
