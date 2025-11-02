@@ -91,8 +91,8 @@
                             "initial_pos": 8,
                             "final_pos": 11,
                             "value": 0,
-                            "conversion": "int((pkt[8] << 24) | (pkt[9] << 16) | (pkt[10] << 8) | pkt[11])",
-                            "unit": "sec"
+                            "conversion": "datetime.datetime.fromtimestamp(struct.unpack('>I', bytes(pkt[8:12]))[0]).strftime('%Y/%m/%d - %H:%M:%S')",
+                            "unit": ""
                         },
                         {
                             "id": "obdh_mcu_temp",
@@ -165,24 +165,6 @@
                             "value": 0,
                             "conversion": "int((pkt[24] << 8) | pkt[25])",
                             "unit": "dB"
-                        },
-                        {
-                            "id": "ant_temp",
-                            "name": "Antenna temperature",
-                            "initial_pos": 26,
-                            "final_pos": 27,
-                            "value": 0,
-                            "conversion": "int((pkt[26] << 8) | pkt[27])",
-                            "unit": "K"
-                        },
-                        {
-                            "id": "ant_status",
-                            "name": "Antenna status",
-                            "initial_pos": 28,
-                            "final_pos": 29,
-                            "value": 0,
-                            "conversion": "int((pkt[28] << 8) | pkt[29])",
-                            "unit": ""
                         },
                         {
                             "id": "eps_mcu_temp",
@@ -401,30 +383,12 @@
                             "unit": "%"
                         },
                         {
-                            "id": "obdh_op_main_edc",
-                            "name": "Main EDC ID",
-                            "initial_pos": 72,
-                            "final_pos": 72,
-                            "value": 0,
-                            "conversion": "int(pkt[72])",
-                            "unit": ""
-                        },
-                        {
                             "id": "obdh_op_main_pl_state",
                             "name": "Main payload state",
                             "initial_pos": 73,
                             "final_pos": 73,
                             "value": 0,
                             "conversion": "int(pkt[73])",
-                            "unit": ""
-                        },
-                        {
-                            "id": "obdh_op_sec_pl_state",
-                            "name": "Secondary payload state",
-                            "initial_pos": 74,
-                            "final_pos": 74,
-                            "value": 0,
-                            "conversion": "int(pkt[74])",
                             "unit": ""
                         },
                         {
@@ -437,22 +401,13 @@
                             "unit": ""
                         },
                         {
-                            "id": "obdh_mem_sec_sbcd",
-                            "name": "Used SBCD Sector flash pages",
-                            "initial_pos": 79,
-                            "final_pos": 82,
-                            "value": 0,
-                            "conversion": "int((pkt[79] << 24) | (pkt[80] << 16) | (pkt[81] << 8) | pkt[82])",
-                            "unit": ""
-                        },
-                        {
                             "id": "obdh_sensor_read_ts",
                             "name": "Sensor reading timestamp",
                             "initial_pos": 83,
                             "final_pos": 86,
                             "value": 0,
-                            "conversion": "int((pkt[83] << 24) | (pkt[84] << 16) | (pkt[85] << 8) | pkt[86])",
-                            "unit": "sec"
+                            "conversion": "datetime.datetime.fromtimestamp(struct.unpack('>I', bytes(pkt[83:87]))[0]).strftime('%Y/%m/%d - %H:%M:%S')",
+                            "unit": ""
                         },
                         {
                             "id": "obdh_pos_ts",
@@ -460,8 +415,8 @@
                             "initial_pos": 87,
                             "final_pos": 90,
                             "value": 0,
-                            "conversion": "int((pkt[87] << 24) | (pkt[88] << 16) | (pkt[89] << 8) | pkt[90])",
-                            "unit": "sec"
+                            "conversion": "datetime.datetime.fromtimestamp(struct.unpack('>I', bytes(pkt[87:91]))[0]).strftime('%Y/%m/%d - %H:%M:%S')",
+                            "unit": ""
                         },
                         {
                             "id": "obdh_pos_lat",
@@ -496,8 +451,8 @@
                             "initial_pos": 97,
                             "final_pos": 100,
                             "value": 0,
-                            "conversion": "int((pkt[97] << 24) | (pkt[98] << 16) | (pkt[99] << 8) | pkt[100])",
-                            "unit": "sec"
+                            "conversion": "datetime.datetime.fromtimestamp(struct.unpack('>I', bytes(pkt[97:101]))[0]).strftime('%Y/%m/%d - %H:%M:%S')",
+                            "unit": ""
                         },
                         {
                             "id": "obdh_last_contact_ts",
@@ -505,125 +460,161 @@
                             "initial_pos": 101,
                             "final_pos": 104,
                             "value": 0,
-                            "conversion": "int((pkt[101] << 24) | (pkt[102] << 16) | (pkt[103] << 8) | pkt[104])",
-                            "unit": "sec"
+                            "conversion": "datetime.datetime.fromtimestamp(struct.unpack('>I', bytes(pkt[101:105]))[0]).strftime('%Y/%m/%d - %H:%M:%S')",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_next_sch_tc_ts",
+                            "name": "Next Scheduled TC",
+                            "initial_pos": 105,
+                            "final_pos": 108,
+                            "value": 0,
+                            "conversion": "datetime.datetime.fromtimestamp(struct.unpack('>I', bytes(pkt[105:109]))[0]).strftime('%Y/%m/%d - %H:%M:%S')",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_tc_queue_size",
+                            "name": "TC Queue Size",
+                            "initial_pos": 109,
+                            "final_pos": 109,
+                            "value": 0,
+                            "conversion": "int(pkt[109])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_mode",
+                            "name": "Mode",
+                            "initial_pos": 110,
+                            "final_pos": 110,
+                            "value": 0,
+                            "conversion": "int(pkt[110])",
+                            "unit": ""
                         },
                         {
                             "id": "lora_fsat2a_sat_id",
                             "name": "Satellite ID (FloripaSat-2A)",
-                            "initial_pos": 106,
-                            "final_pos": 106,
+                            "initial_pos": 112,
+                            "final_pos": 112,
                             "value": 0,
-                            "conversion": "int(pkt[106])",
+                            "conversion": "int(pkt[112])",
                             "unit": ""
                         },
                         {
                             "id": "lora_fsat2a_pkt_cnt",
                             "name": "Packet Counter (FloripaSat-2A)",
-                            "initial_pos": 107,
-                            "final_pos": 110,
+                            "initial_pos": 113,
+                            "final_pos": 116,
                             "value": 0,
-                            "conversion": "struct.unpack('<I', bytes(pkt[107:111]))[0]",
+                            "conversion": "struct.unpack('<I', bytes(pkt[113:117]))[0]",
                             "unit": ""
                         },
                         {
                             "id": "lora_fsat2a_temp",
                             "name": "Temperature (FloripaSat-2A)",
-                            "initial_pos": 111,
-                            "final_pos": 114,
+                            "initial_pos": 117,
+                            "final_pos": 120,
                             "value": 0,
-                            "conversion": "struct.unpack('<i', bytes(pkt[111:115]))[0]",
+                            "conversion": "struct.unpack('<f', bytes(pkt[117:121]))[0]",
                             "unit": "oC"
                         },
                         {
                             "id": "lora_fsat2a_rssi",
                             "name": "Last RSSI (FloripaSat-2A)",
-                            "initial_pos": 115,
-                            "final_pos": 116,
+                            "initial_pos": 121,
+                            "final_pos": 122,
                             "value": 0,
-                            "conversion": "struct.unpack('<h', bytes(pkt[115:117]))[0]",
+                            "conversion": "struct.unpack('<h', bytes(pkt[121:123]))[0]",
                             "unit": "dB"
                         },
                         {
                             "id": "lora_fsat2a_snr",
                             "name": "Last SNR (FloripaSat-2A)",
-                            "initial_pos": 117,
-                            "final_pos": 120,
+                            "initial_pos": 123,
+                            "final_pos": 126,
                             "value": 0,
-                            "conversion": "struct.unpack('<i', bytes(pkt[117:121]))[0]",
+                            "conversion": "struct.unpack('<f', bytes(pkt[123:127]))[0]",
                             "unit": "dB"
                         },
                         {
                             "id": "lora_fsat2a_freq_err",
                             "name": "Last Frequency Error (FloripaSat-2A)",
-                            "initial_pos": 121,
-                            "final_pos": 124,
+                            "initial_pos": 127,
+                            "final_pos": 130,
                             "value": 0,
-                            "conversion": "struct.unpack('<i', bytes(pkt[121:125]))[0]",
+                            "conversion": "struct.unpack('<i', bytes(pkt[127:131]))[0]",
                             "unit": "Hz"
                         },
                         {
                             "id": "lora_fsat2b_sat_id",
                             "name": "Satellite ID (FloripaSat-2B)",
-                            "initial_pos": 125,
-                            "final_pos": 125,
+                            "initial_pos": 131,
+                            "final_pos": 131,
                             "value": 0,
-                            "conversion": "int(pkt[125])",
+                            "conversion": "int(pkt[131])",
                             "unit": ""
                         },
                         {
                             "id": "lora_fsat2b_pkt_cnt",
                             "name": "Packet Counter (FloripaSat-2B)",
-                            "initial_pos": 126,
-                            "final_pos": 129,
+                            "initial_pos": 132,
+                            "final_pos": 135,
                             "value": 0,
-                            "conversion": "struct.unpack('<I', bytes(pkt[126:130]))[0]",
+                            "conversion": "struct.unpack('<I', bytes(pkt[132:136]))[0]",
                             "unit": ""
                         },
                         {
                             "id": "lora_fsat2b_temp",
                             "name": "Temperature (FloripaSat-2B)",
-                            "initial_pos": 130,
-                            "final_pos": 133,
+                            "initial_pos": 136,
+                            "final_pos": 139,
                             "value": 0,
-                            "conversion": "struct.unpack('<i', bytes(pkt[130:134]))[0]",
+                            "conversion": "struct.unpack('<f', bytes(pkt[136:140]))[0]",
                             "unit": "oC"
                         },
                         {
                             "id": "lora_fsat2b_rssi",
                             "name": "Last RSSI (FloripaSat-2B)",
-                            "initial_pos": 134,
-                            "final_pos": 135,
+                            "initial_pos": 140,
+                            "final_pos": 141,
                             "value": 0,
-                            "conversion": "struct.unpack('<h', bytes(pkt[134:136]))[0]",
+                            "conversion": "struct.unpack('<h', bytes(pkt[140:142]))[0]",
                             "unit": "dB"
                         },
                         {
                             "id": "lora_fsat2b_snr",
                             "name": "Last SNR (FloripaSat-2B)",
-                            "initial_pos": 136,
-                            "final_pos": 139,
+                            "initial_pos": 142,
+                            "final_pos": 145,
                             "value": 0,
-                            "conversion": "struct.unpack('<i', bytes(pkt[136:140]))[0]",
+                            "conversion": "struct.unpack('<f', bytes(pkt[142:146]))[0]",
                             "unit": "dB"
                         },
                         {
                             "id": "lora_fsat2b_freq_err",
                             "name": "Last Frequency Error (FloripaSat-2B)",
-                            "initial_pos": 140,
-                            "final_pos": 143,
+                            "initial_pos": 146,
+                            "final_pos": 149,
                             "value": 0,
-                            "conversion": "struct.unpack('<i', bytes(pkt[140:144]))[0]",
+                            "conversion": "struct.unpack('<i', bytes(pkt[146:150]))[0]",
                             "unit": "Hz"
                         },
                         {
                             "id": "lora_fsat2b_bat_volt",
                             "name": "Battery Voltage (FloripaSat-2B)",
-                            "initial_pos": 144,
-                            "final_pos": 145,
+                            "initial_pos": 150,
+                            "final_pos": 151,
                             "value": 0,
-                            "conversion": "struct.unpack('<H', bytes(pkt[144:146]))[0]",
+                            "conversion": "struct.unpack('<H', bytes(pkt[150:152]))[0]",
                             "unit": "mV"
+                        },
+                        {
+                            "id": "lora_fsat2a_ts",
+                            "name": "Timestamp",
+                            "initial_pos": 152,
+                            "final_pos": 155,
+                            "value": 0,
+                            "conversion": "datetime.datetime.fromtimestamp(struct.unpack('<I', bytes(pkt[152:156]))[0]).strftime('%Y/%m/%d - %H:%M:%S')",
+                            "unit": ""
                         }
                     ]
                 },
@@ -672,8 +663,8 @@
                             "initial_pos": 16,
                             "final_pos": 19,
                             "value": 0,
-                            "conversion": "int((pkt[16] << 24) | (pkt[17] << 16) | (pkt[18] << 8) | pkt[19])",
-                            "unit": "sec"
+                            "conversion": "datetime.datetime.fromtimestamp(struct.unpack('>I', bytes(pkt[16:20]))[0]).strftime('%Y/%m/%d - %H:%M:%S')",
+                            "unit": ""
                         },
                         {
                             "id": "tc_req_data",
@@ -731,8 +722,8 @@
                             "initial_pos": 16,
                             "final_pos": 19,
                             "value": 0,
-                            "conversion": "int((pkt[16] << 24) | (pkt[17] << 16) | (pkt[18] << 8) | pkt[19])",
-                            "unit": "sec"
+                            "conversion": "datetime.datetime.fromtimestamp(struct.unpack('>I', bytes(pkt[16:20]))[0]).strftime('%Y/%m/%d - %H:%M:%S')",
+                            "unit": ""
                         }
                     ]
                 },
