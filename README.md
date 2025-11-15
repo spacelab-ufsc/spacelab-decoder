@@ -40,6 +40,7 @@ Until now, this program supports the satellites below:
 * GOLDS-UFSC (not launched yet)
 * Catarina-A1 (not launched yet)
 * Catarina-A2 (not launched yet)
+* Catarina-A3 (not launched yet)
 
 ## Dependencies
 
