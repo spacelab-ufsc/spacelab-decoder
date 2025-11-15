@@ -23,7 +23,7 @@
 from spacelab_decoder.golay24 import Golay24
 from spacelab_decoder.reed_solomon import ReedSolomon
 
-_AX100_PREAMBLE_DEFAULT     = [0xAA]*8
+_AX100_PREAMBLE_DEFAULT     = [0xAA]*50
 _AX100_SYNC_WORD_DEFAULT    = [147, 11, 81, 222]
 
 # Repeats after 255 bits, but repeats byte-aligning after 255 byte
@@ -226,6 +226,9 @@ class AX100Mode5:
                 else:
                     self.reset_decoder()
                     raise RuntimeError("Impossible to correct the Golay field!")
+            elif self._decoder_pkt_len > 255:
+                self.reset_decoder()
+                raise RuntimeError("Invalid packet length!")
             else:
                 self._decoder_pkt_len -= 32 # 32 = Reed-Solomon parity block
 
@@ -277,10 +280,7 @@ class AX100Mode5:
         :return: The input data scrambled.
         :rtype: list[int]
         """
-        if start_pos > len(_AX100_CCSDS_POLY)-1:
-            start_pos -= len(_AX100_CCSDS_POLY)
-
-        for i in range(start_pos, start_pos+len(data)):
-            data[i-start_pos] = data[i-start_pos] ^ _AX100_CCSDS_POLY[i]
+        for i in range(len(data)):
+            data[i] ^= _AX100_CCSDS_POLY[(i + start_pos) % len(_AX100_CCSDS_POLY)]
 
         return data

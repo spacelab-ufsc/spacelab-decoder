@@ -609,6 +609,7 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                         <property name="tooltip-text" translatable="yes">Decoded packets</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
+                        <property name="wrap-mode">word</property>
                         <property name="cursor-visible">False</property>
                       </object>
                     </child>
@@ -625,7 +626,6 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
                     <property name="can-focus">True</property>
                     <property name="hexpand">True</property>
                     <property name="vexpand">False</property>
-                    <property name="hscrollbar-policy">never</property>
                     <property name="shadow-type">in</property>
                     <child>
                       <object class="GtkTreeView" id="treeview_events">
@@ -677,7 +677,8 @@ Author: Gabriel Mariano Marcelino <gabriel.mm8@gmail.com>
     <property name="website">https://github.com/spacelab-ufsc/spacelab-decoder</property>
     <property name="website-label" translatable="yes">https://github.com/spacelab-ufsc/spacelab-decoder</property>
     <property name="authors">Gabriel Mariano Marcelino - PU5GMA &lt;gabriel.mm8@gmail.com&gt;
-Vitória Beatriz Bianchin &lt;vitoriabbianchin@gmail.com &gt;</property>
+Vitória Beatriz Bianchin &lt;vitoriabbianchin@gmail.com &gt;
+Carlos Augusto Porto Freitas &lt;caftrabalho@gmail.com&gt;</property>
     <property name="logo-icon-name">image-missing</property>
     <property name="license-type">gpl-3-0</property>
     <child internal-child="vbox">
@@ -900,6 +901,7 @@ Vitória Beatriz Bianchin &lt;vitoriabbianchin@gmail.com &gt;</property>
               <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="halign">start</property>
                 <property name="label" translatable="yes">General</property>
               </object>
               <packing>
@@ -991,6 +993,7 @@ Vitória Beatriz Bianchin &lt;vitoriabbianchin@gmail.com &gt;</property>
               <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="halign">start</property>
                 <property name="label" translatable="yes">Decoder</property>
               </object>
               <packing>
@@ -1071,10 +1074,145 @@ Vitória Beatriz Bianchin &lt;vitoriabbianchin@gmail.com &gt;</property>
               <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="halign">start</property>
                 <property name="label" translatable="yes">Protocols</property>
               </object>
               <packing>
                 <property name="position">2</property>
+                <property name="tab-fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <!-- n-columns=3 n-rows=5 -->
+              <object class="GtkGrid">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="margin-left">10</property>
+                <property name="margin-right">10</property>
+                <property name="margin-start">10</property>
+                <property name="margin-end">10</property>
+                <property name="margin-top">5</property>
+                <property name="margin-bottom">5</property>
+                <property name="row-spacing">8</property>
+                <property name="column-spacing">5</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes">Socket Type:</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">1</property>
+                    <property name="height">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes">Input</property>
+                    <attributes>
+                      <attribute name="weight" value="heavy"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
+                    <property name="width">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkRadioButton" id="radiobutton_preferences_conn_tcp">
+                    <property name="label" translatable="yes">TCP/IP</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
+                    <property name="halign">start</property>
+                    <property name="active">True</property>
+                    <property name="draw-indicator">True</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">2</property>
+                    <property name="top-attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkRadioButton" id="radiobutton_preferences_conn_zmq">
+                    <property name="label" translatable="yes">ZMQ</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
+                    <property name="halign">start</property>
+                    <property name="active">True</property>
+                    <property name="draw-indicator">True</property>
+                    <property name="group">radiobutton_preferences_conn_tcp</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">2</property>
+                    <property name="top-attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSeparator">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="hexpand">True</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">3</property>
+                    <property name="width">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes">Link Layer:</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSwitch" id="switch_preferences_conn_link_layer">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="halign">center</property>
+                  </object>
+                  <packing>
+                    <property name="left-attach">2</property>
+                    <property name="top-attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child type="tab">
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">Connection</property>
+              </object>
+              <packing>
+                <property name="position">3</property>
                 <property name="tab-fill">False</property>
               </packing>
             </child>
@@ -1121,7 +1259,7 @@ Vitória Beatriz Bianchin &lt;vitoriabbianchin@gmail.com &gt;</property>
                 </child>
               </object>
               <packing>
-                <property name="position">3</property>
+                <property name="position">4</property>
               </packing>
             </child>
             <child type="tab">
@@ -1129,10 +1267,11 @@ Vitória Beatriz Bianchin &lt;vitoriabbianchin@gmail.com &gt;</property>
                 <property name="name">Logfile</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="halign">start</property>
                 <property name="label" translatable="yes">Logfile</property>
               </object>
               <packing>
-                <property name="position">3</property>
+                <property name="position">4</property>
                 <property name="tab-fill">False</property>
               </packing>
             </child>

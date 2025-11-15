@@ -1,0 +1,856 @@
+{
+    "id": "floripasat-2a",
+    "name": "FloripaSat-2A",
+    "links": [
+        {
+            "id": "downlink",
+            "name": "Downlink",
+            "direction": "down",
+            "frequency": 468.2e6,
+            "modulation": "GMSK",
+            "baudrate": 1200,
+            "preamble": [170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170, 170],
+            "sync_word": [93, 230, 42, 126],
+            "protocol_link": "NGHam",
+            "protocol_network": "SLP",
+            "types": [
+                {
+                    "name": "Message broadcast",
+                    "fields": [
+                        {
+                            "id": "pkt_id",
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 1,
+                            "conversion": "int(pkt[0])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "pkt_src_adr",
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "tc_req_adr",
+                            "name": "Requester callsign",
+                            "initial_pos": 8,
+                            "final_pos": 14,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[8:15]])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "dst_adr",
+                            "name": "Destination callsign",
+                            "initial_pos": 15,
+                            "final_pos": 21,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[15:22]])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "broadcast_msg",
+                            "name": "Message",
+                            "initial_pos": 22,
+                            "final_pos": 59,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[22:60]])",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Beacon",
+                    "fields": [
+                        {
+                            "id": "pkt_id",
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 16,
+                            "conversion": "int(pkt[0])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "pkt_src_adr",
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_timestamp",
+                            "name": "Time counter",
+                            "initial_pos": 8,
+                            "final_pos": 11,
+                            "value": 0,
+                            "conversion": "datetime.datetime.fromtimestamp(struct.unpack('>I', bytes(pkt[8:12]))[0]).strftime('%Y/%m/%d - %H:%M:%S')",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_mcu_temp",
+                            "name": "OBDH uC temperature",
+                            "initial_pos": 12,
+                            "final_pos": 13,
+                            "value": 0,
+                            "conversion": "int((pkt[12] << 8) | pkt[13])",
+                            "unit": "K"
+                        },
+                        {
+                            "id": "obdh_curr",
+                            "name": "OBDH input current",
+                            "initial_pos": 14,
+                            "final_pos": 15,
+                            "value": 0,
+                            "conversion": "int((pkt[14] << 8) | pkt[15])",
+                            "unit": "mA"
+                        },
+                        {
+                            "id": "obdh_volt",
+                            "name": "OBDH input voltage",
+                            "initial_pos": 16,
+                            "final_pos": 17,
+                            "value": 0,
+                            "conversion": "int((pkt[16] << 8) | pkt[17])",
+                            "unit": "mV"
+                        },
+                        {
+                            "id": "obdh_mcu_last_rst_cause",
+                            "name": "OBDH last reset cause",
+                            "initial_pos": 18,
+                            "final_pos": 18,
+                            "value": 0,
+                            "conversion": "int(pkt[18])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_mcu_rst_count",
+                            "name": "OBDH reset counter",
+                            "initial_pos": 19,
+                            "final_pos": 20,
+                            "value": 0,
+                            "conversion": "int((pkt[19] << 8) | pkt[20])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_op_last_val_tc",
+                            "name": "Last valid telecommand",
+                            "initial_pos": 21,
+                            "final_pos": 21,
+                            "value": 0,
+                            "conversion": "int(pkt[21])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "ttc_radio1_temp",
+                            "name": "Radio temperature",
+                            "initial_pos": 22,
+                            "final_pos": 23,
+                            "value": 0,
+                            "conversion": "int((pkt[22] << 8) | pkt[23])",
+                            "unit": "K"
+                        },
+                        {
+                            "id": "obdh_last_valid_tc_rssi",
+                            "name": "Last valid TC RSSI",
+                            "initial_pos": 24,
+                            "final_pos": 25,
+                            "value": 0,
+                            "conversion": "int((pkt[24] << 8) | pkt[25])",
+                            "unit": "dB"
+                        },
+                        {
+                            "id": "eps_mcu_temp",
+                            "name": "EPS uC temperature",
+                            "initial_pos": 30,
+                            "final_pos": 31,
+                            "value": 0,
+                            "conversion": "int((pkt[30] << 8) | pkt[31])",
+                            "unit": "K"
+                        },
+                        {
+                            "id": "eps_mcu_curr",
+                            "name": "EPS current",
+                            "initial_pos": 32,
+                            "final_pos": 33,
+                            "value": 0,
+                            "conversion": "int((pkt[32] << 8) | pkt[33])",
+                            "unit": "mA"
+                        },
+                        {
+                            "id": "eps_mcu_last_rst_cause",
+                            "name": "EPS last reset cause",
+                            "initial_pos": 34,
+                            "final_pos": 34,
+                            "value": 0,
+                            "conversion": "int(pkt[34])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "eps_mcu_rst_count",
+                            "name": "EPS reset counter",
+                            "initial_pos": 35,
+                            "final_pos": 36,
+                            "value": 0,
+                            "conversion": "int((pkt[35] << 8) | pkt[36])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "eps_sp_volt_mypx",
+                            "name": "Solar panel voltage (-Y and +X)",
+                            "initial_pos": 37,
+                            "final_pos": 38,
+                            "value": 0,
+                            "conversion": "int((pkt[37] << 8) | pkt[38])",
+                            "unit": "mV"
+                        },
+                        {
+                            "id": "eps_sp_volt_mxpz",
+                            "name": "Solar panel voltage (-X and +Z)",
+                            "initial_pos": 39,
+                            "final_pos": 40,
+                            "value": 0,
+                            "conversion": "int((pkt[39] << 8) | pkt[40])",
+                            "unit": "mV"
+                        },
+                        {
+                            "id": "eps_sp_volt_mzpy",
+                            "name": "Solar panel voltage (-Z and +Y)",
+                            "initial_pos": 41,
+                            "final_pos": 42,
+                            "value": 0,
+                            "conversion": "int((pkt[41] << 8) | pkt[42])",
+                            "unit": "mV"
+                        },
+                        {
+                            "id": "eps_sp_curr_my",
+                            "name": "Solar panel current (-Y)",
+                            "initial_pos": 43,
+                            "final_pos": 44,
+                            "value": 0,
+                            "conversion": "int((pkt[43] << 8) | pkt[44])",
+                            "unit": "mA"
+                        },
+                        {
+                            "id": "eps_sp_curr_py",
+                            "name": "Solar panel current (+Y)",
+                            "initial_pos": 45,
+                            "final_pos": 46,
+                            "value": 0,
+                            "conversion": "int((pkt[45] << 8) | pkt[46])",
+                            "unit": "mA"
+                        },
+                        {
+                            "id": "eps_sp_curr_mx",
+                            "name": "Solar panel current (-X)",
+                            "initial_pos": 47,
+                            "final_pos": 48,
+                            "value": 0,
+                            "conversion": "int((pkt[47] << 8) | pkt[48])",
+                            "unit": "mA"
+                        },
+                        {
+                            "id": "eps_sp_curr_px",
+                            "name": "Solar panel current (+X)",
+                            "initial_pos": 49,
+                            "final_pos": 50,
+                            "value": 0,
+                            "conversion": "int((pkt[49] << 8) | pkt[50])",
+                            "unit": "mA"
+                        },
+                        {
+                            "id": "eps_sp_curr_mz",
+                            "name": "Solar panel current (-Z)",
+                            "initial_pos": 51,
+                            "final_pos": 52,
+                            "value": 0,
+                            "conversion": "int((pkt[51] << 8) | pkt[52])",
+                            "unit": "mA"
+                        },
+                        {
+                            "id": "eps_sp_curr_pz",
+                            "name": "Solar panel current (+Z)",
+                            "initial_pos": 53,
+                            "final_pos": 54,
+                            "value": 0,
+                            "conversion": "int((pkt[53] << 8) | pkt[54])",
+                            "unit": "mA"
+                        },
+                        {
+                            "id": "eps_mppt_1_dc",
+                            "name": "MPPT 1 duty cycle",
+                            "initial_pos": 55,
+                            "final_pos": 55,
+                            "value": 0,
+                            "conversion": "int(pkt[55])",
+                            "unit": "%"
+                        },
+                        {
+                            "id": "eps_mppt_2_dc",
+                            "name": "MPPT 2 duty cycle",
+                            "initial_pos": 56,
+                            "final_pos": 56,
+                            "value": 0,
+                            "conversion": "int(pkt[56])",
+                            "unit": "%"
+                        },
+                        {
+                            "id": "eps_mppt_3_dc",
+                            "name": "MPPT 3 duty cycle",
+                            "initial_pos": 57,
+                            "final_pos": 57,
+                            "value": 0,
+                            "conversion": "int(pkt[57])",
+                            "unit": "%"
+                        },
+                        {
+                            "id": "eps_main_pwr_bus_volt",
+                            "name": "Main power bus voltage",
+                            "initial_pos": 58,
+                            "final_pos": 59,
+                            "value": 0,
+                            "conversion": "int((pkt[58] << 8) | pkt[59])",
+                            "unit": "mV"
+                        },
+                        {
+                            "id": "eps_bat_volt",
+                            "name": "Battery voltage",
+                            "initial_pos": 60,
+                            "final_pos": 61,
+                            "value": 0,
+                            "conversion": "int((pkt[60] << 8) | pkt[61])",
+                            "unit": "mV"
+                        },
+                        {
+                            "id": "eps_bat_curr",
+                            "name": "Battery current",
+                            "initial_pos": 62,
+                            "final_pos": 63,
+                            "value": 0,
+                            "conversion": "np.int16(np.uint16((pkt[62] << 8) | pkt[63]))",
+                            "unit": "mA"
+                        },
+                        {
+                            "id": "eps_bat_avg_curr",
+                            "name": "Battery average current",
+                            "initial_pos": 64,
+                            "final_pos": 65,
+                            "value": 0,
+                            "conversion": "np.int16(np.uint16((pkt[64] << 8) | pkt[65]))",
+                            "unit": "mA"
+                        },
+                        {
+                            "id": "eps_bat_acc_curr",
+                            "name": "Battery accumulated current",
+                            "initial_pos": 66,
+                            "final_pos": 67,
+                            "value": 0,
+                            "conversion": "int((pkt[66] << 8) | pkt[67])",
+                            "unit": "mAh"
+                        },
+                        {
+                            "id": "eps_bat_mon_temp",
+                            "name": "Battery monitor IC temperature",
+                            "initial_pos": 68,
+                            "final_pos": 69,
+                            "value": 0,
+                            "conversion": "int((pkt[68] << 8) | pkt[69])",
+                            "unit": "K"
+                        },
+                        {
+                            "id": "eps_bat_heater_1_dc",
+                            "name": "Battery heater 1 duty cycle",
+                            "initial_pos": 70,
+                            "final_pos": 70,
+                            "value": 0,
+                            "conversion": "int(pkt[70])",
+                            "unit": "%"
+                        },
+                        {
+                            "id": "eps_bat_heater_2_dc",
+                            "name": "Battery heater 2 duty cycle",
+                            "initial_pos": 71,
+                            "final_pos": 71,
+                            "value": 0,
+                            "conversion": "int(pkt[71])",
+                            "unit": "%"
+                        },
+                        {
+                            "id": "obdh_op_main_pl_state",
+                            "name": "Main payload state",
+                            "initial_pos": 73,
+                            "final_pos": 73,
+                            "value": 0,
+                            "conversion": "int(pkt[73])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_mem_data_log",
+                            "name": "Used Data Log flash pages",
+                            "initial_pos": 75,
+                            "final_pos": 78,
+                            "value": 0,
+                            "conversion": "int((pkt[75] << 24) | (pkt[76] << 16) | (pkt[77] << 8) | pkt[78])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_sensor_read_ts",
+                            "name": "Sensor reading timestamp",
+                            "initial_pos": 83,
+                            "final_pos": 86,
+                            "value": 0,
+                            "conversion": "datetime.datetime.fromtimestamp(struct.unpack('>I', bytes(pkt[83:87]))[0]).strftime('%Y/%m/%d - %H:%M:%S')",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_pos_ts",
+                            "name": "Position timestamp",
+                            "initial_pos": 87,
+                            "final_pos": 90,
+                            "value": 0,
+                            "conversion": "datetime.datetime.fromtimestamp(struct.unpack('>I', bytes(pkt[87:91]))[0]).strftime('%Y/%m/%d - %H:%M:%S')",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_pos_lat",
+                            "name": "Latitude",
+                            "initial_pos": 91,
+                            "final_pos": 92,
+                            "value": 0,
+                            "conversion": "np.int16(np.uint16((pkt[91] << 8) | pkt[92]))",
+                            "unit": "deg"
+                        },
+                        {
+                            "id": "obdh_pos_lon",
+                            "name": "Longitude",
+                            "initial_pos": 93,
+                            "final_pos": 94,
+                            "value": 0,
+                            "conversion": "np.int16(np.uint16((pkt[93] << 8) | pkt[94]))",
+                            "unit": "deg"
+                        },
+                        {
+                            "id": "obdh_pos_alt",
+                            "name": "Altitude",
+                            "initial_pos": 95,
+                            "final_pos": 96,
+                            "value": 0,
+                            "conversion": "np.int16(np.uint16((pkt[95] << 8) | pkt[96]))",
+                            "unit": "km"
+                        },
+                        {
+                            "id": "obdh_last_tle_upd_ts",
+                            "name": "Last TLE update",
+                            "initial_pos": 97,
+                            "final_pos": 100,
+                            "value": 0,
+                            "conversion": "datetime.datetime.fromtimestamp(struct.unpack('>I', bytes(pkt[97:101]))[0]).strftime('%Y/%m/%d - %H:%M:%S')",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_last_contact_ts",
+                            "name": "Last TC contact",
+                            "initial_pos": 101,
+                            "final_pos": 104,
+                            "value": 0,
+                            "conversion": "datetime.datetime.fromtimestamp(struct.unpack('>I', bytes(pkt[101:105]))[0]).strftime('%Y/%m/%d - %H:%M:%S')",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_next_sch_tc_ts",
+                            "name": "Next Scheduled TC",
+                            "initial_pos": 105,
+                            "final_pos": 108,
+                            "value": 0,
+                            "conversion": "datetime.datetime.fromtimestamp(struct.unpack('>I', bytes(pkt[105:109]))[0]).strftime('%Y/%m/%d - %H:%M:%S')",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_tc_queue_size",
+                            "name": "TC Queue Size",
+                            "initial_pos": 109,
+                            "final_pos": 109,
+                            "value": 0,
+                            "conversion": "int(pkt[109])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_mode",
+                            "name": "Mode",
+                            "initial_pos": 110,
+                            "final_pos": 110,
+                            "value": 0,
+                            "conversion": "int(pkt[110])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "lora_fsat2a_sat_id",
+                            "name": "Satellite ID (FloripaSat-2A)",
+                            "initial_pos": 112,
+                            "final_pos": 112,
+                            "value": 0,
+                            "conversion": "int(pkt[112])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "lora_fsat2a_pkt_cnt",
+                            "name": "Packet Counter (FloripaSat-2A)",
+                            "initial_pos": 113,
+                            "final_pos": 116,
+                            "value": 0,
+                            "conversion": "struct.unpack('<I', bytes(pkt[113:117]))[0]",
+                            "unit": ""
+                        },
+                        {
+                            "id": "lora_fsat2a_temp",
+                            "name": "Temperature (FloripaSat-2A)",
+                            "initial_pos": 117,
+                            "final_pos": 120,
+                            "value": 0,
+                            "conversion": "struct.unpack('<f', bytes(pkt[117:121]))[0]",
+                            "unit": "oC"
+                        },
+                        {
+                            "id": "lora_fsat2a_rssi",
+                            "name": "Last RSSI (FloripaSat-2A)",
+                            "initial_pos": 121,
+                            "final_pos": 122,
+                            "value": 0,
+                            "conversion": "struct.unpack('<h', bytes(pkt[121:123]))[0]",
+                            "unit": "dB"
+                        },
+                        {
+                            "id": "lora_fsat2a_snr",
+                            "name": "Last SNR (FloripaSat-2A)",
+                            "initial_pos": 123,
+                            "final_pos": 126,
+                            "value": 0,
+                            "conversion": "struct.unpack('<f', bytes(pkt[123:127]))[0]",
+                            "unit": "dB"
+                        },
+                        {
+                            "id": "lora_fsat2a_freq_err",
+                            "name": "Last Frequency Error (FloripaSat-2A)",
+                            "initial_pos": 127,
+                            "final_pos": 130,
+                            "value": 0,
+                            "conversion": "struct.unpack('<i', bytes(pkt[127:131]))[0]",
+                            "unit": "Hz"
+                        },
+                        {
+                            "id": "lora_fsat2b_sat_id",
+                            "name": "Satellite ID (FloripaSat-2B)",
+                            "initial_pos": 131,
+                            "final_pos": 131,
+                            "value": 0,
+                            "conversion": "int(pkt[131])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "lora_fsat2b_pkt_cnt",
+                            "name": "Packet Counter (FloripaSat-2B)",
+                            "initial_pos": 132,
+                            "final_pos": 135,
+                            "value": 0,
+                            "conversion": "struct.unpack('<I', bytes(pkt[132:136]))[0]",
+                            "unit": ""
+                        },
+                        {
+                            "id": "lora_fsat2b_temp",
+                            "name": "Temperature (FloripaSat-2B)",
+                            "initial_pos": 136,
+                            "final_pos": 139,
+                            "value": 0,
+                            "conversion": "struct.unpack('<f', bytes(pkt[136:140]))[0]",
+                            "unit": "oC"
+                        },
+                        {
+                            "id": "lora_fsat2b_rssi",
+                            "name": "Last RSSI (FloripaSat-2B)",
+                            "initial_pos": 140,
+                            "final_pos": 141,
+                            "value": 0,
+                            "conversion": "struct.unpack('<h', bytes(pkt[140:142]))[0]",
+                            "unit": "dB"
+                        },
+                        {
+                            "id": "lora_fsat2b_snr",
+                            "name": "Last SNR (FloripaSat-2B)",
+                            "initial_pos": 142,
+                            "final_pos": 145,
+                            "value": 0,
+                            "conversion": "struct.unpack('<f', bytes(pkt[142:146]))[0]",
+                            "unit": "dB"
+                        },
+                        {
+                            "id": "lora_fsat2b_freq_err",
+                            "name": "Last Frequency Error (FloripaSat-2B)",
+                            "initial_pos": 146,
+                            "final_pos": 149,
+                            "value": 0,
+                            "conversion": "struct.unpack('<i', bytes(pkt[146:150]))[0]",
+                            "unit": "Hz"
+                        },
+                        {
+                            "id": "lora_fsat2b_bat_volt",
+                            "name": "Battery Voltage (FloripaSat-2B)",
+                            "initial_pos": 150,
+                            "final_pos": 151,
+                            "value": 0,
+                            "conversion": "struct.unpack('<H', bytes(pkt[150:152]))[0]",
+                            "unit": "mV"
+                        },
+                        {
+                            "id": "lora_fsat2a_ts",
+                            "name": "Timestamp",
+                            "initial_pos": 152,
+                            "final_pos": 155,
+                            "value": 0,
+                            "conversion": "datetime.datetime.fromtimestamp(struct.unpack('<I', bytes(pkt[152:156]))[0]).strftime('%Y/%m/%d - %H:%M:%S')",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Data request answer",
+                    "fields": [
+                        {
+                            "id": "pkt_id",
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 17,
+                            "conversion": "int(pkt[0])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "pkt_src_adr",
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "tc_req_adr",
+                            "name": "Requester callsign",
+                            "initial_pos": 8,
+                            "final_pos": 14,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[8:15]])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "tc_req_data_type_id",
+                            "name": "Data type ID",
+                            "initial_pos": 15,
+                            "final_pos": 15,
+                            "value": 0,
+                            "conversion": "int(pkt[15])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "tc_req_ts",
+                            "name": "Timestamp",
+                            "initial_pos": 16,
+                            "final_pos": 19,
+                            "value": 0,
+                            "conversion": "datetime.datetime.fromtimestamp(struct.unpack('>I', bytes(pkt[16:20]))[0]).strftime('%Y/%m/%d - %H:%M:%S')",
+                            "unit": ""
+                        },
+                        {
+                            "id": "tc_req_data",
+                            "name": "Data",
+                            "initial_pos": 20,
+                            "final_pos": 39,
+                            "value": 0,
+                            "conversion": "str(pkt[20:40])",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "TC feedback",
+                    "fields": [
+                        {
+                            "id": "pkt_id",
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 19,
+                            "conversion": "int(pkt[0])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "pkt_src_adr",
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "tc_req_adr",
+                            "name": "Requester callsign",
+                            "initial_pos": 8,
+                            "final_pos": 14,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[8:15]])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "tc_pkt_id",
+                            "name": "TC packet ID",
+                            "initial_pos": 15,
+                            "final_pos": 15,
+                            "value": 0,
+                            "conversion": "int(pkt[15])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "tc_feed_ts",
+                            "name": "Timestamp",
+                            "initial_pos": 16,
+                            "final_pos": 19,
+                            "value": 0,
+                            "conversion": "datetime.datetime.fromtimestamp(struct.unpack('>I', bytes(pkt[16:20]))[0]).strftime('%Y/%m/%d - %H:%M:%S')",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Parameter value",
+                    "fields": [
+                        {
+                            "id": "pkt_id",
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 20,
+                            "conversion": "int(pkt[0])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "pkt_src_adr",
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "tc_req_adr",
+                            "name": "Requester callsign",
+                            "initial_pos": 8,
+                            "final_pos": 14,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[8:15]])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "subsys_id",
+                            "name": "Subsystem ID",
+                            "initial_pos": 15,
+                            "final_pos": 15,
+                            "value": 0,
+                            "conversion": "int(pkt[15])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "par_id",
+                            "name": "Parameter ID",
+                            "initial_pos": 16,
+                            "final_pos": 16,
+                            "value": 0,
+                            "conversion": "int(pkt[16])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "par_val",
+                            "name": "Parameter value",
+                            "initial_pos": 17,
+                            "final_pos": 20,
+                            "value": 0,
+                            "conversion": "int((pkt[17] << 24) | (pkt[18] << 16) | (pkt[19] << 8) | pkt[20])",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Packet broadcast",
+                    "fields": [
+                        {
+                            "id": "pkt_id",
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 21,
+                            "conversion": "int(pkt[0])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "pkt_src_adr",
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "pkt_broadcast_data",
+                            "name": "Byte sequence",
+                            "initial_pos": 8,
+                            "final_pos": 59,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[8:60]])",
+                            "unit": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Ping answer",
+                    "fields": [
+                        {
+                            "id": "pkt_id",
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 2,
+                            "conversion": "int(pkt[0])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "pkt_src_adr",
+                            "name": "Source callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[1:8]])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "tc_req_adr",
+                            "name": "Requester callsign",
+                            "initial_pos": 8,
+                            "final_pos": 14,
+                            "value": 0,
+                            "conversion": "\"\".join([chr(val) for val in pkt[8:15]])",
+                            "unit": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

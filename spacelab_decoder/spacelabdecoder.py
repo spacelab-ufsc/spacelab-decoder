@@ -37,6 +37,8 @@ import matplotlib.pyplot as plt
 from scipy.io import wavfile
 import numpy as np
 
+import zmq
+
 import pyngham
 
 import spacelab_decoder.version
@@ -60,7 +62,7 @@ _ICON_FILE_LINUX_SYSTEM         = '/usr/share/icons/spacelab_decoder_256x256.png
 _LOGO_FILE_LOCAL                = os.path.abspath(os.path.dirname(__file__)) + '/data/img/spacelab-logo-full-400x200.png'
 _LOGO_FILE_LINUX_SYSTEM         = '/usr/share/spacelab_decoder/spacelab-logo-full-400x200.png'
 
-_DIR_CONFIG_LINUX               = '.spacelab_decoder'
+_DIR_CONFIG_LINUX               = '.config/spacelab_decoder'
 _DIR_CONFIG_WINDOWS             = 'spacelab_decoder'
 
 _SAT_JSON_LOCAL_PATH            = os.path.abspath(os.path.dirname(__file__)) + '/data/satellites/'
@@ -70,6 +72,11 @@ _DEFAULT_CALLSIGN               = 'PP5UF'
 _DEFAULT_LOCATION               = 'Florianópolis'
 _DEFAULT_COUNTRY                = 'Brazil'
 _DEFAULT_SYNC_WORD_BIT_ERROR    = 4
+_DEFAULT_AX100_USE_LEN_ERR      = False
+_DEFAULT_INPUT_SOCKET_TYPE_TCP  = True
+_DEFAULT_INPUT_SOCKET_LINK_EN   = True
+
+_DIR_CONFIG_DEFAULTJSON         = 'spacelab_decoder.json'
 
 # Defining logfile default local
 _DIR_CONFIG_LOGFILE_LINUX       = 'spacelab_decoder'
@@ -77,9 +84,11 @@ _DEFAULT_LOGFILE_PATH           = os.path.join(os.path.expanduser('~'), _DIR_CON
 _DEFAULT_LOGFILE                = 'logfile.csv'
 
 _SATELLITES                     = [["FloripaSat-1", "floripasat-1.json"],
+                                   ["FloripaSat-2A", "floripasat-2a.json"],
                                    ["GOLDS-UFSC", "golds-ufsc.json"],
                                    ["Catarina-A1", "catarina-a1.json"],
                                    ["Catarina-A2", "catarina-a2.json"],
+                                   ["Catarina-A3", "catarina-a3.json"],
                                    ["SpaceLab-Transmitter", "spacelab-transmitter.json"]]
 
 _PROTOCOL_NGHAM                 = "NGHam"
@@ -109,10 +118,18 @@ class SpaceLabDecoder:
         self._run_udp_decode = False
 
         self._client_socket = None
+        self._tcp_new_conn_cb_id = None
+        self._tcp_client_cb_id = None
+
+        self._zmq_ctx = zmq.Context()
+        self._zmq_sub = None
+        self._zmq_new_conn_cb_id = None
 
         self._satellite = Satellite()
 
         self._log = Log(_DEFAULT_LOGFILE, _DEFAULT_LOGFILE_PATH)
+
+        self._packet_csp_buf = PacketCSP()
 
     def _build_widgets(self):
         # Main window
@@ -140,6 +157,11 @@ class SpaceLabDecoder:
         self.entry_preferences_max_bit_err = self.builder.get_object("entry_preferences_max_bit_err")
 
         self.checkbutton_preferences_protocols_ax100_len = self.builder.get_object("checkbutton_preferences_protocols_ax100_len")
+
+        self.radiobutton_preferences_conn_tcp = self.builder.get_object("radiobutton_preferences_conn_tcp")
+        self.radiobutton_preferences_conn_zmq = self.builder.get_object("radiobutton_preferences_conn_zmq")
+
+        self.switch_preferences_conn_link_layer = self.builder.get_object("switch_preferences_conn_link_layer")
 
         self.entry_preferences_udp_address = self.builder.get_object("entry_preferences_udp_address")
         self.entry_preferences_udp_port = self.builder.get_object("entry_preferences_udp_port")
@@ -245,6 +267,11 @@ class SpaceLabDecoder:
         if self._client_socket:
             self._client_socket.close()
 
+        if self._tcp_server_socket:
+            self._tcp_server_socket.close()
+
+        sele._zmq_ctx.term()
+
         Gtk.main_quit()
 
     def on_button_preferences_clicked(self, button):
@@ -323,12 +350,25 @@ class SpaceLabDecoder:
                         thread_decode = threading.Thread(target=self._decode_stream, args=(address, int(port), baudrate, sync_word, protocol, link_name,))
                         thread_decode.start()
                     else:
-                        self._tcp_server_socket = self._create_socket_server(address, int(port))
+                        if self.radiobutton_preferences_conn_tcp.get_active():
+                            self._tcp_server_socket = self._create_socket_server(address, int(port))
 
-                        if self._tcp_server_socket:
-                            # Monitor the socket for incoming connections using GLib's IO watch
-                            self._tcp_socket_io_channel = GLib.IOChannel(self._tcp_server_socket.fileno())
-                            GLib.io_add_watch(self._tcp_socket_io_channel, GLib.IO_IN, self._handle_tcp_new_connection)
+                            if self._tcp_server_socket:
+                                # Monitor the socket for incoming connections using GLib's IO watch
+                                self._tcp_socket_io_channel = GLib.IOChannel(self._tcp_server_socket.fileno())
+                                self._tcp_new_conn_cb_id = GLib.io_add_watch(self._tcp_socket_io_channel, GLib.IO_IN, self._handle_tcp_new_connection)
+                        else:
+                            # Create SUB socket
+                            self._zmq_sub = self._zmq_ctx.socket(zmq.SUB)
+                            self._zmq_sub.setsockopt(zmq.RCVTIMEO, 0)   # Non-blocking
+
+                            self._zmq_sub.connect("tcp://" + address + ":" + port)
+
+                            self._zmq_sub.setsockopt(zmq.SUBSCRIBE, bytes([10]))
+
+                            # Add watch to GLib main loop
+                            channel = GLib.IOChannel.unix_new(self._zmq_sub.getsockopt(zmq.FD))
+                            self._zmq_new_conn_cb_id = GLib.io_add_watch(channel, GLib.IO_IN, self._handle_zmq_message)
             else:
                 error_dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, "Error decoding the satellite data!")
                 error_dialog.format_secondary_text("No input selected!")
@@ -336,7 +376,9 @@ class SpaceLabDecoder:
                 error_dialog.destroy()
 
     def on_button_stop_clicked(self, button):
-        self._run_udp_decode = False
+        self._stop_decoding()
+
+    def _stop_decoding(self):
         self.button_stop.set_sensitive(False)
         self.button_decode.set_sensitive(True)
         self.button_plot_spectrum.set_sensitive(True)
@@ -348,6 +390,24 @@ class SpaceLabDecoder:
         self.switch_raw_bits.set_sensitive(True)
         self.radiobutton_audio_file.set_sensitive(True)
         self.radiobutton_udp.set_sensitive(True)
+
+        if self.radiobutton_udp.get_active():
+            if self.switch_raw_bits.get_active():
+                self._run_udp_decode = False
+            else:
+                if self._tcp_new_conn_cb_id is not None:
+                    GLib.source_remove(self._tcp_new_conn_cb_id)
+                    self._tcp_new_conn_cb_id = None
+                if self._tcp_client_cb_id is not None:
+                    GLib.source_remove(self._tcp_client_cb_id)
+                    self._tcp_client_cb_id = None
+                if self._tcp_server_socket is not None:
+                    self._tcp_server_socket.close()
+                    self._tcp_server_socket = None
+                if self._zmq_new_conn_cb_id is not None:
+                    self._zmq_sub.close()
+                    GLib.source_remove(self._zmq_new_conn_cb_id)
+                    self._zmq_new_conn_cb_id = None
 
     def on_button_plot_clicked(self, button):
         if self.filechooser_audio_file.get_filename() is None:
@@ -468,15 +528,53 @@ class SpaceLabDecoder:
         if not os.path.exists(location):
             os.mkdir(location)
 
+        with open(location + '/' + _DIR_CONFIG_DEFAULTJSON, 'w', encoding='utf-8') as f:
+            json.dump({"callsign":                          self.entry_preferences_general_callsign.get_text(),
+                       "location":                          self.entry_preferences_general_location.get_text(),
+                       "country":                           self.entry_preferences_general_country.get_text(),
+                       "sync_word_max_sync_error":          self.entry_preferences_max_bit_err.get_text(),
+                       "ax100_use_len_field_with_err":      self.checkbutton_preferences_protocols_ax100_len.get_active(),
+                       "input_socket_type_tcp":             self.radiobutton_preferences_conn_tcp.get_active(),
+                       "input_socket_link_layer_enabled":   self.switch_preferences_conn_link_layer.get_active(),
+                       "logfile_path":                      self.logfile_chooser_button.get_filename()}, f, ensure_ascii=False, indent=4)
+
     def _load_preferences(self):
         home = os.path.expanduser('~')
         location = os.path.join(home, _DIR_CONFIG_LINUX)
+
+        if not os.path.isfile(location + "/" + _DIR_CONFIG_DEFAULTJSON):
+            self._load_default_preferences()
+            self._save_preferences()
+
+        f = open(location + "/" + _DIR_CONFIG_DEFAULTJSON, "r")
+        config = json.loads(f.read())
+        f.close()
+
+        try:
+            self.entry_preferences_general_callsign.set_text(config["callsign"])
+            self.entry_preferences_general_location.set_text(config["location"])
+            self.entry_preferences_general_country.set_text(config["country"])
+            self.entry_preferences_max_bit_err.set_text(config["sync_word_max_sync_error"])
+            self.checkbutton_preferences_protocols_ax100_len.set_active(config["ax100_use_len_field_with_err"])
+            if config["input_socket_type_tcp"]:
+                self.radiobutton_preferences_conn_tcp.set_active(True)
+            else:
+                self.radiobutton_preferences_conn_zmq.set_active(True)
+            self.switch_preferences_conn_link_layer.set_active(config["input_socket_link_layer_enabled"])
+            self.logfile_chooser_button.set_filename(config["logfile_path"])
+        except:
+            self._load_default_preferences()
+            self._save_preferences()
 
     def _load_default_preferences(self):
         self.entry_preferences_general_callsign.set_text(_DEFAULT_CALLSIGN)
         self.entry_preferences_general_location.set_text(_DEFAULT_LOCATION)
         self.entry_preferences_general_country.set_text(_DEFAULT_COUNTRY)
-        self.entry_preferences_max_bit_err.set_text(_DEFAULT_SYNC_WORD_BIT_ERROR)
+        self.entry_preferences_max_bit_err.set_text(str(_DEFAULT_SYNC_WORD_BIT_ERROR))
+        self.checkbutton_preferences_protocols_ax100_len.set_active(_DEFAULT_AX100_USE_LEN_ERR)
+        self.radiobutton_preferences_conn_tcp.set_active(_DEFAULT_INPUT_SOCKET_TYPE_TCP)
+        self.switch_preferences_conn_link_layer.set_active(_DEFAULT_INPUT_SOCKET_LINK_EN)
+        self.logfile_chooser_button.set_filename(_DEFAULT_LOGFILE_PATH)
 
     def _decode_audio(self, audio_file, baud, sync_word, protocol, link_name):
         sample_rate, data = wavfile.read(audio_file)
@@ -618,9 +716,10 @@ class SpaceLabDecoder:
             pkt_json = str()
             sat_json = self._get_json_filename_of_active_sat()
             if self._satellite.get_active_link().get_network_protocol() == "CSP":
-                pkt_csp = PacketCSP(sat_json, pkt)
-                pkt_data = str(pkt_csp)
-                pkt_json = pkt_csp.get_data()
+                self._packet_csp_buf.set_config(sat_json)
+                self._packet_csp_buf.set_pkt(pkt)
+                pkt_data = str(self._packet_csp_buf)
+                pkt_json = self._packet_csp_buf.get_data()
             elif self._satellite.get_active_link().get_network_protocol() == "SLP":
                 pkt_sl = PacketSLP(sat_json, pkt)
                 pkt_data = str(pkt_sl)
@@ -688,18 +787,18 @@ class SpaceLabDecoder:
             client_io_channel.set_encoding(None)  # Binary mode (important for raw data)
 
             # Monitor the client socket for incoming data
-            GLib.io_add_watch(client_io_channel, GLib.IO_IN, self._handle_tcp_client_data, client_socket)
+            self._tcp_client_cb_id = GLib.io_add_watch(client_io_channel, GLib.IO_IN, self._handle_tcp_client_data, client_socket)
 
         return True  # Keep the handler active
 
     def _handle_tcp_client_data(self, source, condition, client_socket):
         """Handle incoming data from the client"""
         if condition == GLib.IO_IN:
-            ngham = pyngham.PyNGHam()
             try:
                 data = client_socket.recv(1024)  # Read incoming data (max 1024 bytes)
                 if data:
                     if protocol == _PROTOCOL_NGHAM:
+                        ngham = pyngham.PyNGHam()
                         pl, err, err_loc = ngham.decode(data)
                         self._decode_packet(pl)
                     elif protocol == _PROTOCOL_AX100MODE5:
@@ -707,13 +806,49 @@ class SpaceLabDecoder:
                         #self._decode_packet(pl)
                         pass
                     else:
-                        self.write_log("Unknown protocol received from TCP port!")
+                        self.write_log("Unknown protocol received from TCP client!")
                 else:
                     # Connection closed by client
+                    self.write_log("TCP connection closed by client!")
                     client_socket.close()
+                    self._tcp_server_socket.close()
+                    self._stop_decoding()
                     return False  # Stop the IO watch for this client
             except socket.error as e:
-                client_socket.close()
                 self.write_log("Error receiving data from TCP client: " + str(e))
-                return False  # Stop the IO watch for this client
+                client_socket.close()
+                self._tcp_server_socket.close()
+                self._stop_decoding()
+                return False    # Stop the IO watch for this client
+
         return True  # Keep the handler active
+
+    def _handle_zmq_message(self, source, condition):
+        """Callback for ZMQ messages"""
+        protocol = self._satellite.get_active_link().get_link_protocol()
+
+        while True:
+            try:
+                data = self._zmq_sub.recv(flags=zmq.NOBLOCK)
+
+                pl = list(data)[1:].copy()
+
+                if protocol == _PROTOCOL_NGHAM:
+                    if self.switch_preferences_conn_link_layer.get_active():
+                        ngham = pyngham.PyNGHam()
+                        pl, err, err_loc = ngham.decode(list(data))
+                    self._decode_packet(pl)
+                elif protocol == _PROTOCOL_AX100MODE5:
+                    if self.switch_preferences_conn_link_layer.get_active():
+                        ax100 = AX100Mode5()
+                        pl = ax100.decode(list(data)[len(self._satellite.get_active_link().get_preamble()) + 4:])
+                    self._decode_packet(pl)
+                else:
+                    self.write_log("Unknown protocol received from ZMQ socket!")
+            except zmq.Again:
+                break;
+            except Exception as e:
+                self.write_log("Error receiving data from ZMQ socket: " + str(e))
+                return False    # Return False to remove the watch if there's a critical error
+
+        return True # Keep the handler active

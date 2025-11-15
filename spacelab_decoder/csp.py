@@ -68,6 +68,7 @@ class CSP:
         :rtype: None
         """
         self.set_address(adr)
+        self.set_hmac_flag_in_header(True)
 
     def set_address(self, adr):
         """
@@ -92,6 +93,26 @@ class CSP:
         :rtype: int
         """
         return self._my_adr
+
+    def set_hmac_flag_in_header(self, en):
+        """
+        Sets if the HMAC flag in header must be activated or not when HMAC is used.
+
+        :param en: True/False to activate of not.
+        :type: bool
+
+        :return: None
+        """
+        self._hmac_flag_in_header = en
+
+    def get_hmac_flag_in_header(self):
+        """
+        Gets the HMAC flag in header option state.
+
+        :return: The state of the HMAC flag in header option.
+        :rtype: bool
+        """
+        return self._hmac_flag_in_header
 
     def encode(self, prio, dst_adr, src_port, dst_port, sfp, hmac, xtea, rdp, crc, pl, hmac_key=str()):
         """
@@ -154,7 +175,7 @@ class CSP:
 
         pkt.append(((dst_port & 3) << 6) | src_port)
 
-        pkt.append((int(sfp) << 4) | (int(hmac) << 3) | (int(xtea) << 2) | (int(rdp) << 2) | int(crc))
+        pkt.append((int(sfp) << 4) | (int(xtea) << 2) | (int(rdp) << 2) | int(crc))
 
         # Payload
         pkt += pl
@@ -503,7 +524,8 @@ class CSP:
         :rtype: list
         """
         # Enabling HMAC flag in header
-        pkt[3] |= (1 << 3)
+        if self.get_hmac_flag_in_header():
+            pkt[3] |= (1 << 3)
 
         # Defining if the HMAC will be computed considering the CSP header or not
         pkt4hmac = list()

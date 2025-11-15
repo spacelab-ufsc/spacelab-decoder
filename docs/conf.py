@@ -22,7 +22,7 @@ copyright = 'The SpaceLab-Decoder Contributors'
 author = 'Gabriel Mariano Marcelino'
 
 # The full version, including alpha/beta/rc tags
-release = "0.5"
+release = "0.6"
 
 
 # -- General configuration ---------------------------------------------------

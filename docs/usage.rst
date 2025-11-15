@@ -50,3 +50,20 @@ About
 -----
 
 To view information about the software, including the version and license, click the "About" button in the toolbar.
+
+Using an SDR
+------------
+
+If an RTL-SDR v3 or v4 is used to receive signals, the internal bias tee must be disabled. This can be done manually using the command:
+
+.. code-block:: bash
+
+   rtl_biast -b 0
+
+However, due to the implementation of the device drivers in the latest versions of the Linux kernel, the dvb_usb_rtl28xxu driver automatically enables the bias tee. Therefore, this driver must be permanently disabled. This can be done with the following terminal command:
+
+.. code-block:: bash
+
+   echo 'blacklist dvb_usb_rtl28xxu' | sudo tee --append /etc/modprobe.d/blacklist-dvb_usb_rtl28xxu.conf
+
+After executing the command, the computer should be restarted.

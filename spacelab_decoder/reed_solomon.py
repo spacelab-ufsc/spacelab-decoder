@@ -204,10 +204,10 @@ class ReedSolomon:
         r += 1
         while r <= self._NROOTS:
             # Compute discrepancy at the r-th step in poly-form
-            discr_r = np.int8(0)
+            discr_r = np.uint8(0)
             for i in range(r):
                 if lambda_poly[i] != 0 and s[r - i - 1] != self._A0:
-                    discr_r ^= self._ccsds_alpha_to[self._mod255(self._ccsds_index_of[lambda_poly[i]] + s[r - i - 1])]
+                    discr_r ^= self._ccsds_alpha_to[self._mod255(np.uint16(self._ccsds_index_of[lambda_poly[i]]) + np.uint16(s[r - i - 1]))]
             discr_r = self._ccsds_index_of[discr_r] # Index form
             if discr_r == self._A0:
                 # B(x) <-- x*B(x)
@@ -218,7 +218,7 @@ class ReedSolomon:
                 t[0] = lambda_poly[0]
                 for i in range(self._NROOTS):
                     if b[i] != self._A0:
-                        t[i + 1] = lambda_poly[i + 1] ^ self._ccsds_alpha_to[self._mod255(discr_r + b[i])]
+                        t[i + 1] = lambda_poly[i + 1] ^ self._ccsds_alpha_to[self._mod255(np.uint16(discr_r) + np.uint16(b[i]))]
                     else:
                         t[i + 1] = lambda_poly[i + 1]
                 if 2 * el <= r + no_eras - 1:
@@ -249,7 +249,7 @@ class ReedSolomon:
             q = 1  # lambda[0] is always 0
             for j in range(deg_lambda, 0, -1):
                 if reg[j] != self._A0:
-                    reg[j] = self._mod255(reg[j] + j)
+                    reg[j] = self._mod255(np.uint16(reg[j]) + np.uint16(j))
                     q ^= self._ccsds_alpha_to[reg[j]]
 
             if q != 0:
@@ -289,14 +289,14 @@ class ReedSolomon:
             num1 = 0
             for i in range(deg_omega, -1, -1):
                 if omega[i] != self._A0:
-                    num1 ^= self._ccsds_alpha_to[self._mod255(omega[i] + i * root[j])]
-            num2 = self._ccsds_alpha_to[self._mod255(root[j] * (self._FCR - 1) + self._NN)]
+                    num1 ^= self._ccsds_alpha_to[self._mod255(np.uint16(omega[i]) + np.uint16(i) * np.uint16(root[j]))]
+            num2 = self._ccsds_alpha_to[self._mod255(np.uint16(root[j]) * np.uint16(self._FCR - 1) + np.uint16(self._NN))]
             den = 0
 
             # lambda[i+1] for i even is the formal derivative lambda_pr of lambda[i]
             for i in range(min(deg_lambda, self._NROOTS - 1) & ~1, -1, -2):
                 if lambda_poly[i + 1] != self._A0:
-                    den ^= self._ccsds_alpha_to[self._mod255(lambda_poly[i + 1] + i * root[j])]
+                    den ^= self._ccsds_alpha_to[self._mod255(np.uint16(lambda_poly[i + 1]) + np.uint16(i) * np.uint16(root[j]))]
 
             # Apply error to data
             if num1 != 0 and loc[j] >= pad:

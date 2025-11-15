@@ -1,5 +1,18 @@
 ===========================================
 
+v0.6 - 2025/11/15
+
+- Adding support to FloripaSat-2A and Catarina-A3 (preliminary) satellites
+- Improving the documentation
+- Improving the TCP sockets
+- Improving the support to the AX100-Mode5 protocol
+- Fixing the Reed-Solomon decoder
+- Adding support to ZMQ sockets as an input source
+- General fixes and improvements
+
+===========================================
+===========================================
+
 v0.5 - 2025/04/18
 
 - Adding the option of transmiting the decoded data over a socket

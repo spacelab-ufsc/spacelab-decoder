@@ -26,6 +26,7 @@ import json
 # Used inside `eval()` calls
 import numpy as np
 import struct
+import datetime
 
 class PacketSLP:
 
@@ -34,6 +35,13 @@ class PacketSLP:
             self.sat_packet = json.load(f)
 
         self.packet = pkt_raw
+
+    def set_config(self, sat_config):
+        with open(sat_config) as f:
+            self.sat_packet = json.load(f)
+
+    def set_pkt(self, pkt_raw):
+        self.packet = pkt_raw.copy()
 
     def __str__(self):
         buf = str()
@@ -108,6 +116,11 @@ class PacketSLP:
 
 class PacketCSP(PacketSLP):
 
+    def __init__(self):
+        self._pkt_buf = list()
+        self._pkt_counter = 0
+        self._data_request_pkt_received = False
+
     def __str__(self):
         buf = str()
 
@@ -124,6 +137,34 @@ class PacketCSP(PacketSLP):
                         if dst_port == 0:   # CSP CMP packets
                             if pkt[5] != self.sat_packet['links'][i]['types'][j]['fields'][11]['value']:    # 11 = CMP Code field
                                 continue
+                        if dst_port == 46:  # Set parameter packets
+                            if pkt[6] != self.sat_packet['links'][i]['types'][j]['fields'][12]['value']:    # 12 = Parameter size field
+                                continue
+                        if dst_port == 38:  # Data request
+                            if self._data_request_pkt_received == False:
+                                if struct.unpack('>H', bytes(pkt[9:11]))[0] > 200:
+                                    self._pkt_buf = pkt.copy()
+                                    self._pkt_counter = struct.unpack('>H', bytes(pkt[6:8]))[0]
+                                    self._data_request_pkt_received = True
+                                    return str()
+                            else:
+                                if self._pkt_counter == struct.unpack('>H', bytes(pkt[6:8]))[0]:
+                                    if pkt[4] < pkt[5]-1:
+                                        self._pkt_buf += pkt[11:]
+                                        return str()
+                                    elif pkt[4] == pkt[5]-1:
+                                        self._pkt_buf += pkt[11:]
+                                        self._pkt_counter = 0
+                                        self._data_request_pkt_received = False
+                                        pkt.clear()
+                                        pkt = self._pkt_buf.copy()
+                                        self.packet = pkt.copy()
+                                        self._pkt_buf.clear()
+                                else:
+                                    self._pkt_buf.clear()
+                                    self._pkt_counter = 0
+                                    self._data_request_pkt_received = False
+                                    raise RuntimeError("Data request packet lost!")
                         link_idx = i
                         type_idx = j
                         pkt_type_found = True

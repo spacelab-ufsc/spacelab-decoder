@@ -501,7 +501,13 @@ def slp_packet(sat_config_file):
 def csp_packet(sat_config_file):
     # Create a PacketCSP object with a sample CSP packet
     pkt_raw = [148, 16, 65, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99]
-    return PacketCSP(sat_config_file, pkt_raw)
+
+    pkt_csp = PacketCSP()
+
+    pkt_csp.set_config(sat_config_file)
+    pkt_csp.set_pkt(pkt_raw)
+
+    return pkt_csp
 
 def test_packet_slp_init(slp_packet):
     # Test initialization of PacketSLP
@@ -587,4 +593,9 @@ def test_packet_csp_unknown_dst_port(sat_config_file):
     # Test PacketCSP with an unknown destination port
     pkt_raw = [0x00, 0x80, 0xFF, 0x40, 0xFF]  # Unknown destination port
     with pytest.raises(RuntimeError):
-        x = str(PacketCSP(sat_config_file, pkt_raw))
+        pkt_csp = PacketCSP()
+
+        pkt_csp.set_config(sat_config_file)
+        pkt_csp.set_pkt(pkt_raw)
+
+        x = str(pkt_csp)
