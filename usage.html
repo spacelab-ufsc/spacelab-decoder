@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Usage &mdash; spacelab-decoder 0.5 documentation</title>
+  <title>Usage &mdash; spacelab-decoder 0.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=1c40f30e"></script>
+      <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=2bb87964"></script>
       <script src="_static/doctools.js?v=888ff710"></script>
       <script src="_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="_static/js/theme.js"></script>
@@ -50,6 +50,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#using-the-software">Using the Software</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#configuraton">Configuraton</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#about">About</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-an-sdr">Using an SDR</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
@@ -120,6 +121,18 @@
 <section id="about">
 <h2>About<a class="headerlink" href="#about" title="Permalink to this heading"></a></h2>
 <p>To view information about the software, including the version and license, click the “About” button in the toolbar.</p>
+</section>
+<section id="using-an-sdr">
+<h2>Using an SDR<a class="headerlink" href="#using-an-sdr" title="Permalink to this heading"></a></h2>
+<p>If an RTL-SDR v3 or v4 is used to receive signals, the internal bias tee must be disabled. This can be done manually using the command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rtl_biast<span class="w"> </span>-b<span class="w"> </span><span class="m">0</span>
+</pre></div>
+</div>
+<p>However, due to the implementation of the device drivers in the latest versions of the Linux kernel, the dvb_usb_rtl28xxu driver automatically enables the bias tee. Therefore, this driver must be permanently disabled. This can be done with the following terminal command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;blacklist dvb_usb_rtl28xxu&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>--append<span class="w"> </span>/etc/modprobe.d/blacklist-dvb_usb_rtl28xxu.conf
+</pre></div>
+</div>
+<p>After executing the command, the computer should be restarted.</p>
 </section>
 </section>
 
