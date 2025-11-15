@@ -22,9 +22,9 @@
 
 __author__      = "Gabriel Mariano Marcelino - PU5GMA"
 __copyright__   = "Copyright The SpaceLab-Decoder Contributors"
-__credits__     = ["Gabriel Mariano Marcelino - PU5GMA"]
+__credits__     = ["Gabriel Mariano Marcelino - PU5GMA", "Vitória Beatriz Bianchin", "Carlos Augusto Porto Freitas"]
 __license__     = "GPLv3"
-__version__     = "0.5.12"
+__version__     = "0.6.0"
 __maintainer__  = "Gabriel Mariano Marcelino - PU5GMA"
 __email__       = "gabriel.mm8@gmail.com"
 __status__      = "Development"
