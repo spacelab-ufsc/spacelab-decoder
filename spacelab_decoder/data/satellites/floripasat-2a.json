@@ -65,7 +65,7 @@
                     ]
                 },
                 {
-                    "name": "General telemetry",
+                    "name": "Beacon",
                     "fields": [
                         {
                             "id": "pkt_id",
