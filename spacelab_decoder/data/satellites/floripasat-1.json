@@ -12,12 +12,13 @@
             "preamble": [170, 170, 170, 170],
             "sync_word": [93, 230, 42, 126],
             "protocol_link": "NGHam",
-            "protocol_network": "Custom",
+            "protocol_network": "SLP",
             "types": [
                 {
                     "name": "OBDH",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -26,6 +27,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_src_adr",
                             "name": "Callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
@@ -34,6 +36,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "eps_bat_volt_1",
                             "name": "Battery Cell 1 Voltage",
                             "initial_pos": 8,
                             "final_pos": 9,
@@ -42,6 +45,7 @@
                             "unit": "V"
                         },
                         {
+                            "id": "eps_bat_volt_2",
                             "name": "Battery Cell 2 Voltage",
                             "initial_pos": 10,
                             "final_pos": 11,
@@ -50,6 +54,7 @@
                             "unit": "V"
                         },
                         {
+                            "id": "eps_bat_temp_1",
                             "name": "Battery Cell 1 Temperature",
                             "initial_pos": 12,
                             "final_pos": 14,
@@ -58,6 +63,7 @@
                             "unit": "oC"
                         },
                         {
+                            "id": "eps_bat_temp_2",
                             "name": "Battery Cell 2 Temperature",
                             "initial_pos": 15,
                             "final_pos": 17,
@@ -66,6 +72,7 @@
                             "unit": "oC"
                         },
                         {
+                            "id": "eps_bat_charge",
                             "name": "Battery Charge",
                             "initial_pos": 18,
                             "final_pos": 19,
@@ -74,6 +81,7 @@
                             "unit": "Ah"
                         },
                         {
+                            "id": "eps_sp_curr_1",
                             "name": "Solar Panel 1 Current",
                             "initial_pos": 20,
                             "final_pos": 21,
@@ -82,6 +90,7 @@
                             "unit": "A"
                         },
                         {
+                            "id": "eps_sp_curr_2",
                             "name": "Solar Panel 2 Current",
                             "initial_pos": 22,
                             "final_pos": 23,
@@ -90,6 +99,7 @@
                             "unit": "A"
                         },
                         {
+                            "id": "eps_sp_curr_3",
                             "name": "Solar Panel 3 Current",
                             "initial_pos": 24,
                             "final_pos": 25,
@@ -98,6 +108,7 @@
                             "unit": "A"
                         },
                         {
+                            "id": "eps_sp_curr_4",
                             "name": "Solar Panel 4 Current",
                             "initial_pos": 26,
                             "final_pos": 27,
@@ -106,6 +117,7 @@
                             "unit": "A"
                         },
                         {
+                            "id": "eps_sp_curr_5",
                             "name": "Solar Panel 5 Current",
                             "initial_pos": 28,
                             "final_pos": 29,
@@ -114,6 +126,7 @@
                             "unit": "A"
                         },
                         {
+                            "id": "eps_sp_curr_6",
                             "name": "Solar Panel 6 Current",
                             "initial_pos": 30,
                             "final_pos": 31,
@@ -122,6 +135,7 @@
                             "unit": "A"
                         },
                         {
+                            "id": "eps_sp_volt_1",
                             "name": "Solar Panel Array 1 Voltage",
                             "initial_pos": 32,
                             "final_pos": 33,
@@ -130,6 +144,7 @@
                             "unit": "V"
                         },
                         {
+                            "id": "eps_sp_volt_2",
                             "name": "Solar Panel Array 2 Voltage",
                             "initial_pos": 34,
                             "final_pos": 35,
@@ -138,6 +153,7 @@
                             "unit": "V"
                         },
                         {
+                            "id": "eps_sp_volt_3",
                             "name": "Solar Panel Array 3 Voltage",
                             "initial_pos": 36,
                             "final_pos": 37,
@@ -146,6 +162,7 @@
                             "unit": "V"
                         },
                         {
+                            "id": "eps_energy_lvl",
                             "name": "Energy Level",
                             "initial_pos": 38,
                             "final_pos": 38,
@@ -154,6 +171,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "obdh_imu_stat",
                             "name": "IMU Status",
                             "initial_pos": 39,
                             "final_pos": 39,
@@ -162,6 +180,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "obdh_sd_stat",
                             "name": "uSD Status",
                             "initial_pos": 39,
                             "final_pos": 39,
@@ -170,6 +189,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "obdh_pl_rush_stat",
                             "name": "RUSH Status",
                             "initial_pos": 39,
                             "final_pos": 39,
@@ -178,6 +198,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "obdh_eps_stat",
                             "name": "EPS Status",
                             "initial_pos": 39,
                             "final_pos": 39,
@@ -186,6 +207,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "obdh_ant_stat",
                             "name": "Antenna Status",
                             "initial_pos": 39,
                             "final_pos": 39,
@@ -194,6 +216,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "obdh_imu_accel_x",
                             "name": "IMU Accelerometer X",
                             "initial_pos": 40,
                             "final_pos": 41,
@@ -202,6 +225,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "obdh_imu_accel_y",
                             "name": "IMU Accelerometer Y",
                             "initial_pos": 42,
                             "final_pos": 43,
@@ -210,6 +234,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "obdh_imu_accel_z",
                             "name": "IMU Accelerometer Z",
                             "initial_pos": 44,
                             "final_pos": 45,
@@ -218,6 +243,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "obdh_imu_gyro_x",
                             "name": "IMU Gyroscope X",
                             "initial_pos": 46,
                             "final_pos": 47,
@@ -226,6 +252,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "obdh_imu_gyro_y",
                             "name": "IMU Gyroscope Y",
                             "initial_pos": 48,
                             "final_pos": 49,
@@ -234,6 +261,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "obdh_imu_gyro_z",
                             "name": "IMU Gyroscope Z",
                             "initial_pos": 50,
                             "final_pos": 51,
@@ -242,6 +270,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "obdh_sys_tm",
                             "name": "System Time",
                             "initial_pos": 52,
                             "final_pos": 55,
@@ -250,6 +279,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "obdh_rst_count",
                             "name": "OBDH Resets",
                             "initial_pos": 56,
                             "final_pos": 57,
@@ -263,6 +293,7 @@
                     "name": "EPS",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -271,6 +302,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_src_adr",
                             "name": "Callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
@@ -279,6 +311,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "eps_bat_volt_1",
                             "name": "Battery Cell 1 Voltage",
                             "initial_pos": 8,
                             "final_pos": 9,
@@ -287,6 +320,7 @@
                             "unit": "V"
                         },
                         {
+                            "id": "eps_bat_volt_2",
                             "name": "Battery Cell 2 Voltage",
                             "initial_pos": 10,
                             "final_pos": 11,
@@ -295,6 +329,7 @@
                             "unit": "V"
                         },
                         {
+                            "id": "eps_bat_temp_mon",
                             "name": "Battery Monitor Temperature",
                             "initial_pos": 12,
                             "final_pos": 13,
@@ -303,6 +338,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "eps_bat_curr",
                             "name": "Battery Current",
                             "initial_pos": 14,
                             "final_pos": 15,
@@ -311,6 +347,7 @@
                             "unit": "A"
                         },
                         {
+                            "id": "eps_temp",
                             "name": "EPS Temperature",
                             "initial_pos": 16,
                             "final_pos": 17,
@@ -319,6 +356,7 @@
                             "unit": "oC"
                         },
                         {
+                            "id": "eps_bat_charge",
                             "name": "Battery Charge",
                             "initial_pos": 18,
                             "final_pos": 19,
@@ -327,6 +365,7 @@
                             "unit": "Ah"
                         },
                         {
+                            "id": "eps_sp_curr_1",
                             "name": "Solar Panel 1 Current",
                             "initial_pos": 20,
                             "final_pos": 21,
@@ -335,6 +374,7 @@
                             "unit": "A"
                         },
                         {
+                            "id": "eps_sp_curr_2",
                             "name": "Solar Panel 2 Current",
                             "initial_pos": 22,
                             "final_pos": 23,
@@ -343,6 +383,7 @@
                             "unit": "A"
                         },
                         {
+                            "id": "eps_sp_curr_3",
                             "name": "Solar Panel 3 Current",
                             "initial_pos": 24,
                             "final_pos": 25,
@@ -351,6 +392,7 @@
                             "unit": "A"
                         },
                         {
+                            "id": "eps_sp_curr_4",
                             "name": "Solar Panel 4 Current",
                             "initial_pos": 26,
                             "final_pos": 27,
@@ -359,6 +401,7 @@
                             "unit": "A"
                         },
                         {
+                            "id": "eps_sp_curr_5",
                             "name": "Solar Panel 5 Current",
                             "initial_pos": 28,
                             "final_pos": 29,
@@ -367,6 +410,7 @@
                             "unit": "A"
                         },
                         {
+                            "id": "eps_sp_curr_6",
                             "name": "Solar Panel 6 Current",
                             "initial_pos": 30,
                             "final_pos": 31,
@@ -375,6 +419,7 @@
                             "unit": "A"
                         },
                         {
+                            "id": "eps_sp_volt_1",
                             "name": "Solar Panel Array 1 Voltage",
                             "initial_pos": 32,
                             "final_pos": 33,
@@ -383,6 +428,7 @@
                             "unit": "V"
                         },
                         {
+                            "id": "eps_sp_volt_2",
                             "name": "Solar Panel Array 2 Voltage",
                             "initial_pos": 34,
                             "final_pos": 35,
@@ -391,6 +437,7 @@
                             "unit": "V"
                         },
                         {
+                            "id": "eps_sp_volt_3",
                             "name": "Solar Panel Array 3 Voltage",
                             "initial_pos": 36,
                             "final_pos": 37,
@@ -404,6 +451,7 @@
                     "name": "TTC",
                     "fields": [
                         {
+                            "id": "pkt_id",
                             "name": "ID",
                             "initial_pos": 0,
                             "final_pos": 0,
@@ -412,6 +460,7 @@
                             "unit": ""
                         },
                         {
+                            "id": "pkt_src_adr",
                             "name": "Callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
