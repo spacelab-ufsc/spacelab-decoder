@@ -1,11 +1,18 @@
 {
+    "id": "floripasat-1",
     "name": "FloripaSat-1",
     "links": [
         {
+            "id": "downlink",
             "name": "Beacon",
+            "direction": "down",
+            "frequency": 145.9e6,
+            "modulation": "GFSK",
             "baudrate": 1200,
+            "preamble": [170, 170, 170, 170],
             "sync_word": [93, 230, 42, 126],
-            "protocol": "NGHam",
+            "protocol_link": "NGHam",
+            "protocol_network": "Custom",
             "types": [
                 {
                     "name": "OBDH",
