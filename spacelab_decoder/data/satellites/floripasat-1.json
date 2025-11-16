@@ -3,7 +3,7 @@
     "name": "FloripaSat-1",
     "links": [
         {
-            "id": "downlink",
+            "id": "downlink_vhf",
             "name": "Beacon",
             "direction": "down",
             "frequency": 145.9e6,
@@ -466,6 +466,628 @@
                             "final_pos": 7,
                             "value": 0,
                             "conversion": "self._decode_callsign(pkt[1:8])",
+                            "unit": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "downlink_uhf",
+            "name": "Downlink",
+            "direction": "down",
+            "frequency": 436.1e6,
+            "modulation": "GFSK",
+            "baudrate": 2400,
+            "preamble": [170, 170, 170, 170],
+            "sync_word": [93, 230, 42, 126],
+            "protocol_link": "NGHam",
+            "protocol_network": "SLP",
+            "types": [
+                {
+                    "name": "Telemetry",
+                    "fields": [
+                        {
+                            "id": "pkt_id",
+                            "name": "ID",
+                            "initial_pos": 0,
+                            "final_pos": 0,
+                            "value": 16,
+                            "conversion": "int(pkt[0])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "pkt_src_adr",
+                            "name": "Callsign",
+                            "initial_pos": 1,
+                            "final_pos": 7,
+                            "value": 0,
+                            "conversion": "self._decode_callsign(pkt[1:8])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "pkt_flags",
+                            "name": "Package Flags",
+                            "initial_pos": 8,
+                            "final_pos": 9,
+                            "value": 0,
+                            "conversion": "((pkt[9] << 8) | pkt[8])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_uptime_sec",
+                            "name": "System Time - seconds",
+                            "initial_pos": 10,
+                            "final_pos": 10,
+                            "value": 0,
+                            "conversion": "int(pkt[10])",
+                            "unit": "s"
+                        },
+                        {
+                            "id": "obdh_uptime_total",
+                            "name": "System Time - minutes:seconds (from 3 bytes)",
+                            "initial_pos": 11,
+                            "final_pos": 13,
+                            "value": 0,
+                            "conversion": "str(int(((pkt[11] << 16) | (pkt[12] << 8) | pkt[13])/60)) + \":\" + str(((pkt[11] << 16) | (pkt[12] << 8) | pkt[13])%60) + \":\" + str(pkt[10])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_reset_counter",
+                            "name": "OBDH Reset Counter",
+                            "initial_pos": 14,
+                            "final_pos": 16,
+                            "value": 0,
+                            "conversion": "((pkt[14] << 16) | (pkt[15] << 8) | pkt[16])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_reset_cause",
+                            "name": "Reset Cause",
+                            "initial_pos": 17,
+                            "final_pos": 17,
+                            "value": 0,
+                            "conversion": "int(pkt[17])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_clock_fault_flags",
+                            "name": "Clock Fault Flags",
+                            "initial_pos": 18,
+                            "final_pos": 18,
+                            "value": 0,
+                            "conversion": "int(pkt[18])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_test_module_flags",
+                            "name": "Test Module Flags",
+                            "initial_pos": 19,
+                            "final_pos": 19,
+                            "value": 0,
+                            "conversion": "int(pkt[19])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_imu_status",
+                            "name": "IMU Status",
+                            "initial_pos": 19,
+                            "final_pos": 19,
+                            "value": 0,
+                            "conversion": "bool((pkt[19] >> 4) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_usd_status",
+                            "name": "uSD Status",
+                            "initial_pos": 19,
+                            "final_pos": 19,
+                            "value": 0,
+                            "conversion": "bool((pkt[19] >> 3) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_rush_status",
+                            "name": "RUSH Status",
+                            "initial_pos": 19,
+                            "final_pos": 19,
+                            "value": 0,
+                            "conversion": "bool((pkt[19] >> 1) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_eps_status",
+                            "name": "EPS Status (flag)",
+                            "initial_pos": 19,
+                            "final_pos": 19,
+                            "value": 0,
+                            "conversion": "bool((pkt[19] >> 0) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "obdh_antenna_status",
+                            "name": "Antenna Status",
+                            "initial_pos": 19,
+                            "final_pos": 19,
+                            "value": 0,
+                            "conversion": "bool((pkt[19] >> 5) & 1)",
+                            "unit": ""
+                        },
+                        {
+                            "id": "imu_1_accel_x",
+                            "name": "IMU1 Accelerometer X",
+                            "initial_pos": 20,
+                            "final_pos": 21,
+                            "value": 0,
+                            "conversion": "int((pkt[20] << 8) | pkt[21]) * 16.0/32768.0",
+                            "unit": "g"
+                        },
+                        {
+                            "id": "imu_1_accel_y",
+                            "name": "IMU1 Accelerometer Y",
+                            "initial_pos": 22,
+                            "final_pos": 23,
+                            "value": 0,
+                            "conversion": "int((pkt[22] << 8) | pkt[23]) * 16.0/32768.0",
+                            "unit": "g"
+                        },
+                        {
+                            "id": "imu_1_accel_z",
+                            "name": "IMU1 Accelerometer Z",
+                            "initial_pos": 24,
+                            "final_pos": 25,
+                            "value": 0,
+                            "conversion": "int((pkt[24] << 8) | pkt[25]) * 16.0/32768.0",
+                            "unit": "g"
+                        },
+                        {
+                            "id": "imu_1_gyro_x",
+                            "name": "IMU1 Gyro X",
+                            "initial_pos": 26,
+                            "final_pos": 27,
+                            "value": 0,
+                            "conversion": "int((pkt[26] << 8) | pkt[27]) * 250.0/32768.0",
+                            "unit": "deg/s"
+                        },
+                        {
+                            "id": "imu_1_gyro_y",
+                            "name": "IMU1 Gyro Y",
+                            "initial_pos": 28,
+                            "final_pos": 29,
+                            "value": 0,
+                            "conversion": "int((pkt[28] << 8) | pkt[29]) * 250.0/32768.0",
+                            "unit": "deg/s"
+                        },
+                        {
+                            "id": "imu_1_gyro_z",
+                            "name": "IMU1 Gyro Z",
+                            "initial_pos": 30,
+                            "final_pos": 31,
+                            "value": 0,
+                            "conversion": "int((pkt[30] << 8) | pkt[31]) * 250.0/32768.0",
+                            "unit": "deg/s"
+                        },
+                        {
+                            "id": "imu_2_accel_x",
+                            "name": "IMU2 Accelerometer X",
+                            "initial_pos": 32,
+                            "final_pos": 33,
+                            "value": 0,
+                            "conversion": "int((pkt[32] << 8) | pkt[33]) * 16.0/32768.0",
+                            "unit": "g"
+                        },
+                        {
+                            "id": "imu_2_accel_y",
+                            "name": "IMU2 Accelerometer Y",
+                            "initial_pos": 34,
+                            "final_pos": 35,
+                            "value": 0,
+                            "conversion": "int((pkt[34] << 8) | pkt[35]) * 16.0/32768.0",
+                            "unit": "g"
+                        },
+                        {
+                            "id": "imu_2_accel_z",
+                            "name": "IMU2 Accelerometer Z",
+                            "initial_pos": 36,
+                            "final_pos": 37,
+                            "value": 0,
+                            "conversion": "int((pkt[36] << 8) | pkt[37]) * 16.0/32768.0",
+                            "unit": "g"
+                        },
+                        {
+                            "id": "imu_2_gyro_x",
+                            "name": "IMU2 Gyro X",
+                            "initial_pos": 38,
+                            "final_pos": 39,
+                            "value": 0,
+                            "conversion": "int((pkt[38] << 8) | pkt[39]) * 250.0/32768.0",
+                            "unit": "deg/s"
+                        },
+                        {
+                            "id": "imu_2_gyro_y",
+                            "name": "IMU2 Gyro Y",
+                            "initial_pos": 40,
+                            "final_pos": 41,
+                            "value": 0,
+                            "conversion": "int((pkt[40] << 8) | pkt[41]) * 250.0/32768.0",
+                            "unit": "deg/s"
+                        },
+                        {
+                            "id": "imu_2_gyro_z",
+                            "name": "IMU2 Gyro Z",
+                            "initial_pos": 42,
+                            "final_pos": 43,
+                            "value": 0,
+                            "conversion": "int((pkt[42] << 8) | pkt[43]) * 250.0/32768.0",
+                            "unit": "deg/s"
+                        },
+                        {
+                            "id": "obdh_misc_uc_temp",
+                            "name": "UC Temperature (MSP)",
+                            "initial_pos": 44,
+                            "final_pos": 45,
+                            "value": 0,
+                            "conversion": "(((pkt[44] << 8) | pkt[45]) * 2.0 - 2048.0) * 55.0 / (2432.0 - 2048.0) + 30.0",
+                            "unit": "oC"
+                        },
+                        {
+                            "id": "obdh_misc_supply_volt",
+                            "name": "UC Supply Voltage",
+                            "initial_pos": 46,
+                            "final_pos": 47,
+                            "value": 0,
+                            "conversion": "((pkt[46] << 8) | pkt[47]) * 2 * 3.0 / 4095.0",
+                            "unit": "V"
+                        },
+                        {
+                            "id": "obdh_misc_supply_current",
+                            "name": "UC Supply Current",
+                            "initial_pos": 48,
+                            "final_pos": 49,
+                            "value": 0,
+                            "conversion": "((pkt[48] << 8) | pkt[49]) * (1000.0 * 3.0) / (4095.0 * 0.05 * 0.025 * 20000.0)",
+                            "unit": "A"
+                        },
+                        {
+                            "id": "sp_sensor_1",
+                            "name": "Solar Panel Sensor 1 (raw 24bit)",
+                            "initial_pos": 50,
+                            "final_pos": 52,
+                            "value": 0,
+                            "conversion": "((pkt[50] << 16) | (pkt[51] << 8) | pkt[52])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "main_radio_block",
+                            "name": "Main Radio Block (raw bytes)",
+                            "initial_pos": 62,
+                            "final_pos": 80,
+                            "value": 0,
+                            "conversion": "pkt[62:81]",
+                            "unit": ""
+                        },
+                        {
+                            "id": "solar_sp_curr_1",
+                            "name": "Solar Panel 1 Current",
+                            "initial_pos": 81,
+                            "final_pos": 82,
+                            "value": 0,
+                            "conversion": "((pkt[81] << 8) | pkt[82]) * (2.5/4095) * (1/(0.05*0.025*3300))",
+                            "unit": "A"
+                        },
+                        {
+                            "id": "solar_sp_curr_2",
+                            "name": "Solar Panel 2 Current",
+                            "initial_pos": 83,
+                            "final_pos": 84,
+                            "value": 0,
+                            "conversion": "((pkt[83] << 8) | pkt[84]) * (2.5/4095) * (1/(0.05*0.025*3300))",
+                            "unit": "A"
+                        },
+                        {
+                            "id": "solar_sp_curr_3",
+                            "name": "Solar Panel 3 Current",
+                            "initial_pos": 85,
+                            "final_pos": 86,
+                            "value": 0,
+                            "conversion": "((pkt[85] << 8) | pkt[86]) * (2.5/4095) * (1/(0.05*0.025*3300))",
+                            "unit": "A"
+                        },
+                        {
+                            "id": "solar_sp_curr_4",
+                            "name": "Solar Panel 4 Current",
+                            "initial_pos": 87,
+                            "final_pos": 88,
+                            "value": 0,
+                            "conversion": "((pkt[87] << 8) | pkt[88]) * (2.5/4095) * (1/(0.05*0.025*3300))",
+                            "unit": "A"
+                        },
+                        {
+                            "id": "solar_sp_curr_5",
+                            "name": "Solar Panel 5 Current",
+                            "initial_pos": 89,
+                            "final_pos": 90,
+                            "value": 0,
+                            "conversion": "((pkt[89] << 8) | pkt[90]) * (2.5/4095) * (1/(0.05*0.025*3300))",
+                            "unit": "A"
+                        },
+                        {
+                            "id": "solar_sp_curr_6",
+                            "name": "Solar Panel 6 Current",
+                            "initial_pos": 91,
+                            "final_pos": 92,
+                            "value": 0,
+                            "conversion": "((pkt[91] << 8) | pkt[92]) * (2.5/4095) * (1/(0.05*0.025*3300))",
+                            "unit": "A"
+                        },
+                        {
+                            "id": "solar_sp_volt_1",
+                            "name": "Solar Panel Array 1 Voltage",
+                            "initial_pos": 93,
+                            "final_pos": 94,
+                            "value": 0,
+                            "conversion": "((pkt[93] << 8) | pkt[94]) * (2.5/4095) * (100e3 + 93.1e3)/100e3",
+                            "unit": "V"
+                        },
+                        {
+                            "id": "solar_sp_volt_2",
+                            "name": "Solar Panel Array 2 Voltage",
+                            "initial_pos": 95,
+                            "final_pos": 96,
+                            "value": 0,
+                            "conversion": "((pkt[95] << 8) | pkt[96]) * (2.5/4095) * (100e3 + 93.1e3)/100e3",
+                            "unit": "V"
+                        },
+                        {
+                            "id": "solar_sp_volt_3",
+                            "name": "Solar Panel Array 3 Voltage",
+                            "initial_pos": 97,
+                            "final_pos": 98,
+                            "value": 0,
+                            "conversion": "((pkt[97] << 8) | pkt[98]) * (2.5/4095) * (100e3 + 93.1e3)/100e3",
+                            "unit": "V"
+                        },
+                        {
+                            "id": "eps_misc_boost_v",
+                            "name": "EPS Boost Voltage",
+                            "initial_pos": 99,
+                            "final_pos": 100,
+                            "value": 0,
+                            "conversion": "((pkt[99] << 8) | pkt[100]) * (2.5/4095.0) * (300e3 + 100e3) / (100e3)",
+                            "unit": "V"
+                        },
+                        {
+                            "id": "eps_misc_main_bus_v",
+                            "name": "EPS Main Bus Voltage",
+                            "initial_pos": 101,
+                            "final_pos": 102,
+                            "value": 0,
+                            "conversion": "((pkt[101] << 8) | pkt[102]) * (2.5/4095.0) * (300e3 + 100e3) / (100e3)",
+                            "unit": "V"
+                        },
+                        {
+                            "id": "eps_misc_beacon_i",
+                            "name": "EPS Beacon Current",
+                            "initial_pos": 103,
+                            "final_pos": 104,
+                            "value": 0,
+                            "conversion": "((pkt[103] << 8) | pkt[104]) * (2.5 / 4095.0) * (1.0 / (0.075 * 0.025 * 4020))",
+                            "unit": "A"
+                        },
+                        {
+                            "id": "eps_misc_uc_temp",
+                            "name": "EPS ADC Temperature",
+                            "initial_pos": 105,
+                            "final_pos": 106,
+                            "value": 0,
+                            "conversion": "(((pkt[105] << 8) | pkt[106]) * (2.5 / 4095.0) - 0.680) * 70.0 / 0.170",
+                            "unit": "oC"
+                        },
+                        {
+                            "id": "bat_avg_current",
+                            "name": "Battery Average Current",
+                            "initial_pos": 107,
+                            "final_pos": 108,
+                            "value": 0,
+                            "conversion": "int((pkt[107] << 8) | pkt[108]) * (1.5625e-6 / 0.01)",
+                            "unit": "A"
+                        },
+                        {
+                            "id": "bat_monitor_temp",
+                            "name": "Battery Monitor Temperature",
+                            "initial_pos": 109,
+                            "final_pos": 110,
+                            "value": 0,
+                            "conversion": "int((pkt[109] << 8) | pkt[110]) * 0.125 / 32.0",
+                            "unit": "oC"
+                        },
+                        {
+                            "id": "bat1_voltage",
+                            "name": "Battery Cell 1 Voltage",
+                            "initial_pos": 111,
+                            "final_pos": 112,
+                            "value": 0,
+                            "conversion": "(((pkt[111] << 8) | pkt[112]) / 32.0) * 4.883e-3",
+                            "unit": "V"
+                        },
+                        {
+                            "id": "bat2_voltage",
+                            "name": "Battery Cell 2 Voltage",
+                            "initial_pos": 113,
+                            "final_pos": 114,
+                            "value": 0,
+                            "conversion": "(((pkt[113] << 8) | pkt[114]) / 32.0) * 4.883e-3",
+                            "unit": "V"
+                        },
+                        {
+                            "id": "bat_current",
+                            "name": "Battery Current",
+                            "initial_pos": 115,
+                            "final_pos": 116,
+                            "value": 0,
+                            "conversion": "int((pkt[115] << 8) | pkt[116]) * (1.5625e-6 / 0.01)",
+                            "unit": "A"
+                        },
+                        {
+                            "id": "bat_accumulated_current",
+                            "name": "Battery Accumulated Current",
+                            "initial_pos": 117,
+                            "final_pos": 118,
+                            "value": 0,
+                            "conversion": "((pkt[117] << 8) | pkt[118]) * (6.25e-6 / 0.01)",
+                            "unit": "Ah"
+                        },
+                        {
+                            "id": "protection_register",
+                            "name": "Protection Register",
+                            "initial_pos": 119,
+                            "final_pos": 119,
+                            "value": 0,
+                            "conversion": "int(pkt[119])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "status_register",
+                            "name": "Status Register",
+                            "initial_pos": 120,
+                            "final_pos": 120,
+                            "value": 0,
+                            "conversion": "int(pkt[120])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "cycle_counter_register",
+                            "name": "Cycle Counter Register",
+                            "initial_pos": 121,
+                            "final_pos": 121,
+                            "value": 0,
+                            "conversion": "int(pkt[121]) * 2",
+                            "unit": ""
+                        },
+                        {
+                            "id": "active_absolute_capacity",
+                            "name": "Active Absolute Capacity",
+                            "initial_pos": 122,
+                            "final_pos": 123,
+                            "value": 0,
+                            "conversion": "((pkt[122] << 8) | pkt[123]) * 1.6",
+                            "unit": ""
+                        },
+                        {
+                            "id": "standby_absolute_capacity",
+                            "name": "Standby Absolute Capacity",
+                            "initial_pos": 124,
+                            "final_pos": 125,
+                            "value": 0,
+                            "conversion": "((pkt[124] << 8) | pkt[125]) * 1.6",
+                            "unit": ""
+                        },
+                        {
+                            "id": "active_relative_capacity",
+                            "name": "Active Relative Capacity",
+                            "initial_pos": 126,
+                            "final_pos": 126,
+                            "value": 0,
+                            "conversion": "int(pkt[126])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "standby_relative_capacity",
+                            "name": "Standby Relative Capacity",
+                            "initial_pos": 127,
+                            "final_pos": 127,
+                            "value": 0,
+                            "conversion": "int(pkt[127])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "rtd_1",
+                            "name": "RTD Measurement 1",
+                            "initial_pos": 128,
+                            "final_pos": 130,
+                            "value": 0,
+                            "conversion": "((((pkt[128] << 16) | (pkt[129] << 8) | pkt[130])*(1.65*2/(2**24))*1e3)-1000)*1/3.85",
+                            "unit": ""
+                        },
+                        {
+                            "id": "rtd_2",
+                            "name": "RTD Measurement 2",
+                            "initial_pos": 131,
+                            "final_pos": 133,
+                            "value": 0,
+                            "conversion": "((((pkt[131] << 16) | (pkt[132] << 8) | pkt[133])*(1.65*2/(2**24))*1e3)-1000)*1/3.85",
+                            "unit": ""
+                        },
+                        {
+                            "id": "rtd_3",
+                            "name": "RTD Measurement 3",
+                            "initial_pos": 134,
+                            "final_pos": 136,
+                            "value": 0,
+                            "conversion": "((((pkt[134] << 16) | (pkt[135] << 8) | pkt[136])*(1.65*2/(2**24))*1e3)-1000)*1/3.85",
+                            "unit": ""
+                        },
+                        {
+                            "id": "rtd_4",
+                            "name": "RTD Measurement 4",
+                            "initial_pos": 137,
+                            "final_pos": 139,
+                            "value": 0,
+                            "conversion": "((((pkt[137] << 16) | (pkt[138] << 8) | pkt[139])*(1.65*2/(2**24))*1e3)-1000)*1/3.85",
+                            "unit": ""
+                        },
+                        {
+                            "id": "rtd_5",
+                            "name": "RTD Measurement 5",
+                            "initial_pos": 140,
+                            "final_pos": 142,
+                            "value": 0,
+                            "conversion": "((((pkt[140] << 16) | (pkt[141] << 8) | pkt[142])*(1.65*2/(2**24))*1e3)-1000)*1/3.85",
+                            "unit": ""
+                        },
+                        {
+                            "id": "rtd_6",
+                            "name": "RTD Measurement 6",
+                            "initial_pos": 143,
+                            "final_pos": 145,
+                            "value": 0,
+                            "conversion": "((((pkt[143] << 16) | (pkt[144] << 8) | pkt[145])*(1.65*2/(2**24))*1e3)-1000)*1/3.85",
+                            "unit": ""
+                        },
+                        {
+                            "id": "rtd_7",
+                            "name": "RTD Measurement 7",
+                            "initial_pos": 146,
+                            "final_pos": 148,
+                            "value": 0,
+                            "conversion": "((((pkt[146] << 16) | (pkt[147] << 8) | pkt[148])*(1.65*2/(2**24))*1e3)-1000)*1/3.85",
+                            "unit": ""
+                        },
+                        {
+                            "id": "eps_energy_level",
+                            "name": "EPS Energy Level",
+                            "initial_pos": 149,
+                            "final_pos": 149,
+                            "value": 0,
+                            "conversion": "int(pkt[149])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "payload1_raw",
+                            "name": "Payload1 Raw (40 bytes)",
+                            "initial_pos": 150,
+                            "final_pos": 189,
+                            "value": 0,
+                            "conversion": "str(pkt[150:190])",
+                            "unit": ""
+                        },
+                        {
+                            "id": "payload2_raw",
+                            "name": "Payload2 Raw (7 bytes)",
+                            "initial_pos": 190,
+                            "final_pos": 196,
+                            "value": 0,
+                            "conversion": "str(pkt[190:197])",
                             "unit": ""
                         }
                     ]
