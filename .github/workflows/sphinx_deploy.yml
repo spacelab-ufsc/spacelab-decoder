@@ -44,7 +44,7 @@ jobs:
     # Create an artifact of the html output
     - uses: actions/upload-artifact@v4
       with:
-        name: documentation_html
+        name: Documentation HTML
         path: docs/_build/html/
     # Publish built docs to gh-pages branch
     - name: Commit documentation changes
