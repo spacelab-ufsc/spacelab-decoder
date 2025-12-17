@@ -22,11 +22,8 @@
 #  
 #
 
-
 import setuptools
 import os
-
-from sphinx.setup_command import BuildDoc
 
 # Make sure we are running on posix (Linux, Unix, MAC OSX)
 if os.name != 'posix':
@@ -85,5 +82,4 @@ setuptools.setup(
         ('share/spacelab_decoder/', ['spacelab_decoder/data/satellites/catarina-a2.json']),
         ('share/spacelab_decoder/', ['spacelab_decoder/data/satellites/catarina-a3.json']),
         ],
-    cmdclass                        = {'build_sphinx': BuildDoc},
 )
