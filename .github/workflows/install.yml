@@ -34,25 +34,38 @@ on:
 
 jobs:
 
-  unit-tests:
-    name: Unit tests
+  install-test:
+    name: Installing test
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
+      matrix:
+        python-version: ['3.12', '3.13']
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies
+      - name: Upgrade pip and build tools
         run: |
-          sudo apt update -y --fix-missing
-          sudo apt install -y python3 python3-setuptools python3-wheel python3-gi python3-numpy python3-scipy python3-matplotlib python3-zmq
-          pip install pyngham
+          python -m pip install --upgrade pip
+          pip install setuptools wheel build
 
-      - name: Install SpaceLab-Decoder
+      - name: Build package (sdist and wheel)
+        run: |
+          python setup.py sdist bdist_wheel
+
+      - name: Check built distributions
+        run: |
+          pip install twine
+          twine check dist/*
+
+      - name: Install package
         run: |
           python setup.py install
