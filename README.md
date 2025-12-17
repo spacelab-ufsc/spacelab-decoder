@@ -54,7 +54,7 @@ Until now, this program supports the satellites below:
 
 ### Installation on Ubuntu
 
-```sudo apt install python3 python3-gi python3-numpy python3-scipy python3-matplotlib python3-pyzmq```
+```sudo apt install python3 python3-gi python3-numpy python3-scipy python3-matplotlib python3-zmq```
 
 ```pip install pyngham```
 
@@ -74,11 +74,21 @@ The documentation page is available [here](https://spacelab-ufsc.github.io/space
 
 ### Dependencies
 
-* sphinx-rtd-theme
+* sphinx (>= 7.2.6-6)
+* sphinx-rtd-theme (>= 2.0.0-6)
+
+#### Installation on Ubuntu
+
+```sudo apt install python3-sphinx python3-sphinx-rtd-theme```
+
+#### Installation on Fedora
+
+```sudo dnf install python3-sphinx python3-sphinx_rtd_theme```
 
 ### Building the Documentation
 
-* ```python setup.py build_sphinx```
+* ```cd docs```
+* ```sphinx-build -M html . build```
 
 ## License
 
