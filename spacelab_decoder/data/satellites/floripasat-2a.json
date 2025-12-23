@@ -78,7 +78,7 @@
                         },
                         {
                             "id": "pkt_src_adr",
-                            "name": "Source callsign",
+                            "name": "Source Callsign",
                             "initial_pos": 1,
                             "final_pos": 7,
                             "value": 0,
@@ -87,7 +87,7 @@
                         },
                         {
                             "id": "obdh_timestamp",
-                            "name": "Time counter",
+                            "name": "System Time",
                             "initial_pos": 8,
                             "final_pos": 11,
                             "value": 0,
@@ -96,7 +96,7 @@
                         },
                         {
                             "id": "obdh_mcu_temp",
-                            "name": "OBDH uC temperature",
+                            "name": "OBDH MCU Temperature",
                             "initial_pos": 12,
                             "final_pos": 13,
                             "value": 0,
@@ -105,7 +105,7 @@
                         },
                         {
                             "id": "obdh_curr",
-                            "name": "OBDH input current",
+                            "name": "OBDH Current",
                             "initial_pos": 14,
                             "final_pos": 15,
                             "value": 0,
@@ -114,7 +114,7 @@
                         },
                         {
                             "id": "obdh_volt",
-                            "name": "OBDH input voltage",
+                            "name": "OBDH Voltage",
                             "initial_pos": 16,
                             "final_pos": 17,
                             "value": 0,
@@ -123,7 +123,7 @@
                         },
                         {
                             "id": "obdh_mcu_last_rst_cause",
-                            "name": "OBDH last reset cause",
+                            "name": "OBDH Last Reset Cause",
                             "initial_pos": 18,
                             "final_pos": 18,
                             "value": 0,
@@ -132,7 +132,7 @@
                         },
                         {
                             "id": "obdh_mcu_rst_count",
-                            "name": "OBDH reset counter",
+                            "name": "OBDH Reset Counter",
                             "initial_pos": 19,
                             "final_pos": 20,
                             "value": 0,
@@ -141,7 +141,7 @@
                         },
                         {
                             "id": "obdh_op_last_val_tc",
-                            "name": "Last valid telecommand",
+                            "name": "ID of the Last Valid Telecommand",
                             "initial_pos": 21,
                             "final_pos": 21,
                             "value": 0,
@@ -150,7 +150,7 @@
                         },
                         {
                             "id": "ttc_radio1_temp",
-                            "name": "Radio temperature",
+                            "name": "Radio Temperature",
                             "initial_pos": 22,
                             "final_pos": 23,
                             "value": 0,
@@ -159,7 +159,7 @@
                         },
                         {
                             "id": "obdh_last_valid_tc_rssi",
-                            "name": "Last valid TC RSSI",
+                            "name": "RSSI of the Last Valid Telecommand",
                             "initial_pos": 24,
                             "final_pos": 25,
                             "value": 0,
@@ -168,7 +168,7 @@
                         },
                         {
                             "id": "eps_mcu_temp",
-                            "name": "EPS uC temperature",
+                            "name": "EPS MCU Temperature",
                             "initial_pos": 30,
                             "final_pos": 31,
                             "value": 0,
@@ -177,7 +177,7 @@
                         },
                         {
                             "id": "eps_mcu_curr",
-                            "name": "EPS current",
+                            "name": "EPS MCU Current",
                             "initial_pos": 32,
                             "final_pos": 33,
                             "value": 0,
@@ -186,7 +186,7 @@
                         },
                         {
                             "id": "eps_mcu_last_rst_cause",
-                            "name": "EPS last reset cause",
+                            "name": "EPS Last Reset Cause",
                             "initial_pos": 34,
                             "final_pos": 34,
                             "value": 0,
@@ -195,7 +195,7 @@
                         },
                         {
                             "id": "eps_mcu_rst_count",
-                            "name": "EPS reset counter",
+                            "name": "EPS Reset Counter",
                             "initial_pos": 35,
                             "final_pos": 36,
                             "value": 0,
@@ -204,7 +204,7 @@
                         },
                         {
                             "id": "eps_sp_volt_mypx",
-                            "name": "Solar panel voltage (-Y and +X)",
+                            "name": "Solar Panel Voltage (-Y and +X)",
                             "initial_pos": 37,
                             "final_pos": 38,
                             "value": 0,
@@ -213,7 +213,7 @@
                         },
                         {
                             "id": "eps_sp_volt_mxpz",
-                            "name": "Solar panel voltage (-X and +Z)",
+                            "name": "Solar Panel Voltage (-X and +Z)",
                             "initial_pos": 39,
                             "final_pos": 40,
                             "value": 0,
@@ -222,7 +222,7 @@
                         },
                         {
                             "id": "eps_sp_volt_mzpy",
-                            "name": "Solar panel voltage (-Z and +Y)",
+                            "name": "Solar Panel Voltage (-Z and +Y)",
                             "initial_pos": 41,
                             "final_pos": 42,
                             "value": 0,
@@ -231,7 +231,7 @@
                         },
                         {
                             "id": "eps_sp_curr_my",
-                            "name": "Solar panel current (-Y)",
+                            "name": "Solar Panel Current (-Y)",
                             "initial_pos": 43,
                             "final_pos": 44,
                             "value": 0,
@@ -240,7 +240,7 @@
                         },
                         {
                             "id": "eps_sp_curr_py",
-                            "name": "Solar panel current (+Y)",
+                            "name": "Solar Panel Current (+Y)",
                             "initial_pos": 45,
                             "final_pos": 46,
                             "value": 0,
@@ -249,7 +249,7 @@
                         },
                         {
                             "id": "eps_sp_curr_mx",
-                            "name": "Solar panel current (-X)",
+                            "name": "Solar Panel Current (-X)",
                             "initial_pos": 47,
                             "final_pos": 48,
                             "value": 0,
@@ -258,7 +258,7 @@
                         },
                         {
                             "id": "eps_sp_curr_px",
-                            "name": "Solar panel current (+X)",
+                            "name": "Solar Panel Current (+X)",
                             "initial_pos": 49,
                             "final_pos": 50,
                             "value": 0,
@@ -267,7 +267,7 @@
                         },
                         {
                             "id": "eps_sp_curr_mz",
-                            "name": "Solar panel current (-Z)",
+                            "name": "Solar Panel Current (-Z)",
                             "initial_pos": 51,
                             "final_pos": 52,
                             "value": 0,
@@ -276,7 +276,7 @@
                         },
                         {
                             "id": "eps_sp_curr_pz",
-                            "name": "Solar panel current (+Z)",
+                            "name": "Solar Panel Current (+Z)",
                             "initial_pos": 53,
                             "final_pos": 54,
                             "value": 0,
@@ -285,7 +285,7 @@
                         },
                         {
                             "id": "eps_mppt_1_dc",
-                            "name": "MPPT 1 duty cycle",
+                            "name": "MPPT 1 Duty Cycle",
                             "initial_pos": 55,
                             "final_pos": 55,
                             "value": 0,
@@ -294,7 +294,7 @@
                         },
                         {
                             "id": "eps_mppt_2_dc",
-                            "name": "MPPT 2 duty cycle",
+                            "name": "MPPT 2 Duty Cycle",
                             "initial_pos": 56,
                             "final_pos": 56,
                             "value": 0,
@@ -303,7 +303,7 @@
                         },
                         {
                             "id": "eps_mppt_3_dc",
-                            "name": "MPPT 3 duty cycle",
+                            "name": "MPPT 3 Duty Cycle",
                             "initial_pos": 57,
                             "final_pos": 57,
                             "value": 0,
@@ -312,7 +312,7 @@
                         },
                         {
                             "id": "eps_main_pwr_bus_volt",
-                            "name": "Main power bus voltage",
+                            "name": "Main Power Bus Voltage",
                             "initial_pos": 58,
                             "final_pos": 59,
                             "value": 0,
@@ -321,7 +321,7 @@
                         },
                         {
                             "id": "eps_bat_volt",
-                            "name": "Battery voltage",
+                            "name": "Battery Voltage",
                             "initial_pos": 60,
                             "final_pos": 61,
                             "value": 0,
@@ -330,7 +330,7 @@
                         },
                         {
                             "id": "eps_bat_curr",
-                            "name": "Battery current",
+                            "name": "Battery Current",
                             "initial_pos": 62,
                             "final_pos": 63,
                             "value": 0,
@@ -339,7 +339,7 @@
                         },
                         {
                             "id": "eps_bat_avg_curr",
-                            "name": "Battery average current",
+                            "name": "Battery Average Current",
                             "initial_pos": 64,
                             "final_pos": 65,
                             "value": 0,
@@ -348,7 +348,7 @@
                         },
                         {
                             "id": "eps_bat_acc_curr",
-                            "name": "Battery accumulated current",
+                            "name": "Battery Charge",
                             "initial_pos": 66,
                             "final_pos": 67,
                             "value": 0,
@@ -357,7 +357,7 @@
                         },
                         {
                             "id": "eps_bat_mon_temp",
-                            "name": "Battery monitor IC temperature",
+                            "name": "Battery Monitor Temperature",
                             "initial_pos": 68,
                             "final_pos": 69,
                             "value": 0,
@@ -366,7 +366,7 @@
                         },
                         {
                             "id": "eps_bat_heater_1_dc",
-                            "name": "Battery heater 1 duty cycle",
+                            "name": "Battery Heater 1 Duty Cycle",
                             "initial_pos": 70,
                             "final_pos": 70,
                             "value": 0,
@@ -375,7 +375,7 @@
                         },
                         {
                             "id": "eps_bat_heater_2_dc",
-                            "name": "Battery heater 2 duty cycle",
+                            "name": "Battery Heater 2 Duty Cycle",
                             "initial_pos": 71,
                             "final_pos": 71,
                             "value": 0,
@@ -384,7 +384,7 @@
                         },
                         {
                             "id": "obdh_op_main_pl_state",
-                            "name": "Main payload state",
+                            "name": "Main Payload State",
                             "initial_pos": 73,
                             "final_pos": 73,
                             "value": 0,
@@ -393,7 +393,7 @@
                         },
                         {
                             "id": "obdh_mem_data_log",
-                            "name": "Used Data Log flash pages",
+                            "name": "Used Data Log Flash Pages",
                             "initial_pos": 75,
                             "final_pos": 78,
                             "value": 0,
@@ -402,7 +402,7 @@
                         },
                         {
                             "id": "obdh_sensor_read_ts",
-                            "name": "Sensor reading timestamp",
+                            "name": "Sensor Reading Timestamp",
                             "initial_pos": 83,
                             "final_pos": 86,
                             "value": 0,
@@ -411,7 +411,7 @@
                         },
                         {
                             "id": "obdh_pos_ts",
-                            "name": "Position timestamp",
+                            "name": "Position Timestamp",
                             "initial_pos": 87,
                             "final_pos": 90,
                             "value": 0,
@@ -447,7 +447,7 @@
                         },
                         {
                             "id": "obdh_last_tle_upd_ts",
-                            "name": "Last TLE update",
+                            "name": "Last TLE Update",
                             "initial_pos": 97,
                             "final_pos": 100,
                             "value": 0,
@@ -456,7 +456,7 @@
                         },
                         {
                             "id": "obdh_last_contact_ts",
-                            "name": "Last TC contact",
+                            "name": "Last Contact",
                             "initial_pos": 101,
                             "final_pos": 104,
                             "value": 0,
@@ -465,7 +465,7 @@
                         },
                         {
                             "id": "obdh_next_sch_tc_ts",
-                            "name": "Next Scheduled TC",
+                            "name": "Next Scheduled Telecommand",
                             "initial_pos": 105,
                             "final_pos": 108,
                             "value": 0,
@@ -474,7 +474,7 @@
                         },
                         {
                             "id": "obdh_tc_queue_size",
-                            "name": "TC Queue Size",
+                            "name": "Telecommand Queue Size",
                             "initial_pos": 109,
                             "final_pos": 109,
                             "value": 0,
@@ -492,7 +492,7 @@
                         },
                         {
                             "id": "lora_fsat2a_sat_id",
-                            "name": "Satellite ID (FloripaSat-2A)",
+                            "name": "Payload Satellite ID (FloripaSat-2A)",
                             "initial_pos": 112,
                             "final_pos": 112,
                             "value": 0,
@@ -501,7 +501,7 @@
                         },
                         {
                             "id": "lora_fsat2a_pkt_cnt",
-                            "name": "Packet Counter (FloripaSat-2A)",
+                            "name": "Payload Packet Counter (FloripaSat-2A)",
                             "initial_pos": 113,
                             "final_pos": 116,
                             "value": 0,
@@ -510,7 +510,7 @@
                         },
                         {
                             "id": "lora_fsat2a_temp",
-                            "name": "Temperature (FloripaSat-2A)",
+                            "name": "Payload Temperature (FloripaSat-2A)",
                             "initial_pos": 117,
                             "final_pos": 120,
                             "value": 0,
@@ -519,7 +519,7 @@
                         },
                         {
                             "id": "lora_fsat2a_rssi",
-                            "name": "Last RSSI (FloripaSat-2A)",
+                            "name": "Payload Last RSSI (FloripaSat-2A)",
                             "initial_pos": 121,
                             "final_pos": 122,
                             "value": 0,
@@ -528,7 +528,7 @@
                         },
                         {
                             "id": "lora_fsat2a_snr",
-                            "name": "Last SNR (FloripaSat-2A)",
+                            "name": "Payload Last SNR (FloripaSat-2A)",
                             "initial_pos": 123,
                             "final_pos": 126,
                             "value": 0,
@@ -537,7 +537,7 @@
                         },
                         {
                             "id": "lora_fsat2a_freq_err",
-                            "name": "Last Frequency Error (FloripaSat-2A)",
+                            "name": "Payload Last Frequency Error (FloripaSat-2A)",
                             "initial_pos": 127,
                             "final_pos": 130,
                             "value": 0,
@@ -546,7 +546,7 @@
                         },
                         {
                             "id": "lora_fsat2b_sat_id",
-                            "name": "Satellite ID (FloripaSat-2B)",
+                            "name": "Payload Satellite ID (FloripaSat-2B)",
                             "initial_pos": 131,
                             "final_pos": 131,
                             "value": 0,
@@ -555,7 +555,7 @@
                         },
                         {
                             "id": "lora_fsat2b_pkt_cnt",
-                            "name": "Packet Counter (FloripaSat-2B)",
+                            "name": "Payload Packet Counter (FloripaSat-2B)",
                             "initial_pos": 132,
                             "final_pos": 135,
                             "value": 0,
@@ -564,7 +564,7 @@
                         },
                         {
                             "id": "lora_fsat2b_temp",
-                            "name": "Temperature (FloripaSat-2B)",
+                            "name": "Payload Temperature (FloripaSat-2B)",
                             "initial_pos": 136,
                             "final_pos": 139,
                             "value": 0,
@@ -573,7 +573,7 @@
                         },
                         {
                             "id": "lora_fsat2b_rssi",
-                            "name": "Last RSSI (FloripaSat-2B)",
+                            "name": "Payload Last RSSI (FloripaSat-2B)",
                             "initial_pos": 140,
                             "final_pos": 141,
                             "value": 0,
@@ -582,7 +582,7 @@
                         },
                         {
                             "id": "lora_fsat2b_snr",
-                            "name": "Last SNR (FloripaSat-2B)",
+                            "name": "Payload Last SNR (FloripaSat-2B)",
                             "initial_pos": 142,
                             "final_pos": 145,
                             "value": 0,
@@ -591,7 +591,7 @@
                         },
                         {
                             "id": "lora_fsat2b_freq_err",
-                            "name": "Last Frequency Error (FloripaSat-2B)",
+                            "name": "Payload Last Frequency Error (FloripaSat-2B)",
                             "initial_pos": 146,
                             "final_pos": 149,
                             "value": 0,
@@ -600,7 +600,7 @@
                         },
                         {
                             "id": "lora_fsat2b_bat_volt",
-                            "name": "Battery Voltage (FloripaSat-2B)",
+                            "name": "Payload Battery Voltage (FloripaSat-2B)",
                             "initial_pos": 150,
                             "final_pos": 151,
                             "value": 0,
@@ -609,7 +609,7 @@
                         },
                         {
                             "id": "lora_fsat2a_ts",
-                            "name": "Timestamp",
+                            "name": "Payload Data Timestamp",
                             "initial_pos": 152,
                             "final_pos": 155,
                             "value": 0,
