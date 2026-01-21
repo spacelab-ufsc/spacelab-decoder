@@ -797,14 +797,21 @@ class SpaceLabDecoder:
             try:
                 data = client_socket.recv(1024)  # Read incoming data (max 1024 bytes)
                 if data:
+                    protocol = self._satellite.get_active_link().get_link_protocol()
                     if protocol == _PROTOCOL_NGHAM:
-                        ngham = pyngham.PyNGHam()
-                        pl, err, err_loc = ngham.decode(data)
-                        self._decode_packet(pl)
+                        try:
+                            ngham = pyngham.PyNGHam()
+                            pl, err, err_loc = ngham.decode(data)
+                            self._decode_packet(pl)
+                        except:
+                            self.write_log("Error decoding NGHam packet from TCP socket!")
                     elif protocol == _PROTOCOL_AX100MODE5:
-                        # TODO
-                        #self._decode_packet(pl)
-                        pass
+                        try:
+                            ax100 = AX100Mode5()
+                            pl = ax100.decode(list(data))
+                            self._decode_packet(pl)
+                        except:
+                            self.write_log("Error decoding AX100-Mode5 packet from TCP socket!")
                     else:
                         self.write_log("Unknown protocol received from TCP client!")
                 else:
